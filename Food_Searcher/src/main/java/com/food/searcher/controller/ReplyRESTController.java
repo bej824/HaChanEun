@@ -48,8 +48,9 @@ public class ReplyRESTController {
 		// @PathVariable("boardId") : {boardId} 값을 설정된 변수에 저장
 		log.info("readAllReply");
 		log.info("boardId = " + boardId);
-		
+
 		List<ReplyVO> list = replyService.getAllReply(boardId);
+		log.info(list);
 		// ResponseEntity<T> : T의 타입은 프론트 side로 전송될 데이터의 타입으로 선언
 		return new ResponseEntity<List<ReplyVO>>(list, HttpStatus.OK);
 	}

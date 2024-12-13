@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="recipeTitle" column="RECIPE_TITLE" />
 		<result property="recipeFood" column="RECIPE_FOOD"/>
 		<result property="recipeContent" column="RECIPE_CONTENT"/>
-		<result property="recipeDateCreated" column="RECIPE_DATE_CREATED"/>
+		<result property="recipeDateCreated" column="RECIPE_DATE_CREATE" jdbcType="DATE"/>
 		<result property="replyCount" column="REPLY_COUNT"/>
 		<result property="memberId" column="MEMBER_ID"/>
 	</resultMap>
@@ -40,8 +40,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType : 쿼리 결과를 클래스에 매핑.
 	 -->
 	<insert id="insert">
-		INSERT INTO RECIPE VALUES (RECIPE_ID, RECIPE_TITLE, RECIPE_FOOD, RECIPE_CONTENT, MEMBER_ID)
-		(RECIPE_SEQ.NEXTVAL, #{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId})
+		INSERT INTO RECIPE (RECIPE_ID, RECIPE_TITLE, RECIPE_FOOD, RECIPE_CONTENT, MEMBER_ID)
+		VALUES (RECIPE_SEQ.NEXTVAL, #{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId})
 	</insert>
 	<!-- 
 		#{변수명} : Mapper 인터페이스 메소드 매개변수와 매핑되어 전송된 데이터를 적용

@@ -28,18 +28,15 @@ public class RecipeController {
 	public void list(Model model, Pagination pagination) {
 		log.info("lsit()");
 		log.info("pagination" + pagination);
-		List<RecipeVO> recipeList = recipeService.getAllBoards();
-		log.info(recipeList);
+		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
+		log.info("페이징 : " + recipeList);
 		
-		List<RecipeVO> recipepage = recipeService.getPagingBoards(pagination);
-		log.info(recipepage);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(recipeService.getTotalCount());
 		
-		model.addAttribute("recipeList", recipeList);
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("recipepage", recipepage);
+		model.addAttribute("recipeList", recipeList);
 	}
 	
 	@GetMapping("/register")

@@ -10,8 +10,8 @@
 	<h2>글 수정 페이지</h2>
 	<form action="modify" method="POST">
 		<div>
-			<p>번호 : </p>
-			<input type="text" name="recipeId" value="${recipeVO.recipeId }" readonly>
+			<p>번호 : ${recipeVO.recipeId }</p>
+			<input type="hidden" name="recipeId" value="${recipeVO.recipeId }" readonly>
 		</div>
 		<div>
 			<p>제목 : </p>
@@ -19,8 +19,8 @@
 maxlength="20" value="${recipeVO.recipeTitle }" required>
 		</div>
 		<div>
-			<p>작성자 : </p>
-			<input type="text" name="memberId" value="${recipeVO.memberId}" required>
+			<p>작성자 : ${recipeVO.memberId}</p>
+			<input type="hidden" name="memberId" value="${recipeVO.memberId}">
 			
 		</div>
 		<div>

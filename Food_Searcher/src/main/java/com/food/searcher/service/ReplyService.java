@@ -8,6 +8,7 @@ import com.food.searcher.domain.ReplyVO;
 public interface ReplyService {
 	int createReply(ReplyVO replyVO);
 	List<ReplyVO> getAllReply(int boardId);
+	ReplyVO getReplyById(int replyId);
 	int updateReply(int replyId, String replyContent);
 	int deleteReply(int replyId, int boardId);
 }
