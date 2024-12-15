@@ -9,6 +9,14 @@
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
+	
+	<%
+	HttpSession session = request.getSession();
+	if(session.getAttribute("memberId") != null){ %>	
+		<p><%=session.getAttribute("memberId") %>님 환영합니다.</p>
+	
+	<% } %>
+	
 	<table border="1">
 	<thead>
 		<tr>
@@ -41,5 +49,15 @@
 			<th>이미지</th>
 		</tr>
 	</table>
+	<br>
+	
+	<%if(session.getAttribute("memberId") != null){ %>
+	<a href="access/memberPage">멤버페이지</a> <br>
+	<a href="logout">로그아웃</a>
+	<%} else { %>	
+	<a href="access/login">로그인</a> / 
+	<a href="access/register">회원가입</a>
+	<%} %>
+	
 </body>
 </html>
