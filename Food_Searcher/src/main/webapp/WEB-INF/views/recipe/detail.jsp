@@ -8,6 +8,20 @@
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
+<style type="text/css">
+.button, .btn_update, .btn_delete, .btn_comment {
+	  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
 </head>
@@ -31,9 +45,9 @@
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent }</textarea>
 	</div>
 	
-	<button onclick="location.href='list'">글 목록</button>
-	<button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'">글 수정</button>
-	<button id="deleteBoard">글 삭제</button>
+	<button onclick="location.href='list'" class="button">글 목록</button>
+	<button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
+	<button id="deleteBoard" class="button">글 삭제</button>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="recipeId" value="${recipeVO.recipeId }">
 	</form>
@@ -54,7 +68,7 @@
 	<div style="text-align: center;">
 		<input type="text" id="memberId" >
 		<input type="text" id="replyContent">
-		<button id="btnAdd">작성</button>
+		<button id="btnAdd" class="button">작성</button>
 	</div>
 
 	<hr>
@@ -96,7 +110,6 @@
 							alert('댓글 입력 성공');
 							getAllReply(); // 함수 호출		
 						}
-					console.log(url);
 					console.log(headers);
 					console.log(data);
 					}
@@ -109,7 +122,7 @@
 				let boardId = $('#recipeId').val();
 				console.log(boardId);
 				
-				let url = 'detail?recipeId=' + boardId;
+				let url = '../recipe/all/' + boardId;
 				console.log(url);
 				$.getJSON(
 					url, 		
@@ -140,6 +153,9 @@
 								+ '&nbsp;&nbsp;'
 								+ '<button class="btn_update" >수정</button>'
 								+ '<button class="btn_delete" >삭제</button>'
+								+ ' ㄴ <input type="text" id="memberId" >'
+								+ '<input type="text" id="commentContent">'
+								+ '<button id="btnReAdd" class="button">답글 작성</button>'
 								+ '</pre>'
 								+ '</div>';
 						}); // end each()
@@ -162,7 +178,7 @@
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
-					url : '../reply/' + replyId,
+					url : '../recipe/' + replyId,
 					headers : {
 						'Content-Type' : 'application/json'
 					},
@@ -181,13 +197,14 @@
 			// 삭제 버튼을 클릭하면 선택된 댓글 삭제
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
-				let boardId = $('#boardId').val(); // 게시판 번호 데이터
+				let boardId = $('#recipeId').val(); // 게시판 번호 데이터
+				console.log(boardId);
 				let replyId = $(this).prevAll('#replyId').val();
 				
 				// ajax 요청
 				$.ajax({
 					type : 'DELETE', 
-					url : '../reply/' + replyId + '/' + boardId, 
+					url : '../recipe/' + replyId + '/' + boardId, 
 					headers : {
 						'Content-Type' : 'application/json'
 					},
@@ -200,12 +217,31 @@
 					}
 				});
 			}); // end replies.on()		
+			
+			// 대댓글
+			let isRequesting = false;
+			$('#replies').on('click', '.reply_item .btn_comment', function() {
+			    console.log(this);
+			    let replyId = $(this).closest('.reply_item').find('#replyId').val();
+			    console.log(replyId);
+			    if (isRequesting) return;  // 이미 요청 중이면 다시 요청하지 않음
+			    isRequesting = true;
+		    
+			    $.ajax({
+			        url: 'comment',
+			        type: 'GET',
+			        data: {
+			            replyId: replyId
+			        },
+			        success: function(response) {
+			            console.log(response);
+			            window.location.href = 'comment';
+			            isRequesting = false;  // 요청 완료 후 플래그 초기화
+			        }
+			    });
+			});
 
 		}); // end document()
 	</script>
 </body>
 </html>
-
-
-
-

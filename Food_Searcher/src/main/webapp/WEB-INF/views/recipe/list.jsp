@@ -6,8 +6,15 @@
 <html>
 <head>
 <style type="text/css">
-table, th, td {
+table {
 	border-style: solid;
+	border-radius: 4px;
+	border-width: 1px;
+	text-align: center;
+}
+
+th, td {
+	border-style: outset;
 	border-width: 1px;
 	text-align: center;
 }
@@ -20,14 +27,27 @@ ul {
 li {
 	display: inline-block;
 }
+
+.button {
+	  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 </style>
 <meta charset="UTF-8">
 <title>게시판 메인 페이지</title>
 </head>
 <body>
-	<h1>게시판</h1>
+	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
-	<a href="register"><input type="button" value="글 작성"></a>
+	<a href="register" class="button">글 작성</a>
 	<hr>
 	<table>
 		<thead>
@@ -65,7 +85,7 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li><a href="list?pageNum=${num }">${num }</a></li>
+			<li><a href="list?pageNum=${num }" class="button">${num }</a></li>
 		</c:forEach>
 		<!-- 다음 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isNext() }">
