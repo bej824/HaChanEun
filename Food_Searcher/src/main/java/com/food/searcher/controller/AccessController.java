@@ -149,6 +149,7 @@ public class AccessController {
 		    // MemberService에서 ID 찾기
 		    MemberVO memberVO = MemberService.searchId(memberName, email);
 		    log.info(memberVO);
+		    
 
 		    // 검색 결과가 없으면, 에러 메시지 전달
 		    if (memberVO == null) {

@@ -36,7 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="searchId" resultMap="memberResultMap">
-		SELECT * FROM MEMBER WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+		SELECT * FROM MEMBER 
+		WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
 	</select>
 	
 	<update id="updateMemberByMemberId">
