@@ -11,6 +11,7 @@ import com.food.searcher.domain.ReplyVO;
 public interface ReplyMapper {
 	int insert(ReplyVO replyVO);
 	List<ReplyVO> selectListByBoardId(int boardId);
+	ReplyVO selectOne(int replyId);
 	int update(ReplyVO replyVO);
 	int delete(int replyId);
 }

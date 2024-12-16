@@ -3,6 +3,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+.button {
+	  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
 <meta charset="UTF-8">
 <title>글 작성 페이지</title>
 </head>
@@ -29,7 +43,7 @@
          placeholder="내용 입력" maxlength="300" required></textarea>
       </div>
       <div>
-         <input type="submit" value="등록">
+         <input type="submit" class="button" value="등록">
       </div>
    </form>
 </body>

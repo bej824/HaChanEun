@@ -64,4 +64,12 @@ public class ReplyServiceImple implements ReplyService{
 		return 1;
 	}
 
+	@Override
+	public ReplyVO getReplyById(int replyId) {
+		log.info("getReplyById()");
+		log.info(replyId);
+		log.info(replyMapper.selectOne(replyId));
+		return replyMapper.selectOne(replyId);
+	}
+
 }
