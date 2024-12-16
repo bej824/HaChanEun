@@ -31,6 +31,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
+	<select id="selectList" resultMap="memberResultMap">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="searchId" resultMap="memberResultMap">
+		SELECT * FROM MEMBER WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+	</select>
+	
 	<update id="updateMemberByMemberId">
 		UPDATE MEMBER SET 
 		EMAIL_AGREE = #{emailAgree},

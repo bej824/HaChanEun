@@ -16,7 +16,8 @@
 	<input type="password" name="password"> <br>
 	<input type="submit" value="로그인">
 	</form>
-	
+	<a href="ID" >ID 찾기</a>
+	<a href="" >PW 찾기</a>
 	<%
 	if(session.getAttribute("memberId") != null){
 		response.sendRedirect("../home");

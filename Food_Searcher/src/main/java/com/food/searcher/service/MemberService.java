@@ -8,6 +8,8 @@ public interface MemberService {
 	
 	int createMember(MemberVO memberVO);
 	MemberVO getMemberById(String memberId);
+	MemberVO searchId(String memberName, String email);
+	List<MemberVO> getAllMember();
 	int updateMember(MemberVO memberVO);
 	int deleteMember(String memberId);
 

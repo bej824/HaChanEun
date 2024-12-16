@@ -11,6 +11,8 @@ public interface MemberMapper {
 	
 	int insertMember(MemberVO memberVO);
 	MemberVO selectMemberByMemberId(String memberId);
+	MemberVO searchId(String memberName, String email);
+	List<MemberVO> selectList();
 	int updateMemberByMemberId(MemberVO memberVO);
 	int deleteMemberByMemberId(String memberId);
 

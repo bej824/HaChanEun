@@ -29,7 +29,7 @@ public class RootConfig {
 		// HikariConfig : DBCP 라이브러리
 		HikariConfig config = new HikariConfig(); // 설정 객체
 		config.setDriverClassName("oracle.jdbc.OracleDriver");
-		config.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:xe"); //192.168.0.155 
+		config.setJdbcUrl("jdbc:oracle:thin:@192.168.0.155:1521:xe");
 		config.setUsername("STUDY"); // DB 사용자 아이디
 		config.setPassword("1234"); // DB 사용자 비밀번호
 		

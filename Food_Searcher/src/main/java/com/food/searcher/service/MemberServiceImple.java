@@ -46,4 +46,15 @@ public class MemberServiceImple implements MemberService {
 		return memberMapper.deleteMemberByMemberId(memberId);
 	}
 
+	@Override
+	public List<MemberVO> getAllMember() {
+		log.info("getAllMember()");
+		return memberMapper.selectList();
+	}
+
+	@Override
+	public MemberVO searchId(String memberName, String email) {
+		return memberMapper.searchId(memberName, email);
+	}
+
 }

@@ -21,11 +21,18 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 </style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
+	<%session.getAttribute("memberId"); %>
 	<h2>글 보기</h2>
 	<div>
 		<p>글 번호 : ${recipeVO.recipeId }</p>
@@ -66,7 +73,7 @@
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 
 	<div style="text-align: center;">
-		<input type="text" id="memberId" >
+		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
 		<input type="text" id="replyContent">
 		<button id="btnAdd" class="button">작성</button>
 	</div>
@@ -116,6 +123,39 @@
 				});
 			}); // end btnAdd.click()
 			
+			$('#replies').on('click', '.reply_item .btn_comment', function(){
+				console.log("대댓글");
+				console.log(this);
+				let recipeReplyId = $('#replyId').val();
+				console.log("댓글id : " + recipeReplyId);
+				let memberId = $('#commentMemberId').val();
+				console.log(memberId);
+				let commentContent = $('#commentContent').val();
+				console.log(commentContent);
+				let obj = {
+						'recipeReplyId' : recipeReplyId,
+						'memberId' : memberId,
+						'commentContent' : commentContent
+				}
+				
+				$.ajax({
+					type : 'POST',
+					url : '../recipe/list',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 입력 성공');
+						}
+						console.log("1" + headers);
+						console.log("2" + data)
+					}
+				});
+			}); // end btnReAdd close
+			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
 				console.log(this);
@@ -141,21 +181,30 @@
 						  
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
+							
+							let disabled = '';
+							let readonly = '';
+							
+							if(memberId != this.memberId) {
+								disabled = 'disabled';
+								readonly = 'readonly';
+							}
 
 							list += '<div class="reply_item">'
 								+ '<pre>'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
 								+ this.memberId
 								+ '&nbsp;&nbsp;' // 공백
-								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
+								+ '<input type="text" id="replyContent" '+ readonly +' value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
 								+ replyDateCreated
 								+ '&nbsp;&nbsp;'
-								+ '<button class="btn_update" >수정</button>'
-								+ '<button class="btn_delete" >삭제</button>'
-								+ ' ㄴ <input type="text" id="memberId" >'
+								+ '<button class="btn_update " '+ disabled +' >수정</button>'
+								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
+								+ '<%=session.getAttribute("memberId") %>'
+								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
-								+ '<button id="btnReAdd" class="button">답글 작성</button>'
+								+ '<button id="btnReAdd" class="btn_comment" '+ disabled +'>답글 작성</button><br>'
 								+ '</pre>'
 								+ '</div>';
 						}); // end each()

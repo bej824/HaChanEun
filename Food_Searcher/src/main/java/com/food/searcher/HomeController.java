@@ -4,8 +4,10 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -20,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.food.searcher.domain.MemberVO;
+import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.MemberService;
+import com.food.searcher.service.RecipeService;
+import com.food.searcher.util.PageMaker;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -30,6 +36,9 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 public class HomeController {
+	
+	@Autowired
+	private RecipeService recipeService;
 	
 	@Autowired
 	private MemberService MemberService;
@@ -52,12 +61,6 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
-	}
-	
-	@GetMapping("home")
-	public String homeGET() {
-		log.info("homeGET()");
 		return "home";
 	}
 	
@@ -120,7 +123,22 @@ public class HomeController {
 		log.info("logoutGET()");
 		session.removeAttribute("memberId");
 		
-		return "/home";
+		return "redirect:/home";
+	}
+	
+	@GetMapping("/home")
+	public void main(Model model, Pagination pagination) {
+		log.info("home()");
+		log.info("pagination" + pagination);
+		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
+		log.info("페이징 : " + recipeList);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(recipeService.getTotalCount());
+		
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("recipeList", recipeList);
 	}
 	
 }

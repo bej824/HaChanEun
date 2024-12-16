@@ -90,4 +90,5 @@ public class RecipeController {
 	      log.info(result + "행 삭제");
 	      return "redirect:/recipe/list";
 	   }
+	   
 }
