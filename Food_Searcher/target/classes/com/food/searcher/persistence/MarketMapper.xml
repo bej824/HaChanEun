@@ -6,12 +6,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.food.searcher.persistence.MarketMapper">
 	
 	<resultMap type="com.food.searcher.domain.MarketVO" id="marketResultMap">
-	
 	<id property="marketId" column="MARKET_ID" />
 	<result property="marketTitle" column="MARKET_TITLE" />
 	<result property="marketContent" column="MARKET_CONTENT" />
-	<result property="marketLocal" column="MARKET_LOCAL" />
-		
+	<result property="marketLocal" column="MARKET_LOCAL" />	
 	</resultMap>
 	
 	<insert id="insert">
@@ -25,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT * FROM MARKET ORDER BY MARKET_ID DESC	
 	</select>
 	
-	<select id="selectOne">
+	<select id="selectOne" resultMap="marketResultMap">
 	<!-- 특정 게시글 조회 -->
 	SELECT * FROM MARKET WHERE MARKET_ID = #{marketId}
 	</select>
@@ -42,7 +40,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	DELETE MARKET WHERE MARKET_ID = #{marketId}
 	</delete>
 	
-	
 	<select id="selectListByPagination" resultMap="marketResultMap">
 	<!-- 페이지네이션 -->
 	SELECT * FROM
@@ -57,5 +54,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 게시글 총 갯수 -->
 		SELECT COUNT(*) TOTAL_COUNT FROM BOARD
 	</select>
+		
 	
 </mapper>
