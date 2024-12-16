@@ -14,6 +14,7 @@
 
 	<form id="updateForm" action="update" method="post">
 		<p>아이디 : ${vo.memberId }</p>
+		<input type="hidden" name="memberId" value="${vo.memberId }">
 
 		<p>이름 : ${vo.memberName }</p>
 

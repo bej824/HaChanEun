@@ -61,14 +61,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@PostMapping("/")
-	public String homePOST(@RequestParam("memberId") String memberId,
-			HttpSession session) {
-		log.info("homePOST()");
-		session.setAttribute("memberId", memberId);
-		return "home";
-	}
-	
 	@PostMapping("home")
 	public String registerPOST(@RequestParam("memberId") String memberId, @RequestParam("password") String password,
 			@RequestParam(value = "password2", required = false) String password2, @RequestParam(value = "memberName", required = false) String memberName,
@@ -128,7 +120,7 @@ public class HomeController {
 		log.info("logoutGET()");
 		session.removeAttribute("memberId");
 		
-		return "home";
+		return "/home";
 	}
 	
 }

@@ -49,6 +49,27 @@ public class AccessController {
 			log.info("loginGET()");
 		} // end loginGET()
 		
+		@PostMapping("/login")
+		public String loginPOST(@RequestParam("memberId") String memberId,
+				@RequestParam("password") String password,
+				HttpSession session, MemberVO vo) {
+			log.info("loginPOST()");
+			
+			try {
+				vo = MemberService.getMemberById(memberId);
+				if(vo.getPassword().equals(password)) {
+					session.setAttribute("memberId", memberId);
+					return "/access/login";
+
+				} else {
+					return "/access/login";
+				}
+				
+			} catch (Exception e) {
+				return "/access/login";
+			}
+		}
+		
 		@GetMapping("/memberPage")
 		public String memberPageGET(HttpSession session, HttpServletResponse response,
 				Model model, MemberVO vo) {
