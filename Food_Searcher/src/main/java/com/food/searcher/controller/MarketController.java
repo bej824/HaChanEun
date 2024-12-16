@@ -74,10 +74,30 @@ public class MarketController {
 	
 	@GetMapping("/detail")
 	public void detail(Model model, Integer marketId) {
-		log.info("detail");
+		log.info("detail()");
 		MarketVO marketVO = marketService.getMarketById(marketId);
 		model.addAttribute("marketVO", marketVO);
 	}
+	
+	// modify.jsp에서 데이터를 전송받아 게시글 수정
+	@PostMapping("/modify")
+	public String modifyPOST(MarketVO marketVO) {
+		log.info("modifyPOST()");
+		int result = marketService.updateMarket(marketVO);
+		log.info(result + "행 수정");
+		return "redirect:/market/list";
+	}
+	
+	@PostMapping("/delete")
+	public String delete(Integer marketId) {
+		log.info("delete()");
+		int result = marketService.deleteMarket(marketId);
+		log.info(result + "행 삭제");
+		return "redirect:/market/list";
+	}
+	
+	
+	
 	
 
 } // end MarketController

@@ -66,6 +66,8 @@
     </style>
 </head>
 <body>
+<%@ include file ="/WEB-INF/views/header.jsp" %>
+
 	<!-- 게시판 -->
     <div class="container">
         <h1>전통시장 리스트</h1>

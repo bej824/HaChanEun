@@ -7,6 +7,7 @@
 <title>${marketVO.marketTitle }</title>
 </head>
 <body>
+<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<h2>글 수정 페이지</h2>
 	<form action="modify" method="POST">
 
