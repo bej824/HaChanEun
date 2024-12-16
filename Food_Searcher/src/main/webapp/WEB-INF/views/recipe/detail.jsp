@@ -116,6 +116,39 @@
 				});
 			}); // end btnAdd.click()
 			
+			$('#replies').on('click', '.reply_item .btn_comment', function(){
+				console.log("대댓글");
+				console.log(this);
+				let recipeReplyId = $('#replyId').val();
+				console.log("댓글id : " + recipeReplyId);
+				let memberId = $('#commentMemberId').val();
+				console.log(memberId);
+				let commentContent = $('#commentContent').val();
+				console.log(commentContent);
+				let obj = {
+						'recipeReplyId' : recipeReplyId,
+						'memberId' : memberId,
+						'commentContent' : commentContent
+				}
+				
+				$.ajax({
+					type : 'POST',
+					url : '../recipe/list',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 입력 성공');
+						}
+						console.log("1" + headers);
+						console.log("2" + data)
+					}
+				});
+			}); // end btnReAdd close
+			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
 				console.log(this);
@@ -153,14 +186,15 @@
 								+ '&nbsp;&nbsp;'
 								+ '<button class="btn_update" >수정</button>'
 								+ '<button class="btn_delete" >삭제</button>'
-								+ ' ㄴ <input type="text" id="memberId" >'
+								+ ' ㄴ <input type="text" id="commentMemberId" >'
 								+ '<input type="text" id="commentContent">'
-								+ '<button id="btnReAdd" class="button">답글 작성</button>'
+								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
 								+ '</pre>'
 								+ '</div>';
 						}); // end each()
 							
 						$('#replies').html(list); // 저장된 데이터를 replies div 표현
+						console.log("list. : " + );
 					} // end function()
 				); // end getJSON()
 			} // end getAllReply()
