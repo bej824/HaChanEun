@@ -34,6 +34,8 @@
 		<p>
 			MBTI : <select name="memberMBTI" id="mbti">
 				<!-- MBTI 유형 옵션 -->
+				<option value=" "
+					<c:if test="${vo.memberMBTI == ' '}">selected</c:if>> </option>
 				<option value="ISTJ"
 					<c:if test="${vo.memberMBTI == 'ISTJ'}">selected</c:if>>ISTJ</option>
 				<option value="ISFJ"
