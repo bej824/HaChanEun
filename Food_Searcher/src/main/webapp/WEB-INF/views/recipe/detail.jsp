@@ -21,11 +21,18 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 </style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
+	<%session.getAttribute("memberId"); %>
 	<h2>글 보기</h2>
 	<div>
 		<p>글 번호 : ${recipeVO.recipeId }</p>
@@ -66,7 +73,7 @@
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 
 	<div style="text-align: center;">
-		<input type="text" id="memberId" >
+		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
 		<input type="text" id="replyContent">
 		<button id="btnAdd" class="button">작성</button>
 	</div>
@@ -174,27 +181,35 @@
 						  
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
+							
+							let disabled = '';
+							let readonly = '';
+							
+							if(memberId != this.memberId) {
+								disabled = 'disabled';
+								readonly = 'readonly';
+							}
 
 							list += '<div class="reply_item">'
 								+ '<pre>'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
 								+ this.memberId
 								+ '&nbsp;&nbsp;' // 공백
-								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
+								+ '<input type="text" id="replyContent" '+ readonly +' value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
 								+ replyDateCreated
 								+ '&nbsp;&nbsp;'
-								+ '<button class="btn_update" >수정</button>'
-								+ '<button class="btn_delete" >삭제</button>'
-								+ ' ㄴ <input type="text" id="commentMemberId" >'
+								+ '<button class="btn_update " '+ disabled +' >수정</button>'
+								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
+								+ '<%=session.getAttribute("memberId") %>'
+								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
-								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
+								+ '<button id="btnReAdd" class="btn_comment" '+ disabled +'>답글 작성</button><br>'
 								+ '</pre>'
 								+ '</div>';
 						}); // end each()
 							
 						$('#replies').html(list); // 저장된 데이터를 replies div 표현
-						console.log("list. : " + );
 					} // end function()
 				); // end getJSON()
 			} // end getAllReply()

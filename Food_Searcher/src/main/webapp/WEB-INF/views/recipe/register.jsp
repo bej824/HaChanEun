@@ -21,6 +21,7 @@
 <title>글 작성 페이지</title>
 </head>
 <body>
+	<%session.getAttribute("memberId"); %>
    <h2>글 작성 페이지</h2>
    <form action="register" method="POST">
    <!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
@@ -31,7 +32,7 @@
       </div>
       <div>
          <p>작성자 : </p>
-         <input type="text" name="memberId" maxlength="10" required>
+         <input type="text" name="memberId" value="<%=session.getAttribute("memberId") %>" maxlength="10" required>
       </div>
       <div>
       	<p>음식 : </p>

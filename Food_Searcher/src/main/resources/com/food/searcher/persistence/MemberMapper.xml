@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.MemberMapper">
+
+	<resultMap type="com.food.searcher.domain.MemberVO"
+		id="memberResultMap">
+		
+		<id property="memberId" column="MEMBER_ID" /> 
+		<result property="password" column="PASSWORD" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="email" column="EMAIL" />
+		<result property="emailAgree" column="EMAIL_AGREE" />
+		<result property="memberAge" column="MEMBER_AGE" />
+		<result property="memberGender" column="MEMBER_GENDER" />
+		<result property="memberMBTI" column="MEMBER_MBTI" />
+		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
+	</resultMap>
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER 
+		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION)
+		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation})
+
+	</insert>
+	
+	<select id="selectMemberByMemberId" resultMap="memberResultMap">
+		SELECT * FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<select id="selectList" resultMap="memberResultMap">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="searchId" resultMap="memberResultMap">
+		SELECT * FROM MEMBER WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+	</select>
+	
+	<update id="updateMemberByMemberId">
+		UPDATE MEMBER SET 
+		EMAIL_AGREE = #{emailAgree},
+		MEMBER_MBTI = #{memberMBTI}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	<delete id="deleteMemberByMemberId">
+		DELETE MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</delete>
+
+</mapper>
+
+
+

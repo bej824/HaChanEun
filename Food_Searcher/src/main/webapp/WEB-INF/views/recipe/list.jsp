@@ -42,12 +42,17 @@ li {
 }
 </style>
 <meta charset="UTF-8">
-<title>게시판 메인 페이지</title>
+<title>레시피 공유 게시판</title>
 </head>
 <body>
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
-	<a href="register" class="button">글 작성</a>
+	<c:if test="${empty sessionScope.memberId}">
+		<a href="../access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+	</c:if>
+	<c:if test="${not empty sessionScope.memberId}">
+		<a href="register" class="button">글 작성</a>
+	</c:if>
 	<hr>
 	<table>
 		<thead>

@@ -26,7 +26,7 @@ public class RecipeController {
 	
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
-		log.info("lsit()");
+		log.info("list()");
 		log.info("pagination" + pagination);
 		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		log.info("페이징 : " + recipeList);
@@ -90,4 +90,5 @@ public class RecipeController {
 	      log.info(result + "행 삭제");
 	      return "redirect:/recipe/list";
 	   }
+	   
 }
