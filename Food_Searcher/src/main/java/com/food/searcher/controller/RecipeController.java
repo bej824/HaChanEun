@@ -26,7 +26,7 @@ public class RecipeController {
 	
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
-		log.info("lsit()");
+		log.info("list()");
 		log.info("pagination" + pagination);
 		List<RecipeVO> recipeList = recipeService.getAllBoards();
 		log.info(recipeList);
