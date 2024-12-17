@@ -3,6 +3,7 @@ package com.food.searcher.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import com.food.searcher.persistence.MarketReplyMapper;
 
 import lombok.extern.log4j.Log4j;
 
+@Repository
 @Service
 @Log4j
 
