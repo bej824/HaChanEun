@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.food.searcher.domain.ReplyVO;
+import com.food.searcher.domain.RecipeReplyVO;
 
 
 @Mapper
-public interface ReplyMapper {
-	int insert(ReplyVO replyVO);
-	List<ReplyVO> selectListByBoardId(int boardId);
-	ReplyVO selectOne(int replyId);
-	int update(ReplyVO replyVO);
+public interface RecipeReplyMapper {
+	int insert(RecipeReplyVO replyVO);
+	List<RecipeReplyVO> selectListByBoardId(int boardId);
+	RecipeReplyVO selectOne(int replyId);
+	int update(RecipeReplyVO replyVO);
 	int delete(int replyId);
 }

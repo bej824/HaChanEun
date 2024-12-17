@@ -16,6 +16,18 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+textarea {
+  width: 700px;
+  height: 280px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
 </style>
 <meta charset="UTF-8">
 <title>글 작성 페이지</title>
@@ -34,9 +46,21 @@
          <p>작성자 : </p>
          <input type="text" name="memberId" value="<%=session.getAttribute("memberId") %>" maxlength="10" required>
       </div>
+      <br>
       <div>
-      	<p>음식 : </p>
-      	<input type="text" name="recipeFood" maxlength="10" required>
+      	<label for="recipeFood">음식 :</label><br>
+    	<select id="recipeFood" name="recipeFood">
+      	<option value="샌드위치">샌드위치</option>
+      	<option value="짜장면">짜장면</option>
+      	<option value="짬뽕">짬뽕</option>
+      	<option value="마라탕">마라탕</option>
+      	<option value="동파육">동파육</option>
+      	<option value="스파게티">스파게티</option>
+      	<option value="유산슬">유산슬</option>
+      	<option value="알리오올리오">알리오올리오</option>
+      	<option value="찜닭">찜닭</option>
+      	<option value="비빔밥">비빔밥</option>
+    </select>
       </div>
       <div>
          <p>내용 : </p>

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.food.searcher.domain.ReplyVO;
-import com.food.searcher.service.ReplyService;
+import com.food.searcher.domain.RecipeCommentVO;
+import com.food.searcher.domain.RecipeReplyVO;
+import com.food.searcher.service.RecipeCommentService;
+import com.food.searcher.service.RecipeReplyService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -30,10 +32,13 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class ReplyRESTController {
 	@Autowired
-	private ReplyService replyService;
+	private RecipeReplyService replyService;
+	
+	@Autowired
+	private RecipeCommentService recipeCommentService;
 	
 	@PostMapping // POST : 댓글 입력
-	public ResponseEntity<Integer> createReply(@RequestBody ReplyVO replyVO) {
+	public ResponseEntity<Integer> createReply(@RequestBody RecipeReplyVO replyVO) {
 		log.info("createReply()");
 		log.info(replyVO);
 		
@@ -43,16 +48,22 @@ public class ReplyRESTController {
 	}
 	
 	@GetMapping("/all/{boardId}") // GET : 댓글 선택(all)
-	public ResponseEntity<List<ReplyVO>> readAllReply(
+	public ResponseEntity<List<RecipeReplyVO>> readAllReply(
 			@PathVariable("boardId") int boardId) { 
 		// @PathVariable("boardId") : {boardId} 값을 설정된 변수에 저장
 		log.info("readAllReply");
 		log.info("boardId = " + boardId);
 
-		List<ReplyVO> list = replyService.getAllReply(boardId);
+		List<RecipeReplyVO> list = replyService.getAllReply(boardId);
 		log.info(list);
+		
+	    for (RecipeReplyVO reply : list) {
+	        List<RecipeCommentVO> comments = recipeCommentService.getAllComment(reply.getReplyId());
+	        reply.setComments(comments); // 댓글 객체에 대댓글 목록 설정
+	    }
+	    
 		// ResponseEntity<T> : T의 타입은 프론트 side로 전송될 데이터의 타입으로 선언
-		return new ResponseEntity<List<ReplyVO>>(list, HttpStatus.OK);
+		return new ResponseEntity<List<RecipeReplyVO>>(list, HttpStatus.OK);
 	}
 	
 	   @PutMapping("/{replyId}") // PUT : 댓글 수정
