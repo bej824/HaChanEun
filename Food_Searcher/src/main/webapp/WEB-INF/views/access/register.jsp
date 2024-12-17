@@ -73,7 +73,7 @@
 	<script type="text/javascript">
 
 	function checkId(memberId) {
-		  console.log("ID Value:", memberId);  // 입력한 아이디 값이 콘솔에 출력되는지 확인
+		  console.log("memberId :", memberId);  // 입력한 아이디 값이 콘솔에 출력되는지 확인
 		  $.ajax({
 		    type: 'GET',
 		    url: '../access/idCheck',
@@ -83,7 +83,7 @@
 		        $('#idMsg').html('사용 가능한 아이디입니다.').css('color', 'green');
 		        idCheck = true;
 		      } else {
-		        $('#idMsg').html('중복된 아이디입니다.').css('color', 'red');
+		        $('#idMsg').html('사용할 수 없는 아이디입니다.').css('color', 'red');
 		        idCheck = false;
 		      }
 		    }
@@ -91,18 +91,29 @@
 		}
 		
 		function insert() {
-			let password = document.getElementById("password").value;
-			let password2 = document.getElementById("password2").value;
 			let memberId = document.getElementById("memberId").value;
+		    let password = document.getElementById("password").value;
+		    let password2 = document.getElementById("password2").value;
+		    let memberName = document.getElementsByName("memberName")[0].value;
+		    let memberGender = document.querySelector('input[name="memberGender"]:checked');
+		    let birth = document.getElementsByName("birth")[0].value;
+		    let email = document.getElementsByName("email")[0].value;
+		    let emailAgree = document.querySelector('input[name="emailAgree"]:checked');
+
+		    if (memberId === "" || password === "" || password2 === "" || memberName === "" || !memberGender || birth === "" || email === "") {
+		      alert("모든 필드를 올바르게 입력해주세요.");
+		      return;
+		    }
+
+		    // 비밀번호와 비밀번호 재입력이 일치하는지 확인
+		    if (password !== password2) {
+		      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+		      return;
+		    }
 			
-			if (password !== password2) {
-				alert("비밀번호를 확인하여 주세요.");
-				return;
-			}
 			if (idCheck === true){
 			document.getElementById("insertForm").submit();				
 			} else {
-				alert("아이디 확인 후 다시 입력해주세요.");
 				return;
 			}
 		}
