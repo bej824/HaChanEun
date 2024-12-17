@@ -45,7 +45,7 @@ public class MarketReplyController {
 		
 		List<MarketReplyVO> list = replyService.getAllReply(marketId);
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
-	} // 댓글 출력(선택)
+	} // 댓글 출력
 	
 	 @PutMapping("/{marketReplyId}") 
 	   public ResponseEntity<Integer> updateReply(

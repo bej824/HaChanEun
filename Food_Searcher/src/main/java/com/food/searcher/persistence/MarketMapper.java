@@ -3,7 +3,6 @@ package com.food.searcher.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.util.Pagination;

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="Servers">
+        <wb-resource deploy-path="/" source-path="/Servers/apache-tomcat-9.0.46/webapps/docs/appdev/sample/src/mypackage"/>
+        <wb-resource deploy-path="/" source-path="/Servers/apache-tomcat-9.0.46/webapps/examples/WEB-INF/classes"/>
+    </wb-module>
+</project-modules>
