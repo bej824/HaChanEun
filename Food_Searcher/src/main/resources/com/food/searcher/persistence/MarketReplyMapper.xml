@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.MarketReplyMapper">
+   
+   <resultMap type="com.food.searcher.domain.MarketReplyVO" id="replyResultMap">
+      <id property="marketReplyId" column="MARKET_REPLY_ID" /> 
+      <result property="marketId" column="MARKET_ID" /> 
+      <result property="memberId" column="MEMBER_ID" />
+      <result property="marketReplyContent" column="REPLY_CONTENT" />
+      <result property="replyDateCreated" column="REPLY_DATE_CREATED" />
+   </resultMap>
+   
+   <insert id="insert">
+      INSERT INTO MARKET_REPLY (MARKET_REPLY_ID, MARKET_ID, MEMBER_ID, REPLY_CONTENT)
+      VALUES (MARKET_REPLY_SEQ.NEXTVAL, #{marketId}, #{memberId}, #{marketReplyContent})
+   </insert>
+   
+   <select id="selectListByMarketId" resultMap="replyResultMap">
+      SELECT * FROM MARKET_REPLY
+      WHERE MARKET_ID = #{marketId}
+      ORDER BY MARKET_REPLY_ID
+   </select>
+   
+   <update id="update">
+      UPDATE MARKET_REPLY
+      SET REPLY_CONTENT = #{marketReplyContent}
+      WHERE MARKET_REPLY_ID = #{marketReplyId}
+   </update>
+   
+   <delete id="delete">
+      DELETE FROM MARKET_REPLY
+      WHERE MARKET_REPLY_ID = #{marketReplyId}
+   </delete>
+   
+    
+</mapper>

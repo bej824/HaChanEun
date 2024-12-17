@@ -101,10 +101,11 @@
             <li><a href="/searcher/market/list">전통시장</a></li>
             <li><a href="">특산품</a></li>
         </ul>
-     	
-        <c:if test="${not empty sessionScope.memberId }">
+          	
+   <c:if test="${not empty sessionScope.memberId }">
         <div class="myPage">
-        	<a href="">마이페이지</a>
+        	<a href="">로그아웃</a>
+        	<a href="/searcher/access/memberPage">마이페이지</a>
         </div>
         </c:if>
         
@@ -114,11 +115,8 @@
             <a href="/searcher/access/register">회원가입</a>
         </div>
         </c:if> 
-        
+
         
     </div>
-</body>
-</html>
-
 </body>
 </html>
