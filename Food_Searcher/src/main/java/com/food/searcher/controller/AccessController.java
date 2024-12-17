@@ -65,7 +65,7 @@ public class AccessController {
 
 		return result;
 	}
-	
+		
 		@RequestMapping("/login") // 로그인 후 지정 위치로 ...
 		public String login(HttpServletRequest request, HttpServletResponse response) {
 		    String redirectUrl = request.getParameter("redirect");
