@@ -57,6 +57,7 @@ li {
 	<% } %>
 	
 	<a href="recipe/list" class="button">레시피 공유</a>
+	<a href="local/map" class="button">특산품</a>
 	<table border="1">
 	<thead>
 		<tr>
