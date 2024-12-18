@@ -64,4 +64,40 @@ public class RecipeServiceImple implements RecipeService{
 		return recipeMapper.selectTotalCount();
 	}
 
+	@Override
+	public List<RecipeVO> getselectSearch(String recipeTitle) {
+		log.info("getselectSearch()");
+		return recipeMapper.selectSearch(recipeTitle);
+	}
+
+	@Override
+	public List<RecipeVO> getSelectId(String memberId) {
+		log.info("getSelectId");
+		return recipeMapper.selectId(memberId);
+	}
+
+	@Override
+	public List<RecipeVO> getSelectContent(String recipeContent) {
+		log.info("getSelectContent");
+		return recipeMapper.selectContent(recipeContent);
+	}
+
+	@Override
+	public List<RecipeVO> getSelectFood(String recipeFood) {
+		log.info("getSelectFood");
+		return recipeMapper.selectFood(recipeFood);
+	}
+
+	@Override
+	public int getTitleTotalCount() {
+		log.info("getTitleTotalCount()");
+		return recipeMapper.titleTotalCount();
+	}
+
+	@Override
+	public List<RecipeVO> getTitleByPagination(Pagination pagination, String recipeTitle) {
+		log.info("getTitleByPagination()");
+		return recipeMapper.selectTitleByPagination(pagination, recipeTitle);
+	}
+
 }

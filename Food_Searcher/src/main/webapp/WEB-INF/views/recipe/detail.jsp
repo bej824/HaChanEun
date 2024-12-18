@@ -208,7 +208,7 @@ textarea {
 								+ '<%=session.getAttribute("memberId") %>'
 								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
-								+ '<button id="btnReAdd" class="btn_comment" '+ disabled +'>답글 작성</button><br>'
+								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
 								+ '	<%} %>'
 								+ '</pre>'
 					            // 대댓글 렌더링

@@ -41,6 +41,10 @@ li {
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.search {
+	margin-left: 335px;
+}
 </style>
 <meta charset="UTF-8">
 <title>레시피 공유 게시판</title>
@@ -63,7 +67,7 @@ li {
 			<tr>
 				<th style="width: 60px">번호</th>
 				<th style="width: 700px">제목</th>
-				<th style="width: 60px">음식</th>
+				<th style="width: 80px">음식</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
 				<th style="width: 40px">댓글수</th>
@@ -86,6 +90,17 @@ li {
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<form id="searchForm" method="POST" action="list" class="search">
+	    <input type="text" name="recipeTitle" placeholder="검색어 입력" required>
+	    <select name="filterBy">
+	        <option value="recipeTitle">제목</option>
+	        <option value="recipeFood">음식</option>
+	        <option value="content">내용</option>
+	        <option value="author">작성자</option>
+	    </select>
+	    <button type="submit" class="button">검색</button>
+	</form>
 	<ul>
 		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
