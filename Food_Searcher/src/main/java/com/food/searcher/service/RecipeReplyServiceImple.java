@@ -6,25 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.food.searcher.domain.ReplyVO;
+import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.persistence.RecipeMapper;
-import com.food.searcher.persistence.ReplyMapper;
+import com.food.searcher.persistence.RecipeReplyMapper;
 
 import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class ReplyServiceImple implements ReplyService{
+public class RecipeReplyServiceImple implements RecipeReplyService{
 	
 	@Autowired
-	private ReplyMapper replyMapper;
+	private RecipeReplyMapper replyMapper;
 	
 	@Autowired
 	private RecipeMapper recipeMapper;
 	
 	@Transactional(value = "transactionManager") // transactionManager가 관리
 	@Override
-	public int createReply(ReplyVO replyVO) {
+	public int createReply(RecipeReplyVO replyVO) {
 		// 댓글을 추가하면 
 		// REPLY 테이블에 댓글이 등록되고,
 		// BOARD 테이블에 댓글 수(REPLY_COUNT)가 수정된다.
@@ -38,7 +38,7 @@ public class ReplyServiceImple implements ReplyService{
 	}
 
 	@Override
-	public List<ReplyVO> getAllReply(int boardId) {
+	public List<RecipeReplyVO> getAllReply(int boardId) {
 		log.info("getAllReply()");
 		return replyMapper.selectListByBoardId(boardId);
 	}
@@ -46,7 +46,7 @@ public class ReplyServiceImple implements ReplyService{
 	@Override
 	public int updateReply(int replyId, String replyContent) {
 		log.info("updateReply");
-		ReplyVO replyVO = new ReplyVO();
+		RecipeReplyVO replyVO = new RecipeReplyVO();
 		replyVO.setReplyId(replyId);
 		replyVO.setReplyContent(replyContent);
 		return replyMapper.update(replyVO);
@@ -65,7 +65,7 @@ public class ReplyServiceImple implements ReplyService{
 	}
 
 	@Override
-	public ReplyVO getReplyById(int replyId) {
+	public RecipeReplyVO getReplyById(int replyId) {
 		log.info("getReplyById()");
 		log.info(replyId);
 		log.info(replyMapper.selectOne(replyId));

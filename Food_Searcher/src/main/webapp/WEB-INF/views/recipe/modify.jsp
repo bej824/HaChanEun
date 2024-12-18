@@ -3,6 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+textarea {
+  width: 700px;
+  height: 280px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+</style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
 </head>

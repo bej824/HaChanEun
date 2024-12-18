@@ -22,9 +22,26 @@
   cursor: pointer;
 }
 
+    .comment_item {
+        margin-left: 30px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
+        margin-bottom: 10px;
+    }
+
 .disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+textarea {
+  width: 700px;
+  height: 280px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(240, 240, 240, 0);
+  font-size: 16px;
+  resize: none;
 }
 
 </style>
@@ -53,8 +70,18 @@
 	</div>
 	
 	<button onclick="location.href='list'" class="button">글 목록</button>
+	<c:if test="${empty recipeVO.memberId}">
+		<button onclick="location.href='../access/login'" class="button">글 수정</button>
+		<button id="deleteBoard" class="button" disabled>글 삭제</button>
+		</c:if>
+	<c:if test="${recipeVO.memberId eq sessionScope.memberId}">
 	<button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
 	<button id="deleteBoard" class="button">글 삭제</button>
+	</c:if>
+	<c:if test="${not empty recipeVO.memberId and recipeVO.memberId ne sessionScope.memberId}">
+			<button class="button" disabled>글 수정</button>
+			<button id="deleteBoard" class="button" disabled>글 삭제</button>
+	</c:if>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="recipeId" value="${recipeVO.recipeId }">
 	</form>
@@ -72,11 +99,17 @@
 
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 
-	<div style="text-align: center;">
+	<%if(session.getAttribute("memberId") == null){ %>
+		* 댓글은 로그인이 필요한 서비스입니다.
+		<a href="../access/login">로그인하기</a>
+	<%} %>
+	<%if(session.getAttribute("memberId") != null){ %>
+			<div style="text-align: center;">
 		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
 		<input type="text" id="replyContent">
 		<button id="btnAdd" class="button">작성</button>
 	</div>
+	<%} %>
 
 	<hr>
 	<div style="text-align: center;">
@@ -85,7 +118,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			getAllReply(); // 함수 호출		
+			getAllReply(); // 함수 호출	
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
@@ -123,69 +156,39 @@
 				});
 			}); // end btnAdd.click()
 			
-			$('#replies').on('click', '.reply_item .btn_comment', function(){
-				console.log("대댓글");
-				console.log(this);
-				let recipeReplyId = $('#replyId').val();
-				console.log("댓글id : " + recipeReplyId);
-				let memberId = $('#commentMemberId').val();
-				console.log(memberId);
-				let commentContent = $('#commentContent').val();
-				console.log(commentContent);
-				let obj = {
-						'recipeReplyId' : recipeReplyId,
-						'memberId' : memberId,
-						'commentContent' : commentContent
-				}
-				
-				$.ajax({
-					type : 'POST',
-					url : '../recipe/list',
-					headers : {
-						'Content-Type' : 'application/json'
-					},
-					data : JSON.stringify(obj),
-					success : function(result) {
-						console.log(result);
-						if(result == 1) {
-							alert('대댓글 입력 성공');
-						}
-						console.log("1" + headers);
-						console.log("2" + data)
-					}
-				});
-			}); // end btnReAdd close
+
 			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
 				console.log(this);
 				let boardId = $('#recipeId').val();
-				console.log(boardId);
+				console.log("boardID : " + boardId);
+
 				
 				let url = '../recipe/all/' + boardId;
-				console.log(url);
+				console.log("address : " + url);
 				$.getJSON(
 					url, 		
 					function(data) {
 						// data : 서버에서 전송받은 list 데이터가 저장되어 있음.
 						// getJSON()에서 json 데이터는 
 						// javascript object로 자동 parsing됨.
-						console.log(data);
+						console.log("댓글 목록 : ", data);
 						
 						let list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
 						
 						// $(컬렉션).each() : 컬렉션 데이터를 반복문으로 꺼내는 함수
 						$(data).each(function(){
 							// this : 컬렉션의 각 인덱스 데이터를 의미
-							console.log(this);
-						  
+							console.log("댓글 데이터: ", this);
+							
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
 							
 							let disabled = '';
 							let readonly = '';
 							
-							if(memberId != this.memberId) {
+							if('<%=session.getAttribute("memberId") %>' != this.memberId) {
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -195,20 +198,45 @@
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
 								+ this.memberId
 								+ '&nbsp;&nbsp;' // 공백
-								+ '<input type="text" id="replyContent" '+ readonly +' value="'+ this.replyContent +'">'
+								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
 								+ replyDateCreated
 								+ '&nbsp;&nbsp;'
+								+ '<%if(session.getAttribute("memberId") != null){ %>'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<%=session.getAttribute("memberId") %>'
 								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
 								+ '<button id="btnReAdd" class="btn_comment" '+ disabled +'>답글 작성</button><br>'
+								+ '	<%} %>'
 								+ '</pre>'
-								+ '</div>';
+					            // 대댓글 렌더링
+					            if (this.comments) {
+					            	console.log("대댓글 데이터: ", this.comments);
+					                list += '<div class="comment_item">'; // 대댓글을 위한 div 추가
+					                $(this.comments).each(function() {
+					                    list += '<div class="comment_item">'
+					                        + '<pre>'
+					                        + 'ㄴ <input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
+					                        + this.memberId
+					                        + '&nbsp;&nbsp;'
+					                        + '<input type="text" id="commentContent" value="'+ this.commentContent +'">'
+					                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
+					                        + '&nbsp;&nbsp;'
+											+ '<%if(session.getAttribute("memberId") != null){ %>'
+					                        + '<button class="btn_update" ' + disabled + '>수정</button>'
+					                        + '<button class="btn_delete" ' + disabled + '>삭제</button>'
+											+ '	<%} %>'
+					                        + '</pre>'
+					                        + '</div>';
+					                });
+					                list += '</div>'; // 대댓글 닫기
+					            }
+
+					            list += '</div>'; // 댓글 닫기
 						}); // end each()
-							
+				        
 						$('#replies').html(list); // 저장된 데이터를 replies div 표현
 					} // end function()
 				); // end getJSON()
@@ -266,29 +294,35 @@
 					}
 				});
 			}); // end replies.on()		
-			
-			// 대댓글
-			let isRequesting = false;
+
+			// 대댓글 입력
 			$('#replies').on('click', '.reply_item .btn_comment', function() {
-			    console.log(this);
-			    let replyId = $(this).closest('.reply_item').find('#replyId').val();
-			    console.log(replyId);
-			    if (isRequesting) return;  // 이미 요청 중이면 다시 요청하지 않음
-			    isRequesting = true;
-		    
+			    let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val(); // 댓글 ID
+			    let memberId = $('#commentMemberId').val(); // 사용자 ID
+			    let commentContent = $(this).closest('.reply_item').find('#commentContent').val(); // 대댓글 내용
+
+			    let obj = {
+			        'recipeReplyId': recipeReplyId,
+			        'memberId': memberId,
+			        'commentContent': commentContent
+			    };
+
 			    $.ajax({
-			        url: 'comment',
-			        type: 'GET',
-			        data: {
-			            replyId: replyId
+			        type: 'POST',
+			        url: '../recipe/detail', // 대댓글을 처리할 URL
+			        headers: {
+			            'Content-Type': 'application/json'
 			        },
-			        success: function(response) {
-			            console.log(response);
-			            window.location.href = 'comment';
-			            isRequesting = false;  // 요청 완료 후 플래그 초기화
+			        data: JSON.stringify(obj),
+			        success: function(result) {
+			            if(result == 1) {
+			                alert('대댓글 입력 성공');
+			                getAllReply(); // 댓글 목록 갱신
+			            }
 			        }
 			    });
 			});
+
 
 		}); // end document()
 	</script>

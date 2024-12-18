@@ -7,20 +7,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    <resultMap type="com.food.searcher.domain.RecipeCommentVO" id="replyResultMap">
       <id property="recipeCommentId" column="RECIPE_COMMENT_ID" /> 
-      <result property="replyId" column="REPLY_ID" /> 
+      <result property="recipeReplyId" column="RECIPE_REPLY_ID" /> 
       <result property="memberId" column="MEMBER_ID" />
       <result property="commentContent" column="COMMENT_CONTENT" />
       <result property="commentDateCreated" column="COMMENT_DATE_CREATED" />
    </resultMap>
    
    <insert id="insert">
-      INSERT INTO RECIPE_COMMENT (RECIPE_COMMENT_ID, REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
-      VALUES (COMMENT_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{commentContent})
+      INSERT INTO RECIPE_COMMENT (RECIPE_COMMENT_ID, RECIPE_REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
+      VALUES (RECIPE_COMMENT_SEQ.NEXTVAL, #{recipeReplyId}, #{memberId}, #{commentContent})
    </insert>
    
    <select id="selectListByBoardId" resultMap="replyResultMap">
       SELECT * FROM RECIPE_COMMENT
-      WHERE REPLY_ID = #{replyId}
+      WHERE RECIPE_REPLY_ID = #{recipeReplyId}
       ORDER BY RECIPE_COMMENT_ID
    </select>
    

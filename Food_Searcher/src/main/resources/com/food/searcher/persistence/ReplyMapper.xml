@@ -3,9 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.food.searcher.persistence.ReplyMapper">
+<mapper namespace="com.food.searcher.persistence.RecipeReplyMapper">
    
-   <resultMap type="com.food.searcher.domain.ReplyVO" id="replyResultMap">
+   <resultMap type="com.food.searcher.domain.RecipeReplyVO" id="replyResultMap">
       <id property="replyId" column="RECIPE_REPLY_ID" /> 
       <result property="boardId" column="RECIPE_ID" /> 
       <result property="memberId" column="MEMBER_ID" />
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    <insert id="insert">
       INSERT INTO RECIPE_REPLY (RECIPE_REPLY_ID, RECIPE_ID, MEMBER_ID, REPLY_CONTENT)
-      VALUES (REPLY_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{replyContent})
+      VALUES (RECIPE_REPLY_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{replyContent})
    </insert>
    
    <select id="selectListByBoardId" resultMap="replyResultMap">

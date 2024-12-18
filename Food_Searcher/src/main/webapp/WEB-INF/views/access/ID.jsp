@@ -38,5 +38,9 @@
 	<c:if test="${memberName eq null }">
 		<p>memberID 출력부분</p>
 	</c:if>
+	
+	<script type="text/javascript">
+		$(document).ready(function()
+	</script>
 </body>
 </html>
