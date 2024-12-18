@@ -104,7 +104,7 @@
           	
    <c:if test="${not empty sessionScope.memberId }">
         <div class="myPage">
-        	<a href="">로그아웃</a>
+        	<a href="/searcher/logout">로그아웃</a>
         	<a href="/searcher/access/memberPage">마이페이지</a>
         </div>
         </c:if>

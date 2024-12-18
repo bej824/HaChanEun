@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectTotalCount" resultType="Integer">
 	<!-- 게시글 총 갯수 -->
-		SELECT COUNT(*) TOTAL_COUNT FROM BOARD
+		SELECT COUNT(*) TOTAL_COUNT FROM MARKET
 	</select>
 		
 	

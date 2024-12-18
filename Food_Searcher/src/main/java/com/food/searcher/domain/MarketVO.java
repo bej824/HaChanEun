@@ -1,6 +1,5 @@
 package com.food.searcher.domain;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +19,6 @@ public class MarketVO {
 	private String marketTitle;	  // MARKET_TITLE
 	private String marketContent; // MARKET_CONTENT
 	private String marketLocal;   // MARKET_LOCAL
-	private MultipartFile file;   // DB에 없음 
 	
 	
 }
