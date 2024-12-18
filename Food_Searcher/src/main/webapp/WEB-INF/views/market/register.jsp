@@ -46,10 +46,11 @@
  
          </select>
       </div>
-      
+            
       <!-- https://news.seoul.go.kr/economy/archives/66052 -->
-      <!-- 선택이 되긴 하는데 뭔가 이상함 어떻게 수정해야하지 -->
       
+      <br>
+  
  
       <div>
          <p>내용 : </p>
