@@ -2,6 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="com.food.searcher.domain.MarketVO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +14,15 @@
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
+	
+	<%  String memberId = null; 
+		boolean log;
+		if(session.getAttribute("memberId") != null) {
+			log = false;
+		}
+	%>
+	<!-- 변수명 ? -->
+	
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
 	<div>
@@ -27,8 +39,10 @@
 	</div>
 
 	<button onclick="location.href='list'">글 목록</button>
-	<button onclick="location.href='modify?marketId=${marketVO.marketId }'">글
-		수정</button>
+	
+	
+	<button onclick="location.href='modify?marketId=${marketVO.marketId }'">글수정</button>
+
 	<button id="deleteMarket">글 삭제</button>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="marketId" value="${marketVO.marketId }">
@@ -43,14 +57,14 @@
 	<div style="text-align: center;">		
 		<div id="replies"></div>
 	</div>
-
-
+	
+	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
-				if (confirm('삭제하시겠습니까?')) {
+				 if (confirm('삭제하시겠습니까?')) {
 					$('#deleteForm').submit(); // form 데이터 전송
-				}
+				 }
 			});
 		}); // end document
 		

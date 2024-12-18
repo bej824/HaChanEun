@@ -55,7 +55,15 @@ li {
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
 	<h1>전통 시장 리스트</h1>
+	
+	<c:if test="${not empty sessionScope.memberId }">
 	<a href="register" class="button">글 작성</a>
+	</c:if>
+	
+	<c:if test="${empty sessionScope.memberId }">
+	<a href="/searcher/access/login" class="button">글 작성</a>
+	</c:if>
+	
 	<hr>	
 	<table>
 		<thead>

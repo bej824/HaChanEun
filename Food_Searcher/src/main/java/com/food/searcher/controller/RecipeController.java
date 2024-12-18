@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.RecipeService;
@@ -27,16 +29,68 @@ public class RecipeController {
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
 		log.info("list()");
-		log.info("pagination" + pagination);
-		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
-		log.info("페이징 : " + recipeList);
+		log.info("pagination : " + pagination);
+		@SuppressWarnings("unchecked")
+		List<RecipeVO> recipeList = (List<RecipeVO>) model.asMap().get("recipeList");
+		log.info("vo list : " + recipeList);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(recipeService.getTotalCount());
+		
+		
+	    if (recipeList == null) {
+	        recipeList = recipeService.getPagingBoards(pagination);
+	        log.info("페이징 : " + recipeList);
+	        pageMaker.setTotalCount(recipeService.getTotalCount());
+	    } else {
+	    	pageMaker.setTotalCount(recipeList.size());
+	    	log.info(recipeList.size());
+	    }
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
+	}
+	
+	// 검색 기능 (제목, 음식, 작성자, 내용)
+	@PostMapping("/list")
+	public String searchPOST(@RequestParam String recipeTitle, @RequestParam String filterBy, RedirectAttributes redirectAttributes, Pagination pagination) {
+		log.info("searchPOST()");
+		log.info("검색어: " + recipeTitle);
+		log.info("필터 기준: " + filterBy);
+		
+		List<RecipeVO> recipeVO;
+		
+		switch (filterBy) {
+        case "recipeTitle":
+        	recipeVO = recipeService.getselectSearch(recipeTitle);
+        	log.info("recipeVO" + recipeVO);
+            break;
+        case "recipeFood":
+        	recipeVO = recipeService.getSelectFood(recipeTitle);
+        	log.info("recipeVO" + recipeVO);
+        	break;
+        case "content":
+        	recipeVO = recipeService.getSelectContent(recipeTitle);
+        	log.info("recipeVO" + recipeVO);
+            break;
+        case "author":
+        	recipeVO = recipeService.getSelectId(recipeTitle);
+        	log.info("recipeVO" + recipeVO);
+            break;
+        default:
+        	recipeVO = recipeService.getselectSearch(recipeTitle); // 기본값으로 제목 검색
+        	log.info("recipeVO" + recipeVO);
+            break;
+    }
+		
+	    PageMaker pageMaker = new PageMaker();
+	    pageMaker.setPagination(pagination);
+	    pageMaker.setTotalCount(recipeVO.size());
+	    
+		redirectAttributes.addFlashAttribute("pageMaker", pageMaker);
+		redirectAttributes.addFlashAttribute("recipeList", recipeVO);
+		
+		return "redirect:/recipe/list";
 	}
 	
 	@GetMapping("/register")
