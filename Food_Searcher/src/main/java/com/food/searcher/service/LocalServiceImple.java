@@ -18,15 +18,23 @@ public class LocalServiceImple implements LocalService {
 	private LocalMapper localMapper;
 	
 	@Override
-	public List<LocalSpecialityVO> getAllSpeciality() {
+	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {
 		log.info("getAllSpeciality()");
-		return localMapper.selectList();
+		log.info("localLocal : " + localLocal);
+		log.info("localDistrict : " + localDistrict);
+		return localMapper.selectList(localLocal, localDistrict);
 	}
 	
 	@Override
-	public LocalSpecialityVO getSpecialityByLocal(String localLocal) {
-		log.info("getBoardByLocal");
-		return localMapper.selectOne(localLocal);
+	public List<LocalSpecialityVO> getDistrictByLocal(String localLocal) {
+		log.info("getDistrictByLocal()");
+		return localMapper.selectDistrict(localLocal);
+	}
+	
+	@Override
+	public LocalSpecialityVO getSpecialityByLocalId(String localId) {
+		log.info("getSpecialityByLocalId()");
+		return localMapper.selectByLocalId(localId);
 	}
 	
 	@Override

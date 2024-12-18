@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,28 +35,46 @@ public class LocalController {
 	
 	
 	@GetMapping("/map")
-	public void mapGET(Model model, Pagination pagination) {
+	public void mapGET(Model model) {
 		log.info("mapGET()");
-		log.info("pagination" + pagination);
-		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality();
+		String localLocal = null;
+		String localDistrict = null;
+		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(localService.getTotalCount());
-		
-		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("SpecialityList", SpecialityList);
 		
 	}
 	  
 	@ResponseBody
-	@GetMapping("checkLocal")
-	public String checkLocalGET(@RequestParam("local") String local,
-			HttpServletResponse response) 
-			throws UnsupportedEncodingException {
-		log.info("checkLocalGET()");
-		String result = local;
-
-		return result;
+	@GetMapping("listDistrict")
+	public String[] localDistrictGET(@RequestParam("localLocal") String localLocal) {
+		log.info("localDistrictGET()");
+		List<LocalSpecialityVO> SpecialityList = localService.getDistrictByLocal(localLocal);
+		String[] districtList = new String[SpecialityList.size()];
+		for(int i = 0; i < SpecialityList.size(); i++) {
+			districtList[i] = SpecialityList.get(i).getLocalDistrict();
+		}
+		
+		return districtList;
 	}
+	
+	@ResponseBody
+	@GetMapping("localUpdate")
+	public List<LocalSpecialityVO> localUpdateGET(@RequestParam("localLocal") String localLocal,
+			@RequestParam("localDistrict") String localDistrict)  {
+		log.info("localUpdateGET()");
+		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
+		
+		return SpecialityList;
+	}
+	
+	@GetMapping("/detail")
+	public void localDetailGET(@RequestParam("localId") String localId,
+			HttpSession session, Model model) {
+		log.info("localDetailGET()");
+		LocalSpecialityVO LocalSpecialityVO= localService.getSpecialityByLocalId(localId);
+		log.info(LocalSpecialityVO);
+		model.addAttribute("LocalSpecialityVO", LocalSpecialityVO);
+	}
+	
 }
