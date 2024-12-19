@@ -39,7 +39,7 @@ public class LocalServiceImple implements LocalService {
 	
 	@Override
 	public int updateSpeciality(LocalSpecialityVO localSpecialityVO) {
-		log.info("updateSpeciality");
+		log.info("updateSpeciality()");
 		
 		return localMapper.update(localSpecialityVO);
 	}

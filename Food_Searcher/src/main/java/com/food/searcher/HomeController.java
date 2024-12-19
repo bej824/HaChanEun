@@ -24,6 +24,7 @@ import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.MemberService;
 import com.food.searcher.service.RecipeService;
+import com.food.searcher.service.RoleService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -41,6 +42,9 @@ public class HomeController {
 	
 	@Autowired
 	private MemberService MemberService;
+	
+	@Autowired
+	private RoleService RoleService;
 	
 	MemberVO memberVO = null;
 	
@@ -112,7 +116,9 @@ public class HomeController {
 				memberAge, memberGender, memberMBTI, memberConstellation);
 		log.info(memberVO);
 		int result = MemberService.createMember(memberVO);
+		int result2 = RoleService.insertRole(memberId);
 		log.info(result + "행 등록");
+		log.info(result2 + "행 등록");
 
 		return "home";
 	} // end registerPOST()
