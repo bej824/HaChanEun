@@ -25,7 +25,7 @@ public class AttachServiceImple implements AttachService {
     }
 
     @Override
-    public AttachVO getAttachById(int attachId) {
+    public List<AttachVO> getAttachById(int attachId) {
     	log.info("getAttachById()");
         return attachMapper.selectByAttachId(attachId);
     }
