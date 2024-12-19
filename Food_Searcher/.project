@@ -3,6 +3,8 @@
 	<name>Food_Searcher</name>
 	<comment></comment>
 	<projects>
+		<project>server</project>
+		<project>Servers</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

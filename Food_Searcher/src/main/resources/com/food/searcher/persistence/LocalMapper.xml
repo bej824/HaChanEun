@@ -7,35 +7,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="com.food.searcher.domain.LocalSpecialityVO"
 		id="localResultMap">
-		
-	<id property="localId" column="LOCAL_ID" />
+
+		<id property="localId" column="LOCAL_ID" />
 		<result property="localLocal" column="LOCAL_LOCAL" />
-		<result property="localDistrict" column="LOCAL_DISTRICT"/>
-		<result property="localTitle" column="LOCAL_TITLE"/>
-		<result property="localContent" column="LOCAL_CONTENT"/>
-		<result property="replyCount" column="REPLY_COUNT"/>
-		
+		<result property="localDistrict" column="LOCAL_DISTRICT" />
+		<result property="localTitle" column="LOCAL_TITLE" />
+		<result property="localContent" column="LOCAL_CONTENT" />
+		<result property="replyCount" column="REPLY_COUNT" />
+
 	</resultMap>
-	
+
 	<select id="selectList" resultMap="localResultMap">
-	 	<!-- 전체 게시글 조회 -->
-	 	SELECT * FROM LOCAL_SPECIALITY ORDER BY LOCAL_ID ASC
-	 </select>
-	 
-	 <select id="selectOne" resultMap="localResultMap">
-	 	<!-- 상세 게시글 조회 -->
-	 	SELECT * FROM LOCAL_SPECIALITY WHERE LOCAL_LOCAL = #{localLocal}
-	 </select>
-	 
-	 <update id="update">
-	 	<!-- 상세 게시글 수정 -->
-	 	UPDATE LOCAL_SPECIALITY SET LOCAL_CONTENT = #{localContent}
-	 	WHERE LOCAL_TITLE = #{localTitle}
-	 </update>
-	 
-	 <!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
-	 <select id="selectTotalCount" resultType="Integer">
-	 	SELECT COUNT(*) TOTAL_COUNT FROM LOCAL_SPECIALITY
-	 </select>
-	 
+		<!-- 특산품 조회 검색어가 null이거나 ''이면 무시됨 -->
+		SELECT * FROM LOCAL_SPECIALITY WHERE 1 = 1
+		<if test="localLocal != null and localLocal != ''">
+			AND LOCAL_LOCAL = #{localLocal}
+		</if>
+		<if test="localDistrict != null and localDistrict != ''">
+			AND LOCAL_DISTRICT = #{localDistrict}
+		</if>
+
+	</select>
+
+	<select id="selectDistrict" resultMap="localResultMap">
+		<!-- 상세 지역 조회 -->
+		SELECT DISTINCT LOCAL_DISTRICT
+		FROM LOCAL_SPECIALITY
+		WHERE LOCAL_LOCAL = #{localLocal}
+	</select>
+	
+	<select id="selectByLocalId" resultMap="localResultMap">
+		<!-- 상세 게시글 조회 -->
+		SELECT * FROM LOCAL_SPECIALITY
+		WHERE LOCAL_ID = #{localId}
+	</select>
+
+	<update id="update">
+		<!-- 상세 게시글 수정 -->
+		UPDATE LOCAL_SPECIALITY SET LOCAL_CONTENT = #{localContent}
+		WHERE
+		LOCAL_TITLE = #{localTitle}
+	</update>
+
+	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
+	<select id="selectTotalCount" resultType="Integer">
+		SELECT COUNT(*)
+		TOTAL_COUNT FROM LOCAL_SPECIALITY
+	</select>
+
 </mapper>
