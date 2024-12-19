@@ -33,7 +33,6 @@ public class ServletConfig implements WebMvcConfigurer{
 	      registry.addResourceHandler("/resources/**")
 	         .addResourceLocations("/resources/");
 	   }
-<<<<<<< HEAD
 	   
 		// 파일을 저장할 경로 bean 생성
 		@Bean
@@ -54,7 +53,4 @@ public class ServletConfig implements WebMvcConfigurer{
 
 			return resolver;
 		}
-=======
-	   		
->>>>>>> fc0c9dfa8e96f8762a147ed865bd23280a7b82c0
 }
