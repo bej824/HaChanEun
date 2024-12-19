@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
@@ -112,7 +111,6 @@ li {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 100px">번호</th>
 				<th style="width: 100px">지역</th>
 				<th style="width: 100px">상세</th>
 				<th style="width: 150px">특산품</th>
@@ -122,7 +120,6 @@ li {
 		<tbody>
 			<c:forEach var="LocalSpecialityVO" items="${SpecialityList }">
 				<tr onclick="window.location.href='detail?localId=${LocalSpecialityVO.localId }'">
-					<td>${LocalSpecialityVO.localId }</td>
 					<td>${LocalSpecialityVO.localLocal }</td>
 					<td>${LocalSpecialityVO.localDistrict }</td>
 					<td>${LocalSpecialityVO.localTitle }</td>
@@ -172,14 +169,13 @@ li {
 					tbody.empty(); // 기존 테이블 내용 비우기
 
 					result.forEach(function(LocalSpecialityVO) {
-						let row = '<tr>' + '<td>'
-								+ LocalSpecialityVO.localId + '</td>'
-								+ '<td>' + LocalSpecialityVO.localLocal + '</td>'
-								+ '<td>' + LocalSpecialityVO.localDistrict
-								+ '</td>' + '<td>'
-								+ LocalSpecialityVO.localTitle + '</td>'
-								+ '<td>' + LocalSpecialityVO.replyCount
-								+ '</td>' + '</tr>';
+						let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'">' 
+				         + '<td>' + LocalSpecialityVO.localLocal + '</td>'
+				         + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
+				         + '<td>' + LocalSpecialityVO.localTitle + '</td>'
+				         + '<td>' + LocalSpecialityVO.replyCount + '</td>'
+				         + '</tr>';
+
 						tbody.append(row); // 새로운 데이터 행 추가
 					});
 

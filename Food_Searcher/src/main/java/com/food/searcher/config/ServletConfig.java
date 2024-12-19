@@ -53,6 +53,9 @@ public class ServletConfig implements WebMvcConfigurer{
 
 			return resolver;
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
 }
 	   		

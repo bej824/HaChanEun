@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.MemberVO;
+import com.food.searcher.domain.RoleVO;
 import com.food.searcher.service.MemberService;
+import com.food.searcher.service.RoleService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -26,6 +28,9 @@ import lombok.extern.log4j.Log4j;
 public class AccessController {
 	@Autowired
 	private MemberService MemberService;
+
+	@Autowired
+	private RoleService RoleService;
 
 	MemberVO memberVO = null;
 
@@ -37,12 +42,11 @@ public class AccessController {
 
 	@GetMapping("/idCheck")
 	@ResponseBody
-	public Boolean idCheckGET(@RequestParam("memberId") String memberId,
-			MemberVO vo) {
+	public Boolean idCheckGET(@RequestParam("memberId") String memberId, MemberVO vo) {
 		log.info("idCheckGET");
 		Boolean result = false;
 		try {
-			
+
 			vo = MemberService.getMemberById(memberId);
 
 			if (vo != null || memberId == "" || memberId.matches(".*[\\W_].*")) {
@@ -54,18 +58,18 @@ public class AccessController {
 
 		return result;
 	}
-		
-		@RequestMapping("/login") // 로그인 후 지정 위치로 ...
-		public String login(HttpServletRequest request, HttpServletResponse response) {
-		    String redirectUrl = request.getParameter("redirect");
 
-		    if (redirectUrl != null && !redirectUrl.contains("WEB-INF")) {
-		        // WEB-INF가 포함된 URL을 제외한 리디렉션
-		        return "redirect:" + redirectUrl;
-		    }
+	@RequestMapping("/login") // 로그인 후 지정 위치로 ...
+	public String login(HttpServletRequest request, HttpServletResponse response) {
+		String redirectUrl = request.getParameter("redirect");
 
-		    return "redirect:/home";
+		if (redirectUrl != null && !redirectUrl.contains("WEB-INF")) {
+			// WEB-INF가 포함된 URL을 제외한 리디렉션
+			return "redirect:" + redirectUrl;
 		}
+
+		return "redirect:/home";
+	}
 
 	@GetMapping("/login")
 	public void loginGET(@RequestParam(value = "logout", required = false) String logout, HttpSession session) {
@@ -81,13 +85,10 @@ public class AccessController {
 			vo = MemberService.getMemberById(memberId);
 			if (vo.getPassword().equals(password)) {
 				session.setAttribute("memberId", memberId);
-
 			} else {
-				
 			}
 
 		} catch (Exception e) {
-			
 		}
 		return "/access/login";
 	}
@@ -126,47 +127,76 @@ public class AccessController {
 		session.removeAttribute("memberId");
 		return "home";
 	}
-		
-		@GetMapping("/ID")
-		public String ID(Model model) {
-			log.info("ID");
-			List<MemberVO> memberList = MemberService.getAllMember();
-			log.info(memberList);
-			model.addAttribute(memberList);
+
+	@GetMapping("/ID")
+	public String ID(Model model) {
+		log.info("ID");
+		List<MemberVO> memberList = MemberService.getAllMember();
+		log.info(memberList);
+		model.addAttribute(memberList);
+		return "access/ID";
+	}
+
+	@PostMapping("/ID") // 아이디 찾기 ...
+	public String findId(@RequestParam(value = "memberName", required = false) String memberName,
+			@RequestParam(value = "email", required = false) String email, Model model) {
+		// 파라미터가 null인 경우 에러 처리
+		if (memberName == null || email == null) {
+			log.error("Missing required parameters: memberName or email");
+			model.addAttribute("error", "Both memberName and email are required.");
+			return "access/ID"; // 에러 메시지를 사용자에게 전달
+		}
+
+		log.info("Member Name: " + memberName);
+		log.info("Email: " + email);
+
+		// MemberService에서 ID 찾기
+		MemberVO memberVO = MemberService.searchId(memberName, email);
+		log.info(memberVO);
+
+		// 검색 결과가 없으면, 에러 메시지 전달
+		if (memberVO == null) {
+			log.error("No member found with the given memberName and email.");
+			model.addAttribute("error", "No member found with the provided details.");
 			return "access/ID";
 		}
-		
-		@PostMapping("/ID") // 아이디 찾기 ...
-		public String findId(@RequestParam(value = "memberName", required = false) String memberName, 
-		                     @RequestParam(value = "email", required = false) String email, 
-		                     Model model) {
-		    // 파라미터가 null인 경우 에러 처리
-		    if (memberName == null || email == null) {
-		        log.error("Missing required parameters: memberName or email");
-		        model.addAttribute("error", "Both memberName and email are required.");
-		        return "access/ID";  // 에러 메시지를 사용자에게 전달
-		    }
 
-		    log.info("Member Name: " + memberName);
-		    log.info("Email: " + email);
+		log.info("Returned MemberVO: " + memberVO);
 
-		    // MemberService에서 ID 찾기
-		    MemberVO memberVO = MemberService.searchId(memberName, email);
-		    log.info(memberVO);
+		// 결과를 모델에 추가하여 뷰에서 사용하도록 설정
+		model.addAttribute("MemberVO", memberVO);
 
-		    // 검색 결과가 없으면, 에러 메시지 전달
-		    if (memberVO == null) {
-		        log.error("No member found with the given memberName and email.");
-		        model.addAttribute("error", "No member found with the provided details.");
-		        return "access/ID";
-		    }
+		return "access/ID"; // 결과 페이지로 이동
+	}
 
-		    log.info("Returned MemberVO: " + memberVO);
-
-		    // 결과를 모델에 추가하여 뷰에서 사용하도록 설정
-		    model.addAttribute("MemberVO", memberVO);
-
-		    return "access/ID";  // 결과 페이지로 이동
+	@GetMapping("admin")
+	public String adminGET(HttpSession session, Model model) {
+		log.info("adminGET()");
+		String memberId = (String) session.getAttribute("memberId");
+		try {
+			RoleVO roleVO = RoleService.selectRole(memberId);
+			log.info(roleVO);
+			if(roleVO.getRoleName().equals("admin")) {
+				model.addAttribute(roleVO);
+				return "admin";
+			} else {
+				return "redirect:/home";
+			}
+			
+		} catch (Exception e) {
+			return "redirect:/home";
 		}
+
+	} // end if()
+	
+	@PostMapping("roleUpdate")
+	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
+		log.info("roleUpdate");
+		String roleName = "admin";
+		int result = RoleService.updateRole(memberId, roleName);
+		log.info(result + "행 수정");
+		
+		return "../home";
+	}
 
 }

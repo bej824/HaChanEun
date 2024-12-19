@@ -52,11 +52,14 @@ li {
 <body>
 	<%@ include file ="../header.jsp" %>
 	<h1>요리 레시피 공유</h1>
+<<<<<<< HEAD
 	<!-- 글 작성 페이지 이동 버튼 -->
 	<%
 	if(session.getAttribute("memberId") == null){ %>
 		<a href="../access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
 	<%} %>
+=======
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
 	<%if(session.getAttribute("memberId") != null){ %>
 		<a href="register" class="button">글 작성</a>
 	<%} %>
