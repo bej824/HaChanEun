@@ -13,7 +13,7 @@
 	  background-color: #04AA6D;
   border: none;
   color: white;
-  padding: 6px 12px;
+  padding: 4px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -49,6 +49,7 @@ textarea {
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
+	<%@ include file ="../header.jsp" %>
 	<%session.getAttribute("memberId"); %>
 	<h2>글 보기</h2>
 	<div>
@@ -68,6 +69,19 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent }</textarea>
 	</div>
+	
+	<c:forEach var="attachVO" items="${idList }">
+	<p>
+    <img src="/2024/12/19/${attachVO.attachChgName }" alt="1" style="max-width: 100%; height: auto;">
+    <a href="file:///C:/upload/food/2024/12/19/${attachVO.attachChgName }">${attachVO.attachRealName }.${attachVO.attachExtension }</a>
+    <img src="../food/2024/12/19/${attachVO.attachRealName }.${attachVO.attachExtension }" alt="2" style="max-width: 100%; height: auto;">
+	
+    <img src="C:/upload/food/2024/12/19/${attachVO.attachRealName }.${attachVO.attachExtension }" alt="3" style="max-width: 100%; height: auto;">
+	</p>
+	<a href="../../food/2024/12/19/${attachVO.attachChgName }">
+    ${attachVO.attachRealName }.${attachVO.attachExtension }
+</a><br>
+	</c:forEach>
 	
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	<c:if test="${empty recipeVO.memberId}">
@@ -95,7 +109,6 @@ textarea {
 			});
 		}); // end document
 	</script>
-
 
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 
@@ -184,7 +197,8 @@ textarea {
 							
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
-							
+							console.log("날짜 : ", replyDateCreated);
+
 							let disabled = '';
 							let readonly = '';
 							
@@ -205,13 +219,14 @@ textarea {
 								+ '<%if(session.getAttribute("memberId") != null){ %>'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
-								+ '<%=session.getAttribute("memberId") %>'
+								+ '<br>'
+								+ 'ㄴ<%=session.getAttribute("memberId") %>'
 								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
-								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
+								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button>'
 								+ '	<%} %>'
 								+ '</pre>'
-					            // 대댓글 렌더링
+					            // 대댓글
 					            if (this.comments) {
 					            	console.log("대댓글 데이터: ", this.comments);
 					                list += '<div class="comment_item">'; // 대댓글을 위한 div 추가

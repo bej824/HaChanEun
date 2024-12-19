@@ -51,6 +51,7 @@ li {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	
 	<h1>요리 레시피 공유</h1>
 <<<<<<< HEAD
 	<!-- 글 작성 페이지 이동 버튼 -->
@@ -77,10 +78,9 @@ li {
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr>
+				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }'">
 					<td>${RecipeVO.recipeId }</td>
-					<td><a href="detail?recipeId=${RecipeVO.recipeId }">
-							${RecipeVO.recipeTitle }</a></td>
+					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
 					<td>${RecipeVO.memberId }</td>
 					<!-- boardDateCreated 데이터 포멧 변경 -->

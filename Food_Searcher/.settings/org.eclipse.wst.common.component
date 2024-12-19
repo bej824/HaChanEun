@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
+                    	
+    
+=======
                 	
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
     
     
     
     <wb-module deploy-name="searcher-1.0.0-BUILD-SNAPSHOT">
+<<<<<<< HEAD
+                                                
+        
+=======
                                         
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
         
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<<<<<<< HEAD
+                                        		
+        
+=======
                                 		
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
         
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+<<<<<<< HEAD
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+                                                
+        
+        
+        
+        
+        <property name="context-root" value="searcher"/>
+        <property name="java-output-path" value="/Food_Searcher/target/classes"/>
+                                        	
+    
+=======
                                 		
         
         
@@ -33,11 +63,17 @@
         <property name="context-root" value="searcher"/>
         <property name="java-output-path" value="/Food_Searcher/target/classes"/>
                                 	
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
     
     
     
     </wb-module>
+<<<<<<< HEAD
+                    
+
+=======
                 
+>>>>>>> 12637b126f99ef54c6f6caf307f2f219cc0aa3bc
 
 
 
