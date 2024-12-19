@@ -48,13 +48,7 @@ li {
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
-	
-	<%
-	HttpSession session = request.getSession();
-	if(session.getAttribute("memberId") != null){ %>	
-		<p><%=session.getAttribute("memberId") %>님 환영합니다.</p>
-	
-	<% } %>
+
 	
 	<a href="recipe/list" class="button">레시피 공유</a>
 	<a href="local/map" class="button">특산품</a>
@@ -96,14 +90,6 @@ li {
 		</tr>
 	</table>
 	<br>
-	
-	<%if(session.getAttribute("memberId") != null){ %>
-	<a href="access/memberPage">멤버페이지</a> <br>
-	<a href="logout">로그아웃</a>
-	<%} else { %>	
-	<a href="access/login">로그인</a> / 
-	<a href="access/register">회원가입</a>
-	<%} %>
 	
 </body>
 </html>
