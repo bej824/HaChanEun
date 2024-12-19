@@ -20,17 +20,15 @@ import lombok.extern.log4j.Log4j;
 public class MarketReplyServiceImple implements MarketReplyService {
 	
 	@Autowired
-	private MarketReplyMapper replyMapper;	
+	private MarketReplyMapper marketReplyMapper;	
 	
-	@Autowired
-	private MarketMapper marketMapper;
 	
 	@Transactional(value = "transactionManager")
 	
 	@Override
 	public int createReply(MarketReplyVO marketReplyVO) {
 		log.info("marketReplyVO");
-		int insertResult = replyMapper.insert(marketReplyVO);
+		int insertResult = marketReplyMapper.insert(marketReplyVO);
 		log.info(insertResult + "행 삽입");
 		return 1;
 	}
@@ -38,25 +36,33 @@ public class MarketReplyServiceImple implements MarketReplyService {
 	@Override
 	public List<MarketReplyVO> getAllReply(int marketId) {
 		log.info("getAllReply");
-		return replyMapper.selectListByMarketId(marketId);
+		return marketReplyMapper.selectListByMarketId(marketId);
 	}
 
 	@Override
 	public int updateReply(int marketReplyId, String marketReplyContent) {		
 		log.info("updateReply");
 		MarketReplyVO marketReplyVO = new MarketReplyVO();
-		marketReplyVO.setMarketId(marketReplyId);
+		marketReplyVO.setMarketReplyId(marketReplyId);
 		marketReplyVO.setMarketReplyContent(marketReplyContent);
-		return replyMapper.update(marketReplyVO);
+		return marketReplyMapper.update(marketReplyVO);
 	}
 
 	@Transactional(value = "transactionManager") 
 	@Override
 	public int deleteReply(int marketReplyId, int marketId) {
 		log.info("deleteReply()");
-		int deleteResult = replyMapper.delete(marketReplyId);
+		int deleteResult = marketReplyMapper.delete(marketReplyId);
 		log.info(deleteResult + "행 댓글 삭제");
 		return 1;
+	}
+
+	@Override
+	public MarketReplyVO getReplyById(int marketReplyId) {
+		log.info("getmarketReplyById()");
+		log.info(marketReplyId);
+		log.info(marketReplyMapper.selectOne(marketReplyId));
+		return marketReplyMapper.selectOne(marketReplyId);
 	}
 	
 } // end MarketReplyServiceImple

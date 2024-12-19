@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-<<<<<<< HEAD
 import org.apache.commons.io.FilenameUtils;
-=======
->>>>>>> fc0c9dfa8e96f8762a147ed865bd23280a7b82c0
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;

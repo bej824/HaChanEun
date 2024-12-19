@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page session="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -91,31 +92,29 @@
 <body>
     <!-- 네비게이션 바 -->
     <div class="navbar">
+    <%HttpSession session = request.getSession();%>
     
         <div class="logo">
         	<a href="/searcher/home">Home</a>
         </div>
         <ul>
-            <li><a href="">맛집 추천</a></li>
             <li><a href="/searcher/recipe/list">레시피 공유</a></li>
             <li><a href="/searcher/market/list">전통시장</a></li>
-            <li><a href="">특산품</a></li>
+            <li><a href="/searcher/local/map">특산품</a></li>
         </ul>
           	
-   <c:if test="${not empty sessionScope.memberId }">
+   <%if(session.getAttribute("memberId") != null){ %>
         <div class="myPage">
-        	<a href="/searcher/logout">로그아웃</a>
-        	<a href="/searcher/access/memberPage">마이페이지</a>
+		<a><%=session.getAttribute("memberId") %>님 환영합니다.</a>
+        <a href="/searcher/logout">로그아웃</a>
+        <a href="/searcher/access/memberPage">마이페이지</a>
         </div>
-        </c:if>
-        
-        <c:if test="${empty sessionScope.memberId }">
-        <div class="login">
-            <a href="/searcher/access/login">로그인</a>
-            <a href="/searcher/access/register">회원가입</a>
+   <%} else { %>
+    	<div class="login">
+        <a href="/searcher/access/login">로그인</a>
+        <a href="/searcher/access/register">회원가입</a>
         </div>
-        </c:if> 
-
+    <%} %>
         
     </div>
 </body>

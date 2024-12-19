@@ -50,7 +50,7 @@ li {
 	<P>The time on the server is ${serverTime}.</P>
 	
 	<%
-	HttpSession session = request.getSession();
+	
 	if(session.getAttribute("memberId") != null){ %>	
 		<p><%=session.getAttribute("memberId") %>님 환영합니다.</p>
 	
