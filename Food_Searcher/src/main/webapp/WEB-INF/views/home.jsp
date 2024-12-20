@@ -106,5 +106,6 @@ li {
 	<a href="access/register">회원가입</a>
 	<%} %>
 	
+	미친짓이네?
 </body>
 </html>
