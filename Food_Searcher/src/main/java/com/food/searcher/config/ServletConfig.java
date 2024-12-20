@@ -13,48 +13,43 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // servlet-context.xml과 동일
 @Configuration // Spring Container에서 관리하는 설정 클래스
 @EnableWebMvc // Spring MVC 기능 사용
-@ComponentScan(basePackages = {"com.food.searcher"})
+@ComponentScan(basePackages = { "com.food.searcher" })
 // component scan 설정
-public class ServletConfig implements WebMvcConfigurer{
+public class ServletConfig implements WebMvcConfigurer {
 
-	   // ViewResolver 설정 메소드
-	   @Override
-	   public void configureViewResolvers(ViewResolverRegistry registry) {
-	      InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-	      viewResolver.setPrefix("/WEB-INF/views/");
-	      viewResolver.setSuffix(".jsp");
-	      registry.viewResolver(viewResolver);
-	   }
-	   
-	   // ResourceHandlers 설정 메소드
-	   @Override
-	   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	      // resources 디렉토리 설정
-	      registry.addResourceHandler("/resources/**")
-	         .addResourceLocations("/resources/");
-	   }
-<<<<<<< HEAD
-	   
-		// 파일을 저장할 경로 bean 생성
-		@Bean
-		public String uploadPath() {
-			return "C:\\upload\\food";
-		}
+	// ViewResolver 설정 메소드
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".jsp");
+		registry.viewResolver(viewResolver);
+	}
 
-		// MultipartResolver bean 생성
-		@Bean
-		public CommonsMultipartResolver multipartResolver() {
-			CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+	// ResourceHandlers 설정 메소드
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		// resources 디렉토리 설정
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
 
-			// 클라이언트가 업로드하는 요청의 전체 크기 (bytes)
-			resolver.setMaxUploadSize(31457280); // 30MB
+	// 파일을 저장할 경로 bean 생성
+	@Bean
+	public String uploadPath() {
+		return "C:\\upload\\food";
+	}
 
-			// 클라이언트가 업로드하는 각 파일의 최대 크기 (bytes)
-			resolver.setMaxUploadSizePerFile(10485760); // 10MB
+	// MultipartResolver bean 생성
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 
-			return resolver;
-		}
-=======
-	   		
->>>>>>> fc0c9dfa8e96f8762a147ed865bd23280a7b82c0
+		// 클라이언트가 업로드하는 요청의 전체 크기 (bytes)
+		resolver.setMaxUploadSize(31457280); // 30MB
+
+		// 클라이언트가 업로드하는 각 파일의 최대 크기 (bytes)
+		resolver.setMaxUploadSizePerFile(10485760); // 10MB
+
+		return resolver;
+	}
 }
