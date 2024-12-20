@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j;
 public class FileUploadUtil {
     
     /**
+
      * 파일 이름에서 확장자를 제외한 실제 파일 이름을 추출
      * 
      * @param fileName 파일 이름
@@ -29,7 +30,6 @@ public class FileUploadUtil {
     }
     
     /**
-
      * 파일 이름에서 확장자를 추출
      * 
      * @param fileName 파일 이름
