@@ -17,6 +17,5 @@ public interface MarketMapper {
 	int delete (int marketId);           // 관리자
 	List<MarketVO> selectListByPagination(Pagination pagination); 
 	int selectTotalCount();
-	// int updateReplyCount(@Param("marketId") int MarketId, @Param("amount") int amount); REPLY_COUNT 컬럼이 없어서 보류
 		
 }

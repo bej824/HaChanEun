@@ -1,7 +1,9 @@
 package com.food.searcher.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 
 public class MarketController {
-		
+	
+	@Autowired
+	private String uploadPath; // Bean으로 설정된 uploadPath() 객체 주입
+	
 	@Autowired
 	private MarketService marketService;
 	
@@ -48,6 +53,8 @@ public class MarketController {
 		log.info("register");
 	}
 	
+
+	
 	@PostMapping("/register")
 	public String marketPOST (MarketVO marketVO, MultipartFile file) {
 		log.info("registerPOST()");
@@ -57,8 +64,8 @@ public class MarketController {
 
 		return "redirect:/market/list";
 	}
-	
-	
+
+
 	@GetMapping("/detail")
 	public void detail(Model model, Integer marketId) {
 		log.info("detail()");
@@ -90,8 +97,7 @@ public class MarketController {
 		return "redirect:/market/list";
 	}
 	
-	
-	
+
 	
 
 } // end MarketController

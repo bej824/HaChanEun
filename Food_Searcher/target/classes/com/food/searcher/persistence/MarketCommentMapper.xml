@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.MarketCommentMapper">
+   
+   <resultMap type="com.food.searcher.domain.MarketCommentVO" id="commentResultMap">
+      <id property="marketCommentId" column="MARKET_COMMENT_ID" /> 
+      <result property="marketReplyId" column="MARKET_REPLY_ID" /> 
+      <result property="memberId" column="MEMBER_ID" />
+      <result property="marketCommentContent" column="COMMENT_CONTENT" />
+      <result property="commentDateCreated" column="COMMENT_DATE_CREATED" />
+   </resultMap>
+   
+   <insert id="insert">
+      INSERT INTO MARKET_REPLY (MARKET_COMMENT_ID, MARKET_REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
+      VALUES (MARKET_COMMENT_SEQ.NEXTVAL, #{marketReplyId}, #{memberId}, #{marketCommentContent})
+   </insert>
+   
+   <select id="selectListByReplyId" resultMap="commentResultMap">
+      SELECT * FROM MARKET_COMMENT
+      WHERE MARKET_REPLY_ID = #{marketReplyId}
+      ORDER BY MARKET_COMMENT_ID
+   </select>
+   
+   <update id="update">
+      UPDATE MARKET_REPLY
+      SET COMMENT_CONTENT = #{marketCommentContent}
+      WHERE MARKET_COMMENT_ID = #{marketCommentId}
+   </update>
+   
+   <delete id="delete">
+      DELETE FROM MARKET_Comment
+      WHERE MARKET_COMMENT_ID = #{marketCommentId}
+   </delete>
+   
+    
+</mapper>
