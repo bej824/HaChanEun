@@ -40,6 +40,8 @@ textarea {
 	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
+		<input type="hidden" id="Id" name="Id"
+			value="${LocalSpecialityVO.localId }">
 		<input type="hidden" id="localId" name="localId"
 			value="${LocalSpecialityVO.localId }">
 	</div>
@@ -61,18 +63,20 @@ textarea {
 </c:choose>
 	</div>
 	</form>
-
+	
 	<button onclick="location.href='map'" class="button">글 목록</button>
 	<c:if test="${roleName eq 'admin'}">
 	<button onclick="update()" class="button">글 수정</button>
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>			
 	</c:if>
 	
+	<%@ include file="reply.jsp"%>
+
+	
 	<script type="text/javascript">
 	function update() {
 		let result = confirm("수정하시겠습니까?");
-		if (result) {
-			alert("수정 시도");
+		if (result) {;
 		document.getElementById("updateForm").submit();
 		} else {
 			alert("수정이 취소되었습니다.");

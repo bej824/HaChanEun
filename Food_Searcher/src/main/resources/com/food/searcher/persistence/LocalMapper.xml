@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 상세 게시글 수정 -->
 		UPDATE LOCAL_SPECIALITY SET LOCAL_CONTENT = #{localContent}
 		WHERE
-		LOCAL_TITLE = #{localTitle}
+		LOCAL_ID = #{localId}
 	</update>
 
 	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->

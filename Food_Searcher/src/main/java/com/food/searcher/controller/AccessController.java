@@ -32,8 +32,6 @@ public class AccessController {
 	@Autowired
 	private RoleService RoleService;
 
-	MemberVO memberVO = null;
-
 	// register.jsp 페이지 호출
 	@GetMapping("/register")
 	public void registerGET() {

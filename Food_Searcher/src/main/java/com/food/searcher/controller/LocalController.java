@@ -1,26 +1,37 @@
 package com.food.searcher.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.HeaderReplyVO;
+import com.food.searcher.domain.LocalReplyVO;
 import com.food.searcher.domain.LocalSpecialityVO;
+import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RoleVO;
+import com.food.searcher.service.LocalReplyService;
 import com.food.searcher.service.LocalService;
 import com.food.searcher.service.RoleService;
 import com.food.searcher.util.PageMaker;
@@ -38,6 +49,9 @@ public class LocalController {
 	
 	@Autowired
 	private RoleService RoleService;
+	
+	@Autowired
+	private LocalReplyService LocalReplyService;
 	
 	
 	@GetMapping("/map")
@@ -75,7 +89,7 @@ public class LocalController {
 	}
 	
 	@PostMapping("update")
-	public String localUpdatePOST(@RequestParam("localId") String localId,
+	public String localUpdatePOST(@RequestParam("Id") String localId,
 			@RequestParam("localContent") String localContent,
 			LocalSpecialityVO localSpecialityVO) {
 		log.info("localUpdatePOST()");
@@ -106,6 +120,26 @@ public class LocalController {
 		}
 		
 		model.addAttribute("LocalSpecialityVO", LocalSpecialityVO);
+	}
+	
+	@ResponseBody
+	@PostMapping("/replyAdd")
+	public void replyAddPOST(@RequestBody HeaderReplyVO headerReplyVO,
+			HttpSession session)
+			throws ServletException, IOException {
+		log.info("replyAddPOST()");
+		log.info(headerReplyVO);
+		String memberId = (String) session.getAttribute("memberId");
+		
+	}
+	
+	@ResponseBody
+	@GetMapping("/replyAll")
+	public List<LocalReplyVO> replyAllGET(@RequestParam("localId") int localId) {
+		log.info("replyAllGET()");
+		List<LocalReplyVO> list = LocalReplyService.getAllReply(localId);
+		
+		return list;
 	}
 	
 }

@@ -103,7 +103,7 @@ li {
 
 	<select name="localDistrict" id="localDistrict"
 	onchange="listUpdate(document.getElementById('localLocal').value, this.value)">
-	<option value="">전체</option>	
+	<option value="">전체</option>
 	</select>
 	</div>
 	
