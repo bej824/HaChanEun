@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -8,6 +8,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<style type="text/css">
+.button, .btn_update, .btn_delete, .btn_comment {
+	  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+
+.comment_item {
+    margin-left: 30px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+textarea {
+  width: 700px;
+  height: 280px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(240, 240, 240, 0);
+  font-size: 16px;
+  resize: none;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
 <title>전통시장</title>
@@ -15,14 +65,7 @@
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
 	
-	<%  String memberId = null; 
-		boolean log;
-		if(session.getAttribute("memberId") != null) {
-			log = false;
-		}
-	%>
-	<!-- 변수명 ? -->
-	
+
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
 	<div>
@@ -38,21 +81,25 @@
 		<textarea rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
 	</div>
 
-	<button onclick="location.href='list'">글 목록</button>
+	<button onclick="location.href='list'" class="button">글 목록</button>
 	
+	<% if(session.getAttribute("memberId") != null){ %>
+	<button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
+	<%} %>
 	
-	<button onclick="location.href='modify?marketId=${marketVO.marketId }'">글수정</button>
-
-	<button id="deleteMarket">글 삭제</button>
+	<% if(session.getAttribute("memberId") != null){ %>
+	<button id="deleteMarket" class="button">글 삭제</button>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="marketId" value="${marketVO.marketId }">
 	</form>
+	<%} %>
 	
+	<% if(session.getAttribute("memberId") != null){ %>
 	<div style="text-align: center;">
 		<input type="text" id="marketReplyContent">
-		<button id="btnAdd">작성</button>
+		<button id="btnAdd" class="button">작성</button>
 	</div>
-
+	<%} %>
 	
 	<div style="text-align: center;">		
 		<div id="replies"></div>
@@ -72,7 +119,9 @@
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId}">
 	<input type="hidden" id="memberId" value="${sessionScope.memberId}">
-		
+	
+											<!-- 댓글 -->
+	
 	<script type="text/javascript">
 	$(document).ready(function(){
 		getAllReply();
@@ -111,7 +160,7 @@
 			
 			var url = '../market/all/' + marketId;
 			$.getJSON(
-				url, 		
+				url, 			
 				function(data) {
 					console.log(data);
 					
@@ -127,7 +176,7 @@
 						var disabled = '';
 						var readonly = '';
 						
-						if(memberId != this.memberId) {
+						if('<%=session.getAttribute("memberId") %>' != this.memberId) {
 							disabled = 'disabled';
 							readonly = 'readonly';
 						}
@@ -143,8 +192,33 @@
 							+ '&nbsp;&nbsp;'
 							+ '<button class="btn_update" >수정</button>'
 							+ '<button class="btn_delete" >삭제</button>'
+							+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
+							+ '<input type="text" id="commentContent">'
+							+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
 							+ '</pre>'
-							+ '</div>';
+							 // 대댓글 렌더링
+							 
+				            if (this.comments) {
+				            	console.log("대댓글 데이터: ", this.comments);
+				                list += '<div class="comment_item">'; // 대댓글을 위한 div 추가
+				                $(this.comments).each(function() {
+				                    list += '<div class="comment_item">'
+				                        + '<pre>'
+				                        + 'ㄴ <input type="hidden" id="marketCommentId" value="'+ this.marketCommentId +'">'
+				                        + this.memberId
+				                        + '&nbsp;&nbsp;'
+				                        + '<input type="text" id="commentContent" value="'+ this.commentContent +'">'
+				                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
+				                        + '&nbsp;&nbsp;'
+				                        + '<button class="btn_update">수정</button>'
+				                        + '<button class="btn_delete">삭제</button>'
+				                        + '</pre>'
+				                        + '</div>';
+				                });
+				                list += '</div>'; // 대댓글 닫기
+				            }				
+							
+							list += '</div>';
 					}); // end each()
 						
 					$('#replies').html(list); // 저장된 데이터를 replies div 표현
@@ -169,7 +243,7 @@
 				headers : {
 					'Content-Type' : 'application/json'
 				},			
-				data : marketReplyContent, 
+				data: marketReplyContent,
 				success : function(result) {
 					console.log(result);
 					if(result == 1) {
@@ -203,6 +277,38 @@
 				}
 			});
 		}); // end replies.on()	
+		
+		// 대댓글 작성
+		$('#replies').on('click', '.reply_item .btn_comment', function() {
+		    var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val(); // 댓글 ID
+		    var memberId = $('#commentMemberId').val(); // 사용자 ID
+		    var commentContent = $(this).closest('.reply_item').find('#commentContent').val(); // 대댓글 내용
+
+		    var obj = {
+		        'marketReplyId': marketReplyId,
+		        'memberId': memberId,
+		        'commentContent': commentContent
+		    };
+
+		    $.ajax({
+		        type: 'POST',
+		        url: '../market/detail', // 대댓글을 처리할 URL
+		        headers: {
+		            'Content-Type': 'application/json'
+		        },
+		        data: JSON.stringify(obj),
+		        success: function(result) {
+		            if(result == 1) {
+		                alert('대댓글 입력 성공');
+		                getAllReply(); // 댓글 목록 갱신
+		            }
+		        }
+		    });
+		}); // end comment add
+		
+		
+
+		
 		
 	}); // end document
 	</script>

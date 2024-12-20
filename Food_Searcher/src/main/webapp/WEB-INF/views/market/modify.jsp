@@ -43,9 +43,9 @@
 				readonly>
 		</div>
 
-		<div>
+		 <div>
          <p>지역 : </p>
-         <select name="marketLocal" size="10" required>
+         <select name="marketLocal">
          <option value="jongro"> 종로</option>
          <option value="seodamun">서대문구</option>
          <option value="dobong">도봉구</option>
@@ -70,6 +70,7 @@
  
          </select>
       </div>
+            
             
 
 		<div>

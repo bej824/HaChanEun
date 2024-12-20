@@ -13,13 +13,7 @@ table {
 	text-align: center;
 }
 
-th {
-	border-style: outset;
-	border-width: 2px;
-	text-align: center;
-}
-
-td {
+th, td {
 	border-style: outset;
 	border-width: 1px;
 	text-align: center;
@@ -46,6 +40,11 @@ li {
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.search {
+	margin-left: 335px;
+}
+
 </style>
 <meta charset="UTF-8">
 <title>전통시장 리스트</title>
@@ -56,13 +55,14 @@ li {
 <%@ include file ="/WEB-INF/views/header.jsp" %>
 	<h1>전통 시장 리스트</h1>
 	
-	<c:if test="${not empty sessionScope.memberId }">
-	<a href="register" class="button">글 작성</a>
-	</c:if>
-	
-	<c:if test="${empty sessionScope.memberId }">
-	<a href="/searcher/access/login" class="button">글 작성</a>
-	</c:if>
+	<%
+	if(session.getAttribute("memberId") == null){ %>
+		<a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+	<%} %>
+	<%if(session.getAttribute("memberId") != null){ %>
+		<a href="/searcher/market/register" class="button">글 작성</a>
+	<%} %>
+
 	
 	<hr>	
 	<table>
@@ -75,7 +75,7 @@ li {
 		
 		<tbody>
 			<c:forEach var="MarketVO" items="${marketList}">
-				<tr>
+				<tr onclick="location.href='detail?marketId=${MarketVO.marketId }'">
 					<td>${MarketVO.marketId }</td>
 					<td><a href="detail?marketId=${MarketVO.marketId}">
 					${MarketVO.marketTitle }</a></td>

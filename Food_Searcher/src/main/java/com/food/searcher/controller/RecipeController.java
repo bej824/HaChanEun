@@ -1,18 +1,34 @@
 package com.food.searcher.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.service.AttachService;
 import com.food.searcher.service.RecipeService;
+import com.food.searcher.util.FileUploadUtil;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -22,6 +38,12 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping(value="/recipe")
 @Log4j
 public class RecipeController {
+	
+	   @Autowired
+	   private String uploadPath;
+	   
+	   @Autowired
+	   private AttachService attachService;
 	
 	@Autowired
 	private RecipeService recipeService;
@@ -100,11 +122,36 @@ public class RecipeController {
 	
 	// register.jsp에서 전송받은 게시글 데이터를 저장
 	@PostMapping("/register")
-	public String registerPOST(RecipeVO recipeVO) {
+	public String registerPOST(RecipeVO recipeVO, AttachVO attachVO) {
 		log.info("registerPOST()");
 		log.info("recipeVO = " + recipeVO.toString());
 		int result = recipeService.createBoard(recipeVO);
 		log.info(result + "행 등록");
+		
+		
+		List<RecipeVO> list = recipeService.getAllBoards();
+		log.info("recipeId 번호 : " + list.get(0).getRecipeId());
+		
+		
+	      MultipartFile file = attachVO.getFile();
+
+	      // UUID 생성
+	      String chgName = UUID.randomUUID().toString();
+	      // 파일 저장
+	      FileUploadUtil.saveFile(uploadPath, file, chgName);
+
+	      attachVO.setBoardId(list.get(0).getRecipeId());
+	      // 파일 경로 설정
+	      attachVO.setAttachPath(FileUploadUtil.makeDatePath());
+	      // 파일 실제 이름 설정
+	      attachVO.setAttachRealName(FileUploadUtil.subStrName(file.getOriginalFilename()));
+	      // 파일 변경 이름(UUID) 설정
+	      attachVO.setAttachChgName(chgName);
+	      // 파일 확장자 설정
+	      attachVO.setAttachExtension(FileUploadUtil.subStrExtension(file.getOriginalFilename()));
+	      // DB에 첨부 파일 정보 저장
+	      log.info(attachVO);
+	      log.info(attachService.createAttach(attachVO) + "행 등록");
 		return "redirect:/recipe/list";
 	}
 	
@@ -113,9 +160,47 @@ public class RecipeController {
 	@GetMapping("/detail")
 	public void detail(Model model, Integer recipeId) {
 		log.info("detail()");
+		log.info("레시피 ID : " + recipeId);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
+		log.info("RecipeVO : " + recipeVO);
+		List<RecipeVO> list = recipeService.getAllBoards();
+		log.info("recipeId 번호 : " + list.get(0).getRecipeId());
+		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
+		log.info("AttachVO" + attachVO);
 		model.addAttribute("recipeVO", recipeVO);
+		model.addAttribute("idList", attachVO);
 	}
+	
+	// 이미지 경로?
+	   private static final String UPLOAD_DIR = "C:/upload/food/";
+
+	   @RequestMapping("/{year}/{month}/{day}/{filename}")
+	   @ResponseBody
+	   public ResponseEntity<Resource> getFile(@PathVariable String year, 
+	                                            @PathVariable String month, 
+	                                            @PathVariable String day, 
+	                                            @PathVariable String filename) throws IOException {
+	       // 파일 경로 생성
+	       Path filePath = Paths.get(UPLOAD_DIR, year, month, day, filename);
+	       log.info("Requested file path: {}", (Throwable) filePath);
+
+	       // 파일이 존재하면 리소스 반환
+	       if (Files.exists(filePath)) {
+	           Resource resource = (Resource) new FileSystemResource(filePath.toFile());
+	           String contentType = Files.probeContentType(filePath);
+
+	           if (contentType == null) {
+	               contentType = "application/octet-stream";
+	           }
+
+	           return ResponseEntity.ok()
+	                   .contentType(MediaType.parseMediaType(contentType))
+	                   .body(resource);
+	       } else {
+	           log.warn("File not found: {}", (Throwable) filePath);
+	           return ResponseEntity.notFound().build();
+	       }
+	   }
 	
 	// 게시글 번호를 전송받아 상세 게시글 조회
 	// 조회된 게시글 데이터를 modify.jsp로 전송

@@ -13,13 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.domain.RoleVO;
 import com.food.searcher.service.LocalService;
+import com.food.searcher.service.RoleService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -32,6 +35,9 @@ public class LocalController {
 	
 	@Autowired
 	private LocalService localService;
+	
+	@Autowired
+	private RoleService RoleService;
 	
 	
 	@GetMapping("/map")
@@ -68,12 +74,37 @@ public class LocalController {
 		return SpecialityList;
 	}
 	
+	@PostMapping("update")
+	public String localUpdatePOST(@RequestParam("localId") String localId,
+			@RequestParam("localContent") String localContent,
+			LocalSpecialityVO localSpecialityVO) {
+		log.info("localUpdatePOST()");
+		String location = "redirect:detail?localId=" + localId;
+		localSpecialityVO = new LocalSpecialityVO(localId, null, null, null, localContent, 0);
+		int result = localService.updateSpeciality(localSpecialityVO);
+		log.info(result + "행 수정");
+		
+		return location;
+	}
+	
 	@GetMapping("/detail")
 	public void localDetailGET(@RequestParam("localId") String localId,
 			HttpSession session, Model model) {
 		log.info("localDetailGET()");
 		LocalSpecialityVO LocalSpecialityVO= localService.getSpecialityByLocalId(localId);
 		log.info(LocalSpecialityVO);
+		
+		String memberId = (String) session.getAttribute("memberId");
+		try {
+			RoleVO roleVO = RoleService.selectRole(memberId);
+			log.info(roleVO.getRoleName());
+			if(roleVO.getRoleName().equals("admin")) {
+				model.addAttribute("roleName",roleVO.getRoleName());
+			}
+		} catch (Exception e) {
+
+		}
+		
 		model.addAttribute("LocalSpecialityVO", LocalSpecialityVO);
 	}
 	

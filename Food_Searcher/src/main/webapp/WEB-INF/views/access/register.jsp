@@ -12,6 +12,7 @@
 <title>회원가입</title>
 </head>
 <body>
+	<%@ include file ="../header.jsp" %>
 	<form id="insertForm" action="../home" method="POST">
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"
@@ -68,7 +69,7 @@
 		<input type="radio" name="emailAgree" value="no">아니오 <br>
 	</form>
 
-	<button name="insert" onclick="insert()">회원가입</button>
+	<button class="button" name="insert" onclick="insert()">회원가입</button>
 
 	<script type="text/javascript">
 

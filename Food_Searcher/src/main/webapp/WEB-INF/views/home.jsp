@@ -44,17 +44,18 @@ li {
 <title>Home</title>
 </head>
 <body>
-	<%@ include file ="header.jsp" %>
+	<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
 	
 	<%
-	HttpSession session = request.getSession();
+	
 	if(session.getAttribute("memberId") != null){ %>	
 		<p><%=session.getAttribute("memberId") %>님 환영합니다.</p>
 	
 	<% } %>
+
 	
 	<a href="recipe/list" class="button">레시피 공유</a>
 	<a href="local/map" class="button">특산품</a>
@@ -71,10 +72,9 @@ li {
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr>
+				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }'">
 					<td>${RecipeVO.recipeId }</td>
-					<td><a href="recipe/detail?recipeId=${RecipeVO.recipeId }">
-							${RecipeVO.recipeTitle }</a></td>
+					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
 					<td>${RecipeVO.memberId }</td>
 					<!-- boardDateCreated 데이터 포멧 변경 -->
@@ -98,14 +98,5 @@ li {
 	</table>
 	<br>
 	
-	<%if(session.getAttribute("memberId") != null){ %>
-	<a href="access/memberPage">멤버페이지</a> <br>
-	<a href="logout">로그아웃</a>
-	<%} else { %>	
-	<a href="access/login">로그인</a> / 
-	<a href="access/register">회원가입</a>
-	<%} %>
-	
-	미친짓이네?
 </body>
 </html>

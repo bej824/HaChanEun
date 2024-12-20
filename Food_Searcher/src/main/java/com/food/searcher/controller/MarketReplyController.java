@@ -26,13 +26,14 @@ import lombok.extern.log4j.Log4j;
 public class MarketReplyController {
 	
 	@Autowired
-	private MarketReplyService replyService;
+	private MarketReplyService marketReplyService;
 
 	@PostMapping
 	public ResponseEntity<Integer> createReply(@RequestBody MarketReplyVO marketReplyVO) {
 		log.info("createReply()");
 		
-		int result = replyService.createReply(marketReplyVO);
+		int result = marketReplyService.createReply(marketReplyVO);
+		log.info(marketReplyVO);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 						
 	} // 댓글 등록
@@ -43,7 +44,7 @@ public class MarketReplyController {
 		log.info("readAllReply()");
 		log.info("marketId = " + marketId);
 		
-		List<MarketReplyVO> list = replyService.getAllReply(marketId);
+		List<MarketReplyVO> list = marketReplyService.getAllReply(marketId);
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
 	} // 댓글 출력
 	
@@ -54,7 +55,8 @@ public class MarketReplyController {
 	         ){
 	      log.info("updateReply()");
 	      log.info("marketReplyId = " + marketReplyId);
-	      int result = replyService.updateReply(marketReplyId, marketReplyContent);
+	      int result = marketReplyService.updateReply(marketReplyId, marketReplyContent);
+	      log.info("수정 : " + result);
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 수정
 	
@@ -65,7 +67,7 @@ public class MarketReplyController {
 	      log.info("deleteReply()");
 	      log.info("marketReplyId = " + marketReplyId);
 	      
-	      int result = replyService.deleteReply(marketReplyId, marketId);
+	      int result = marketReplyService.deleteReply(marketReplyId, marketId);
 	      
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 삭제
