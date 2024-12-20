@@ -1,26 +1,15 @@
 package com.food.searcher.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -170,37 +159,6 @@ public class RecipeController {
 		model.addAttribute("recipeVO", recipeVO);
 		model.addAttribute("idList", attachVO);
 	}
-	
-	// 이미지 경로?
-	   private static final String UPLOAD_DIR = "C:/upload/food/";
-
-	   @RequestMapping("/{year}/{month}/{day}/{filename}")
-	   @ResponseBody
-	   public ResponseEntity<Resource> getFile(@PathVariable String year, 
-	                                            @PathVariable String month, 
-	                                            @PathVariable String day, 
-	                                            @PathVariable String filename) throws IOException {
-	       // 파일 경로 생성
-	       Path filePath = Paths.get(UPLOAD_DIR, year, month, day, filename);
-	       log.info("Requested file path: {}", (Throwable) filePath);
-
-	       // 파일이 존재하면 리소스 반환
-	       if (Files.exists(filePath)) {
-	           Resource resource = (Resource) new FileSystemResource(filePath.toFile());
-	           String contentType = Files.probeContentType(filePath);
-
-	           if (contentType == null) {
-	               contentType = "application/octet-stream";
-	           }
-
-	           return ResponseEntity.ok()
-	                   .contentType(MediaType.parseMediaType(contentType))
-	                   .body(resource);
-	       } else {
-	           log.warn("File not found: {}", (Throwable) filePath);
-	           return ResponseEntity.notFound().build();
-	       }
-	   }
 	
 	// 게시글 번호를 전송받아 상세 게시글 조회
 	// 조회된 게시글 데이터를 modify.jsp로 전송
