@@ -1,9 +1,7 @@
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="com.food.searcher.domain.MarketVO" %>
 
 <!DOCTYPE html>
 <html>
@@ -54,9 +52,6 @@ button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
-
-
-
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
@@ -64,7 +59,7 @@ button:disabled {
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
-	
+<%session.getAttribute("memberId"); %>
 
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
@@ -74,24 +69,34 @@ button:disabled {
 	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
 	</div>
-
+	
 	<input type="hidden" id="marketId" value="${marketVO.marketId }">
 	
 	<div>
 		<textarea rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
+		
 	</div>
+	
+	${marketVO.filePath }
+	${marketVO.fileName }
 
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	
-	<% if(session.getAttribute("memberId") != null){ %>
+	<% if("admin1".equals(session.getAttribute("memberId"))){ %>
 	<button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
 	<%} %>
 	
-	<% if(session.getAttribute("memberId") != null){ %>
+	<% if("admin1".equals(session.getAttribute("memberId"))){ %>
 	<button id="deleteMarket" class="button">글 삭제</button>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="marketId" value="${marketVO.marketId }">
 	</form>
+	<%} %>
+	
+	
+	<% if(session.getAttribute("memberId") == null){ %>
+	* 댓글은 로그인이 필요한 서비스입니다.
+	<a href="/searcher/access/login">로그인하기</a>
 	<%} %>
 	
 	<% if(session.getAttribute("memberId") != null){ %>
@@ -120,9 +125,12 @@ button:disabled {
 	<input type="hidden" id="marketId" value="${marketVO.marketId}">
 	<input type="hidden" id="memberId" value="${sessionScope.memberId}">
 	
-											<!-- 댓글 -->
+		
+	<!-- 댓글 -->
 	
 	<script type="text/javascript">
+	
+	
 	$(document).ready(function(){
 		getAllReply();
 		
@@ -133,7 +141,7 @@ button:disabled {
 			
 			var obj = {
 					'marketId' : marketId,
-					'memberId' : memberId,
+					'memberId' : memberId,	
 					'marketReplyContent' : marketReplyContent
 			};
 			console.log(obj);
@@ -152,7 +160,7 @@ button:disabled {
 						getAllReply();
 					}
 				}
-			});
+			}); // end ajax
 		}); // end btnAdd.click()
 		
 		function getAllReply() {
@@ -190,11 +198,13 @@ button:disabled {
 							+ '&nbsp;&nbsp;'
 							+ replyDateCreated
 							+ '&nbsp;&nbsp;'
+							+ '<%if(session.getAttribute("memberId") != null){ %>'
 							+ '<button class="btn_update" >수정</button>'
 							+ '<button class="btn_delete" >삭제</button>'
 							+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 							+ '<input type="text" id="commentContent">'
 							+ '<button id="btnReAdd" class="btn_comment">답글 작성</button><br>'
+							+ '<%} %>'
 							+ '</pre>'
 							 // 대댓글 렌더링
 							 
