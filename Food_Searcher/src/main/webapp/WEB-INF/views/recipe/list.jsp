@@ -75,10 +75,9 @@ li {
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr>
+				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }'">
 					<td>${RecipeVO.recipeId }</td>
-					<td><a href="detail?recipeId=${RecipeVO.recipeId }">
-							${RecipeVO.recipeTitle }</a></td>
+					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
 					<td>${RecipeVO.memberId }</td>
 					<!-- boardDateCreated 데이터 포멧 변경 -->
