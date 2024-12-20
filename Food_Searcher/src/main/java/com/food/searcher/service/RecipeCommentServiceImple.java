@@ -21,7 +21,7 @@ public class RecipeCommentServiceImple implements RecipeCommentService{
 	public int createComment(RecipeCommentVO recipeCommentVO) {
 		log.info("createReply()");
 		int insertResult = recipeCommentMapper.insert(recipeCommentVO);
-		log.info(insertResult + "행 댓글 추가");
+		log.info(insertResult + "행 대댓글 추가");
 		return insertResult;
 	}
 
@@ -50,7 +50,7 @@ public class RecipeCommentServiceImple implements RecipeCommentService{
 	public int deleteComment(int recipeCommentId, int replyId) {
 		log.info("deleteReply()");
 		int deleteResult = recipeCommentMapper.delete(recipeCommentId);
-		log.info(deleteResult + "행 댓글 삭제");
+		log.info(deleteResult + "행 대댓글 삭제");
 		return deleteResult;
 	}
 

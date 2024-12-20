@@ -84,18 +84,14 @@ textarea {
 	</c:forEach>
 	
 	<button onclick="location.href='list'" class="button">글 목록</button>
-	<c:if test="${empty recipeVO.memberId}">
+	<%if(session.getAttribute("memberId") == null){ %>
 		<button onclick="location.href='../access/login'" class="button">글 수정</button>
 		<button id="deleteBoard" class="button" disabled>글 삭제</button>
-		</c:if>
-	<c:if test="${recipeVO.memberId eq sessionScope.memberId}">
+	<%} %>
+	<%if(session.getAttribute("memberId") != null){ %>
 	<button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
 	<button id="deleteBoard" class="button">글 삭제</button>
-	</c:if>
-	<c:if test="${not empty recipeVO.memberId and recipeVO.memberId ne sessionScope.memberId}">
-			<button class="button" disabled>글 수정</button>
-			<button id="deleteBoard" class="button" disabled>글 삭제</button>
-	</c:if>
+	<%} %>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="recipeId" value="${recipeVO.recipeId }">
 	</form>
@@ -240,8 +236,8 @@ textarea {
 					                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
 					                        + '&nbsp;&nbsp;'
 											+ '<%if(session.getAttribute("memberId") != null){ %>'
-					                        + '<button class="btn_update" ' + disabled + '>수정</button>'
-					                        + '<button class="btn_delete" ' + disabled + '>삭제</button>'
+					                        + '<button class="btn_commentupdate" ' + disabled + '>수정</button>'
+					                        + '<button class="btn_commentdelete" ' + disabled + '>삭제</button>'
 											+ '	<%} %>'
 					                        + '</pre>'
 					                        + '</div>';
@@ -337,6 +333,59 @@ textarea {
 			        }
 			    });
 			});
+			
+			// 수정 버튼을 클릭하면 선택된 대댓글 수정
+			$('#replies').on('click', '.reply_item .btn_commentupdate', function(){
+				console.log(this);
+				
+				// 선택된 댓글의 replyId, replyContent 값을 저장
+				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
+				let replyId = $(this).prevAll('#recipeCommentId').val();
+				let replyContent = $(this).prevAll('#commentContent').val();
+				console.log("선택된 댓글 번호 : " + replyId + ", 댓글 내용 : " + replyContent);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : '../recipe/comment/' + replyId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : replyContent, 
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 수정 성공!');
+							getAllReply();
+						}
+					}
+				});
+				
+			}); // end replies.on()
+			
+			// 삭제 버튼을 클릭하면 선택된 대댓글 삭제
+			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
+				console.log(this);
+				let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();
+				let recipeCommentId = $(this).prevAll('#recipeCommentId').val();
+				console.log("recipeReplyId : " + recipeReplyId + ", recipeCommentId : " + recipeCommentId);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'DELETE', 
+					url : '../recipe/comment/' + recipeCommentId + '/' + recipeReplyId, 
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 삭제 성공!');
+							getAllReply();
+						}
+					}
+				});
+			}); // end replies.on()		
 
 
 		}); // end document()

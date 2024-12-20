@@ -93,12 +93,9 @@ public class RecipeController {
         	log.info("recipeVO" + recipeVO);
             break;
     }
-		
-	    PageMaker pageMaker = new PageMaker();
-	    pageMaker.setPagination(pagination);
-	    pageMaker.setTotalCount(recipeVO.size());
-	    
-		redirectAttributes.addFlashAttribute("pageMaker", pageMaker);
+		log.info("결과 값 : " + recipeVO);
+		log.info("페이징 전 : " + recipeVO.size());
+
 		redirectAttributes.addFlashAttribute("recipeList", recipeVO);
 		
 		return "redirect:/recipe/list";

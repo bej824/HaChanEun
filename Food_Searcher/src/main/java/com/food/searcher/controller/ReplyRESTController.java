@@ -84,7 +84,38 @@ public class ReplyRESTController {
 	      log.info("deleteReply()");
 	      log.info("replyId = " + replyId);
 	      
+	      List<RecipeCommentVO> list = recipeCommentService.getAllComment(replyId);
+	      log.info(list);
+	      
+	      for(RecipeCommentVO vo : list) {
+	    	  int commentresult = recipeCommentService.deleteComment(vo.getRecipeCommentId(), vo.getRecipeReplyId());
+	    	  log.info(commentresult);
+	      }
 	      int result = replyService.deleteReply(replyId, boardId);
+	      log.info(result);
+	      
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   }
+	   
+	   @PutMapping("/comment/{recipeCommentId}") // PUT : 댓글 수정
+	   public ResponseEntity<Integer> updatecommentReply(
+	         @PathVariable("recipeCommentId") int recipeCommentId,
+	         @RequestBody String commentContent
+	         ){
+	      log.info("updateCommentReply()");
+	      log.info("recipeCommentId = " + recipeCommentId);
+	      int result = recipeCommentService.updateComment(recipeCommentId, commentContent);
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   }
+	   
+	   @DeleteMapping("/comment/{recipeCommentId}/{recipereplyId}") // DELETE : 댓글 삭제
+	   public ResponseEntity<Integer> deleteComment(
+	         @PathVariable("recipeCommentId") int recipeCommentId, 
+	         @PathVariable("recipereplyId") int recipereplyId) {
+	      log.info("deleteReply()");
+	      log.info("recipeCommentId = " + recipeCommentId);
+	      
+	      int result = recipeCommentService.deleteComment(recipeCommentId, recipereplyId);
 	      
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }

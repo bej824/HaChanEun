@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -62,5 +63,16 @@ public class RecipeCommentController {
 		// ResponseEntity<T> : T의 타입은 프론트 side로 전송될 데이터의 타입으로 선언
 		return new ResponseEntity<List<RecipeCommentVO>>(list, HttpStatus.OK);
 	}
+	
+	   @PutMapping("/comment/{recipeCommentId}") // PUT : 댓글 수정
+	   public ResponseEntity<Integer> updateReply(
+	         @PathVariable("recipeCommentId") int recipeCommentId,
+	         @RequestBody String commentContent
+	         ){
+	      log.info("updateCommentReply()");
+	      log.info("recipeCommentId = " + recipeCommentId);
+	      int result = replyService.updateReply(recipeCommentId, commentContent);
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   }
 	
 }

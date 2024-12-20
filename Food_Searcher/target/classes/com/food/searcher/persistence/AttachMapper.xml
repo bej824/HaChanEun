@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectByAttachId" resultMap="attachResultMap">
 		SELECT * FROM ATTACH 
-		WHERE ATTACH_ID = #{attachId}
+		WHERE BOARD_ID = #{boardId}
 	</select>
 
 	<select id="selectIdList" resultType="Integer">
