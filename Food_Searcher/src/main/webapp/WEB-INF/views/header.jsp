@@ -130,6 +130,8 @@ textarea[readonly] {
         <a href="/searcher/access/register">회원가입</a>
         </div>
     <%} %>
+    
+    </div>
 
 </body>
 </html>
