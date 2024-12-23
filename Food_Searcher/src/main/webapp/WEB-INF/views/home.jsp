@@ -58,13 +58,12 @@ li {
 
 	
 	<a href="recipe/list" class="button">레시피 공유</a>
-	<a href="local/map" class="button">특산품</a>
 	<table border="1">
 	<thead>
 		<tr>
 				<th style="width: 60px">번호</th>
-				<th style="width: 700px">제목</th>
-				<th style="width: 60px">음식</th>
+				<th style="width: 600px">제목</th>
+				<th style="width: 100px">음식</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
 				<th style="width: 40px">댓글수</th>
@@ -86,17 +85,28 @@ li {
 			</c:forEach>
 		</tbody>
 	</table> <br>
+
+	<a href="market/list" class="button">전통시장</a>
 	<table border="1">
+	<thead>
 		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>음식명</th>
-			<th>작성일</th>
-			<th>댓글 수</th>
-			<th>이미지</th>
+			<th style="width: 60px">번호</th>
+			<th style="width: 700px">제목</th>
+			<th style="width: 120px">지역</th>
 		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="MarketVO" items="${marketList }">
+			<tr onclick="window.location.href='market/detail?marketId=${MarketVO.marketId}'">
+			<td>${MarketVO.marketId }</td>
+			<td>${MarketVO.marketTitle }</td>
+			<td>${MarketVO.marketLocal }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
 	</table>
 	<br>
-	
+		
+	<a href="local/map" class="button">특산품</a>
 </body>
 </html>

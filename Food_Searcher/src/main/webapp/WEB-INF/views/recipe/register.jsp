@@ -55,7 +55,10 @@ textarea {
 		</div>
 		<div>
 			<p>내용 :</p>
-			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" maxlength="300" required></textarea>
+			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" maxlength="300" required>
+재료 : 
+
+레시피 : </textarea>
 		</div>
 		<div>
 			<input type="submit" class="button" value="등록">

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   
+<%@ page import="java.io.*, java.util.*"%>
+<%@ page import="javax.servlet.http.*, javax.servlet.*"%>
+<%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,13 +81,65 @@ textarea {
       <br>
       
       <div>
+  		
+  		
+  		
          <p>내용 : </p>
+         <div class="addImage" id="image-show"> <!-- 이미지 띄울 공간 -->
+   		 </div>
+   		 <input type="file" accept="image/*" onchange="loadFile(this)">
+   		 
+   		 <br>
          <textarea rows="20" cols="120" name="marketContent" 
-         placeholder="내용 입력" maxlength="300" required></textarea>
+         placeholder="내용 입력" maxlength="300" required></textarea><br>
          <input type="submit" value="등록">
-  		<h2>다중 파일 업로드</h2>
-		<input type="file" name="files" multiple="multiple"><br>
-		<input type="submit" value="업로드">
+         
+         <script> 
+         // 미리보
+        function loadFile(input) {
+            let file = input.files[0]; // 선택파일 가져오기
+
+            let newImage = document.createElement("img"); //새 이미지 태그 생성
+
+            //이미지 source 가져오기
+            newImage.src = URL.createObjectURL(file);
+            newImage.style.width = "25%"; //div에 꽉차게 넣으려고
+            newImage.style.height = "25%";
+            newImage.style.objectFit = "cover"; // div에 넘치지 않고 들어가게
+
+            //이미지를 image-show div에 추가
+            let container = document.getElementById('image-show');
+            container.appendChild(newImage);
+        	}
+        
+         
+    	// 이미지 출력
+    	function showUploadImage(uploadResultArr){
+    		
+    		/* 전달받은 데이터 검증 */
+    		if(!uploadResultArr || uploadResultArr.length == 0){return}
+    		
+    		let uploadResult = $("#uploadResult");
+    		
+    		let obj = uploadResultArr[0];
+    		
+    		let str = "";
+    		
+    		let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+    		
+    		str += "<div id='result_card'>";
+    		str += "<img src='/display?fileName=" + fileCallPath +"'>";
+    		str += "<div class='imgDeleteBtn'>x</div>";
+    		str += "</div>";		
+    		
+    		uploadResult.append(str);     
+    	    
+    	}
+    	
+		</script>
+
+        
+		
 		
 		<script>
 		$(document).ready(function() {
@@ -125,4 +179,4 @@ textarea {
     
    </form>
 </body>
-</html>
+</html>	

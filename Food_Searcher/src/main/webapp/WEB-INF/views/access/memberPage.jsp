@@ -9,8 +9,9 @@
 </head>
 <body>
 
+	<%@ include file ="../header.jsp" %>
 	<h1>Member Page</h1>
-	<a href="../home">home</a>
+	<a href="../home" class="button">home</a>
 
 	<form id="updateForm" action="update" method="post">
 		<p>아이디 : ${vo.memberId }</p>
@@ -93,8 +94,8 @@
 	
 	<br>
 
-	<button onclick="update()">수정하기</button>
-	<button onclick="deleteMember()">회원탈퇴</button>
+	<button onclick="update()" class="button">수정하기</button>
+	<button onclick="deleteMember()" class="button">회원탈퇴</button>
 
 	<script type="text/javascript">
 		function update() {
