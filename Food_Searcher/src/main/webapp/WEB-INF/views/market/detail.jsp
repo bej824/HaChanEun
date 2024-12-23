@@ -77,6 +77,12 @@ button:disabled {
 		
 	</div>
 	
+		<!-- 사진 start -->
+	
+		<!-- 사진 end -->
+	
+				
+	
 	${marketVO.filePath }
 	${marketVO.fileName }
 
