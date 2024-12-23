@@ -14,7 +14,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class HeaderReplyVO {
-	private String boardId;
+	
+	private int boardId;
 	private int replyId;
 	private String memberId;
 	private String headerReplyContent;

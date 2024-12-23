@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.LocalReplyVO;
 import com.food.searcher.persistence.LocalReplyMapper;
@@ -17,10 +18,16 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	@Autowired
 	LocalReplyMapper LocalReplyMapper;
 	
+	@Transactional
 	@Override
 	public int createReply(int localId, String memberId, String replyContent) {
 		log.info("createReply()");
-		return LocalReplyMapper.insert(localId, replyContent, replyContent);
+		log.info("localId :" +  localId);
+		log.info("memberId : " + memberId);
+		log.info("replyContent : " + replyContent);
+		int result = LocalReplyMapper.insertLocalReply(localId, memberId, replyContent);
+		log.info(result);
+		return result;
 	}
 	
 	@Override
@@ -36,15 +43,15 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	}
 	
 	@Override
-	public int updateReply(LocalReplyVO LocalReplyVO) {
+	public int updateReply(int replyId, String replyContent) {
 		log.info("updateReply()");
-		return LocalReplyMapper.update(LocalReplyVO);
+		return LocalReplyMapper.update(replyId, replyContent);
 	}
 	
 	@Override
-	public int deleteReply(int localReplyId, int localId) {
+	public int deleteReply(int ReplyId) {
 		log.info("deleteReply()");
-		return LocalReplyMapper.delete(localReplyId);
+		return LocalReplyMapper.delete(ReplyId);
 	}
 
 }

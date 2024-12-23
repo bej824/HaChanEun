@@ -9,8 +9,8 @@ public interface LocalReplyService {
 	
 	int createReply(int localId, String memberId, String replyContent);
 	List<LocalReplyVO> getAllReply(int localId);
-	int updateReply(LocalReplyVO LocalReplyVO);
-	int deleteReply(int localReplyId, int localId);
+	int updateReply(int replyId, String replyContent);
+	int deleteReply(int ReplyId);
 	LocalReplyVO getReplyById(int localReplyId);
 
 }

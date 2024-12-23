@@ -17,11 +17,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</resultMap>
 
-	<insert id="insert">
+	<insert id="insertLocalReply">
 		INSERT INTO LOCAL_REPLY (LOCAL_REPLY_ID, LOCAL_ID, MEMBER_ID,
 		REPLY_CONTENT, REPLY_DATE_CREATED)
 		VALUES (LOCAL_REPLY_SEQ.NEXTVAL, #{localId}, #{memberId},
-		#{localReplyContent}, SYSDATE)
+		#{replyContent}, SYSDATE)
 	</insert>
 
 	<select id="selectListByLocalId" resultMap="replyResultMap">
@@ -32,13 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="update">
 		UPDATE LOCAL_REPLY
-		SET REPLY_CONTENT = #{localReplyContent}
-		WHERE LOCAL_REPLY_ID = #{marketReplyId}
+		SET REPLY_CONTENT = #{replyContent}
+		WHERE LOCAL_REPLY_ID = #{replyId}
 	</update>
 
 	<delete id="delete">
 		DELETE FROM LOCAL_REPLY
-		WHERE LOCAL_REPLY_ID = #{localReplyId}
+		WHERE LOCAL_REPLY_ID = #{replyId}
 	</delete>
 
 </mapper>

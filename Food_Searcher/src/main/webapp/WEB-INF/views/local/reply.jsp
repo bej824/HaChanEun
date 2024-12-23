@@ -67,8 +67,9 @@
 	</div>
 	
 	<script type="text/javascript">
+	
 		$(document).ready(function(){
-			getAllReply(); // 함수 호출	
+			getAllReply(); // 함수 호출
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
@@ -77,7 +78,7 @@
 				let memberId = $('#memberId').val(); // 작성자 데이터
 				console.log(memberId);
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
-				console.log(replyContent);
+				console.log(headerReplyContent);
 				// javascript 객체 생성
 				let obj = {
 						'boardId' : boardId,
@@ -98,7 +99,8 @@
 						console.log(result);
 						if(result == 1) {
 							alert('댓글 입력 성공');
-							getAllReply(); // 함수 호출		
+							document.getElementById('headerReplyContent').value = '';
+							getAllReply(); // 함수 호출
 						}
 					}
 				});
@@ -108,25 +110,19 @@
 			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
-				console.log(this);
 				let boardId = $('#Id').val();
+				let url = 'replyAll/' + boardId;
+				
 				console.log("boardID : " + boardId);
-
-				let url = 'replyAll?localId=' + boardId;
 				console.log("address : " + url);
 				$.getJSON(
 					url, 		
 					function(data) {
-						// data : 서버에서 전송받은 list 데이터가 저장되어 있음.
-						// getJSON()에서 json 데이터는 
-						// javascript object로 자동 parsing됨.
 						console.log("댓글 목록 : ", data);
 						
-						let list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
+						var list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
 						
-						// $(컬렉션).each() : 컬렉션 데이터를 반복문으로 꺼내는 함수
 						$(data).each(function(){
-							// this : 컬렉션의 각 인덱스 데이터를 의미
 							console.log("댓글 데이터: ", this);
 							console.log(this.localId);
 							console.log(this.replyContent);
@@ -138,40 +134,89 @@
 							let day = replyDateCreated.getDate().toString().padStart(2, '0');
 							let hours = replyDateCreated.getHours().toString().padStart(2, '0');
 							let minutes = replyDateCreated.getMinutes().toString().padStart(2, '0');
-							
 							let replyDate = year + "." + month + "." + day + "."
 							+ hours + ":" + minutes;
-
-							console.log(replyDate);
-
-							let disabled = '';
-							let readonly = '';
+							
+							var disabled = '';
+							var readonly = '';
 							
 							if('<%=session.getAttribute("memberId") %>' != this.memberId) {
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
 							
-							list += '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
-								+ '<p class="replyMemberId">' + this.memberId
+							list += '<div class="reply_item">'
+								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
+								+ this.memberId
+								+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
 								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
-								+ '</p>' + '<p class = "timeButton">'
-								+ replyDate
 								+ '<%if(session.getAttribute("memberId") != null){ %>'
-								+ '<button class="button" '+ disabled +' >수정</button>'
-								+ '<button class="button" '+ disabled +' >삭제</button>'
-								+ '</p>'
+								+ '<button class="btn_update" '+ disabled + '>수정</button>'
+								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<br>'
-								+ '	<%} %>'
+								+ '<%} %>'
+								+ '</div>'
+								
 						}); // end each()
 				        
 						$('#replies').html(list); // 저장된 데이터를 replies div 표현
 					} // end function()
 				); // end getJSON()
-			} // end getAllReply()	
-
+			} // end getAllReply()
+			
+			// 수정 버튼을 클릭하면 선택된 댓글 수정
+			$('#replies').on('click', '.reply_item .btn_update', function(){
+				console.log(this);
+				
+				// 선택된 댓글의 replyId, replyContent 값을 저장
+				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
+				var replyId = $(this).prevAll('#replyId').val();
+				var replyContent = $(this).prevAll('#replyContent').val();
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : 'update/' + replyId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : replyContent, 
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('댓글 수정 성공!');
+							getAllReply();
+						}
+					}
+				});
+			}); // end replies.on()
+			
+			$('#replies').on('click', '.reply_item .btn_delete', function(){
+				console.log(this);
+				var replyId = $(this).prevAll('#replyId').val();
+				console.log("선택된 댓글 번호 : " + replyId);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : 'delete/' + replyId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : replyId, 
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('댓글 삭제 성공!');
+							getAllReply();
+						}
+					}
+				});
+			});
 
 		}); // end document()
+		
+		
 	</script>
 
 </body>
