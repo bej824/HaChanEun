@@ -9,15 +9,15 @@
 </head>
 <body>
 
+	<%@ include file ="../header.jsp" %>
+	<br>
 	<form action = "login" method="POST">
-	<p>ID : </p>
-	<input type="text" name="memberId"> <br>
-	<p>PW : </p>
-	<input type="password" name="password"> <br>
-	<input type="submit" value="로그인">
+	ID : <input type="text" name="memberId"> <br><br>
+	PW : <input type="password" name="password"> <br>
+	<input type="submit" value="로그인" class="button">
 	</form>
-	<a href="ID" >ID 찾기</a>
-	<a href="" >PW 찾기</a>
+	<a href="ID" class="button">ID 찾기</a>
+	<a href="" class="button">PW 찾기</a>
 	<%
 	if(session.getAttribute("memberId") != null){
 		response.sendRedirect("../home");

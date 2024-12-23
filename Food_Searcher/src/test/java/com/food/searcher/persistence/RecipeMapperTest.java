@@ -25,9 +25,9 @@ public class RecipeMapperTest {
 	private void insertRecipe() {
 		RecipeVO recipeVO = new RecipeVO();
 		recipeVO.setRecipeId(1);
-		recipeVO.setRecipeTitle("recipe");
-		recipeVO.setRecipeFood("볶음밥");
-		recipeVO.setRecipeContent("재료, 레시피, 사진");
+		recipeVO.setRecipeTitle("도전 계란말이");
+		recipeVO.setRecipeFood("계란말이");
+		recipeVO.setRecipeContent("계란");
 		recipeVO.setMemberId("초보요리사");
 		int result = recipeMapper.insert(recipeVO);
 		log.info(result);

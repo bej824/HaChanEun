@@ -1,7 +1,9 @@
+<%@page import="com.food.searcher.domain.RecipeVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.food.searcher.domain.RecipeVO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
 <style type="text/css">
-.button, .btn_update, .btn_delete, .btn_comment {
+.button, .btn_update, .btn_delete, .btn_comment, .btn_commentupdate, .btn_commentdelete {
 	  background-color: #04AA6D;
   border: none;
   color: white;
@@ -22,8 +24,13 @@
   cursor: pointer;
 }
 
-    .comment_item {
-        margin-left: 30px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
+.reply_item {
+        margin-left: 1px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
+        margin-bottom: 10px;
+    }
+
+.comment_item {
+        margin-left: 100px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
         margin-bottom: 10px;
     }
 
@@ -83,15 +90,25 @@ textarea {
 </a><br>
 	</c:forEach>
 	
+
 	<button onclick="location.href='list'" class="button">글 목록</button>
-	<%if(session.getAttribute("memberId") == null){ %>
-		<button onclick="location.href='../access/login'" class="button">글 수정</button>
-		<button id="deleteBoard" class="button" disabled>글 삭제</button>
-	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
-	<button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
-	<button id="deleteBoard" class="button">글 삭제</button>
-	<%} %>
+	
+	<% 
+    String sessionMemberId = (String) session.getAttribute("memberId");
+	RecipeVO recipeVO = (RecipeVO) request.getAttribute("recipeVO");
+    String recipeMemberId = recipeVO.getMemberId(); // Get memberId from recipeVO
+%>
+
+<% if(sessionMemberId == null){ %>
+    <button onclick="location.href='../access/login'" class="button">글 수정</button>
+    <button id="deleteBoard" class="button" disabled>글 삭제</button>
+<% } else if(sessionMemberId != null && sessionMemberId.equals(recipeMemberId)){ %>
+    <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정1</button>
+    <button id="deleteBoard" class="button">글 삭제1</button>
+<% } else { %>
+    <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" disabled>글 수정2</button>
+    <button id="deleteBoard" class="button" disabled>글 삭제2</button>
+<% } %>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="recipeId" value="${recipeVO.recipeId }">
 	</form>
@@ -115,7 +132,7 @@ textarea {
 	<%if(session.getAttribute("memberId") != null){ %>
 			<div style="text-align: center;">
 		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
-		<input type="text" id="replyContent">
+		<input type="text" id="replyContent" required>
 		<button id="btnAdd" class="button">작성</button>
 	</div>
 	<%} %>
@@ -227,6 +244,13 @@ textarea {
 					            	console.log("대댓글 데이터: ", this.comments);
 					                list += '<div class="comment_item">'; // 대댓글을 위한 div 추가
 					                $(this.comments).each(function() {
+
+										let updel = '';
+										if('<%=session.getAttribute("memberId") %>' == this.memberId) {
+											updel = '<button class="btn_commentupdate">수정</button>'
+					                        + '<button class="btn_commentdelete">삭제</button>'
+										}
+					                	
 					                    list += '<div class="comment_item">'
 					                        + '<pre>'
 					                        + 'ㄴ <input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
@@ -236,8 +260,7 @@ textarea {
 					                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
 					                        + '&nbsp;&nbsp;'
 											+ '<%if(session.getAttribute("memberId") != null){ %>'
-					                        + '<button class="btn_commentupdate" ' + disabled + '>수정</button>'
-					                        + '<button class="btn_commentdelete" ' + disabled + '>삭제</button>'
+					                        + updel
 											+ '	<%} %>'
 					                        + '</pre>'
 					                        + '</div>';
