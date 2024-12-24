@@ -19,8 +19,6 @@ public class MarketVO {
 	private String marketTitle;	  // MARKET_TITLE
 	private String marketContent; // MARKET_CONTENT
 	private String marketLocal;   // MARKET_LOCAL
-	private String fileName;
-	private String filePath;
 	
 	
 }

@@ -95,7 +95,7 @@ textarea {
          <input type="submit" value="등록">
          
          <script> 
-         // 미리보
+         // 미리보기
         function loadFile(input) {
             let file = input.files[0]; // 선택파일 가져오기
 
@@ -103,8 +103,8 @@ textarea {
 
             //이미지 source 가져오기
             newImage.src = URL.createObjectURL(file);
-            newImage.style.width = "25%"; //div에 꽉차게 넣으려고
-            newImage.style.height = "25%";
+            newImage.style.width = "10%";
+            newImage.style.height = "10%";
             newImage.style.objectFit = "cover"; // div에 넘치지 않고 들어가게
 
             //이미지를 image-show div에 추가

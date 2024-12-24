@@ -23,7 +23,6 @@ public class MarketReplyServiceImple implements MarketReplyService {
 	private MarketReplyMapper marketReplyMapper;	
 	
 	
-	@Transactional(value = "transactionManager")
 	@Override
 	public int createReply(MarketReplyVO marketReplyVO) {
 		log.info("marketReplyVO");

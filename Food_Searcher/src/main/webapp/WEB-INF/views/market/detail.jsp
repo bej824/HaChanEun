@@ -2,7 +2,7 @@
 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ page import="com.food.searcher.domain.MarketVO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,8 +58,8 @@ button:disabled {
 <title>전통시장</title>
 </head>
 <body>
-<%@ include file ="/WEB-INF/views/header.jsp" %>
-<%session.getAttribute("memberId"); %>
+	<%@ include file ="/WEB-INF/views/header.jsp" %>
+	<%session.getAttribute("memberId"); %>
 
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
@@ -69,6 +69,7 @@ button:disabled {
 	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
 	</div>
+
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId }">
 	
@@ -78,13 +79,9 @@ button:disabled {
 	</div>
 	
 		<!-- 사진 start -->
+		<!-- 사진 end -->	
 	
-		<!-- 사진 end -->
 	
-				
-	
-	${marketVO.filePath }
-	${marketVO.fileName }
 
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	
@@ -127,10 +124,7 @@ button:disabled {
 		}); // end document
 		
 	</script>
-	
-	<input type="hidden" id="marketId" value="${marketVO.marketId}">
-	<input type="hidden" id="memberId" value="${sessionScope.memberId}">
-	
+
 		
 	<!-- 댓글 -->
 	
@@ -144,6 +138,7 @@ button:disabled {
 			var marketId = $('#marketId').val(); // 게시판 번호 데이터
 			var memberId = $('#memberId').val(); // 작성자 데이터
 			var marketReplyContent = $('#marketReplyContent').val(); // 댓글 내용 데이터
+			console.log(marketId, memberId, marketReplyContent);
 			
 			var obj = {
 					'marketId' : marketId,
@@ -213,26 +208,6 @@ button:disabled {
 							+ '<%} %>'
 							+ '</pre>'
 							 // 대댓글 렌더링
-							 
-				            if (this.comments) {
-				            	console.log("대댓글 데이터: ", this.comments);
-				                list += '<div class="comment_item">'; // 대댓글을 위한 div 추가
-				                $(this.comments).each(function() {
-				                    list += '<div class="comment_item">'
-				                        + '<pre>'
-				                        + 'ㄴ <input type="hidden" id="marketCommentId" value="'+ this.marketCommentId +'">'
-				                        + this.memberId
-				                        + '&nbsp;&nbsp;'
-				                        + '<input type="text" id="commentContent" value="'+ this.commentContent +'">'
-				                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
-				                        + '&nbsp;&nbsp;'
-				                        + '<button class="btn_update">수정</button>'
-				                        + '<button class="btn_delete">삭제</button>'
-				                        + '</pre>'
-				                        + '</div>';
-				                });
-				                list += '</div>'; // 대댓글 닫기
-				            }				
 							
 							list += '</div>';
 					}); // end each()
