@@ -58,7 +58,7 @@ public class LocalReplyController {
 		return list;
 	}
 	
-	@PutMapping("/update/{replyId}") // PUT : 댓글 수정
+	@PutMapping("/updateReply/{replyId}") // PUT : 댓글 수정
 	   public ResponseEntity<Integer> updateReply(
 	         @PathVariable("replyId") int replyId,
 	         @RequestBody String replyContent
@@ -69,7 +69,7 @@ public class LocalReplyController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@PutMapping("/delete/{replyId}")
+	@PutMapping("/deleteReply/{replyId}")
 		public ResponseEntity<Integer> deleteReply(@PathVariable("replyId") int replyId){
 		 log.info("updateReply()");
 	     log.info("replyId = " + replyId);
