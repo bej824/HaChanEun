@@ -76,18 +76,14 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent }</textarea>
 	</div>
-	
+
 	<c:forEach var="attachVO" items="${idList }">
 	<p>
-    <img src="/2024/12/19/${attachVO.attachChgName }" alt="1" style="max-width: 100%; height: auto;">
-    <a href="file:///C:/upload/food/2024/12/19/${attachVO.attachChgName }">${attachVO.attachRealName }.${attachVO.attachExtension }</a>
-    <img src="../food/2024/12/19/${attachVO.attachRealName }.${attachVO.attachExtension }" alt="2" style="max-width: 100%; height: auto;">
-	
-    <img src="C:/upload/food/2024/12/19/${attachVO.attachRealName }.${attachVO.attachExtension }" alt="3" style="max-width: 100%; height: auto;">
-	</p>
-	<a href="../../food/2024/12/19/${attachVO.attachChgName }">
-    ${attachVO.attachRealName }.${attachVO.attachExtension }
-</a><br>
+    <img src="${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+    <img src="src/main/webapp/image/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+    
+    <img src="detail/image/${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+	</p><br>
 	</c:forEach>
 	
 
@@ -122,6 +118,11 @@ textarea {
 			});
 		}); // end document
 	</script>
+	
+	<%-- 추천 비추천 작업 예정 
+	<button id="up" class="button">추천${recipeVO.like }</button>
+	<button id="down" class="button">비추천${recipeVO.unlike }</button>
+	--%>
 
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 

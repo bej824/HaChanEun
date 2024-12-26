@@ -81,9 +81,9 @@ public class AttachController {
         log.info("detail()");
         log.info("attachId : " + attachId);
         // attachId로 상세 정보 조회
-//        AttachVO attachVO = attachService.getAttachById(attachId);
-//        // 조회된 상세 정보를 Model에 추가하여 전달
-//        model.addAttribute("attachVO", attachVO);
+        List<AttachVO> attachVO = attachService.getAttachById(attachId);
+        // 조회된 상세 정보를 Model에 추가하여 전달
+        model.addAttribute("attachVO", attachVO);
     } // end detail()
     
     // 첨부 파일 다운로드(GET)

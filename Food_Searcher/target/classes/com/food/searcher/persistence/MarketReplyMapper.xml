@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       WHERE MARKET_ID = #{marketId}
       ORDER BY MARKET_REPLY_ID
    </select>
+ 
    
    <update id="update">
       UPDATE MARKET_REPLY

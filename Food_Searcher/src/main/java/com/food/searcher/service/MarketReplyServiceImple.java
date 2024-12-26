@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.MarketReplyVO;
-import com.food.searcher.persistence.MarketMapper;
 import com.food.searcher.persistence.MarketReplyMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -55,12 +54,5 @@ public class MarketReplyServiceImple implements MarketReplyService {
 		return 1;
 	}
 
-	@Override
-	public MarketReplyVO getReplyById(int marketReplyId) {
-		log.info("getmarketReplyById()");
-		log.info(marketReplyId);
-		log.info(marketReplyMapper.selectOne(marketReplyId));
-		return marketReplyMapper.selectOne(marketReplyId);
-	}
-	
+
 } // end MarketReplyServiceImple
