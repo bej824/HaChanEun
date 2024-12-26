@@ -101,6 +101,7 @@ body {
 textarea[readonly] {
     background-color: #f2f2f2;
 }
+
 </style>
 </head>
 
@@ -127,7 +128,7 @@ textarea[readonly] {
    <%} else { %>
     	<div class="login">
         <a href="/searcher/access/login">로그인</a>
-        <a href="/searcher/access/register">회원가입</a>
+        <a href="/searcher/access/emailConfirm">회원가입</a>
         </div>
     <%} %>
     
