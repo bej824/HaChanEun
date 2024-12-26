@@ -13,7 +13,6 @@ public interface MarketReplyMapper {
 	
 	int insert(MarketReplyVO marketReplyVO);
 	List<MarketReplyVO> selectListByMarketId(int marketId);
-	MarketReplyVO selectOne(int marketReplyId);
 	int update(MarketReplyVO marketReplyVO);
 	int delete(int marketReplyId);
 	

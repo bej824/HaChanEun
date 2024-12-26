@@ -35,7 +35,6 @@ public class MarketReplyController {
 		log.info("createReply()");
 		
 		int result = marketReplyService.createReply(marketReplyVO);
-		log.info(marketReplyVO);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 						
 	} // 댓글 등록
