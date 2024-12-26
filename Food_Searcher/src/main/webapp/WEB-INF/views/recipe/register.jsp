@@ -62,8 +62,17 @@ textarea {
 		</div>
 		<div>
 			<input type="submit" class="button" value="등록">
+			<button onclick="goBack()" class="button">뒤로가기</button>
 		</div>
 	</form>
+	
+		<script type="text/javascript">
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+	
 
 	<script>
 		$(document).ready(function() {

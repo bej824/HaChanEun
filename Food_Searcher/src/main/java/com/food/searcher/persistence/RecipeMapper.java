@@ -24,7 +24,7 @@ public interface RecipeMapper {
 	int updateReplyCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 댓글 수 변경
 	// @Param : 자바 객체의 속성을 mapper에 매핑
 	List<RecipeVO> selectListByPagination(Pagination pagination);
-	List<RecipeVO> selectTitleByPagination(Pagination pagination, String recipeTitle);
+	List<RecipeVO> selectTitleByPagination(Pagination pagination, @Param("recipeTitle") String recipeTitle);
 	int selectTotalCount();
 	int titleTotalCount();
 }

@@ -3,12 +3,14 @@ package com.food.searcher.config;
 import javax.servlet.Filter;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 // web.xml과 동일
 // AbstractAnnotationConfigDispatcherServletInitializer
 // : 이 클래스를 상속받는 클래스는 DispatcherServlet 및 ContextLoader 정보를 관리
-public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer{
+public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer implements WebMvcConfigurer{
 
 	   // root application context(Root WebApplicationContext)
 	   // 에 적용하는 설정 클래스 지정 메소드
@@ -37,5 +39,12 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	      encodingFilter.setForceEncoding(true);
 	      return new Filter[] { encodingFilter };
 	   }
+	   
+//	    @Override
+//	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//	        // 로컬 파일 경로를 URL 경로에 매핑
+//	        registry.addResourceHandler("/searcher/recipe/**")  // URL 패턴
+//	                .addResourceLocations("file:///C:/upload/food/");  // 실제 파일 경로
+//	    }
 
 }
