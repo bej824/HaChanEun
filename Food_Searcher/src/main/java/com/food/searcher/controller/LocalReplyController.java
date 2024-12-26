@@ -64,7 +64,6 @@ public class LocalReplyController {
 	         @RequestBody String replyContent
 	         ){
 	      log.info("updateReply()");
-	      log.info("replyId = " + replyId);
 	      int result = localReplyService.updateReply(replyId, replyContent);
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
@@ -72,7 +71,6 @@ public class LocalReplyController {
 	@PutMapping("/deleteReply/{replyId}")
 		public ResponseEntity<Integer> deleteReply(@PathVariable("replyId") int replyId){
 		 log.info("updateReply()");
-	     log.info("replyId = " + replyId);
 	     
 	     int result = localReplyService.deleteReply(replyId);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);

@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertLocalComment">
 		INSERT INTO LOCAL_COMMENT (LOCAL_COMMENT_ID, LOCAL_REPLY_ID, MEMBER_ID,
 		COMMENT_CONTENT, COMMENT_DATE_CREATED)
-		VALUES (LOCAL_REPLY_SEQ.NEXTVAL, #{replyId}, #{memberId},
+		VALUES (LOCAL_COMMENT_SEQ.NEXTVAL, #{replyId}, #{memberId},
 		#{commentContent}, SYSDATE)
 	</insert>
 
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update">
 		UPDATE LOCAL_COMMENT
 		SET COMMENT_CONTENT = #{commentContent}
-		WHERE LOCAL_REPLY_ID = #{replyId}
+		WHERE LOCAL_COMMENT_ID = #{commentId}
 	</update>
 
 	<delete id="delete">
