@@ -47,7 +47,7 @@ public class LocalCommentController {
 	}
 	
 	@ResponseBody
-	@PutMapping("/commentAll/{replyId}")
+	@GetMapping("/commentAll/{replyId}")
 	public ResponseEntity<List<LocalCommentVO>> commentAllPUT(@PathVariable("replyId") int replyId) {
 	    log.info("replyAllPUT()");
 	    
@@ -62,12 +62,11 @@ public class LocalCommentController {
 	         @RequestBody String commentContent
 	         ){
 	      log.info("updateComment()");
-	      log.info("commentId = " + commentId);
 	      int result = localCommentService.updateComment(commentId, commentContent);
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@PutMapping("/deleteComment/{replyId}")
+	@PutMapping("/deleteComment/{commentId}")
 		public ResponseEntity<Integer> deleteComment(@PathVariable("commentId") int commentId){
 		 log.info("deleteComment()");
 	     log.info("commentId = " + commentId);

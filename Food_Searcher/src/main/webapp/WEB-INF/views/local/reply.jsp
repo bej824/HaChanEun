@@ -45,7 +45,14 @@
 	text-align: right;
 }
 
-.btn_update {
+.comment {
+	width: 100%;
+	max-width: 600px; /* 댓글 창의 최대 너비 */
+	padding: 15px 20px; /* 패딩을 조정해서 더 컴팩트하게 */
+	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+}
+
+.btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add {
 	background-color: #04AA6D;
 	border: none;
 	color: white;
@@ -53,24 +60,13 @@
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
 	margin: 4px 2px;
 	cursor: pointer;
 	float: right;
 }
 
-.btn_delete {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
-	float: right;
+.btn_update:disabled, .btn_delete:disabled, .comment_update:disabled, .comment_delete:disabled, .comment_add:disabled {
+    display: none;
 }
 
 .btn_comment {
@@ -81,7 +77,6 @@
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
 	margin: 4px 2px;
 	cursor: pointer;
 	float: left;
@@ -210,12 +205,10 @@
 								+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
 								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
 								+ '<button class="btn_comment">답글</button>'
-								+ '<%if (session.getAttribute("memberId") != null) {%>'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<button class="btn_update" '+ disabled + '>수정</button>'
-								+ '<%}%>'
-								+ '<div id="comment"></div>'
-								+ '<br> <br> <br> <br>'
+								+ '<div class="comment"></div>'
+								+ '<br> <br>'
 								+ '</div>'
 								
 						}); // end each()
@@ -235,6 +228,8 @@
 				var replyId = $(this).prevAll('#replyId').val();
 				var replyContent = $(this).prevAll('#replyContent').val();
 				
+				console.log("replyContent : " + replyContent);
+				
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
@@ -251,7 +246,7 @@
 						}
 					}
 				});
-			}); // end replies.on()
+			}); // end btn_update()
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
@@ -274,18 +269,21 @@
 						}
 					}
 				});
-			});
+			}); // end btn_delete()
 			
 			$('#replies').on('click', '.reply_item .btn_comment', function(){
 				let replyId = $(this).prevAll('#replyId').val();
+				let commentDiv = $(this).closest('.reply_item').find('.comment');
+				
 				let url = 'commentAll/' + replyId;
 				
-				console.log("commentId : " + replyId);
+				console.log("replyId : " + replyId);
 				console.log("address : " + url);
 				
+				if(commentDiv.html() == ''){
 				// ajax 요청
 				$.ajax({
-					type : 'PUT', 
+					type : 'GET', 
 					url : 'commentAll/' + replyId,
 					headers : {
 						'Content-Type' : 'application/json'
@@ -293,7 +291,9 @@
 					data : replyId,
 					success : function(result) {
 						console.log(result);
+						var comment = '';
 						if(result) {
+							comment += '<br> <br>'
 							$(result).each(function(){
 								console.log("댓글 데이터: ", this);
 								console.log(this.replyId);
@@ -318,35 +318,35 @@
 								}
 								
 								comment += '<div class="comment_item">'
-									+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
+									+ '<input type="hidden" id="commentId" value="'+ this.commentId +'">'
 									+ this.memberId
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
-									+ '<%if (session.getAttribute("memberId") != null) {%>'
-									+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
-									+ '<button class="btn_update" '+ disabled + '>수정</button>'
-									+ '<br> <br> <br>'
-									+ '<%}%>'
+									+ '<input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'">'
+									+ '<button class="comment_delete" '+ disabled +' >삭제</button>'
+									+ '<button class="comment_update" '+ disabled + '>수정</button>'
 									+ '</div>'
 									
 							}); // end each()
-							var comment = '';
 							comment += '<input type="text" id="commentContent">'
-								+ '<button class="comment_add">작성</button>'
-							$('#comment').html(comment);
+								+ '<button class="comment_add" value='+ replyId +'>작성</button>';
+							commentDiv.html(comment);
 						}
 					}
 				});
+				}
+				else {
+					commentDiv.html("");
+				}
 				
-			})
+			}) // end btn_comment()
 			
-		 $('#comment').on('click', '.comment_add', function() {
+		$('#replies').on('click', '.comment_add', function() {
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
         
-        let memberId = <%=session.getAttribute("memberId")%>
-        let replyId = $(this).prevAll('#replyId').val();  // 댓글 ID
-        let commentContent = $(this).prevAll('#commentContent').val()
+        let memberId = "<%=session.getAttribute("memberId")%>"
+        let replyId = $(this).val();  // 댓글 ID
+        let commentContent = $(this).prevAll('#commentContent').val();
 
         console.log("replyId: " + replyId);
         console.log("memberId: " + memberId);
@@ -354,15 +354,9 @@
 
         // 빈 댓글 내용일 경우
         if (!commentContent.trim()) {
-            alert('댓글 내용을 입력해주세요.');
             return;
         }
-			
-			function commentAdd(replyId, memberId, commentContent){
-				console.log(replyId);
-				console.log(memberId);
-				console.log(commentContent);
-				// javascript 객체 생성
+        
 				let obj = {
 						'replyId' : replyId,
 						'memberId' : memberId,
@@ -383,10 +377,63 @@
 						if(result == 1) {
 							alert('댓글 입력 성공');
 							document.getElementById('commentContent').value = '';
+							getAllReply();
 						}
 					}
 				});
-			}
+			
+		 }); // end comment_add()
+		 
+		 $('#replies').on('click', '.reply_item .comment_update', function(){
+				console.log(this);
+				
+				// 선택된 댓글의 replyId, replyContent 값을 저장
+				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
+				var commentId = $(this).prevAll('#commentId').val();
+				var commentContent = $(this).prevAll('#commentContent').val();
+				
+				console.log("commentContent : " + commentContent);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : 'updateComment/' + commentId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : commentContent, 
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 수정 성공!');
+							getAllReply();
+						}
+					}
+				});
+			}); // end comment_update()
+			
+			$('#replies').on('click', '.reply_item .comment_delete', function(){
+				console.log(this);
+				var commentId = $(this).prevAll('#commentId').val();
+				console.log("선택된 댓글 번호 : " + commentId);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : 'deleteComment/' + commentId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : commentId, 
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('대댓글 삭제 성공!');
+							getAllReply();
+						}
+					}
+				});
+			}); // end comment_delete()
 
 		}); // end document()
 		
