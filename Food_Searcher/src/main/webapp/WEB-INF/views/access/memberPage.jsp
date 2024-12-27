@@ -11,7 +11,6 @@
 
 	<%@ include file ="../header.jsp" %>
 	<h1>Member Page</h1>
-	<a href="../home" class="button">home</a>
 
 	<form id="updateForm" action="update" method="post">
 		<p>아이디 : ${vo.memberId }</p>
@@ -96,6 +95,9 @@
 
 	<button onclick="update()" class="button">수정하기</button>
 	<button onclick="deleteMember()" class="button">회원탈퇴</button>
+	
+	<br>
+	<a href="/searcher/access/admin">운영자</a>
 
 	<script type="text/javascript">
 		function update() {

@@ -21,5 +21,6 @@ public class MemberVO {
 	private String memberGender; // 성별
 	private String memberMBTI; // MBTI
 	private String memberConstellation; // 별자리
+	private String memberStatus; // 멤버 상태
 
 }

@@ -37,7 +37,7 @@ pageEncoding="UTF-8"%>
   cursor: not-allowed;
 }
 
-textarea {
+marketContent {
   width: 700px;
   height: 280px;
   padding: 12px 20px;
@@ -75,7 +75,7 @@ button:disabled {
 	<input type="hidden" id="marketId" value="${marketVO.marketId }">
 	
 	<div>
-		<textarea rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
+		<textarea id="marketContent" rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
 		
 	</div>
 	
@@ -103,23 +103,25 @@ button:disabled {
 	<a href="/searcher/access/login">로그인하기</a>
 	<%} %>
 	
-	<% if(session.getAttribute("memberId") != null){ %>
-	<div style="text-align: center;">
-		<input type="text" id="marketReplyContent">
-		<button id="btnAdd" class="button">작성</button>
+	<ul id="allReply">
+	<div id="replyArea">
+		<div class="reply_item">
+		<!-- 댓글 표시 -->
+		<span>${marketReplyVO.memberId }</span>		
+		<span class="replyDate">${marketReplyVO.replyDateCreated }</span>
+		<input type="hidden" id="memberId" value="${sessionScope.memberId}">
+		<p class="marketReplyContent">${marketReplyVO.marketReplyContent }</p>
+		
+		
+	<!-- 댓글 작성 -->
 	</div>
-	<%} %>
-	
-	<div style="text-align: center;">
-		<input type="text" id="commentContent">
-		<button id="commentAdd" class="button">답글 작성</button>
+		<div class="replyadd" style="text-align: center;">
+		<textarea id="marketReplyContent" rows="3" cols="50"></textarea>
+		<button id="replyBtnAdd">댓글 작성</button>
 	</div>
-	
-	
-	<div style="text-align: center;">		
-		<div id="replies"></div>
+		
 	</div>
-	
+	</ul>
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -132,24 +134,20 @@ button:disabled {
 		
 	</script>
 	
-		
-	<!-- 댓글 -->
+	<input type="hidden" id="memberId" value="${sessionScope.memberId}">
+	
+	<!-- 댓글 JavaScript -->
 	
 	<script type="text/javascript">
 	
+	getAllReply();
 	
-	$(document).ready(function(){
+	replyBtnAdd.addEventListener("click", function(){
 		
-		getAllReply();
+		var marketId = $('#marketId').val(); // 게시판 번호 데이터
+		var memberId = $('#memberId').val(); // 작성자 데이터
+		var marketReplyContent = $('#marketReplyContent').val(); // 댓글 내용 데이터
 		
-		$('#btnAdd').click(function(){
-			var marketId = $('#marketId').val(); // 게시판 번호 데이터
-			var memberId = $('#memberId').val(); // 작성자 데이터
-			var marketReplyContent = $('#marketReplyContent').val(); // 댓글 내용 데이터
-			console.log(marketId, memberId, marketReplyContent);
-			
-			
-			
 			var obj = {
 					'marketId' : marketId,
 					'memberId' : memberId,	
@@ -173,170 +171,17 @@ button:disabled {
 					console.log(result);
 					if(result == 1) {
 						alert('댓글 입력 성공');
-						getAllReply();
 						$("#marketReplyContent").val(""); // text area에 있는 댓글 내용 삭제
+						getAllReply();
 					}
 				}
 			}); // end ajax
-		}); // end btnAdd.click()
+		}); // end replyAdd.click()
 	
-		function getAllReply() {
-			var marketId = $('#marketId').val();
-			
-			var url = '../market/all/' + marketId;
-			$.getJSON(
-				url, 			
-				function(data) {
-					console.log(data);
-					
-					var list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
-					var memberId = '${sessionScope.memberId}';
-					console.log('memberId = ' + memberId);
-					
-					$(data).each(function(){
-						console.log(this);
-					  
-						// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
-						var replyDateCreated = new Date(this.replyDateCreated);
-						var disabled = '';
-						var readonly = '';
-						
-						if('<%=session.getAttribute("memberId") %>' != this.memberId) {
-							disabled = 'disabled';
-							readonly = 'readonly';
-						}
-
-						list += '<div class="reply_item">'
-							+ '<pre>'	
-							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
-							+ this.memberId
-							+ '&nbsp;&nbsp;' // 공백
-							+ '<input type="text" id="marketReplyContent" value="'+ this.marketReplyContent +'">'
-							+ '&nbsp;&nbsp;'
-							+ replyDateCreated
-							+ '&nbsp;&nbsp;'
-							+ '<%if(session.getAttribute("memberId") != null){ %>'
-							+ '<button class="btn_update" >수정</button>'
-							+ '<button class="btn_delete" >삭제</button>'
-							+ '<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">'
-							+ '<button id="commentAdd" class="commentAdd">답글 작성</buttton> <br>'
-							+ '<%} %>'
-							+ '</pre>'
-							 
-							 
-							// input type hidden memberId 반드시 있어야함. 그래야 대댓에서 참조 가능
-						
-							list += '</div>';
-					}); // end each()
-						
-					$('#replies').html(list); // 저장된 데이터를 replies div 표현
-				} // end function()
-			); // end getJSON()
-		} // end getAllReply()
+	function getAllReply() {
 		
-			
-		
-		// 수정 버튼을 클릭하면 선택된 댓글 수정
-		$('#replies').on('click', '.reply_item .btn_update', function(){
-			console.log(this);
-			
-			// 선택된 댓글의 replyId, replyContent 값을 저장
-			// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-			var marketReplyId = $(this).prevAll('#marketReplyId').val();
-			var marketReplyContent = $(this).prevAll('#marketReplyContent').val();
-			console.log("선택된 댓글 번호 : " + marketReplyId + ", 댓글 내용 : " + marketReplyContent);
-			
-			// ajax 요청
-			$.ajax({
-				type : 'PUT', 
-				url : '../market/' + marketReplyId,
-				headers : {
-					'Content-Type' : 'application/json'
-				},			
-				data: marketReplyContent,
-				success : function(result) {
-					console.log(result);
-					if(result == 1) {
-						alert('댓글 수정 성공!');
-						getAllReply();
-					
-				}
-			}
-			
-		});	 //end  ajx
-	}); // end 수정
-		
-		// 삭제 버튼을 클릭하면 선택된 댓글 삭제
-		$('#replies').on('click', '.reply_item .btn_delete', function(){
-			console.log(this);
-			var marketId = $('#marketId').val(); // 게시판 번호 데이터
-			var marketReplyId = $(this).prevAll('#marketReplyId').val();
-			
-			// ajax 요청
-			$.ajax({
-				type : 'DELETE', 
-				url : '../market/' + marketReplyId + '/' + marketId, 
-				headers : {
-					'Content-Type' : 'application/json'
-				},
-				success : function(result) {
-					console.log(result);
-					if(result == 1) {
-						alert('댓글 삭제 성공!');
-						getAllReply();
-					}
-				}
-			});
-		}); // end replies.on()	
-		
-	//														-- 대댓글	--
-	
-	
-	getAllComment();
-		
-	$('#commentAdd').click(function(){
-		var marketReplyId = $('#marketReplyId').val(); 
-		var memberId = $('#memberId').val();
-		var commentContent = $('#commentContent').val();
-		console.log(marketReplyId, memberId, commentContent);
-		
-		var obj = {
-				'marketReplyId' : marketReplyId,
-				'memberId' : memberId,
-				'commentContent' : commentContent
-		};
-		console.log(obj);
-		
-		if (!commentContent) {
-		     alert('대댓글 내용을 입력해주세요.');
-		     return;
-		 }
-		
-		$.ajax({
-			type : 'POST',
-			url : '../market/detail/',
-			headers : { // 헤더 정보
-				'Content-Type' : 'application/json' // json content-type 설정
-			}, 
-			data : JSON.stringify(obj), 
-			success : function(result) {
-				console.log(result);
-				if(result == 1) {
-					alert('대댓글 입력 성공');
-					getAllComment();
-					$("#marketCommentContent").val(""); // text area에 있는 댓글 내용 삭제
-				} else {
-				    alert('대댓글 입력 실패');
-				}
-			}
-		}); // end ajax
-	}); // end commentAdd
-	
-	
-	function getAllComment() {
-		var marketReplyId = $('#marketReplyId').val();
-		
-		var url = '../market/all/' + marketReplyId;
+		var marketId = $('#marketId').val();
+		var url = '../market/all/' + marketId;
 		$.getJSON(
 			url, 			
 			function(data) {
@@ -350,7 +195,7 @@ button:disabled {
 					console.log(this);
 				  
 					// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
-					var commentDateCreated = new Date(this.commentDateCreated);
+					var replyDateCreated = new Date(this.replyDateCreated);
 					var disabled = '';
 					var readonly = '';
 					
@@ -358,38 +203,16 @@ button:disabled {
 						disabled = 'disabled';
 						readonly = 'readonly';
 					}
-
-					list += '<div class="comment_item">'
-						+ '<pre>'	
-						+ '<input type="hidden" id="marketCommentId" value="'+ this.marketCommentId +'">'
-						+ this.memberId
-						+ '&nbsp;&nbsp;' // 공백
-						+ '<input type="text" id="commentContent" value="'+ this.commentContent +'">'
-						+ '&nbsp;&nbsp;'
-						+ commentDateCreated
-						+ '&nbsp;&nbsp;'
-						+ '<%if(session.getAttribute("memberId") != null){ %>'
-						+ '<button class="btn_comment_update" >수정</button>'
-						+ '<button class="btn_comment_delete" >삭제</button>'
-						+ '<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">'
-						+ '<input type="text" id="commentContent">'
-						+ '<%} %>'
-						+ '</pre>'
-						+ '</div>'
-						 // 대댓글 렌더링
-					
-						list += '</div>';
-				}); // end each()
-					
-				$('#comments').html(list); // 저장된 데이터를 comments로 
-			} // end function()
-		); // end getJSON()
-	} // end getAllComment()
-	
-	
-	
-	}); // end document
-	
+			
+		let memberId = document.createElement("p");
+		
+		
+		
+		}
+			
+	} // end function(data)
+} // end getAllReply
+		
 	
 	
 	

@@ -30,9 +30,6 @@ public class AccessController {
 	@Autowired
 	private MemberService MemberService;
 
-	@Autowired
-	private RoleService RoleService;
-
 	// register.jsp 페이지 호출
 	@PostMapping("/register")
 	public void registerPOST(@RequestParam("email") String email, Model model) {
@@ -166,36 +163,6 @@ public class AccessController {
 		model.addAttribute("memberVO", memberVO);
 
 		return "access/ID"; // 결과 페이지로 이동
-	}
-
-	@GetMapping("admin")
-	public String adminGET(HttpSession session, Model model) {
-		log.info("adminGET()");
-		String memberId = (String) session.getAttribute("memberId");
-		try {
-			RoleVO roleVO = RoleService.selectRole(memberId);
-			log.info(roleVO);
-			if(roleVO.getRoleName().equals("admin")) {
-				model.addAttribute(roleVO);
-				return "admin";
-			} else {
-				return "redirect:/home";
-			}
-			
-		} catch (Exception e) {
-			return "redirect:/home";
-		}
-
-	} // end if()
-	
-	@PostMapping("roleUpdate")
-	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
-		log.info("roleUpdate");
-		String roleName = "admin";
-		int result = RoleService.updateRole(memberId, roleName);
-		log.info(result + "행 수정");
-		
-		return "../home";
 	}
 
 }

@@ -250,13 +250,14 @@
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
-				var replyId = $(this).prevAll('#replyId').val();
+				let replyId = $(this).prevAll('#replyId').val();
+				let boardId = $('#Id').val();
 				console.log("선택된 댓글 번호 : " + replyId);
 				
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
-					url : 'deleteReply/' + replyId,
+					url : 'deleteReply/' + boardId + '/' + replyId,
 					headers : {
 						'Content-Type' : 'application/json'
 					},
