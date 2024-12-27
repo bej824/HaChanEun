@@ -23,6 +23,12 @@
 		response.sendRedirect("../home");
 	}
 	%>
+	
+	<script type="text/javascript">
+        <c:if test="${not empty param.status}">
+            alert("현재 ${param.status}의 계정입니다.");
+        </c:if>
+    </script>
     
 </body>
 </html>

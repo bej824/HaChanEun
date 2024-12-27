@@ -75,14 +75,21 @@ public class AccessController {
 
 	@PostMapping("/login")
 	public String loginPOST(@RequestParam("memberId") String memberId, @RequestParam("password") String password,
-			HttpSession session, MemberVO vo) {
+			HttpSession session, MemberVO vo, Model model) {
 		log.info("loginPOST()");
 
 		try {
 			vo = MemberService.getMemberById(memberId);
+			log.info(vo);
 			if (vo.getPassword().equals(password)) {
-				session.setAttribute("memberId", memberId);
+				if(vo.getMemberStatus().equals("비활성")) {
+					model.addAttribute("status", vo.getMemberStatus());
+					return "redirect:/access/login";
+				} else {
+					session.setAttribute("memberId", memberId);
+				}
 			} else {
+				
 			}
 
 		} catch (Exception e) {
