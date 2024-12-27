@@ -85,7 +85,7 @@ textarea {
   		
   		
          <p>내용 : </p>
-         <div class="addImage" id="image-show"> <!-- 이미지 띄울 공간 -->
+         <div class="addImage" id="imageShow"> <!-- 이미지 띄울 공간 -->
    		 </div>
    		 <input type="file" accept="image/*" onchange="loadFile(this)">
    		 
@@ -107,41 +107,12 @@ textarea {
             newImage.style.height = "10%";
             newImage.style.objectFit = "cover"; // div에 넘치지 않고 들어가게
 
-            //이미지를 image-show div에 추가
-            let container = document.getElementById('image-show');
+            //이미지를 imageShow div에 추가
+            let container = document.getElementById('imageShow');
             container.appendChild(newImage);
-        	}
-        
-         
-    	// 이미지 출력
-    	function showUploadImage(uploadResultArr){
-    		
-    		/* 전달받은 데이터 검증 */
-    		if(!uploadResultArr || uploadResultArr.length == 0){return}
-    		
-    		let uploadResult = $("#uploadResult");
-    		
-    		let obj = uploadResultArr[0];
-    		
-    		let str = "";
-    		
-    		let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
-    		
-    		str += "<div id='result_card'>";
-    		str += "<img src='/display?fileName=" + fileCallPath +"'>";
-    		str += "<div class='imgDeleteBtn'>x</div>";
-    		str += "</div>";		
-    		
-    		uploadResult.append(str);     
-    	    
-    	}
-    	
-		</script>
+        	} 
 
-        
-		
-		
-		<script>
+         
 		$(document).ready(function() {
 			// 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
 			var blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i; 
@@ -169,8 +140,8 @@ textarea {
 					alert("파일 크기가 너무 큽니다. 최대 크기는 10MB입니다.");
 					event.preventDefault();
 				}
-			});
-		});
+			});  // end uploads
+		});  // end document
 		
 		</script>
 		
