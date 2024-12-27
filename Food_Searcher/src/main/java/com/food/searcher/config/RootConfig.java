@@ -1,5 +1,7 @@
 package com.food.searcher.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -52,4 +56,28 @@ public class RootConfig {
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
 	}
+	
+	// 이메일 인증
+	 @Bean
+	    public JavaMailSender mailSender() {
+	        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+	        
+	        // SMTP 서버 설정
+	        mailSender.setHost("smtp.gmail.com");
+	        mailSender.setPort(587);
+	        mailSender.setUsername("hachaneun3@gmail.com");
+	        mailSender.setPassword("ywrvbyzicdmfouni");
+	        mailSender.setDefaultEncoding("utf-8");
+
+	        /// JavaMailProperties 설정
+	        Properties javaMailProperties = new Properties();
+	        javaMailProperties.put("mail.smtp.auth", "true");  // SMTP 인증 사용
+	        javaMailProperties.put("mail.smtp.starttls.enable", "true");  // TLS 사용
+	        javaMailProperties.put("mail.debug", "false");  // 디버그 모드 (옵션)
+
+	        mailSender.setJavaMailProperties(javaMailProperties);
+	        
+	        return mailSender;
+	    }
+	
 } // end RootConfig
