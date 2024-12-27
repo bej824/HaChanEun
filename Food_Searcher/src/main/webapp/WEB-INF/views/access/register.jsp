@@ -62,7 +62,7 @@
 		</p>
 
 		<p>이메일</p>
-		<input type=text name=email placeholder="이메일을 입력해주세요."> <br>
+		<input type=text name=email value="${email}" readonly="readonly"> <br>
 
 		<p>이메일 광고 수신 동의</p>
 		<input type="radio" name="emailAgree" value="yes" checked="checked">예
