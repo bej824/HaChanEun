@@ -14,6 +14,7 @@ public interface LocalReplyMapper {
 	int insertLocalReply(@Param("localId") int localId, @Param("memberId") String memberId, 
 			@Param("replyContent") String replyContent);
 	List<LocalReplyVO> selectListByLocalId(@Param("localId") int localId);
+	int countByLocalIdReply(@Param("localId") int localId);
 	int update(@Param("replyId") int replyId, @Param("replyContent") String replyContent);
 	int delete(int ReplyId);
 	

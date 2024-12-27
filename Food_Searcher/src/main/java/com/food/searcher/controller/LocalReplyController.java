@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,11 +69,11 @@ public class LocalReplyController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@PutMapping("/deleteReply/{replyId}")
-		public ResponseEntity<Integer> deleteReply(@PathVariable("replyId") int replyId){
+	@PutMapping("/deleteReply/{boardId}/{replyId}")
+		public ResponseEntity<Integer> deleteReply(@PathVariable("boardId") int localId, @PathVariable("replyId") int replyId){
 		 log.info("updateReply()");
 	     
-	     int result = localReplyService.deleteReply(replyId);
+	     int result = localReplyService.deleteReply(localId, replyId);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 

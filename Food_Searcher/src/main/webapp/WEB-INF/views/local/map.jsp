@@ -85,6 +85,7 @@ li {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<h1>특산품</h1>
 	<div class="search">
 	상세 검색 :
 	<select name="localLocal" id="localLocal"
