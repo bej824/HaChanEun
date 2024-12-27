@@ -79,13 +79,14 @@ textarea {
 
 	<c:forEach var="attachVO" items="${idList }">
 	<p>
-    <img src="${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+<%--     <img src="${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
     <img src="src/main/webapp/image/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
     
     <img src="detail/image/${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+	 --%>
+	<img src="${imagePath}" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" />
 	</p><br>
 	</c:forEach>
-	
 
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	

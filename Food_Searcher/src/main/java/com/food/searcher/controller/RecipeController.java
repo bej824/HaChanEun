@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -176,6 +177,10 @@ public class RecipeController {
 		log.info("AttachVO" + attachVO);
 		model.addAttribute("recipeVO", recipeVO);
 		model.addAttribute("idList", attachVO);
+		String date = attachVO.get(0).getAttachPath().replace("\\", "/");
+		   String imagePath = "/resources/images/"+date+"/" + attachVO.get(0).getAttachChgName(); // 이미지 경로
+		   log.info("이미지 경로 : " + imagePath);
+	        model.addAttribute("imagePath", imagePath); // JSP로 경로 전달
 	}
 	
 	// 게시글 번호를 전송받아 상세 게시글 조회
@@ -205,5 +210,4 @@ public class RecipeController {
 	      log.info(result + "행 삭제");
 	      return "redirect:/recipe/list";
 	   }
-	   
 }
