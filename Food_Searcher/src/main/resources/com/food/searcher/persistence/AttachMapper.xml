@@ -25,6 +25,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{attachChgName}, #{attachExtension})
 	</insert>
 
+	<select id="selectAll" resultMap="attachResultMap">
+		SELECT * FROM ATTACH
+	</select>
+	
 	<select id="selectByAttachId" resultMap="attachResultMap">
 		SELECT * FROM ATTACH 
 		WHERE BOARD_ID = #{boardId}

@@ -10,6 +10,7 @@ import com.food.searcher.domain.AttachVO;
 public interface AttachMapper {
     int insert(AttachVO attach);
     List<AttachVO> selectByAttachId(int attachId);
+    List<AttachVO> selectAll();
     List<Integer> selectIdList();
     int update(AttachVO attach);
     int delete(int attachId);

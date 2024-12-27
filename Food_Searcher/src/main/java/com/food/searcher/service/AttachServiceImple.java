@@ -47,4 +47,10 @@ public class AttachServiceImple implements AttachService {
     	log.info("deleteAttach()");
         return attachMapper.delete(attachId);
     }
+
+	@Override
+	public List<AttachVO> getSelectAll() {
+		log.info("getSelectAll()");
+		return attachMapper.selectAll();
+	}
 }

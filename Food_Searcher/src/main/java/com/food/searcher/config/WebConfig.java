@@ -40,11 +40,11 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	      return new Filter[] { encodingFilter };
 	   }
 	   
-//	    @Override
-//	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//	        // 로컬 파일 경로를 URL 경로에 매핑
-//	        registry.addResourceHandler("/searcher/recipe/**")  // URL 패턴
-//	                .addResourceLocations("file:///C:/upload/food/");  // 실제 파일 경로
-//	    }
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	        // 로컬 파일 경로를 URL 경로에 매핑
+	    	registry.addResourceHandler("/resources/**")
+            .addResourceLocations("/resources/"); // "/resources/" 경로에 있는 리소스를 서빙
+	    }
 
 }

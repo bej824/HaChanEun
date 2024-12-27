@@ -8,6 +8,7 @@ public interface AttachService {
 	
     int createAttach(AttachVO attachVO);
     List<AttachVO> getAttachById(int attachId);
+    List<AttachVO> getSelectAll();
     List<Integer> getAllId();
     int updateAttach(AttachVO attachVO);
     int deleteAttach(int attachId);
