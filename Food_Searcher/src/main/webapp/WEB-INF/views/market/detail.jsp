@@ -180,12 +180,38 @@ button:disabled {
 	
 	function getAllReply() {
 		
+		var marketId = $('#marketId').val();
+		var url = '../market/all/' + marketId;
+		$.getJSON(
+			url, 			
+			function(data) {
+				console.log(data);
+				
+				var list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
+				var memberId = '${sessionScope.memberId}';
+				console.log('memberId = ' + memberId);
+				
+				$(data).each(function(){
+					console.log(this);
+				  
+					// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
+					var replyDateCreated = new Date(this.replyDateCreated);
+					var disabled = '';
+					var readonly = '';
+					
+					if('<%=session.getAttribute("memberId") %>' != this.memberId) {
+						disabled = 'disabled';
+						readonly = 'readonly';
+					}
 			
-			
-			
+		let memberId = document.createElement("p");
+		
+		
+		
 		}
 			
-		
+	} // end function(data)
+} // end getAllReply
 		
 	
 	

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +34,11 @@ public class AccessController {
 	private RoleService RoleService;
 
 	// register.jsp 페이지 호출
-	@GetMapping("/register")
-	public void registerGET() {
-		log.info("registerGET()");
-	} // end registerGET()
+	@PostMapping("/register")
+	public void registerPOST(@RequestParam("email") String email, Model model) {
+		log.info("registerPOST()");
+		model.addAttribute("email", email);
+	} // end registerPOST()
 
 	@GetMapping("/idCheck")
 	@ResponseBody

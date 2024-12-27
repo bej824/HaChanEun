@@ -1,7 +1,10 @@
 package com.food.searcher.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+//import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,15 +30,18 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping(value="/recipe")
 @Log4j
 public class RecipeController {
-	
-	   @Autowired
-	   private String uploadPath;
+
+	@Autowired
+	private String uploadPath;
 	   
 	   @Autowired
 	   private AttachService attachService;
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+//    @Autowired
+//    private ServletContext servletContext;
 	
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
@@ -53,13 +59,15 @@ public class RecipeController {
 	        recipeList = recipeService.getPagingBoards(pagination);
 	        log.info("페이징 : " + recipeList);
 	        pageMaker.setTotalCount(recipeService.getTotalCount());
+	        log.info(recipeService.getTotalCount());
+			model.addAttribute("pageMaker", pageMaker);
+			model.addAttribute("recipeList", recipeList);
 	    } else {
 	    	pageMaker.setTotalCount(recipeList.size());
 	    	log.info(recipeList.size());
 	    }
 		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("recipeList", recipeList);
+
 	}
 	
 	// 검색 기능 (제목, 음식, 작성자, 내용)
@@ -123,6 +131,19 @@ public class RecipeController {
 
 	      // UUID 생성
 	      String chgName = UUID.randomUUID().toString();
+	      
+//	        // webapp/image 경로 가져오기
+//	        String uploadPath = "src/main/webapp/images"; // webapp/image 경로
+//	        
+//	        // 경로 확인: 실제 경로 출력
+//	        log.info("Upload Path: " + uploadPath);
+//
+//	        // 업로드할 경로 확인 및 디렉토리 생성
+//	        File uploadDir = new File(uploadPath);
+//	        if (!uploadDir.exists()) {
+//	            uploadDir.mkdirs(); // 디렉토리 생성
+//	        }
+	      
 	      // 파일 저장
 	      FileUploadUtil.saveFile(uploadPath, file, chgName);
 

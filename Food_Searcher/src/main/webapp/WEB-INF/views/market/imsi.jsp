@@ -116,7 +116,7 @@ function selectCommentList(){
 
             // 작성자 영역(p)에 프로필,닉네임,작성일 마지막 자식으로(append) 추가
             commentWriter.append(profileImage , memberNickname , commentDate);
-
+            
             
 
             // 댓글 내용
