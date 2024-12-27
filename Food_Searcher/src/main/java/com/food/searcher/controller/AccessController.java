@@ -131,9 +131,6 @@ public class AccessController {
 	@GetMapping("/ID")
 	public String ID(Model model) {
 		log.info("ID");
-		List<MemberVO> memberList = MemberService.getAllMember();
-		log.info(memberList);
-		model.addAttribute(memberList);
 		return "access/ID";
 	}
 
@@ -163,8 +160,10 @@ public class AccessController {
 
 		log.info("Returned MemberVO: " + memberVO);
 
+        model.addAttribute("memberName", memberName);
+        model.addAttribute("email", email);
 		// 결과를 모델에 추가하여 뷰에서 사용하도록 설정
-		model.addAttribute("MemberVO", memberVO);
+		model.addAttribute("memberVO", memberVO);
 
 		return "access/ID"; // 결과 페이지로 이동
 	}
