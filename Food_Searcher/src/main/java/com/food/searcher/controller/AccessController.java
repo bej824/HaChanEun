@@ -107,7 +107,7 @@ public class AccessController {
 			@RequestParam(value = "emailAgree") String emailAgree, MemberVO vo, Model model) {
 		log.info("updatePOST()");
 
-		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null);
+		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null, null);
 		int result = MemberService.updateMember(vo);
 		log.info(result + "행 수정");
 

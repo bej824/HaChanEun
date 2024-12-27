@@ -114,7 +114,7 @@ public class HomeController {
 		}
 		
 		memberVO = new MemberVO(memberId, password, memberName, email, emailAgree, 
-				memberAge, memberGender, memberMBTI, memberConstellation);
+				memberAge, memberGender, memberMBTI, memberConstellation, null);
 		log.info(memberVO);
 		int result = MemberService.createMember(memberVO);
 		log.info(result + "행 등록");
