@@ -14,9 +14,9 @@
 	<%@ include file ="../header.jsp" %>
 		<h1>ID 찾기</h1>
 	<form id="ID" action = "ID" method="POST">
-		<p>회원 이름</p>
-	<input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>
-	<input type="text" id="email" name="email" placeholder="이메일을 입력해주세요.">
+	회원 이름 : <input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>
+	email : <input type="text" id="email" name="email" value="${email}" placeholder="이메일을 입력해주세요.">
+	<input type="hidden" id="memberId">
 	<div id="confirmMsg" class="message" style="color: red;"></div>
 	</form>
 	<br>
@@ -29,6 +29,9 @@
 		<hr>
 
 		<c:if test="${not empty memberVO }">
+		<script>
+        let memberId = "${memberVO.memberId}";  // memberVO.memberId 값을 JavaScript 변수에 저장
+    </script>
 		<p>${memberVO.memberName }님의 ID는</p>
 		<p>${memberVO.memberId }입니다.</p>
 		</c:if>
@@ -40,6 +43,7 @@
 	<script type="text/javascript">
 		function confirm() {
 			let btn_confirm = document.getElementById('btn_confirm');
+			console.log("btn_confirm", btn_confirm);
 			let email = document.getElementsByName("email")[0].value;
 			console.log(email);
 			btn_confirm.textContent = "재발송";
@@ -53,6 +57,7 @@
 			        $('#confirmMsg').html('인증번호가 발송되었습니다.').css('color', 'green');
 			        document.getElementById('btn_register').style.display = '';
 			        document.getElementById('emailCheck').style.display = '';
+			        alert('발송 확인');
 			      } else {
 			      }
 			    }
@@ -74,6 +79,7 @@
 			        btn_register.textContent = "확인";
 			        btn_register.onclick = register;
 			        email.readOnly = true;
+					alert('인증 확인');
 			      } else {
 			        $('#confirmMsg').html('인증번호를 다시 확인해주세요.').css('color', 'red');
 			      }
@@ -86,6 +92,7 @@
 		
 		function register(){
 			document.getElementById("ID").submit();
+			alert(memberId); // ??
 		}
 	</script>
 
