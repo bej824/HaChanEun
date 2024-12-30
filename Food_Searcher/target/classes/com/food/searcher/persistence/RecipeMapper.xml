@@ -101,13 +101,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(
 		SELECT RECIPE.*, ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC) AS RN
 		FROM RECIPE
-		WHERE RECIPE_TITLE LIKE '%' || #{recipeTitle} || '%'
+		WHERE RECIPE_TITLE LIKE '%' || #{keyword} || '%'
 		)
-		WHERE RN BETWEEN #{start} AND #{end}
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
+	
+	<select id="selectFoodByPagination" resultMap="recipeResultMap">
+		SELECT * FROM
+		(
+		SELECT RECIPE.*, ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC) AS RN
+		FROM RECIPE
+		WHERE RECIPE_FOOD LIKE '%' || #{keyword} || '%'
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
+	
+	<select id="selectContentByPagination" resultMap="recipeResultMap">
+		SELECT * FROM
+		(
+		SELECT RECIPE.*, ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC) AS RN
+		FROM RECIPE
+		WHERE RECIPE_CONTENT LIKE '%' || #{keyword} || '%'
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
+	
+	<select id="selectMemberByPagination" resultMap="recipeResultMap">
+		SELECT * FROM
+		(
+		SELECT RECIPE.*, ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC) AS RN
+		FROM RECIPE
+		WHERE MEMBER_ID LIKE '%' || #{keyword} || '%'
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
 
 	<select id="titleTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE LIKE '%' || #{recipeTitle} || '%'
+		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE WHERE RECIPE_TITLE LIKE '%' || #{recipeTitle} || '%'
+	</select>
+	
+	<select id="foodTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE WHERE RECIPE_FOOD LIKE '%' || #{recipeTitle} || '%'
+	</select>
+	
+	<select id="contentTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE WHERE RECIPE_CONTENT LIKE '%' || #{recipeTitle} || '%'
+	</select>
+	
+	<select id="memberTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE WHERE MEMBER_ID LIKE '%' || #{recipeTitle} || '%'
 	</select>
 
 	<update id="updateReplyCount">

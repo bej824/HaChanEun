@@ -20,6 +20,7 @@ textarea {
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
+	<%@ include file ="../header.jsp" %>
 	<h2>글 수정 페이지</h2>
 	<form action="modify" method="POST">
 		<div>
@@ -46,8 +47,20 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 maxlength="300" required>${recipeVO.recipeContent }</textarea>
 		</div>
 		<div>
-			<input type="submit" value="등록">
+			<input type="submit" value="등록" class="button">
+			<button onclick="goBack()" class="button">뒤로가기</button>
 		</div>
+		
+<script>
+function goBack() {
+  const referrer = document.referrer;
+  if (referrer) {
+    window.location.href = referrer;  // 이전 페이지로 이동
+  } else {
+    alert("이전 페이지가 없습니다.");
+  }
+}
+</script>
 	</form>
 </body>
 </html>

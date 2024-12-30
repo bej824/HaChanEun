@@ -88,31 +88,31 @@ li {
 		</tbody>
 	</table>
 	
-	<form id="searchForm" method="POST" action="list" class="search">
+	<form id="searchForm" method="GET" action="list" class="search">
 	    <input type="text" name="recipeTitle" placeholder="검색어 입력" required>
 	    <select name="filterBy">
-	        <option value="recipeTitle">제목</option>
-	        <option value="recipeFood">음식</option>
-	        <option value="content">내용</option>
-	        <option value="author">작성자</option>
+	        <option value="RECIPE_TITLE">제목</option>
+	        <option value="RECIPE_FOOD">음식</option>
+	        <option value="RECIPE_CONTENT">내용</option>
+	        <option value="MEMBER_ID">작성자</option>
 	    </select>
 	    <button type="submit" class="button">검색</button>
 	</form>
 	<ul>
 		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
-			<li><a href="list?pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
+			<li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
 		</c:if>
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:if test="${not empty pageMaker.startNum }">
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li><a href="list?pageNum=${num }" class="button">${num }</a></li>
+			<li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num }" class="button">${num }</a></li>
 		</c:forEach>
 		</c:if>
 		<!-- 다음 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isNext() }">
-			<li><a href="list?pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
+			<li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
 		</c:if>
 	</ul>
 </body>

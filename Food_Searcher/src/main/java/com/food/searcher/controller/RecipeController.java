@@ -12,10 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeVO;
@@ -45,69 +43,27 @@ public class RecipeController {
 //    private ServletContext servletContext;
 	
 	@GetMapping("/list")
-	public void list(Model model, Pagination pagination) {
+	public void list(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, Model model, Pagination pagination) {
 		log.info("list()");
 		log.info("pagination : " + pagination);
-		@SuppressWarnings("unchecked")
-		List<RecipeVO> recipeList = (List<RecipeVO>) model.asMap().get("recipeList");
+		log.info("recipeTitle : " + recipeTitle);
+		log.info("filterBy : " + filterBy);
+		pagination.setKeyword(recipeTitle);
+		pagination.setType(filterBy);
+		log.info("필터 적용 pagination : " + pagination);
+		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		log.info("vo list : " + recipeList);
+		log.info(recipeList.size());
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		
-		
-	    if (recipeList == null) {
-	        recipeList = recipeService.getPagingBoards(pagination);
-	        log.info("페이징 : " + recipeList);
-	        pageMaker.setTotalCount(recipeService.getTotalCount());
-	        log.info(recipeService.getTotalCount());
-			model.addAttribute("pageMaker", pageMaker);
-			model.addAttribute("recipeList", recipeList);
-	    } else {
-	    	pageMaker.setTotalCount(recipeList.size());
-	    	log.info(recipeList.size());
-	    }
-		
-
-	}
+		log.info(pageMaker);
+		pageMaker.setTotalCount(recipeService.getTotalCount(recipeTitle, filterBy));
+		log.info(recipeService.getTotalCount(recipeTitle, filterBy));
 	
-	// 검색 기능 (제목, 음식, 작성자, 내용)
-	@PostMapping("/list")
-	public String searchPOST(@RequestParam String recipeTitle, @RequestParam String filterBy, RedirectAttributes redirectAttributes, Pagination pagination) {
-		log.info("searchPOST()");
-		log.info("검색어: " + recipeTitle);
-		log.info("필터 기준: " + filterBy);
-		
-		List<RecipeVO> recipeVO;
-		
-		switch (filterBy) {
-        case "recipeTitle":
-        	recipeVO = recipeService.getselectSearch(recipeTitle);
-        	log.info("recipeVO" + recipeVO);
-            break;
-        case "recipeFood":
-        	recipeVO = recipeService.getSelectFood(recipeTitle);
-        	log.info("recipeVO" + recipeVO);
-        	break;
-        case "content":
-        	recipeVO = recipeService.getSelectContent(recipeTitle);
-        	log.info("recipeVO" + recipeVO);
-            break;
-        case "author":
-        	recipeVO = recipeService.getSelectId(recipeTitle);
-        	log.info("recipeVO" + recipeVO);
-            break;
-        default:
-        	recipeVO = recipeService.getselectSearch(recipeTitle); // 기본값으로 제목 검색
-        	log.info("recipeVO" + recipeVO);
-            break;
-    }
-		log.info("결과 값 : " + recipeVO);
-		log.info("페이징 전 : " + recipeVO.size());
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("recipeList", recipeList);
 
-		redirectAttributes.addFlashAttribute("recipeList", recipeVO);
-		
-		return "redirect:/recipe/list";
 	}
 	
 	@GetMapping("/register")
@@ -201,7 +157,7 @@ public class RecipeController {
 		log.info(recipeVO);
 		int result = recipeService.updateBoard(recipeVO);
 		log.info(result + "행 수정");
-		return "redirect:/recipe/list";
+		return "redirect:/recipe/detail?recipeId=" + recipeVO.getRecipeId();
 	}
 	
 	   // detail.jsp에서 boardId를 전송받아 게시글 데이터 삭제

@@ -31,7 +31,7 @@ public class RecipeCommentController {
 	
 	@Autowired
 	private RecipeCommentService recipeCommentService;
-	
+
 	@PostMapping
 	public ResponseEntity<Integer> createComment(@RequestBody RecipeCommentVO recipeCommentVO) {
 		log.info("createComment()");

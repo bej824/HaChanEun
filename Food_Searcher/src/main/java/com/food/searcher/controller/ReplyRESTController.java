@@ -2,6 +2,8 @@ package com.food.searcher.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +38,9 @@ public class ReplyRESTController {
 	
 	@Autowired
 	private RecipeCommentService recipeCommentService;
-	
+
 	@PostMapping // POST : 댓글 입력
-	public ResponseEntity<Integer> createReply(@RequestBody RecipeReplyVO replyVO) {
+	public ResponseEntity<Integer> createReply(@RequestBody RecipeReplyVO replyVO, HttpSession session) {
 		log.info("createReply()");
 		log.info(replyVO);
 		

@@ -139,7 +139,7 @@ public class HomeController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(recipeService.getTotalCount());
+		pageMaker.setTotalCount(recipeService.getTotalCount(pagination.getKeyword(), pagination.getType()));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);

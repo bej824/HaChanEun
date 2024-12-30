@@ -30,7 +30,7 @@
     }
 
 .comment_item {
-        margin-left: 100px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
+        margin-left: 60px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
         margin-bottom: 10px;
     }
 
@@ -125,21 +125,8 @@ textarea {
 	<button id="down" class="button">비추천${recipeVO.unlike }</button>
 	--%>
 
-	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
+<%@ include file="reply.jsp"%>
 
-	<%if(session.getAttribute("memberId") == null){ %>
-		* 댓글은 로그인이 필요한 서비스입니다.
-		<a href="../access/login">로그인하기</a>
-	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
-			<div style="text-align: center;">
-		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
-		<input type="text" id="replyContent" required>
-		<button id="btnAdd" class="button">작성</button>
-	</div>
-	<%} %>
-
-	<hr>
 	<div style="text-align: center;">
 		<div id="replies"></div>
 	</div>
@@ -178,7 +165,6 @@ textarea {
 							alert('댓글 입력 성공');
 							getAllReply(); // 함수 호출		
 						}
-					console.log(data);
 					}
 				});
 			}); // end btnAdd.click()
@@ -211,6 +197,13 @@ textarea {
 							
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
+							let year = replyDateCreated.getFullYear();
+							let month = (replyDateCreated.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 함
+							let day = replyDateCreated.getDate().toString().padStart(2, '0');
+							let hours = replyDateCreated.getHours().toString().padStart(2, '0');
+							let minutes = replyDateCreated.getMinutes().toString().padStart(2, '0');
+							let replyDate = year + "." + month + "." + day + "."
+							+ hours + ":" + minutes;
 							console.log("날짜 : ", replyDateCreated);
 
 							let disabled = '';
@@ -225,16 +218,17 @@ textarea {
 								+ '<pre>'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
 								+ this.memberId
-								+ '&nbsp;&nbsp;' // 공백
-								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
-								+ replyDateCreated
+								+ replyDate
+								+ '&nbsp;&nbsp;<br>' // 공백
+								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'" '+ readonly +'>'
 								+ '&nbsp;&nbsp;'
 								+ '<%if(session.getAttribute("memberId") != null){ %>'
-								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
-								+ '<br>'
-								+ 'ㄴ<%=session.getAttribute("memberId") %>'
+								+ '<button class="btn_update " '+ disabled +' >수정</button>'
+
+								+ '<br><br>'
+								+ 'ㄴ<%=session.getAttribute("memberId") %><br>'
 								+ '<input type="hidden" id="commentMemberId" value="<%=session.getAttribute("memberId") %>">'
 								+ '<input type="text" id="commentContent">'
 								+ '<button id="btnReAdd" class="btn_comment">답글 작성</button>'
@@ -250,15 +244,29 @@ textarea {
 										if('<%=session.getAttribute("memberId") %>' == this.memberId) {
 											updel = '<button class="btn_commentupdate">수정</button>'
 					                        + '<button class="btn_commentdelete">삭제</button>'
+					                        readonly = '';
+										}
+										
+										let commentDateCreated = new Date(this.commentDateCreated);
+										let year = commentDateCreated.getFullYear();
+										let month = (commentDateCreated.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 함
+										let day = commentDateCreated.getDate().toString().padStart(2, '0');
+										let hours = commentDateCreated.getHours().toString().padStart(2, '0');
+										let minutes = commentDateCreated.getMinutes().toString().padStart(2, '0');
+										let replyDate = year + "." + month + "." + day + "."
+										+ hours + ":" + minutes;
+										
+										if('<%=session.getAttribute("memberId") %>' != this.memberId) {
+											readonly = 'readonly';
 										}
 					                	
 					                    list += '<div class="comment_item">'
 					                        + '<pre>'
 					                        + 'ㄴ <input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
 					                        + this.memberId
-					                        + '&nbsp;&nbsp;'
-					                        + '<input type="text" id="commentContent" value="'+ this.commentContent +'">'
-					                        + '&nbsp;&nbsp;' + new Date(this.commentDateCreated)
+					                        + '&nbsp;&nbsp;' + replyDate
+					                        + '&nbsp;&nbsp;<br>'
+					                        + '<input type="text" id="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
 					                        + '&nbsp;&nbsp;'
 											+ '<%if(session.getAttribute("memberId") != null){ %>'
 					                        + updel
@@ -335,6 +343,13 @@ textarea {
 			    let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val(); // 댓글 ID
 			    let memberId = $('#commentMemberId').val(); // 사용자 ID
 			    let commentContent = $(this).closest('.reply_item').find('#commentContent').val(); // 대댓글 내용
+			    let commentDiv = $(this).closest('.reply_item').find('.comment');
+			    console.log(commentDiv);
+			    
+		        // 빈 댓글 내용일 경우
+		        if (!commentContent.trim()) {
+		            return;
+		        }
 
 			    let obj = {
 			        'recipeReplyId': recipeReplyId,
