@@ -30,9 +30,6 @@ public class AccessController {
 	@Autowired
 	private MemberService MemberService;
 
-	@Autowired
-	private RoleService RoleService;
-
 	// register.jsp 페이지 호출
 	@PostMapping("/register")
 	public void registerPOST(@RequestParam("email") String email, Model model) {
@@ -78,14 +75,21 @@ public class AccessController {
 
 	@PostMapping("/login")
 	public String loginPOST(@RequestParam("memberId") String memberId, @RequestParam("password") String password,
-			HttpSession session, MemberVO vo) {
+			HttpSession session, MemberVO vo, Model model) {
 		log.info("loginPOST()");
 
 		try {
 			vo = MemberService.getMemberById(memberId);
+			log.info(vo);
 			if (vo.getPassword().equals(password)) {
-				session.setAttribute("memberId", memberId);
+				if(vo.getMemberStatus().equals("비활성")) {
+					model.addAttribute("status", vo.getMemberStatus());
+					return "redirect:/access/login";
+				} else {
+					session.setAttribute("memberId", memberId);
+				}
 			} else {
+				
 			}
 
 		} catch (Exception e) {
@@ -110,7 +114,7 @@ public class AccessController {
 			@RequestParam(value = "emailAgree") String emailAgree, MemberVO vo, Model model) {
 		log.info("updatePOST()");
 
-		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null);
+		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null, null);
 		int result = MemberService.updateMember(vo);
 		log.info(result + "행 수정");
 
@@ -131,9 +135,6 @@ public class AccessController {
 	@GetMapping("/ID")
 	public String ID(Model model) {
 		log.info("ID");
-		List<MemberVO> memberList = MemberService.getAllMember();
-		log.info(memberList);
-		model.addAttribute(memberList);
 		return "access/ID";
 	}
 
@@ -163,40 +164,12 @@ public class AccessController {
 
 		log.info("Returned MemberVO: " + memberVO);
 
+        model.addAttribute("memberName", memberName);
+        model.addAttribute("email", email);
 		// 결과를 모델에 추가하여 뷰에서 사용하도록 설정
-		model.addAttribute("MemberVO", memberVO);
+		model.addAttribute("memberVO", memberVO);
 
 		return "access/ID"; // 결과 페이지로 이동
-	}
-
-	@GetMapping("admin")
-	public String adminGET(HttpSession session, Model model) {
-		log.info("adminGET()");
-		String memberId = (String) session.getAttribute("memberId");
-		try {
-			RoleVO roleVO = RoleService.selectRole(memberId);
-			log.info(roleVO);
-			if(roleVO.getRoleName().equals("admin")) {
-				model.addAttribute(roleVO);
-				return "admin";
-			} else {
-				return "redirect:/home";
-			}
-			
-		} catch (Exception e) {
-			return "redirect:/home";
-		}
-
-	} // end if()
-	
-	@PostMapping("roleUpdate")
-	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
-		log.info("roleUpdate");
-		String roleName = "admin";
-		int result = RoleService.updateRole(memberId, roleName);
-		log.info(result + "행 수정");
-		
-		return "../home";
 	}
 
 }

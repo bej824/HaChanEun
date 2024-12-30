@@ -17,12 +17,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberGender" column="MEMBER_GENDER" />
 		<result property="memberMBTI" column="MEMBER_MBTI" />
 		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
+		<result property="memberStatus" column="MEMBER_STATUS" />
 	</resultMap>
 	
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
-		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION)
-		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation})
+		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_STATUS)
+		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, '활성')
 
 	</insert>
 	
@@ -47,10 +48,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 	
-	<delete id="deleteMemberByMemberId">
-		DELETE MEMBER
+	<update id="deleteMemberByMemberId">
+		UPDATE MEMBER SET
+		MEMBER_STATUS = '비활성'
 		WHERE MEMBER_ID = #{memberId}
-	</delete>
+	</update>
 
 </mapper>
 

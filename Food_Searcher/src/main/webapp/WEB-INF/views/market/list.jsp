@@ -57,9 +57,9 @@ li {
 	
 	<%
 	if(session.getAttribute("memberId") == null){ %>
-		<a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+		<button type="button" style="display : none;">글 작성</button>
 	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
+	<% if("admin1".equals(session.getAttribute("memberId"))){ %>
 		<a href="/searcher/market/register" class="button">글 작성</a>
 	<%} %>
 

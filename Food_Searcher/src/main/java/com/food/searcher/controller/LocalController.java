@@ -56,7 +56,6 @@ public class LocalController {
 		String localLocal = null;
 		String localDistrict = null;
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
-
 		model.addAttribute("SpecialityList", SpecialityList);
 
 	}

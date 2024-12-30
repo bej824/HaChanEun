@@ -29,6 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE LOCAL_ID = #{localId}
 		ORDER BY LOCAL_REPLY_ID
 	</select>
+	
+	<select id="countByLocalIdReply" resultMap="replyResultMap">
+		SELECT COUNT(*) 
+		FROM LOCAL_REPLY 
+		WHERE LOCAL_ID = #{localId};
+	</select>
 
 	<update id="update">
 		UPDATE LOCAL_REPLY

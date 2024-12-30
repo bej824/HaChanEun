@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.persistence.LocalMapper;
+import com.food.searcher.persistence.LocalReplyMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -16,6 +17,9 @@ public class LocalServiceImple implements LocalService {
 	
 	@Autowired
 	private LocalMapper localMapper;
+	
+	@Autowired
+	private LocalReplyMapper localReplyMapper;
 	
 	@Override
 	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {

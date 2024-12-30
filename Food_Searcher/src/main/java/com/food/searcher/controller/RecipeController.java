@@ -173,14 +173,16 @@ public class RecipeController {
 		log.info("RecipeVO : " + recipeVO);
 		List<RecipeVO> list = recipeService.getAllBoards();
 		log.info("recipeId 번호 : " + list.get(0).getRecipeId());
-		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
-		log.info("AttachVO" + attachVO);
+//		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
+//		log.info("AttachVO" + attachVO);
 		model.addAttribute("recipeVO", recipeVO);
-		model.addAttribute("idList", attachVO);
-		String date = attachVO.get(0).getAttachPath().replace("\\", "/");
-		   String imagePath = "/resources/images/"+date+"/" + attachVO.get(0).getAttachChgName(); // 이미지 경로
-		   log.info("이미지 경로 : " + imagePath);
-	        model.addAttribute("imagePath", imagePath); // JSP로 경로 전달
+//		if(attachVO !=null) {
+//		model.addAttribute("idList", attachVO);
+//		String date = attachVO.get(0).getAttachPath().replace("\\", "/");
+//		String imagePath = "/resources/images/"+date+"/" + attachVO.get(0).getAttachChgName(); // 이미지 경로
+//		log.info("이미지 경로 : " + imagePath);
+//	    model.addAttribute("imagePath", imagePath); // JSP로 경로 전달
+//		}
 	}
 	
 	// 게시글 번호를 전송받아 상세 게시글 조회

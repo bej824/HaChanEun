@@ -178,7 +178,6 @@ textarea {
 							alert('댓글 입력 성공');
 							getAllReply(); // 함수 호출		
 						}
-					console.log(headers);
 					console.log(data);
 					}
 				});
