@@ -204,9 +204,10 @@ button:disabled {
 						readonly = 'readonly';
 					}
 			
-		let memberId = document.createElement("p");
-		
-		
+			let marketReplyContent = document.createElement("p");
+			marketReplyContent.List.add("replyContent");
+			marketReplyContent.innerHTML = marketReplyVO.marketReplyContent;
+			
 		
 		}
 			
