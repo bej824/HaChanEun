@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.LocalCommentVO;
+import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.service.LocalCommentService;
 
 import lombok.extern.log4j.Log4j;
@@ -32,8 +33,8 @@ public class LocalCommentController {
 	LocalCommentService localCommentService;
 	
 	@ResponseBody
-	@PostMapping("/commentAdd")
-	public int commentAddPOST(@RequestBody LocalCommentVO localCommentVO,
+	@PostMapping("/commentAdd/{localId}")
+	public int commentAddPOST(@PathVariable("localId") int localId, @RequestBody LocalCommentVO localCommentVO,
 			HttpSession session)
 			throws ServletException, IOException {
 		log.info("replyAddPOST()");
@@ -41,8 +42,7 @@ public class LocalCommentController {
 		String memberId = (String) session.getAttribute("memberId");
 		int replyId = localCommentVO.getReplyId();
 		String commentContent = localCommentVO.getCommentContent();
-		
-		return localCommentService.createComment(replyId, memberId, commentContent);
+		return localCommentService.createComment(localId, replyId, memberId, commentContent);
 		
 	}
 	
@@ -66,12 +66,13 @@ public class LocalCommentController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@PutMapping("/deleteComment/{commentId}")
-		public ResponseEntity<Integer> deleteComment(@PathVariable("commentId") int commentId){
+	@PutMapping("/deleteComment/{localId}/{commentId}")
+		public ResponseEntity<Integer> deleteComment(@PathVariable("localId") int localId,
+				@PathVariable("commentId") int commentId){
 		 log.info("deleteComment()");
 	     log.info("commentId = " + commentId);
 	     
-	     int result = localCommentService.deleteComment(commentId);
+	     int result = localCommentService.deleteComment(localId, commentId);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 

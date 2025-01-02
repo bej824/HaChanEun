@@ -42,7 +42,7 @@ public class LocalReplyController {
 		log.info("replyAddPOST()");
 		log.info(headerReplyVO);
 		String memberId = (String) session.getAttribute("memberId");
-		int localId = headerReplyVO.getBoardId();
+		int localId = headerReplyVO.getLocalId();
 		String replyContent = headerReplyVO.getHeaderReplyContent();
 		
 		return localReplyService.createReply(localId, memberId, replyContent);
@@ -50,11 +50,15 @@ public class LocalReplyController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/replyAll/{boardId}")
-	public List<LocalReplyVO> replyAllGET(@PathVariable("boardId") int localId) {
+	@GetMapping("/replyAll/{localId}")
+	public List<LocalReplyVO> replyAllGET(@PathVariable("localId") int localId) {
 		log.info("replyAllGET()");
 		
 		List<LocalReplyVO> list = localReplyService.getAllReply(localId);
+		for(int i = 0; i < list.size(); i++) {
+			int replyId = list.get(i).getReplyId();
+			log.info(replyId);
+		}
 		
 		return list;
 	}
@@ -69,10 +73,10 @@ public class LocalReplyController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@PutMapping("/deleteReply/{boardId}/{replyId}")
-		public ResponseEntity<Integer> deleteReply(@PathVariable("boardId") int localId, @PathVariable("replyId") int replyId){
+	@PutMapping("/deleteReply/{localId}/{replyId}")
+		public ResponseEntity<Integer> deleteReply(@PathVariable("localId") int localId, @PathVariable("replyId") int replyId){
 		 log.info("updateReply()");
-	     
+
 	     int result = localReplyService.deleteReply(localId, replyId);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}

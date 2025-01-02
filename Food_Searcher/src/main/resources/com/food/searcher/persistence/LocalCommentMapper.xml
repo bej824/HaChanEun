@@ -37,8 +37,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<delete id="delete">
-		DELETE FROM LOCAL_COMMENT
-		WHERE LOCAL_COMMENT_ID = #{commentId}
+	DELETE FROM LOCAL_COMMENT
+	<where>
+        <choose>
+            <when test="commentId == 0">
+                LOCAL_REPLY_ID = #{replyId}
+            </when>
+            <when test="replyId == 0">
+                LOCAL_COMMENT_ID = #{commentId}
+            </when>
+        </choose>
+    </where>
 	</delete>
 
 </mapper>

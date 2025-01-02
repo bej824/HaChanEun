@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class HeaderReplyVO {
 	
-	private int boardId;
+	private int localId;
 	private int replyId;
 	private String memberId;
 	private String headerReplyContent;

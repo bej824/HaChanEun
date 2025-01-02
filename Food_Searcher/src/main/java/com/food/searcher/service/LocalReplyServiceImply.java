@@ -7,21 +7,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.LocalReplyVO;
+import com.food.searcher.persistence.LocalCommentMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.LocalReplyMapper;
 
 import lombok.extern.log4j.Log4j;
 
-@Transactional
 @Service
 @Log4j
 public class LocalReplyServiceImply implements LocalReplyService {
 	
 	@Autowired
+	LocalMapper localMapper;
+
+	@Autowired
 	LocalReplyMapper localReplyMapper;
 	
 	@Autowired
-	LocalMapper localMapper;
+	LocalCommentMapper localCommentMapper;
 	
 	@Transactional
 	@Override
@@ -38,13 +41,14 @@ public class LocalReplyServiceImply implements LocalReplyService {
 		return result;
 	}
 	
+	@Transactional
 	@Override
 	public List<LocalReplyVO> getAllReply(int localId) {
 		log.info("getAllReply()");
 		return localReplyMapper.selectListByLocalId(localId);
 	}
 	
-	
+	@Transactional
 	@Override
 	public int updateReply(int replyId, String replyContent) {
 		log.info("updateReply()");
@@ -53,12 +57,17 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	
 	@Transactional
 	@Override
-	public int deleteReply(int localId, int ReplyId) {
-		int result = 0;
+	public int deleteReply(int localId, int replyId) {
 		log.info("deleteReply()");
-		result = localReplyMapper.delete(ReplyId);
-		localMapper.localReplyCountDown(localId);
-			
+		int result = 0;
+		int commentId = 0;
+		
+		// 대댓글 댓글id 전체 삭제라면 commentId = 0, replyId로 처리
+		// 하나만 삭제할 거라면 replyId = 0, commentId로 처리
+		int countDown = 1 + localCommentMapper.delete(replyId, commentId);
+		localMapper.localReplyCountDown(localId, countDown);
+		result = localReplyMapper.delete(replyId);
+	
 		return result;
 	}
 

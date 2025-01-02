@@ -49,6 +49,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LOCAL_ID = #{localId}
 	</update>
 	
+	<delete id="delete">
+		<!-- 상세 게시글 삭제 -->
+		DELETE FROM LOCAL_SPECIALITY
+		WHERE LOCAL_ID = #{localId}
+	</delete>
+	
 	<select id="localReplyCountUp">
 	UPDATE LOCAL_SPECIALITY
 	SET REPLY_COUNT = REPLY_COUNT + 1
@@ -57,11 +63,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="localReplyCountDown">
 	UPDATE LOCAL_SPECIALITY
-	SET REPLY_COUNT = REPLY_COUNT - 1
+	SET REPLY_COUNT = REPLY_COUNT - #{countDown}
 	WHERE LOCAL_ID = #{localId}
 	</select>
 
-	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*)
 		TOTAL_COUNT FROM LOCAL_SPECIALITY

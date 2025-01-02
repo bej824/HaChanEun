@@ -61,12 +61,12 @@
 			</select>
 		</p>
 
-		<p>이메일</p>
-		<input type=text name=email value="${email}" readonly="readonly"> <br>
+		<p>이메일 : ${email }</p>
 
 		<p>이메일 광고 수신 동의</p>
 		<input type="radio" name="emailAgree" value="yes" checked="checked">예
 		<input type="radio" name="emailAgree" value="no">아니오 <br>
+		<input type=hidden name=email value="${email}" readonly="readonly"> <br>
 	</form>
 
 	<button class="button" name="insert" onclick="insert()">회원가입</button>

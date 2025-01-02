@@ -21,20 +21,20 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/access")
 @Log4j
-public class emailRESTController {
+public class EmailRESTController {
 	
 	@Autowired
 	private JavaMailSender mailSender;
 	
 	private int checkNum = 0;
 	
-	@GetMapping("registerEmail")
+	@GetMapping("/registerEmail")
 	public void rigisterEmailGET() {
 		log.info("registerEmailGET()");
 		
 	}
 	
-	@PostMapping("emailConfirm")
+	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email) {
 		log.info("emailConfirmPOST()");
 		int result = 0;
@@ -67,7 +67,7 @@ public class emailRESTController {
 	    mailSender.send(message);  // JavaMailSender를 사용하여 이메일 발송
 	}
 	
-	@PostMapping("emailCheck")
+	@PostMapping("/emailCheck")
 	public ResponseEntity<Integer> emailCheckPOST(@RequestParam("emailCheck") int emailCheck) {
 		log.info("emailCheckPOST()");
 		int result = 0;

@@ -13,7 +13,8 @@ public interface LocalMapper {
 	List<LocalSpecialityVO> selectDistrict(@Param("localLocal") String localLocal); // 상세 지역 조회
 	LocalSpecialityVO selectByLocalId(@Param("localId") String localId);// 상세 특산품 조회
 	int update(LocalSpecialityVO localSpecialityVO); // 상세 특산품 수정
+	int delete(@Param("localId") int localId);
 	int selectTotalCount();
 	void localReplyCountUp(@Param("localId") int localId); // 댓글 카운트 업
-	void localReplyCountDown(@Param("localId") int localId); // 댓글 카운트 다운
+	void localReplyCountDown(@Param("localId") int localId, @Param("countDown") int countDown); // 댓글 카운트 다운
 }

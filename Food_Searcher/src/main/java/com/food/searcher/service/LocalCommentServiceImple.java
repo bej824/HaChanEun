@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.LocalCommentVO;
 import com.food.searcher.persistence.LocalCommentMapper;
+import com.food.searcher.persistence.LocalMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -19,9 +20,13 @@ public class LocalCommentServiceImple implements LocalCommentService {
 	@Autowired
 	LocalCommentMapper localCommentMapper;
 	
+	@Autowired
+	LocalMapper localMapper;
+	
 	@Override
-		public int createComment(int replyId, String memberId, String commentContent) {
+		public int createComment(int localId, int replyId, String memberId, String commentContent) {
 		log.info("createComment()");
+		localMapper.localReplyCountUp(localId);
 			return localCommentMapper.insertLocalComment(replyId, memberId, commentContent);
 		}
 	
@@ -39,9 +44,15 @@ public class LocalCommentServiceImple implements LocalCommentService {
 	}
 	
 	@Override
-	public int deleteComment(int commentId) {
+	public int deleteComment(int localId, int commentId) {
 		log.info("deleteComment()");
-		return localCommentMapper.delete(commentId);
+		int replyId = 0;
+		int countDown = 1;
+		localMapper.localReplyCountDown(localId, countDown);
+		
+		// 대댓글 댓글id 전체 삭제라면 commentId = 0, replyId로 처리
+		// 하나만 삭제할 거라면 replyId = 0, commentId로 처리
+		return localCommentMapper.delete(replyId, commentId);
 	}
 
 }

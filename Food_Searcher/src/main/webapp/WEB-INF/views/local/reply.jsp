@@ -129,15 +129,15 @@
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
-				let boardId = $('#Id').val(); // 게시판 번호 데이터
-				console.log(boardId);
+				let localId = $('#localId').val(); // 게시판 번호 데이터
+				console.log(localId);
 				let memberId = $('#memberId').val(); // 작성자 데이터
 				console.log(memberId);
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
 				console.log(headerReplyContent);
 				// javascript 객체 생성
 				let obj = {
-						'boardId' : boardId,
+						'localId' : localId,
 						'memberId' : memberId,
 						'headerReplyContent' : headerReplyContent
 				}
@@ -164,10 +164,10 @@
 			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
-				let boardId = $('#Id').val();
-				let url = 'replyAll/' + boardId;
+				let localId = $('#localId').val();
+				let url = 'replyAll/' + localId;
 				
-				console.log("boardID : " + boardId);
+				console.log("localID : " + localId);
 				console.log("address : " + url);
 				$.getJSON(
 					url, 		
@@ -251,13 +251,13 @@
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
 				let replyId = $(this).prevAll('#replyId').val();
-				let boardId = $('#Id').val();
+				let localId = $('#localId').val();
 				console.log("선택된 댓글 번호 : " + replyId);
 				
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
-					url : 'deleteReply/' + boardId + '/' + replyId,
+					url : 'deleteReply/' + localId + '/' + replyId,
 					headers : {
 						'Content-Type' : 'application/json'
 					},
@@ -345,6 +345,7 @@
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
         
+        let localId = $('#localId').val();
         let memberId = "<%=session.getAttribute("memberId")%>"
         let replyId = $(this).val();  // 댓글 ID
         let commentContent = $(this).prevAll('#commentContent').val();
@@ -368,7 +369,7 @@
 				// $.ajax로 송수신
 				$.ajax({
 					type : 'POST', // 메서드 타입
-					url : 'commentAdd', // url
+					url : 'commentAdd/' + localId, // url
 					headers : { // 헤더 정보
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
@@ -390,8 +391,8 @@
 				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-				var commentId = $(this).prevAll('#commentId').val();
-				var commentContent = $(this).prevAll('#commentContent').val();
+				let commentId = $(this).prevAll('#commentId').val();
+				let commentContent = $(this).prevAll('#commentContent').val();
 				
 				console.log("commentContent : " + commentContent);
 				
@@ -415,13 +416,14 @@
 			
 			$('#replies').on('click', '.reply_item .comment_delete', function(){
 				console.log(this);
-				var commentId = $(this).prevAll('#commentId').val();
+				let localId = $('#localId').val();
+				let commentId = $(this).prevAll('#commentId').val();
 				console.log("선택된 댓글 번호 : " + commentId);
 				
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
-					url : 'deleteComment/' + commentId,
+					url : 'deleteComment/' + localId + '/' + commentId,
 					headers : {
 						'Content-Type' : 'application/json'
 					},

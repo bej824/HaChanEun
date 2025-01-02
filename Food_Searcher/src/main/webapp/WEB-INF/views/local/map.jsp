@@ -134,6 +134,8 @@ li {
 	<script type="text/javascript">
 		function listUpdate(localLocal, localDistrict) {
 			console.log(localLocal, localDistrict);
+			let localURL = "localLocal=" + localLocal + "localDistrict=" + localDistrict;
+			console.log(localURL);
 			
 			$.ajax({
 				type : 'GET',
