@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,7 @@ public class RecipeCommentController {
 	@Autowired
 	private RecipeCommentService recipeCommentService;
 
-	@PostMapping
+	@PostMapping("/comment")
 	public ResponseEntity<Integer> createComment(@RequestBody RecipeCommentVO recipeCommentVO) {
 		log.info("createComment()");
 		log.info(recipeCommentVO);
@@ -71,8 +72,20 @@ public class RecipeCommentController {
 	         ){
 	      log.info("updateCommentReply()");
 	      log.info("recipeCommentId = " + recipeCommentId);
-	      int result = replyService.updateReply(recipeCommentId, commentContent);
+	      log.info("commentContent = " + commentContent);
+	      int result = recipeCommentService.updateComment(recipeCommentId, commentContent);
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
+	   @DeleteMapping("/comment/{recipeCommentId}/{recipereplyId}") // DELETE : 댓글 삭제
+	   public ResponseEntity<Integer> deleteComment(
+	         @PathVariable("recipeCommentId") int recipeCommentId, 
+	         @PathVariable("recipereplyId") int recipereplyId) {
+	      log.info("deleteReply()");
+	      log.info("recipeCommentId = " + recipeCommentId);
+	      
+	      int result = recipeCommentService.deleteComment(recipeCommentId, recipereplyId);
+	      
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   }
 }

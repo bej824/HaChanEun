@@ -36,7 +36,6 @@ public class MarketCommentController {
 		int result = marketCommentService.createComment(marketCommentVO);
 		log.info(marketCommentVO);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
-			
 	
 	} // 대댓 등록
 	

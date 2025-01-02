@@ -92,19 +92,6 @@
 	<div class="replyBox">
 		<div id="replies"></div>
 
-	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
-
-	<%if(session.getAttribute("memberId") == null){ %>
-		* 댓글은 로그인이 필요한 서비스입니다.
-		<a href="../access/login">로그인하기</a>
-	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
-			<div style="text-align: center;">
-		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
-		<input type="text" id="replyContent" required>
-		<button id="btnAdd" class="button">작성</button>
-	</div>
-	<%} %>
 	</div>
 
 </body>

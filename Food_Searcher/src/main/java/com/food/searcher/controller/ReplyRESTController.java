@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.domain.RecipeReplyVO;
+import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.service.RecipeCommentService;
 import com.food.searcher.service.RecipeReplyService;
 
@@ -35,6 +36,9 @@ import lombok.extern.log4j.Log4j;
 public class ReplyRESTController {
 	@Autowired
 	private RecipeReplyService replyService;
+	
+	@Autowired
+	private RecipeMapper recipeMapper;
 	
 	@Autowired
 	private RecipeCommentService recipeCommentService;
@@ -92,34 +96,15 @@ public class ReplyRESTController {
 	      for(RecipeCommentVO vo : list) {
 	    	  int commentresult = recipeCommentService.deleteComment(vo.getRecipeCommentId(), vo.getRecipeReplyId());
 	    	  log.info(commentresult);
+	    	  int updateResult = recipeMapper
+	  				.updateReplyCount(boardId, -1);
+	    	  log.info("대댓글 삭제" + updateResult);
 	      }
 	      int result = replyService.deleteReply(replyId, boardId);
 	      log.info(result);
 	      
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
-	   
-	   @PutMapping("/comment/{recipeCommentId}") // PUT : 댓글 수정
-	   public ResponseEntity<Integer> updatecommentReply(
-	         @PathVariable("recipeCommentId") int recipeCommentId,
-	         @RequestBody String commentContent
-	         ){
-	      log.info("updateCommentReply()");
-	      log.info("recipeCommentId = " + recipeCommentId);
-	      int result = recipeCommentService.updateComment(recipeCommentId, commentContent);
-	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
-	   }
-	   
-	   @DeleteMapping("/comment/{recipeCommentId}/{recipereplyId}") // DELETE : 댓글 삭제
-	   public ResponseEntity<Integer> deleteComment(
-	         @PathVariable("recipeCommentId") int recipeCommentId, 
-	         @PathVariable("recipereplyId") int recipereplyId) {
-	      log.info("deleteReply()");
-	      log.info("recipeCommentId = " + recipeCommentId);
-	      
-	      int result = recipeCommentService.deleteComment(recipeCommentId, recipereplyId);
-	      
-	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
-	   }
+
 }
 
