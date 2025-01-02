@@ -150,7 +150,7 @@ button:disabled {
 		<input type="hidden" name="marketId" value=${marketVO.marketId }>
 		<input type="hidden" name="memberId" value=${sessionScope.memberId }>
 		<div id="input_wrapper">
-		<textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
+		<textarea name="marketReplyContent" id="reply_content" class="reply_insert"></textarea>
 		</div>
 		<button id="btnAdd" class="button">댓글 작성</button>
 	<%} %>
@@ -242,10 +242,9 @@ button:disabled {
 							readonly = 'readonly';
 						}
 						
+						if(replyDateCreated != null) {
 						list += "<div class='reply_area'>" +
 				        '<input type="hidden" id="marketReplyId" value="' + this.marketReplyId + '">' +
-				        "<div class='reply_box'>" +
-						"<div class='reply_info_wrapper'>" +
 				        "<ul class='reply_info'>" +
 				        '<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">' +
 				        "<li class='memberId'>" + this.memberId + "</li>" +
@@ -256,16 +255,35 @@ button:disabled {
 		        		
 		        		"<li class='btn_delete' onclick='btn_delete'>댓글 삭제</li>" +
 		        		
-		        		"<li class='addComment' onclick='addComment'>답글 쓰기</li> " +
+		        		"<li class='btn_comment' onclick='btn_comment'>답글 쓰기</li> " +
 		        		
 				        "</ul>" +
-				        "</div>" + // end reply_info_wrapper
 				        "<div class='reply_view_wrapper'>" +
 				        "<div class='reply_view'>" + this.marketReplyContent + "</div>" +
 				        "</div>" + // end reply_view_wrapper
-				        "</div>" + // end reply_box
+				        
+						} else {						
+							list += "<div class='comment_box'>" +
+							'<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">' +
+							"<ul class='reply_info'>" +
+							'<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">' +
+					        "<li class='memberId'>" + this.memberId + "</li>" +
+					        "<li class='commentDateCreated'>" + commentDateCreated + "</li>" +
+					        
+					        "<li class='commentModify' onclick='commentModify(" + 
+			        		this.marketCommentId + ",\"" + this.commentContent + "\");'>댓글수정</li>" + 
+			        		
+			        		"<li class='btn_delete' onclick='btn_delete'>댓글 삭제</li>" +
+			        		
+			        		"<li class='addComment' onclick='addComment'>답글 쓰기</li> " +
+			        		 "</ul>" +
+			        		 
+			        		 "<div class='comment_view'>" + this.commentContent + "</div>" +
+			        		 "</div>";
+			        		 
+						} 
 				        "</div>"; // end reply_area
-									        
+				        
 						list += '</div>';
 				}); 		
 					$('#replies').html(list); // 저장된 데이터를 replies div 표현
@@ -274,23 +292,23 @@ button:disabled {
 		}// end getAllReply()
 		
 	function replyModify(marketReplyId, marketReplyContent){
-			var reply = ""; // 댓글 내용 초기화
+			var marketReplyContent = "" // 댓글 내용 초기화
 
-				reply += "<div class='reply_info_wrapper' >"
-				+ "<ul class='reply_info'>"
+				marketReplyContent += "<ul class='reply_info'>"
 				+ "<li class='replyModify' onclick='btn_update'> 수정 완료 </li>"
-				+ "<li class='cancle' onclick='getAllReply();'>취소</li>"
 				+ "</ul>"
-				+ "</div>"
+				+ "<div>"
 				+ "<div class='reply_view_wrapper'>"
 				+ "<textarea id='reply_view' name='marketReplyContent' style='width:100%;'>"+ this.marketReplyContent +"</textarea>"
 				+ "</div>"; // end view_wrapper
 				
 				
-				$(".reply_box" + this.marketReplyId).replaceWith(reply);
+				$("#replies" + this.marketReplyId).replaceWith(reply);
+				// marketReplyId의 area_wrapper에 있는 내용을 reply로 바꾼다는 내용인데
+				// 그럼 이 modify에도 area wrapper가 있어야하는 거 아닌?
+				// 댓글 삭제 버튼도 넣고... 위에 코드랑 비슷하게 해야하나
 
 		} // end replyModify
-		
 	
 		
 		// 수정 버튼을 클릭하면 선택된 댓글 수정
@@ -356,8 +374,9 @@ button:disabled {
    				comment += "<div class='comment_box'>";
    				comment += 	"<span class='reply_ico'>└</span>";
    				comment += 		"<ul class='reply_info'>";
-   				comment += 			"<li class='btn_comment' onclick='btn_comment("+ marketReplyId +","+ marketId +");'>댓글등록</li>";
-   				comment += 			"<li class='cancel' onclick='getAllReply();'>취소</li>";//취소버튼 클릭시 댓글 목록리스트 함수 실행
+   				comment += 			"<li class='id'>"+id+"</li>";
+   				comment += 			"<li class='re_reply_btn' onclick='re_reply_btn("+reply_Idx+","+bidx+");'>댓글등록</li>";
+   				comment += 			"<li class='cancel' onclick='getCommentList();'>취소</li>";//취소버튼 클릭시 댓글 목록리스트 함수 실행
    				comment +=		"</ul>";
    				comment += 	"<div class='reply_view_wrapper'>";
    				comment += 		"<textarea id='reply_Edit_Content' name='reply_Content' style='width:100%;'></textarea>";
@@ -366,6 +385,12 @@ button:disabled {
    				comment += "</div>";
 	   				$(".comment_box"+ marketReplyId).html(comment);
    			
+   			//display 여부에 따라 show,hide
+    			if($(".re_reply_area"+reply_Idx).css("display") == "none"){
+    				$(".re_reply_area"+reply_Idx).show();
+    			}else{
+    				$(".re_reply_area"+reply_Idx).hide();
+   			}
    		}
 		
 		// 대댓글 작성
