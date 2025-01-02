@@ -33,7 +33,7 @@ public class RecipeReplyServiceImple implements RecipeReplyService{
 		log.info(insertResult + "행 댓글 추가");
 		int updateResult = recipeMapper
 				.updateReplyCount(replyVO.getBoardId(), 1);
-		log.info(updateResult + "행 게시판 수정");
+		log.info(updateResult + "행 댓글 카운트 증가");
 		return 1;
 	}
 
@@ -60,7 +60,7 @@ public class RecipeReplyServiceImple implements RecipeReplyService{
 		log.info(deleteResult + "행 댓글 삭제");
 		int updateResult = recipeMapper
 				.updateReplyCount(boardId, -1);
-		log.info(updateResult + "행 게시판 삭제");
+		log.info(updateResult + "행 댓글 카운트 삭제");
 		return 1;
 	}
 
