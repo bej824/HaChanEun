@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 <head>
 
 <style type="text/css">
-.button, {
+.button {
 	  background-color: #04AA6D;
   border: none;
   color: white;
@@ -53,7 +53,7 @@ button:disabled {
     cursor: not-allowed;
 }
 
-.reply_area {
+.reply_item {
 	width : 500px;
     margin-bottom: 15px;
     padding: 10px 10px;
@@ -64,43 +64,43 @@ button:disabled {
     position: relative;
 }
 
-
-.reply_info {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 10px;
-    font-size: 14px;
-    color: #666;
-}
-
-.reply_info .memberId {
-    font-weight: bold;
-    color: #333;
-}
-
-.reply_info_wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
 .reply_insert {
-  width: 700px;
-  height: 110px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: rgb(240, 240, 240, 0);
-  font-size: 16px;
-  resize: none;
+	padding:30px 0;
+	margin:10px 0;
+	font-size:14px;
+	font-family:'맑은 고딕', verdana;
+	padding:10px;
+	width:500px;
+	height:150px;
+	
 }
 
+.modalBackground {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+  }
+
+div.replyModal { position:relative; z-index:1; display:none; }
+div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.modalContent button.modal_cancle { margin-left:20px; }
+div.replyFooter button { font-size:14px; border: 1px solid #999; background:none; margin-right:10px; }
+
+div.commentModal { position:relative; z-index:1; display:none; }
+div.modalCommentContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.modalCommentContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+div.modalCommentContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.modalCommentContent button.modal_comment_cancle { margin-left:20px; }
 
 </style>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
 <title>전통시장</title>
@@ -149,9 +149,7 @@ button:disabled {
 	<% if(session.getAttribute("memberId") != null){ %>
 		<input type="hidden" name="marketId" value=${marketVO.marketId }>
 		<input type="hidden" name="memberId" value=${sessionScope.memberId }>
-		<div id="input_wrapper">
 		<textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
-		</div>
 		<button id="btnAdd" class="button">댓글 작성</button>
 	<%} %>
 	
@@ -169,18 +167,18 @@ button:disabled {
 		}); // end document
 		
 	</script>
-	<input type="hidden" id="marketId" value="${marketVO.marketId}">
-	<input type="hidden" id="memberId" value="${sessionScope.memberId}">
 	
+	<input type="hidden" id="marketId" value="${marketVO.marketId}">
+	<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
 		
 	<!-- 댓글 -->
 	
 	<script type="text/javascript">
 	
-	
 	$(document).ready(function(){
 		getAllReply();
 		
+			
 		$('#btnAdd').click(function(){
 			var marketId = $('#marketId').val(); // 게시판 번호 데이터
 			var memberId = $('#memberId').val(); // 작성자 데이터
@@ -234,6 +232,7 @@ button:disabled {
 						// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 						// .toLocaleString(); 빼면
 						var replyDateCreated = new Date(this.replyDateCreated).toLocaleString();
+						var commentDateCreated = new Date(this.commentDateCreated).toLocaleString();
 						var disabled = '';
 						var readonly = '';
 						
@@ -242,98 +241,97 @@ button:disabled {
 							readonly = 'readonly';
 						}
 						
-						list += "<div class='reply_area'>" +
-				        '<input type="hidden" id="marketReplyId" value="' + this.marketReplyId + '">' +
-				        "<div class='reply_box'>" +
-						"<div class='reply_info_wrapper'>" +
-				        "<ul class='reply_info'>" +
-				        '<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">' +
-				        "<li class='memberId'>" + this.memberId + "</li>" +
-				        "<li class='replyDateCreated'>" + replyDateCreated + "</li>" +
-				        
-				        "<li class='replyModify' onclick='replyModify(" + 
-		        		this.marketReplyId + ",\"" + this.marketReplyContent + "\");'>댓글수정</li>" + 
-		        		
-		        		"<li class='btn_delete' onclick='btn_delete'>댓글 삭제</li>" +
-		        		
-		        		"<li class='addComment' onclick='addComment'>답글 쓰기</li> " +
-		        		
-				        "</ul>" +
-				        "</div>" + // end reply_info_wrapper
-				        "<div class='reply_view_wrapper'>" +
-				        "<div class='reply_view'>" + this.marketReplyContent + "</div>" +
-				        "</div>" + // end reply_view_wrapper
-				        "</div>" + // end reply_box
-				        "</div>"; // end reply_area
-									        
-						list += '</div>';
-				}); 		
+							
+						list += '<div class="reply_item">'
+						
+							+ '<div class="userInfo">'
+							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
+							+ '<span class="memberId">' + this.memberId + ""
+							+ '<span class="date">' + replyDateCreated + ""
+							+ '</div>'
+							
+							+ '<div class="marketReplyContent">' + this.marketReplyContent + "</div>"
+							
+							+ '<div class = "replyFooter">'
+							+ '<button class="btn_update" > 수정 </button>'
+							+ '<button class="btn_delete" > 삭제 </button>'
+							+ '<button class="btn_commentAdd" > 답글 작성 </button>'
+							+ "</div>"
+							
+							+ '</div>'; // end reply_item 
+							
+						list += '<div class="reply_item">'
+						+ '<div class="userInfo">'
+						+ '<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">'
+						+ '<span class="memberId">' + this.memberId + ""
+						+ '<span class="date">' + commentDateCreated + ""
+						+ '</div>'
+						
+						+ '<div class="marketCommentContent">' + this.marketCommentContent + "</div>"
+						
+						+ '</div>'; // end reply_item
+					
+					
+					}); // end each()
+						
 					$('#replies').html(list); // 저장된 데이터를 replies div 표현
-				}
-			);
+				} // end function
+			);  // end JSON
 		}// end getAllReply()
 		
-	function replyModify(marketReplyId, marketReplyContent){
-			var reply = ""; // 댓글 내용 초기화
-
-				reply += "<div class='reply_info_wrapper' >"
-				+ "<ul class='reply_info'>"
-				+ "<li class='replyModify' onclick='btn_update'> 수정 완료 </li>"
-				+ "<li class='cancle' onclick='getAllReply();'>취소</li>"
-				+ "</ul>"
-				+ "</div>"
-				+ "<div class='reply_view_wrapper'>"
-				+ "<textarea id='reply_view' name='marketReplyContent' style='width:100%;'>"+ this.marketReplyContent +"</textarea>"
-				+ "</div>"; // end view_wrapper
-				
-				
-				$(".reply_box" + this.marketReplyId).replaceWith(reply);
-
-		} // end replyModify
-		
-	
+		// 수정 버튼 클릭 시 모달창 띄우기
+		$(document).on("click", ".btn_update", function(){
+			$(".replyModal").attr("style", "display:block;");
+			
+			var replyId = $(this).closest('.reply_item').find('#marketReplyId').val();   // 댓글 Id
+			var replyContent = $(this).parent().parent().children(".marketReplyContent").text(); // 원본 댓글 내용 가져오기
+			
+			console.log("replyId : " + replyId, "replyContent : " + replyContent);
+			
+			 $(".modal_repCon").val(replyContent);
+			 $(".modal_modify_btn").val(replyId);
+			 
+			}); // end modal
 		
 		// 수정 버튼을 클릭하면 선택된 댓글 수정
-		$('#replies').on('click', '.reply_item .btn_update', function(){
+		$(".modal_modify_btn").click(function(){
 			console.log(this);
 			
-			// 선택된 댓글의 replyId, replyContent 값을 저장
-			// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-			var marketReplyId = $(this).prevAll('#marketReplyId').val();
-			var marketReplyContent = $(this).prevAll('#marketReplyContent').val();
+			var marketReplyId = $(".modal_modify_btn").val();
+			var marketReplyContent = $(".modal_repCon").val();
 			console.log("선택된 댓글 번호 : " + marketReplyId + ", 댓글 내용 : " + marketReplyContent);
+			
 			
 			// ajax 요청
 			$.ajax({
 				type : 'PUT', 
 				url : '../market/' + marketReplyId,
 				headers : {
-					'Content-Type' : 'application/json'
-				},			
-				data: marketReplyContent,
+					'Content-Type' : 'application/json' 
+				},
+				data : marketReplyContent,
 				success : function(result) {
 					console.log(result);
 					if(result == 1) {
 						alert('댓글 수정 성공!');
 						getAllReply();
+						 $(".replyModal").attr("style", "display:none;");
+					} else {
+						alert('댓글 수정 실패');
 					}
 				}
-			});
+				});
+		}); // end modal_modify_btn
 			
-		});	// end btn_update
-		
-	
-		
 		// 삭제 버튼을 클릭하면 선택된 댓글 삭제
-		$('#replies').on('click', '.reply_area .btn_delete', function(){
+		$('#replies').on('click', '.reply_item .btn_delete', function(){
 			console.log(this);
 			var marketId = $('#marketId').val(); // 게시판 번호 데이터
-			// var marketReplyId = $(this).prevAll('#marketReplyId').val();
-			var marketReplyId = $(this).closest('.reply_area').find('#marketReplyId').val();
-			// 삭제 버튼과 가장 가까운 replyarea의 Id 찾기
-
+			var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
+			var deleteConfirm = confirm('정말로 삭제하시겠습니까?');
 			
-			// ajax 요청
+			if(deleteConfirm) {
+			
 			$.ajax({
 				type : 'DELETE', 
 				url : '../market/' + marketReplyId + '/' + marketId, 
@@ -345,66 +343,130 @@ button:disabled {
 					if(result == 1) {
 						alert('댓글 삭제 성공!');
 						getAllReply();
+					} else {
+						alert('댓글 삭제 실패')
+						}
 					}
-				}
-			});
-		}); // end replies.on()	
-		
-		function addComment(marketReplyId, marketId){
-   			
-   				var comment = "";
-   				comment += "<div class='comment_box'>";
-   				comment += 	"<span class='reply_ico'>└</span>";
-   				comment += 		"<ul class='reply_info'>";
-   				comment += 			"<li class='btn_comment' onclick='btn_comment("+ marketReplyId +","+ marketId +");'>댓글등록</li>";
-   				comment += 			"<li class='cancel' onclick='getAllReply();'>취소</li>";//취소버튼 클릭시 댓글 목록리스트 함수 실행
-   				comment +=		"</ul>";
-   				comment += 	"<div class='reply_view_wrapper'>";
-   				comment += 		"<textarea id='reply_Edit_Content' name='reply_Content' style='width:100%;'></textarea>";
-   				comment += 		"<input type='hidden' name='rparent' value="+reply_Idx+">";
-   				comment += 	"</div>";
-   				comment += "</div>";
-	   				$(".comment_box"+ marketReplyId).html(comment);
-   			
-   		}
-		
-		// 대댓글 작성
-		$('#replies').on('click', '.reply_item .btn_comment', function() {
-		    var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val(); // 댓글 ID
-		    var memberId = $('#commentMemberId').val(); // 사용자 ID
-		    var commentContent = $(this).closest('.reply_item').find('#commentContent').val(); // 대댓글 내용
-
-		    var obj = {
-		        'marketReplyId': marketReplyId,
-		        'memberId': memberId,
-		        'commentContent': commentContent
-		    };
-
-		    $.ajax({
-		        type: 'POST',
-		        url: '../market/detail', // 대댓글 controller
-		        headers: {
-		            'Content-Type': 'application/json'
-		        },
-		        data: JSON.stringify(obj),
-		        success: function(result) {
-		            if(result == 1) {
-		                alert('대댓글 입력 성공');
-		                getAllReply(); // 댓글 목록 갱신
-		            }
-		        }
-		    });
-		}); // end comment add
-		
-		
-		
-		
+				});
+			} // end deleteConfirm
+		}); // end btn_delete
 
 		
+		// 답글 작성 버튼 클릭 시 모달창 띄우기
+		$(document).on("click", ".btn_commentAdd", function(){
+			$(".commentModal").attr("style", "display:block;");
+			
+			var marketReplyId =$(this).closest('.reply_item').find('#marketReplyId').val();
+			var memberId = "";
+			var commentContent = $(this).closest('.reply_item').find('#marketCommentId').val();
+			var commentId = $(this).parent().parent().children(".marketCommentContent").text();
+			// 원본 댓글 내용 가져오기. 이 내용은 답글 작성 버튼 클릭시 모달에 보기 전용으로 띄워진다. (아직 구현 안함)
+			// 가능하면 댓글 작성자 Id랑 댓글 작성 시간도 가져와서 좀 더 본격적인 Ui를 만들면 좋을 거 같은데
+			// 음.. 그렇게까지?
+			
+			console.log("commentId : " + commentId, "commentContent : " + commentContent, "marketReplyId : " + marketReplyId);
+			
+			 $("").val(marketReplyId);
+			 $(".modal_comment_content").val(commentContent);
+			 $(".modal_comment_btn").val(commentId);
+		});
+			
 		
+		// 답글 작성 버튼
+		$('#btn_commentAdd').click(function(){
+			var marketReplyId = $('#marketReplyId').val();
+			var memberId = $('#memberId').val();
+			var marketCommentContent = $('#marketCommentContent').val();
+			
+			var obj = {
+					'marketReplyId' : marketId,
+					'memberId' : memberId,	
+					'marketCommentContent' : marketCommentContent
+			};
+			console.log(obj);
+			
+			if (!marketCommentContent) {
+			     alert('댓글 내용을 입력해주세요.');
+			     return;
+			}
+			
+			$.ajax({
+				type : 'POST',
+				url : '../market/detail',
+				headers : { // 헤더 정보
+					'Content-Type' : 'application/json' // json content-type 설정
+				}, 
+				data : JSON.stringify(obj), 
+				success : function(result) {
+					console.log(result);
+					if(result == 1) {
+						alert('대댓글 입력 성공');
+						getAllReply();
+						$("#marketCommentContent").val("");
+					} else {
+						alert('대댓글 입력 실패');
+						}
+					}
+			}); // end ajax
+		}); // end btnComment
+
 	}); // end document
+	
 	</script>
 
+<!-- 수정 모달 -->
+<div class="replyModal">
+
+ <div class="modalContent">
+  
+  <div>
+   <textarea class="modal_repCon" name="modal_repCon"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="modal_modify_btn">수정</button>
+   <button type="button" class="modal_cancle">취소</button>
+  </div>
+  
+ </div>
+
+ <div class="modalBackground"></div>
+ 
+</div>
+
+<!-- 대댓글 모달 -->
+<div class="commentModal">
+
+ <div class="modalCommentContent">
+	<input type="hidden" id="marketmemberId" value="${marketReplyVO.memberId }">  
+	<p> 댓글 작성자 : ${marketReplyVO.memberId } </p>
+  <div>
+   <textarea class="modal_comment_content" name="modal_comment_content"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="modal_comment_btn">작성</button>
+   <button type="button" class="modal_comment_cancle">취소</button>
+  </div>
+  
+ </div>
+
+ <div class="modalBackground"></div>
+ 
+</div>
+
+<script>
+
+$(".modal_cancle").click(function(){	
+   $(".replyModal").attr("style", "display:none;");
+});
+
+$(".modal_comment_cancle").click(function(){
+	$(".commentModal").attr("style", "display:none;");
+});
+
+	
+</script>
 
 </body>
 </html>
