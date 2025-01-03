@@ -17,7 +17,7 @@ public class MarketCommentVO {
 	private int marketCommentId;
 	private int marketReplyId;
 	private String memberId;
-	private String commentContent;
+	private String marketCommentContent;
 	private Date commentDateCreated;
 
 }
