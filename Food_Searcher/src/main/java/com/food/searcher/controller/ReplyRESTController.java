@@ -66,6 +66,8 @@ public class ReplyRESTController {
 	    for (RecipeReplyVO reply : list) {
 	        List<RecipeCommentVO> comments = recipeCommentService.getAllComment(reply.getReplyId());
 	        reply.setComments(comments); // 댓글 객체에 대댓글 목록 설정
+	        log.info("데이터 : " + comments);
+	        log.info(comments.size());
 	    }
 	    
 		// ResponseEntity<T> : T의 타입은 프론트 side로 전송될 데이터의 타입으로 선언

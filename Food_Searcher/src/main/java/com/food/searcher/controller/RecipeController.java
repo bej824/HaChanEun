@@ -127,8 +127,7 @@ public class RecipeController {
 		log.info("레시피 ID : " + recipeId);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
-		List<RecipeVO> list = recipeService.getAllBoards();
-		log.info("recipeId 번호 : " + list.get(0).getRecipeId());
+//		List<RecipeVO> list = recipeService.getAllBoards();
 //		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
 //		log.info("AttachVO" + attachVO);
 		model.addAttribute("recipeVO", recipeVO);

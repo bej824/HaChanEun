@@ -47,18 +47,22 @@ public class RecipeCommentController {
 	public void commentGET(Model model, Integer replyId) {
 		log.info(replyId);
 		log.info("commentGET()");
-		RecipeReplyVO replyVO = replyService.getReplyById(replyId);
-		log.info(replyVO);
-		model.addAttribute("replyVO", replyVO);
+		RecipeReplyVO recipeReplyVO = replyService.getReplyById(replyId);
+		log.info(recipeReplyVO);
+		model.addAttribute("replyVO", recipeReplyVO);
 	}
 	
 	@GetMapping("/all/{replyId}") // GET : 댓글 선택(all)
 	public ResponseEntity<List<RecipeCommentVO>> readAllReply(
-			@PathVariable("replyId") int replyId) { 
+			@PathVariable("replyId") int replyId, Model model) { 
 		// @PathVariable("boardId") : {boardId} 값을 설정된 변수에 저장
 		log.info("readAllReply");
-		log.info("boardId = " + replyId);
+		log.info("replyId = " + replyId);
+		
+		RecipeReplyVO recipeReplyVO = replyService.getReplyById(replyId);
+		log.info("recipeReplyVO = " + recipeReplyVO);
 
+		model.addAttribute("recipeReplyVO", recipeReplyVO);
 		List<RecipeCommentVO> list = recipeCommentService.getAllComment(replyId);
 		log.info(list);
 		// ResponseEntity<T> : T의 타입은 프론트 side로 전송될 데이터의 타입으로 선언
