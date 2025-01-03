@@ -64,11 +64,11 @@ li {
 		<thead>
 			<tr>
 				<th style="width: 60px">번호</th>
-				<th style="width: 700px">제목</th>
-				<th style="width: 80px">음식</th>
+				<th style="width: 670px">제목</th>
+				<th style="width: 90px">음식</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
-				<th style="width: 40px">댓글수</th>
+				<th style="width: 50px">댓글수</th>
 			</tr>
 		</thead>
 		<tbody>

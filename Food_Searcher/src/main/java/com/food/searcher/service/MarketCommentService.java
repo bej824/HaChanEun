@@ -8,7 +8,7 @@ public interface MarketCommentService {
 	
 	int createComment(MarketCommentVO marketCommentVO);
 	List<MarketCommentVO> getAllComment(int marketReplyId);
-	int updateComment(int marketCommentId, String commentContent);
+	int updateComment(int marketCommentId, String marketCommentContent);
 	int deleteComment(int marketCommentId, int marketReplyId);
 
 }

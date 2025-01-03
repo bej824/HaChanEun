@@ -53,11 +53,11 @@ public class MarketCommentController {
 	 @PutMapping("/{marketCommentId}") 
 	   public ResponseEntity<Integer> updateComment(
 	         @PathVariable("marketCommentId") int marketCommentId,
-	         @RequestBody String commentContent
+	         @RequestBody String marketCommentContent
 	         ){
 	      log.info("updateComment()");
 	      log.info("marketCommentId = " + marketCommentId);
-	      int result = marketCommentService.updateComment(marketCommentId, commentContent);
+	      int result = marketCommentService.updateComment(marketCommentId, marketCommentContent);
 	      log.info("수정 : " + result);
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 수정

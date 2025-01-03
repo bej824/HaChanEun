@@ -36,11 +36,11 @@ public class MarketCommentServiceImple implements MarketCommentService {
 	}
 
 	@Override
-	public int updateComment(int marketCommentId, String commentContent) {
+	public int updateComment(int marketCommentId, String marketCommentContent) {
 		log.info("updateComment");
 		MarketCommentVO marketCommentVO = new MarketCommentVO();
 		marketCommentVO.setMarketCommentId(marketCommentId);
-		marketCommentVO.setCommentContent(commentContent);
+		marketCommentVO.setMarketCommentContent(marketCommentContent);
 		return marketCommentMapper.update(marketCommentVO);
 	}
 	

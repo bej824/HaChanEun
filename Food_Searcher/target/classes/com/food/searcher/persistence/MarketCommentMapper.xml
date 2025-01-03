@@ -9,13 +9,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    	<id property="marketCommentId" column="MARKET_COMMENT_ID"></id>
    	<result property="marketReplyId" column="MARKET_REPLY_ID"></result>
    	<result property="memberId" column="MEMBER_ID" />
-   	<result property="commentContent" column="COMMENT_CONTENT" />
+   	<result property="MarketcommentContent" column="COMMENT_CONTENT" />
    	<result property="commentDateCreated" column="COMMENT_DATE_CREATED" />
    </resultMap>
    	
     <insert id="insert">
     	INSERT INTO MARKET_COMMENT (MARKET_COMMENT_ID, MARKET_REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
-    	VALUES (MARKET_COMMENT_SEQ.NEXTVAL, #{marketReplyId}, #{memberId}, #{commentContent})
+    	VALUES (MARKET_COMMENT_SEQ.NEXTVAL, #{marketReplyId}, #{memberId}, #{marketCommentContent})
     </insert>
     
     <select id="selectListByReplyId" resultMap="commentResultMap">
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <update id="update">
-  		UPDATE MARKET_COMMENT SET COMMENT_CONTENT = #{commentContent} WHERE MARKET_COMMENT_ID = #{marketCommentId}
+  		UPDATE MARKET_COMMENT SET COMMENT_CONTENT = #{marketCommentContent} WHERE MARKET_COMMENT_ID = #{marketCommentId}
     </update>
     
     <delete id="delete">
