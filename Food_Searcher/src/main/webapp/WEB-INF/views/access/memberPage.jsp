@@ -71,10 +71,8 @@
 			</select>
 		</p>
 
-		<p>
-			이메일 : <input type="text" name="email" value="${vo.email }"
-				readonly="readonly">
-		</p>
+		<p> 이메일 : ${vo.email }</p>
+			<input type="hidden" name="email" value="${vo.email }" readonly="readonly">
 
 		<p>이메일 광고 수신 동의</p>
 		<c:if test="${vo.emailAgree == 'yes'}">

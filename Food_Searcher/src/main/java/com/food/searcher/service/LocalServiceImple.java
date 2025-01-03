@@ -43,6 +43,12 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.selectDistrict(localLocal);
 	}
 	
+	@Override
+	public List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle) {
+		log.info("getSpecialityByLocalTitle()");
+		return localMapper.selectByLocalTitle(localTitle);
+	}
+	
 	@Transactional
 	@Override
 	public LocalSpecialityVO getSpecialityByLocalId(String localId) {

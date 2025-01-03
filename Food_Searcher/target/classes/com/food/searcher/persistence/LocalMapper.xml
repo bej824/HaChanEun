@@ -36,12 +36,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE LOCAL_LOCAL = #{localLocal}
 	</select>
 	
+	<select id="selectByLocalTitle" resultMap="localResultMap">
+		<!-- 검색어를 통한 특산품 조회 -->
+		SELECT * FROM LOCAL_SPECIALITY
+		WHERE LOCAL_TITLE = #{localTitle}
+	</select>
+	
 	<select id="selectByLocalId" resultMap="localResultMap">
-		<!-- 상세 게시글 조회 -->
+		<!-- 테이블을 통한 특산품 조회 -->
 		SELECT * FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
 	</select>
-
+	
 	<update id="update">
 		<!-- 상세 게시글 수정 -->
 		UPDATE LOCAL_SPECIALITY SET LOCAL_CONTENT = #{localContent}

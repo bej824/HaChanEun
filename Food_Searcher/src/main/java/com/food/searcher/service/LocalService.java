@@ -8,6 +8,7 @@ public interface LocalService {
 	
 	List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict);
 	List<LocalSpecialityVO> getDistrictByLocal(String localLocal);
+	List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle);
 	LocalSpecialityVO getSpecialityByLocalId(String localId);
 	int updateSpeciality(LocalSpecialityVO localSpecialityVO);
 	int deleteSpeciality(int localId);
