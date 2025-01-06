@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.food.searcher.domain.AttachVO;
+import com.food.searcher.domain.RecipeCommentVO;
+import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.AttachService;
+import com.food.searcher.service.RecipeCommentService;
+import com.food.searcher.service.RecipeReplyService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.FileUploadUtil;
 import com.food.searcher.util.PageMaker;
@@ -38,6 +42,12 @@ public class RecipeController {
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private RecipeReplyService recipeReplyService;
+	
+	@Autowired
+	private RecipeCommentService recipeCommentService;
 	
 //    @Autowired
 //    private ServletContext servletContext;
@@ -83,7 +93,7 @@ public class RecipeController {
 		List<RecipeVO> list = recipeService.getAllBoards();
 		log.info("recipeId 번호 : " + list.get(0).getRecipeId());
 		
-		
+		if (attachVO != null && attachVO.getFile() != null && !attachVO.getFile().isEmpty()) {
 	      MultipartFile file = attachVO.getFile();
 
 	      // UUID 생성
@@ -116,6 +126,7 @@ public class RecipeController {
 	      // DB에 첨부 파일 정보 저장
 	      log.info(attachVO);
 	      log.info(attachService.createAttach(attachVO) + "행 등록");
+		}
 		return "redirect:/recipe/list";
 	}
 	
@@ -127,17 +138,20 @@ public class RecipeController {
 		log.info("레시피 ID : " + recipeId);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
-//		List<RecipeVO> list = recipeService.getAllBoards();
-//		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
-//		log.info("AttachVO" + attachVO);
+		List<RecipeVO> list = recipeService.getAllBoards();
+		log.info("RecipeVO List : " + list);
 		model.addAttribute("recipeVO", recipeVO);
-//		if(attachVO !=null) {
-//		model.addAttribute("idList", attachVO);
-//		String date = attachVO.get(0).getAttachPath().replace("\\", "/");
-//		String imagePath = "/resources/images/"+date+"/" + attachVO.get(0).getAttachChgName(); // 이미지 경로
-//		log.info("이미지 경로 : " + imagePath);
-//	    model.addAttribute("imagePath", imagePath); // JSP로 경로 전달
-//		}
+		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
+		log.info("AttachVO : " + attachVO);
+		if(attachVO != null  && !attachVO.isEmpty()) {
+		model.addAttribute("idList", attachVO);
+		String date = attachVO.get(0).getAttachPath().replace("\\", "/");
+		String imagePath = "/food/"+date+"/" + attachVO.get(0).getAttachChgName(); // 이미지 경로
+		log.info("이미지 경로 : " + imagePath);
+	    model.addAttribute("imagePath", imagePath); // JSP로 경로 전달
+		} else {
+			log.info("attachVO is null");
+		}
 	}
 	
 	// 게시글 번호를 전송받아 상세 게시글 조회
@@ -163,6 +177,20 @@ public class RecipeController {
 	   @PostMapping("/delete")
 	   public String delete(Integer recipeId) {
 	      log.info("delete()");
+	      List<RecipeReplyVO> replyList = recipeReplyService.getAllReply(recipeId);
+	      log.info("댓글 목록 : " + replyList);
+	      for(RecipeReplyVO reVO : replyList) {
+	    	  List<RecipeCommentVO> commentList = recipeCommentService.getAllComment(reVO.getReplyId());
+	    	  log.info("대댓글 목록 : " + commentList);
+	    	  for(RecipeCommentVO coVO : commentList) {
+	    		  int result = recipeCommentService.deleteComment(coVO.getRecipeCommentId(), coVO.getRecipeReplyId());
+	    		  log.info(coVO);
+	    		  log.info(result + "행 대댓글 삭제");
+	    	  }
+	    	  log.info(reVO);
+	    	  int result = recipeReplyService.deleteReply(reVO.getReplyId(), reVO.getBoardId());
+	    	  log.info(result + "행 댓글 삭제");
+	      }
 	      int result = recipeService.deleteBoard(recipeId);
 	      log.info(result + "행 삭제");
 	      return "redirect:/recipe/list";
