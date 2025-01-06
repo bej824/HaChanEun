@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    	<id property="marketCommentId" column="MARKET_COMMENT_ID"></id>
    	<result property="marketReplyId" column="MARKET_REPLY_ID"></result>
    	<result property="memberId" column="MEMBER_ID" />
-   	<result property="MarketcommentContent" column="COMMENT_CONTENT" />
+   	<result property="marketCommentContent" column="COMMENT_CONTENT" />
    	<result property="commentDateCreated" column="COMMENT_DATE_CREATED" />
    </resultMap>
    	
