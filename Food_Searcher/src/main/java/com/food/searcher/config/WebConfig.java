@@ -42,9 +42,10 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	   
 	    @Override
 	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	    	String filePath = "file:///C:/upload/food/";
 	        // 로컬 파일 경로를 URL 경로에 매핑
-	    	registry.addResourceHandler("/resources/**")
-            .addResourceLocations("/resources/"); // "/resources/" 경로에 있는 리소스를 서빙
+	    	registry.addResourceHandler("/food/**")
+            .addResourceLocations(filePath); // 경로에 있는 리소스를 서빙
 	    }
 
 }

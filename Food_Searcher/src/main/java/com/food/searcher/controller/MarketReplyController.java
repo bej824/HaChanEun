@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.food.searcher.domain.MarketReplyVO;
 import com.food.searcher.service.MarketReplyService;
-import com.food.searcher.service.MarketService;
 
 import lombok.extern.log4j.Log4j;
 

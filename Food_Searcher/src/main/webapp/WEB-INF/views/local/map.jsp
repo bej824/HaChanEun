@@ -86,26 +86,31 @@ li {
 <body>
 	<%@ include file ="../header.jsp" %>
 	<h1>특산품</h1>
-	<div class="search">
-	상세 검색 :
+	<div class="search" id = "search">
+	상세 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal"
 		onchange="listUpdate(this.value, null)">
 		<option value="">전체</option>
-		<option value="경기도">경기도</option>
-		<option value="강원도">강원도</option>
-		<option value="충청북도">충청북도</option>
-		<option value="충청남도">충청남도</option>
-		<option value="전라북도">전라북도</option>
-		<option value="전라남도">전라남도</option>
-		<option value="경상북도">경상북도</option>
-		<option value="경상남도">경상남도</option>
-		<option value="제주도">제주도</option>
+		<option value="경기도" <c:if test="${localLocal == '경기도'}">selected</c:if>>경기도</option>
+		<option value="강원도" <c:if test="${localLocal == '강원도'}">selected</c:if>>강원도</option>
+		<option value="충청북도" <c:if test="${localLocal == '충청북도'}">selected</c:if>>충청북도</option>
+		<option value="충청남도" <c:if test="${localLocal == '충청남도'}">selected</c:if>>충청남도</option>
+		<option value="전라북도" <c:if test="${localLocal == '전라북도'}">selected</c:if>>전라북도</option>
+		<option value="전라남도" <c:if test="${localLocal == '전라남도'}">selected</c:if>>전라남도</option>
+		<option value="경상북도" <c:if test="${localLocal == '경상북도'}">selected</c:if>>경상북도</option>
+		<option value="경상남도" <c:if test="${localLocal == '경상남도'}">selected</c:if>>경상남도</option>
+		<option value="제주도" <c:if test="${localLocal == '제주도'}">selected</c:if>>제주도</option>
 	</select>
-
+	&nbsp;&nbsp;
 	<select name="localDistrict" id="localDistrict"
 	onchange="listUpdate(document.getElementById('localLocal').value, this.value)">
 	<option value="">전체</option>
 	</select>
+	
+	&nbsp;&nbsp;&nbsp;
+	특산품 명 : <input type="text" name="localTitle" id="localTitle">
+	&nbsp;&nbsp;
+	<button class="button" onclick="titleSearch()">검색</button>
 	</div>
 	
 	<div class="table-container">
@@ -169,10 +174,11 @@ li {
 				success : function(result) {
 
 					let tbody = $('table tbody');
+					let URL = "window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'";
 					tbody.empty(); // 기존 테이블 내용 비우기
 
 					result.forEach(function(LocalSpecialityVO) {
-						let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'">' 
+						let row = '<tr onclick=URL>' 
 				         + '<td>' + LocalSpecialityVO.localLocal + '</td>'
 				         + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
 				         + '<td>' + LocalSpecialityVO.localTitle + '</td>'
@@ -185,6 +191,11 @@ li {
 				} // end function()
 			});
 		} // end function localUpdate()
+		
+		function titleSearch(){
+			let localTitle = document.getElementById('localTitle').value;
+			console.log("검색어 : " + localTitle);
+		}
 		
 	</script>
 </body>

@@ -52,7 +52,7 @@
 	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 }
 
-.wbutton, .btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add {
+.wbutton, .btn_update, .btn_delete, .comment_add {
 	background-color: #04AA6D;
 	border: none;
 	color: white;
@@ -78,7 +78,7 @@
 	float: left;
 }
 
-.btn_update:disabled, .btn_delete:disabled, .comment_update:disabled, .comment_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled, .btn_commentdelete:disabled {
+.btn_update:disabled, .btn_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled, .btn_commentdelete:disabled {
     display: none;
 }
 
@@ -106,7 +106,7 @@
 		<div id="replies"></div>
 			<%if(session.getAttribute("memberId") == null){ %>
 		* 댓글은 로그인이 필요한 서비스입니다.
-		<a href="../access/login">로그인하기</a>
+		<a href="../access/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
 	<%} %>
 	<%if(session.getAttribute("memberId") != null){ %>
 			<div style="text-align: left;">
@@ -129,6 +129,12 @@
 				console.log("작성자 : " + memberId);
 				let replyContent = $('#recipeReplyContent').val(); // 댓글 내용
 				console.log("댓글 내용 : " + replyContent);
+				
+		        // 빈 댓글 내용일 경우
+		        if (!replyContent.trim()) {
+		            return;
+		        }
+		        
 				// javascript 객체 생성
 				let obj = {
 						'boardId' : boardId,
@@ -287,8 +293,8 @@
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				let recipeCommentId = $(this).prevAll('#recipeCommentId').val();
-				let replyContent = $(this).prevAll('#commentContent').val();
-				console.log("선택된 댓글 번호 : " + recipeCommentId + ", 댓글 내용 : " + replyContent);
+				let commentContent = $(this).prevAll('#commentContent').val();
+				console.log("선택된 댓글 번호 : " + recipeCommentId + ", 댓글 내용 : " + commentContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -297,7 +303,7 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : replyContent, 
+					data : commentContent,
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -337,6 +343,9 @@
 			}); // end replies.on()		
 			
 			$('#replies').on('click', '.reply_item .btn_comment', function(){
+				
+				$('.reply_item .comment').not($(this).closest('.reply_item').find('.comment')).html('');
+				
 				let replyId = $(this).prevAll('#replyId').val();
 				let recipeCommentId = $(this).closest('.reply_item').find('#recipeCommentId').val();
 				console.log("CommentId : " + recipeCommentId);
@@ -393,7 +402,7 @@
 									+ '<input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
 									+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<br><input type="text" id="commentContent1" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
+									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
 									
@@ -401,7 +410,7 @@
 									
 							}); // end each()
 							+ '<%if(session.getAttribute("memberId") != null){ %>'
-							comment += '<input type="text" id="commentContent" >'
+							comment += '<input type="text" id="commentContentAdd" >'
 								+ '<button class="comment_add" value='+ replyId +'>작성</button>';
 								+ '	<%} %>'
 							commentDiv.html(comment);
@@ -421,7 +430,7 @@
 		        
 		        let memberId = "<%=session.getAttribute("memberId")%>"
 		        let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();  // 댓글 ID
-		        let commentContent = $(this).prevAll('#commentContent').val();
+		        let commentContent = $(this).prevAll('#commentContentAdd').val();
 
 		        console.log("recipeReplyId: " + recipeReplyId);
 		        console.log("memberId: " + memberId);
@@ -451,8 +460,8 @@
 								console.log(result);
 								if(result == 1) {
 									alert('대댓글 입력 성공');
-									document.getElementById('commentContent').value = '';
 									getAllReply();
+									document.getElementById('commentContent').value = '';
 									location.reload();
 								}
 							}
@@ -468,7 +477,7 @@
 	      let memberId = clickedElement.textContent;
 	      console.log(memberId);
 	      
-	      $('#commentContent').val(memberId +" → ");
+	      $('#commentContentAdd').val(memberId +" → ");
 	    }
 		
 	</script>

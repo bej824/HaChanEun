@@ -72,8 +72,8 @@ textarea {
 	
 	<%@ include file="reply.jsp"%>
 
-	
 	<script type="text/javascript">
+	
 	function update() {
 		let result = confirm("수정하시겠습니까?");
 		if (result) {;
@@ -81,7 +81,15 @@ textarea {
 		} else {
 			alert("수정이 취소되었습니다.");
 		}
+	} // end update()
+	
+	function listLoad(){
+		
 	}
+	
+	$(document).ready(function(){
+		console.log("${LocalSpecialityVO.localLocal } ${LocalSpecialityVO.localDistrict }");
+	});
 	</script>
 
 </body>

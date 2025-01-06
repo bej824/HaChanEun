@@ -51,7 +51,7 @@ textarea {
 			<input type="text" name="recipeFood" placeholder="요리 이름 입력">
 		</div>
 		<div>
-			<input type="file" name="file">
+			<input type="file" name="file" multiple="multiple">
 		</div>
 		<div>
 			<p>내용 :</p>

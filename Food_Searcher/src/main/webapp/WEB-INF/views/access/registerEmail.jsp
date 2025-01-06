@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -38,6 +39,11 @@ body {
 	<button id="btn_register" class="button" onclick="emailCheck()" style="display: none;">인증</button>
 
 	<script type="text/javascript">
+		let DateCreated = new Date();
+		let hours = DateCreated.getHours().toString().padStart(2, '0');
+		let minutes = DateCreated.getMinutes().toString().padStart(2, '0');
+		let replyDate = hours + ":" + minutes;
+	
 		function confirm() {
 			let btn_confirm = document.getElementById('btn_confirm');
 			let email = document.getElementsByName("email")[0].value;
@@ -68,6 +74,7 @@ body {
 			 let emailCheck = document.getElementsByName("emailCheck")[0].value;
 			 if (/^\d+$/.test(emailCheck)) {
 			 console.log("emailCheck :", emailCheck);  // 입력한 아이디 값이 콘솔에 출력되는지 확인
+				 
 			 $.ajax({
 			    type: 'POST',
 			    url: '../access/emailCheck',
@@ -83,6 +90,7 @@ body {
 			      }
 			    }
 			  });
+			 
 			 } else {
 				 $('#confirmMsg').html('인증번호를 다시 확인해주세요.').css('color', 'red');
 			 }
@@ -91,21 +99,21 @@ body {
 			function btn_countDown(){
 				console.log("btn_countDown()");
 				let count = 30;
+				let timeover = 300;
 				let countdown = document.getElementById('countdown');
-				const intervalId = setInterval(function() {
+				const countInterval = setInterval(function() {
 			        count--; // 카운트 감소
 					$('#emailMsg').html('재발송은 30초 후 가능합니다.');
-			        $('#confirmMsg').html('인증번호가 발송되었습니다.');
+			        $('#confirmMsg').html('인증번호가 발송되었습니다. 인증번호는 5분까지 유효합니다.');
 			        countdown.textContent = count;
 					btn_confirm.textContent = "재발송";
 			        btn_confirm.disabled = true;
 			        // 카운트가 0이 되면 타이머 멈추기
 			        if (count <= 0) {
-			          clearInterval(intervalId);
+			          clearInterval(countInterval);
 			          btn_confirm.disabled = false;
 			        }
 			      }, 1000);
-				
 			}
 		
 		function register(){
