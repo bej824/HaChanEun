@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<%@ include file ="../header.jsp" %>
+	<jsp:include page="../header.jsp" />
 	<br>
 	<form action = "login" method="POST">
 	ID : <input type="text" name="memberId"> <br><br>
@@ -17,12 +17,13 @@
 	<input type="submit" value="로그인" class="button">
 	</form>
 	<a href="ID" class="button">ID 찾기</a>
-	<a href="" class="button">PW 찾기</a>
-	<%
-	if(session.getAttribute("memberId") != null){
-		response.sendRedirect("../home");
-	}
-	%>
+	<a href="pwSearch?select=pwSearch" class="button">PW 찾기</a>
+	
+	<c:if test="${session.memberId != null}">
+    <script>
+        window.location.href = "../home";
+    </script>
+	</c:if>
 	
 	<script type="text/javascript">
         <c:if test="${not empty param.status}">

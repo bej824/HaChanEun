@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,12 +30,6 @@ public class EmailRESTController {
 	private JavaMailSender mailSender;
 	@Autowired
 	private EmailAuthUtil emailAuth;
-	
-	@GetMapping("/registerEmail")
-	public void rigisterEmailGET() {
-		log.info("registerEmailGET()");
-		
-	}
 	
 	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email, HttpServletRequest request) 

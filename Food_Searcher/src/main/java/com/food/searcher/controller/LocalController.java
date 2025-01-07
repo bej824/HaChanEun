@@ -51,11 +51,12 @@ public class LocalController {
 	private RoleService RoleService;
 
 	@GetMapping("/map")
-	public void mapGET(Model model) {
+	public void mapGET(Model model, @RequestParam(value = "localLocal", required = false) String localLocal,
+			@RequestParam(value = "localDistrict", required = false) String localDistrict) {
 		log.info("mapGET()");
-		String localLocal = null;
-		String localDistrict = null;
+		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
+		
 		model.addAttribute("SpecialityList", SpecialityList);
 
 	}
@@ -96,8 +97,12 @@ public class LocalController {
 	}
 
 	@GetMapping("/detail")
-	public void localDetailGET(@RequestParam("localId") String localId, HttpSession session, Model model) {
+	public void localDetailGET(@RequestParam("localId") String localId,
+			@RequestParam(value = "localLocal", required = false) String localLocal,
+			@RequestParam(value = "localDistrict", required = false) String localDistrict,
+			HttpSession session, Model model) {
 		log.info("localDetailGET()");
+		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
 		LocalSpecialityVO LocalSpecialityVO = localService.getSpecialityByLocalId(localId);
 		log.info(LocalSpecialityVO);
 
@@ -113,6 +118,8 @@ public class LocalController {
 		}
 
 		model.addAttribute("LocalSpecialityVO", LocalSpecialityVO);
+		model.addAttribute("localLocal", localLocal);
+		model.addAttribute("localDistrict", localDistrict);
 	}
 
 }

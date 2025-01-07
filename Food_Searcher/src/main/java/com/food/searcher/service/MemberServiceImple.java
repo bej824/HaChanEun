@@ -41,6 +41,13 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
+	public int updatePassword(String memberId, String password) {
+		log.info("updatePassword()");
+		
+		return memberMapper.updatePasswordByMemberId(memberId, password);
+	}
+	
+	@Override
 	public int deleteMember(String memberId) {
 		log.info("deleteMember()");
 		return memberMapper.deleteMemberByMemberId(memberId);

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,20 +106,16 @@
 		<div id="replies"></div>
 
 		<div class="reply">
-			<%
-			if (session.getAttribute("memberId") != null) {
-			%>
+			<c:if test="${ sessionScope.memberId} != this.memberId">
 			<div class="replyMemberId">
-				<%=session.getAttribute("memberId")%><input type="hidden"
-					id="memberId" value="<%=session.getAttribute("memberId")%>">
+				${ sessionScope.memberId}<input type="hidden"
+					id="memberId" value="${ sessionScope.memberId}">
 				<input type="text" id="headerReplyContent">
 				<div class="timeButton">
 					<button id="btnAdd" class="button">작성</button>
 				</div>
 			</div>
-			<%
-			}
-			%>
+			</c:if>
 		</div>
 	</div>
 
@@ -194,7 +191,7 @@
 							var disabled = '';
 							var readonly = '';
 							
-							if('<%=session.getAttribute("memberId")%>' != this.memberId) {
+							if("${ sessionScope.memberId}"!= this.memberId){
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -313,7 +310,7 @@
 								var disabled = '';
 								var readonly = '';
 								
-								if('<%=session.getAttribute("memberId")%>' != this.memberId) {
+								if("${ sessionScope.memberId}"!= this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -346,7 +343,7 @@
         console.log(this);
         
         let localId = $('#localId').val();
-        let memberId = "<%=session.getAttribute("memberId")%>"
+        let memberId = '${sessionScope.memberId}';
         let replyId = $(this).val();  // 댓글 ID
         let commentContent = $(this).prevAll('#commentContent').val();
 

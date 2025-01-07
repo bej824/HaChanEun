@@ -11,7 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@ include file ="../header.jsp" %>
+	<jsp:include page="../header.jsp" />
 		<h1>ID 찾기</h1>
 	<form id="ID" action = "ID" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>

@@ -19,7 +19,7 @@ public class EmailAuthUtil {
 			map.put(email, checkNum);
 			result = 1;
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		return result;
@@ -27,7 +27,7 @@ public class EmailAuthUtil {
 	
 	public int checkAuth(String email, int emailCheck) {
 		int result = 0;
-		if(map.containsKey(email) && emailCheck == map.get(email)) {
+		if(map.get(email) != null && emailCheck == map.get(email)) {
 			result = 1;
 		}
 		

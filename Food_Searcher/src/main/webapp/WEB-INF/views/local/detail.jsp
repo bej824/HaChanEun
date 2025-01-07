@@ -36,7 +36,7 @@ textarea {
 <title>${LocalSpecialityVO.localTitle }</title>
 </head>
 <body>
-	<%@ include file="../header.jsp"%>
+	<jsp:include page="../header.jsp" />
 	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
@@ -46,8 +46,7 @@ textarea {
 			value="${LocalSpecialityVO.localId }">
 	</div>
 	<div>
-		<p>지역 : ${LocalSpecialityVO.localLocal } /
-			${LocalSpecialityVO.localDistrict }</p>
+		<p>지역 : ${LocalSpecialityVO.localLocal } / ${LocalSpecialityVO.localDistrict }</p>
 	</div>
 	<div>
 		<p>특산품 : ${LocalSpecialityVO.localTitle }</p>
@@ -70,26 +69,19 @@ textarea {
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>			
 	</c:if>
 	
-	<%@ include file="reply.jsp"%>
+	<jsp:include page="reply.jsp" />
 
 	<script type="text/javascript">
 	
 	function update() {
 		let result = confirm("수정하시겠습니까?");
-		if (result) {;
+		if (result) {
 		document.getElementById("updateForm").submit();
 		} else {
 			alert("수정이 취소되었습니다.");
 		}
 	} // end update()
 	
-	function listLoad(){
-		
-	}
-	
-	$(document).ready(function(){
-		console.log("${LocalSpecialityVO.localLocal } ${LocalSpecialityVO.localDistrict }");
-	});
 	</script>
 
 </body>

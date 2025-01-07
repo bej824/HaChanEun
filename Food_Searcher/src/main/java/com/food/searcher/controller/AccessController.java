@@ -29,6 +29,13 @@ import lombok.extern.log4j.Log4j;
 public class AccessController {
 	@Autowired
 	private MemberService MemberService;
+	
+	// 회원가입 시 이메일 인증 호출
+	@GetMapping("/registerEmail")
+	public void rigisterEmailGET(@RequestParam(value="select") String select, Model model) {
+		log.info("registerEmailGET()");
+		model.addAttribute("select", select);
+	}
 
 	// register.jsp 페이지 호출
 	@PostMapping("/register")
@@ -170,6 +177,20 @@ public class AccessController {
 		model.addAttribute("memberVO", memberVO);
 
 		return "access/ID"; // 결과 페이지로 이동
+	}
+	
+	@GetMapping("/pwSearch")
+	public void pwSearchGET(@RequestParam(value="select") String select, Model model) {
+		log.info("pwSearchGET()");
+		model.addAttribute("select", select);
+		model.addAttribute("method", "GET");
+	}
+	
+	@PostMapping("/pwSearch")
+	public void pwSearchPOST(Model model) {
+		log.info("pwSearchPOST()");
+		model.addAttribute("method", "POST");
+
 	}
 
 }

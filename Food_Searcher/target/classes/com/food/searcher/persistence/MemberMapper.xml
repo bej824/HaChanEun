@@ -41,6 +41,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
 	</select>
 	
+	<update id="updatePasswordByMemberId">
+		UPDATE MEMBER SET 
+		PASSWORD = #{password},
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
 	<update id="updateMemberByMemberId">
 		UPDATE MEMBER SET 
 		EMAIL_AGREE = #{emailAgree},

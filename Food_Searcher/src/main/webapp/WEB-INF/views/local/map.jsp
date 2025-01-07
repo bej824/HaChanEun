@@ -84,7 +84,7 @@ li {
 <title>특산품</title>
 </head>
 <body>
-	<%@ include file ="../header.jsp" %>
+	<jsp:include page="../header.jsp" />
 	<h1>특산품</h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
@@ -107,10 +107,12 @@ li {
 	<option value="">전체</option>
 	</select>
 	
-	&nbsp;&nbsp;&nbsp;
-	특산품 명 : <input type="text" name="localTitle" id="localTitle">
-	&nbsp;&nbsp;
-	<button class="button" onclick="titleSearch()">검색</button>
+	<% 
+	//&nbsp;&nbsp;&nbsp;
+	//특산품 명 : <input type="text" name="localTitle" id="localTitle">
+	//&nbsp;&nbsp;
+	//<button class="button" onclick="titleSearch()">검색</button>
+	%>
 	</div>
 	
 	<div class="table-container">
@@ -139,8 +141,7 @@ li {
 	<script type="text/javascript">
 		function listUpdate(localLocal, localDistrict) {
 			console.log(localLocal, localDistrict);
-			let localURL = "localLocal=" + localLocal + "localDistrict=" + localDistrict;
-			console.log(localURL);
+			
 			
 			$.ajax({
 				type : 'GET',
@@ -174,11 +175,15 @@ li {
 				success : function(result) {
 
 					let tbody = $('table tbody');
-					let URL = "window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'";
+					//let localURL = "localLocal=" + localLocal + "localDistrict=" + localDistrict;
+					//console.log(URL + localURL);
 					tbody.empty(); // 기존 테이블 내용 비우기
 
 					result.forEach(function(LocalSpecialityVO) {
-						let row = '<tr onclick=URL>' 
+						let URL = "/detail?localId=" + LocalSpecialityVO.localId;
+						//let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'">'
+						let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
+								'&localLocal=' + localLocal + '&localDistrict=' + localDistrict +'\'">'
 				         + '<td>' + LocalSpecialityVO.localLocal + '</td>'
 				         + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
 				         + '<td>' + LocalSpecialityVO.localTitle + '</td>'

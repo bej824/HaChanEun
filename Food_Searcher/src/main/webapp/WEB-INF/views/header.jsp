@@ -128,7 +128,7 @@ textarea[readonly] {
    <%} else { %>
     	<div class="login">
         <a href="/searcher/access/login">로그인</a>
-        <a href="/searcher/access/registerEmail">회원가입</a>
+        <a href="/searcher/access/registerEmail?select=register">회원가입</a>
         </div>
     <%} %>
     

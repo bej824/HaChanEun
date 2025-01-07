@@ -8,9 +8,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <title>하찬은 이메일 인증</title>
-<jsp:include page="../header.jsp" />
 </head>
 <body>
+	<jsp:include page="../header.jsp" />
+	<h1>이메일 확인</h1>
 	<jsp:include page="emailAuthHeader.jsp" />
 
 </body>

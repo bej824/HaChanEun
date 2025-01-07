@@ -31,7 +31,7 @@ public class RoleController {
 			RoleVO roleVO = RoleService.selectRole(memberId);
 			log.info(roleVO);
 			log.info("권한 : " + roleVO.getRoleName());
-			if(roleVO.getRoleName().equals("admin")) {
+			if(roleVO.getRoleName().equals("ROLE_ADMIN")) {
 				model.addAttribute(roleVO);
 				return "access/admin";
 			} else {
@@ -47,7 +47,7 @@ public class RoleController {
 	@PostMapping("/roleUpdate")
 	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
 		log.info("roleUpdate");
-		String roleName = "admin";
+		String roleName = "ROLE_ADMIN";
 		int result = RoleService.updateRole(memberId, roleName);
 		log.info(result + "행 수정");
 		

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<%@ include file ="../header.jsp" %>
+	<jsp:include page="../header.jsp" /> %>
 	<h1>Member Page</h1>
 
 	<form id="updateForm" action="update" method="post">
