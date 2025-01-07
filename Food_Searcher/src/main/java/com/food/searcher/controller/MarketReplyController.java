@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +28,11 @@ public class MarketReplyController {
 	
 	@Autowired
 	private MarketReplyService marketReplyService;
-	
 
 	@PostMapping
 	public ResponseEntity<Integer> createReply(@RequestBody MarketReplyVO marketReplyVO) {
 		log.info("createReply()");
+		log.info(marketReplyVO);
 		
 		int result = marketReplyService.createReply(marketReplyVO);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -39,12 +40,15 @@ public class MarketReplyController {
 	} // 댓글 등록
 	
 	@GetMapping("/all/{marketId}")
-	public ResponseEntity<List<MarketReplyVO>> readAllReply(
-			@PathVariable("marketId") int marketId){
+	public ResponseEntity<List<MarketReplyVO>> readAllReply(@PathVariable("marketId") int marketId, Model model){
 		log.info("readAllReply()");
 		log.info("marketId = " + marketId);
 		
 		List<MarketReplyVO> list = marketReplyService.getAllReply(marketId);
+		model.addAttribute("list", list);
+		
+		log.info(list);
+		
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
 	} // 댓글 출력
 	
