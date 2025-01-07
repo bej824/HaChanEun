@@ -42,6 +42,9 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 			<input type="text" name="recipeFood" value="${recipeVO.recipeFood }" required>
 		</div>
 		<div>
+			<input type="file" name="file" multiple="multiple">
+		</div>
+		<div>
 			<p>내용 : </p>
 			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" 
 maxlength="300" required>${recipeVO.recipeContent }</textarea>

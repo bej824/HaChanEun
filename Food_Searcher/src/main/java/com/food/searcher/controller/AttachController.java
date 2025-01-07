@@ -2,7 +2,6 @@ package com.food.searcher.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class AttachController {
         log.info("detail()");
         log.info("attachId : " + attachId);
         // attachId로 상세 정보 조회
-        List<AttachVO> attachVO = attachService.getAttachById(attachId);
+        AttachVO attachVO = (AttachVO) attachService.getAttachById(attachId);
         // 조회된 상세 정보를 Model에 추가하여 전달
         model.addAttribute("attachVO", attachVO);
     } // end detail()
@@ -95,7 +94,7 @@ public class AttachController {
         log.info("download()");
         
         // attachId로 상세 정보 조회
-        List<AttachVO> attachVO = attachService.getAttachById(attachId);
+        AttachVO attachVO = (AttachVO) attachService.getAttachById(attachId);
         String attachPath = ((AttachVO) attachVO).getAttachPath();
         String attachChgName = ((AttachVO) attachVO).getAttachChgName();
         String attachExtension = ((AttachVO) attachVO).getAttachExtension();

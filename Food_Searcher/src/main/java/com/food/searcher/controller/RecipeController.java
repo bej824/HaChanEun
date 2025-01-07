@@ -99,18 +99,6 @@ public class RecipeController {
 	      // UUID 생성
 	      String chgName = UUID.randomUUID().toString();
 	      
-//	        // webapp/image 경로 가져오기
-//	        String uploadPath = "src/main/webapp/images"; // webapp/image 경로
-//	        
-//	        // 경로 확인: 실제 경로 출력
-//	        log.info("Upload Path: " + uploadPath);
-//
-//	        // 업로드할 경로 확인 및 디렉토리 생성
-//	        File uploadDir = new File(uploadPath);
-//	        if (!uploadDir.exists()) {
-//	            uploadDir.mkdirs(); // 디렉토리 생성
-//	        }
-	      
 	      // 파일 저장
 	      FileUploadUtil.saveFile(uploadPath, file, chgName);
 
@@ -139,7 +127,6 @@ public class RecipeController {
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
 		List<RecipeVO> list = recipeService.getAllBoards();
-		log.info("RecipeVO List : " + list);
 		model.addAttribute("recipeVO", recipeVO);
 		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
 		log.info("AttachVO : " + attachVO);
@@ -161,6 +148,10 @@ public class RecipeController {
 		log.info("modifyGET()");
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		model.addAttribute("recipeVO", recipeVO);
+		List<AttachVO> attachVO = attachService.getAttachById(recipeId);
+		if(attachVO != null  && !attachVO.isEmpty()) {
+		model.addAttribute("idList", attachVO);
+		}
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
