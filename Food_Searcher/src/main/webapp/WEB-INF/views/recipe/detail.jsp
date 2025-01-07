@@ -74,19 +74,44 @@ textarea {
 		<p>음식 : ${recipeVO.recipeFood }</p>
 	</div>
 	<div>
-		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent }</textarea>
+		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
 
 	<c:forEach var="attachVO" items="${idList }">
-	<p>
 <%--     <img src="${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
+	<p>
     <img src="src/main/webapp/image/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
     
     <img src="detail/image/${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
-	 --%>
 	<img src="${imagePath}" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" />
 	</p><br>
+	 --%>
 	</c:forEach>
+	
+	<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${idList}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif' or
+				    			  attachVO.attachExtension eq 'webp'}">
+				        <div class="image_item">
+				        	<a href="../image/get?boardId=${attachVO.boardId }" target="_blank">
+					        <img width="100px" height="100px" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" style="display: none;"/>
+					        <img width="100px" height="100px" 
+					        src="../image/get?boardId=${attachVO.boardId }&attachExtension=${attachVO.attachExtension}"/></a>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
 
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	

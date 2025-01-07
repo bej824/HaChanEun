@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.food.searcher.util.EmailAuthUtil;
+//import com.food.searcher.util.EmailAuthUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -28,8 +28,8 @@ public class EmailRESTController {
 	
 	@Autowired
 	private JavaMailSender mailSender;
-	@Autowired
-	private EmailAuthUtil emailAuth;
+	//@Autowired
+	//private EmailAuthUtil emailAuth;
 	
 	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email, HttpServletRequest request) 
@@ -49,8 +49,8 @@ public class EmailRESTController {
 	    // 이메일 전송
 	    try {
 	        sendEmail(email, subject, sb.toString());
-	        result = emailAuth.insertAuth(email, checkNum);
 	        log.info("인증번호 이메일 전송 성공");
+	        //result = emailAuth.insertAuth(email, checkNum);
 	        
 	    } catch (Exception e) {
 	    	log.info("인증번호 이메일 전송 실패");
@@ -60,14 +60,14 @@ public class EmailRESTController {
 	}
 	
 	@PostMapping("/emailCheck")
-	public ResponseEntity<Integer> emailCheckPOST(String email,
-			int emailCheck)
+	public ResponseEntity<Integer> emailCheckPOST(@RequestParam("email") String email ,
+			@RequestParam("emailCheck") int emailCheck)
 			throws ServletException, IOException {
 		log.info("emailCheckPOST()");
 		int result = 0;
 		log.info("입력된 인증번호 : " + emailCheck);
 		
-		result = emailAuth.checkAuth(email, emailCheck);
+		//result = emailAuth.checkAuth(email, emailCheck);
 		
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
