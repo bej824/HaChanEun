@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	VALUES (MARKET_COMMENT_SEQ.NEXTVAL, #{marketReplyId}, #{memberId}, #{marketCommentContent})
     </insert>
     
-    <select id="selectListByReplyId" resultMap="commentResultMap">
+    <select id="selectListByMarketReplyId" resultMap="commentResultMap">
     	SELECT * FROM MARKET_COMMENT WHERE MARKET_REPLY_ID = #{marketReplyId}
     	ORDER BY MARKET_COMMENT_ID
     </select>
