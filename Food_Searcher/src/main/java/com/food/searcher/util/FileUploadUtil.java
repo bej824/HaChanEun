@@ -126,5 +126,25 @@ public class FileUploadUtil {
             System.out.println(fullPath + " file not found.");
         }
     }
+
+	public static void createThumbnail(String uploadPath, String path, String chgName, String extension) {
+		String realUploadPath = uploadPath + File.separator + path;
+    	String thumbnailName = "t_" + chgName; // 섬네일 파일 이름
+    	
+    	// 섬네일 파일 저장 경로 및 이름
+    	File destPath = new File(realUploadPath, thumbnailName); 
+    	// 원본 파일 저장 경로 및 이름
+        File savePath = new File(realUploadPath, chgName); 
+//    	try {
+//			Thumbnails.of(savePath)
+//			          .size(100, 100) // 썸네일 크기 지정
+//			          .outputFormat(extension) // 확장자 설정
+//			          .toFile(destPath); // 저장될 경로와 이름
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+    }
     
 }

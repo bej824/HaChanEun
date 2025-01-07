@@ -87,6 +87,28 @@ textarea {
 	<img src="${imagePath}" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" />
 	</p><br>
 	</c:forEach>
+	
+	<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${idList}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif'}">
+				        <div class="image_item">
+				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+					        <img width="100px" height="100px" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
 
 	<button onclick="location.href='list'" class="button">글 목록</button>
 	
