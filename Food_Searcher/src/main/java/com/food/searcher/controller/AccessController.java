@@ -179,18 +179,9 @@ public class AccessController {
 		return "access/ID"; // 결과 페이지로 이동
 	}
 	
-	@GetMapping("/pwSearch")
-	public void pwSearchGET(@RequestParam(value="select") String select, Model model) {
-		log.info("pwSearchGET()");
-		model.addAttribute("select", select);
-		model.addAttribute("method", "GET");
-	}
-	
 	@PostMapping("/pwSearch")
-	public void pwSearchPOST(Model model) {
+	public void pwSearchPOST() {
 		log.info("pwSearchPOST()");
-		model.addAttribute("method", "POST");
-
 	}
 
 }

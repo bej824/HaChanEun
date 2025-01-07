@@ -17,7 +17,7 @@
 	<input type="submit" value="로그인" class="button">
 	</form>
 	<a href="ID" class="button">ID 찾기</a>
-	<a href="pwSearch?select=pwSearch" class="button">PW 찾기</a>
+	<a href="registerEmail?select=pwSearch" class="button">PW 찾기</a>
 	
 	<c:if test="${session.memberId != null}">
     <script>

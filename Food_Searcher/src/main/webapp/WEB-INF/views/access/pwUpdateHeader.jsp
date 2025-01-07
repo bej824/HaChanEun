@@ -11,6 +11,7 @@
 	<form id="pwUpdateForm" action="pwUpdate" method="POST">
 	
 	<c:if test="${session.memberId == null}">
+	<p>아이디</p>
 	<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"
 			required>
 	</c:if>

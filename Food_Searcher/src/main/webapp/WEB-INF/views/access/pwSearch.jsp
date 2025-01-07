@@ -10,14 +10,8 @@
 <body>
 	<jsp:include page="../header.jsp" />
 	<h1>비밀번호 찾기</h1>
-	
-	<c:if test="${request.method == 'GET'}">
-        <jsp:include page="emailAuthHeader.jsp" />
-    </c:if>
 
-    <c:if test="${request.method == 'POST'}">
-        <jsp:include page="pwUpdateHeader.jsp" />
-    </c:if>
+    <jsp:include page="pwUpdateHeader.jsp" />
 	
 	<script type="text/javascript">
 	

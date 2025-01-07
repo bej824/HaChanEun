@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 //import com.food.searcher.util.EmailAuthUtil;
 
+import com.food.searcher.util.EmailAuthUtil;
+
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -28,8 +30,8 @@ public class EmailRESTController {
 	
 	@Autowired
 	private JavaMailSender mailSender;
-	//@Autowired
-	//private EmailAuthUtil emailAuth;
+	@Autowired
+	private EmailAuthUtil emailAuth;
 	
 	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email, HttpServletRequest request) 
@@ -50,7 +52,7 @@ public class EmailRESTController {
 	    try {
 	        sendEmail(email, subject, sb.toString());
 	        log.info("인증번호 이메일 전송 성공");
-	        //result = emailAuth.insertAuth(email, checkNum);
+	        result = emailAuth.insertAuth(email, checkNum);
 	        
 	    } catch (Exception e) {
 	    	log.info("인증번호 이메일 전송 실패");
@@ -67,7 +69,7 @@ public class EmailRESTController {
 		int result = 0;
 		log.info("입력된 인증번호 : " + emailCheck);
 		
-		//result = emailAuth.checkAuth(email, emailCheck);
+		result = emailAuth.checkAuth(email, emailCheck);
 		
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
