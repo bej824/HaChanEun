@@ -37,8 +37,7 @@ public class MarketCommentController {
 
 	} // 대댓 등록
 	
-	@GetMapping("/all/comment/{marketReplyId}")
-	
+	@GetMapping("/all/comment/{marketReplyId}")	
 	public ResponseEntity<List<MarketCommentVO>> readAllComment(@PathVariable("marketReplyId") int marketReplyId){
 		log.info("readAllComment()");
 		log.info("marketReplyId = " + marketReplyId);

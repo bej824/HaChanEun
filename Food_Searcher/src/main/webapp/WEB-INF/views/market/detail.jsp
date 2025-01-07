@@ -303,7 +303,7 @@ div.modalCommentContent button.modal_comment_cancle { margin-left:20px; }
 				
 						list += '<div class="comment_item">'
 						+ '<div class="userInfo">'
-						+ '<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">'
+						+ '<input type="hidden" id="marketCommentId" value="${param.marketCommentId}">'
 						+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
 						+ '<span class="memberId">' + this.memberId + ""
 						+ '<span class="date">' + commentDateCreated + ""
