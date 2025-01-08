@@ -49,7 +49,28 @@ public class MarketCommentController {
 		return new ResponseEntity<List<MarketCommentVO>>(list, HttpStatus.OK);
 	} // 대댓글 출력
 	
+	// 대댓글 수정, 삭제 메모장에 있음.
+	
+	@PutMapping("/commentmodify/{marketCommentId}")
+	public ResponseEntity<Integer> updateComment(@PathVariable("marketCommentId") int marketCommentId,
+			@RequestBody String marketCommentContent) {
+		log.info("updateComment()");
+		log.info("marketCommentId = " + marketCommentId);
+		int result = marketCommentService.updateComment(marketCommentId, marketCommentContent);
+		log.info("수정 : " + result);
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	} // 대댓글 수정
 
+	@DeleteMapping("/commentdelete/{marketCommentId}/{marketReplyId}")
+	public ResponseEntity<Integer> deleteReply(@PathVariable("marketCommentId") int marketCommentId,
+			@PathVariable("marketReplyId") int marketReplyId) {
+		log.info("deleteComment()");
+		log.info("marketCommentId = " + marketCommentId);
+
+		int result = marketCommentService.deleteComment(marketCommentId, marketReplyId);
+
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	} // 대댓글 삭제
 
 
 } // end MarketCommentController
