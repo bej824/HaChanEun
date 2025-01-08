@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -44,17 +43,16 @@ li {
 <title>Home</title>
 </head>
 <body>
-	<%@ include file ="/WEB-INF/views/header.jsp" %>
+	<%@ include file ="header.jsp" %>
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
 	
-	<%
+
+	<c:if test="${session.memberId != null}">	
+		<p>${session.memberId }님 환영합니다.</p>
 	
-	if(session.getAttribute("memberId") != null){ %>	
-		<p><%=session.getAttribute("memberId") %>님 환영합니다.</p>
-	
-	<% } %>
+	</c:if>
 
 	
 	<a href="recipe/list" class="button">레시피 공유</a>

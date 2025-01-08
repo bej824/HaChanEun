@@ -41,10 +41,10 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
-	public int updatePassword(String memberId, String password) {
+	public int updatePassword(String memberId, String email, String password) {
 		log.info("updatePassword()");
 		
-		return memberMapper.updatePasswordByMemberId(memberId, password);
+		return memberMapper.updatePasswordByMemberId(memberId, email, password);
 	}
 	
 	@Override

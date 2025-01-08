@@ -21,7 +21,7 @@
 	
 	<br>
 	
-	<p>비밀번호</p>
+	<p>새로운 비밀번호</p>
 		<input type=password name="password" id="password"
 			placeholder="비밀번호 입력" required> <br>
 

@@ -36,7 +36,7 @@ textarea {
 <title>${LocalSpecialityVO.localTitle }</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
@@ -63,7 +63,7 @@ textarea {
 	</div>
 	</form>
 	
-	<button onclick="location.href='map'" class="button">글 목록</button>
+	<button onclick="index()" class="button">글 목록</button>
 	<c:if test="${roleName eq 'admin'}">
 	<button onclick="update()" class="button">글 수정</button>
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>			
@@ -81,6 +81,13 @@ textarea {
 			alert("수정이 취소되었습니다.");
 		}
 	} // end update()
+	
+		
+	function index() {
+		let localLocal = '${localLocal }'
+		let localDistrict = '${localDistrict }'
+		window.location.href='map?localLocal=${localLocal }&localDistrict=${localDistrict }';
+	}
 	
 	</script>
 
