@@ -4,15 +4,15 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <title>회원가입</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<form id="insertForm" action="../home" method="POST">
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"

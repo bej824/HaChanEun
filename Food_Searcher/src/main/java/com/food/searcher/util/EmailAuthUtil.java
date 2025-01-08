@@ -11,12 +11,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class EmailAuthUtil {
 	
-	private Map<String, Integer> map = new HashMap<String, Integer>();
+	private Map<String, Integer> emailAuth = new HashMap<String, Integer>();
 	
 	public int insertAuth(String email, int checkNum) {
 		int result = 0;
 		try {
-			map.put(email, checkNum);
+			emailAuth.put(email, checkNum);
 			result = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -27,7 +27,7 @@ public class EmailAuthUtil {
 	
 	public int checkAuth(String email, int emailCheck) {
 		int result = 0;
-		if(map.get(email) != null && emailCheck == map.get(email)) {
+		if(emailAuth.get(email) != null && emailCheck == emailAuth.get(email)) {
 			result = 1;
 		}
 		

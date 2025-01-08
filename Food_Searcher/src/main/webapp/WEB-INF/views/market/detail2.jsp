@@ -269,7 +269,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<div class="userInfo">'
 							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
 							+ '<span class="memberId">' + this.memberId + '&nbsp'
-							+ '<span class="date">' + replyDateCreated
+							+ '<span class="date">' + replyDateCreated + " "
 							+ '</div>'
 							+ '<br>'
 							
@@ -280,8 +280,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<button class="btn_update"' + disabled + ' > 수정 </button>'
 							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
 							+ '<button class="btn_commentAdd" ' + disable + ' > 답글 작성 </button>'
-							+ '<button class="btn_commentList" onclick="getAllComment()" value="' + this.marketReplyId + '"> 답글 보기 </button> '
-							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
+							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기 </button> '
+							+ '<input type="hidden" id="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
 							
 							+ '<ul class="comment_item"></ul>'
@@ -298,6 +298,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 				} // end function
 			);  // end JSON
 		}// end getAllReply()
+		
 		
 		
 		
@@ -336,8 +337,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						+ '<div class="userInfo">'
 						+ '<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">'
 						+ '<input type="hidden" class="marketReplyId" value="'+ this.marketReplyId +'">'
-						+ '<span class="memberId">' + this.memberId + '&nbsp'
-						+ '<span class="date">' + commentDateCreated
+						+ '<span class="memberId">' + this.memberId + ""
+						+ '<span class="date">' + commentDateCreated + ""
 						+ '</div>'
 						+ '<br>'
 						
@@ -347,18 +348,18 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						+ '<div class = "replyFooter">'
 						+ '<button class="btn_updateComment" ' + disabled + '> 수정 </button>'
 						+ '<button class="btn_deleteComment"' + disabled + ' > 삭제 </button>'
-						+'<button class="btn_commentAdd"> 답글 </button>'
+						+ '<button class="btn_commentAdd"> 답글 </button>'
 						
 						+ '</ul>'; // end comment_item
 					
 					}); // end each()
-					
+						
 					commentDiv.html(comment); // 저장된 데이터를 comments div 표현
 					
 				
 				} // end function
 			);  // end JSON
-		}); //end getAllComment
+		}); //end commentList onclick
 	
 		// 수정 버튼 클릭 시 모달창 띄우기
 		$(document).on("click", ".btn_update", function(){
@@ -437,11 +438,11 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		$(".commentModal").attr("style", "display:block;");
 		
 		var commentReplyId =$(this).closest('.reply_item').find('#marketReplyId').val();
-		var commentMemberId = $("#memberId").val();
-		console.log("대댓글 모달 || commentReplyId : " + commentReplyId, "commentMemberId : " + commentMemberId);
+		var memberId = $(this).closest('.reply_item').find('#commentMemberId').val();	
+		console.log("commentReplyId : " + commentReplyId, "memberId : " + memberId);
 		
 		 $("#commentReplyId").val(commentReplyId);
-		 $("#memberId").val(commentMemberId);
+		 $("#memberId").val(memberId);
 	});
 		
 			
@@ -476,7 +477,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 				if(result == 1) {
 					alert('대댓글 입력 성공');
 					getAllReply();
-					$(".commentModal").attr("style", "display:none;");
+					$("#marketCommentContent").val("");
 				} else {
 					alert('대댓글 입력 실패');
 					}
@@ -565,15 +566,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 
 }); // end document
 
-//getText 함수는 전역에서 정의되어야 합니다.
-function getText(clickedElement) {
-  // 클릭한 span의 텍스트를 가져옵니다.
-  let memberId = clickedElement.textContent;
-  console.log(memberId);
-  
-  $('#commentContentAdd').val(memberId +" → ");
-}
-
 	
 	</script>
 
@@ -603,9 +595,8 @@ function getText(clickedElement) {
 <div class="commentModal">
 
  <div class="modalCommentContent">
-	<input type="hidden" id="commentMemberId" value="">  
-	
-	<div id="commentReplyId"></div>
+	<input type="hidden" id="commentMemberId">  
+	<input type="hidden" id="commentReplyId">
 	
   <div>
    <textarea id="marketCommentContent" name="modal_comment_content"></textarea>

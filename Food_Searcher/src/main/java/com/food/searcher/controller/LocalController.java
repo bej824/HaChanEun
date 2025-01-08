@@ -54,11 +54,13 @@ public class LocalController {
 	public void mapGET(Model model, @RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict) {
 		log.info("mapGET()");
+		
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
 		
 		model.addAttribute("SpecialityList", SpecialityList);
-
+		model.addAttribute("localLocal", localLocal);
+		model.addAttribute("localDistrict", localDistrict);
 	}
 
 	@ResponseBody
@@ -79,6 +81,8 @@ public class LocalController {
 	public List<LocalSpecialityVO> localUpdateGET(@RequestParam("localLocal") String localLocal,
 			@RequestParam("localDistrict") String localDistrict) {
 		log.info("localUpdateGET()");
+		
+		log.info(localLocal + " " + localDistrict);
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
 
 		return SpecialityList;
