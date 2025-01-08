@@ -138,6 +138,16 @@ li {
 	</div>
 
 	<script type="text/javascript">
+		$(document).ready(function(){
+			let localLocal = "${localLocal }"
+			let localDistrict = "${localDistrict }"
+			
+			if(localDistrict == 'null'){
+				localDistrict = "";
+			} 
+				listUpdate(localLocal, localDistrict);
+			}) // end ready
+	
 		function listUpdate(localLocal, localDistrict) {
 			console.log(localLocal, localDistrict);
 			
