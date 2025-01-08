@@ -1,4 +1,3 @@
-<%@ page session="false"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -84,7 +83,7 @@ li {
 <title>특산품</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<h1>특산품</h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;

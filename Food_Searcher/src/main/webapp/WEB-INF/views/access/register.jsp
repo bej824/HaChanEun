@@ -12,7 +12,7 @@
 <title>회원가입</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<form id="insertForm" action="../home" method="POST">
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"

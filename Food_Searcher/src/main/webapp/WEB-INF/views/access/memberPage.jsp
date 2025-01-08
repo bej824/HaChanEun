@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<jsp:include page="../header.jsp" /> %>
+	<%@ include file ="../header.jsp" %>
 	<h1>Member Page</h1>
 
 	<form id="updateForm" action="update" method="post">
@@ -93,6 +93,8 @@
 
 	<button onclick="update()" class="button">수정하기</button>
 	<button onclick="deleteMember()" class="button">회원탈퇴</button>
+	<br>
+	<button onclick="pwUpdate()" class="button">비밀번호 변경</button>
 	
 	<br>
 	<a href="/searcher/access/admin">운영자</a>
@@ -106,14 +108,21 @@
 				alert("수정이 취소되었습니다.");
 			}
 		}
-	</script>
-
-	<script type="text/javascript">
+		
 		function deleteMember() {
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
 				document.getElementById("deleteForm").submit();
 				alert("이용해주셔서 감사합니다.");
+				} else {
+					alert("취소되었습니다.");
+				}
+		}
+		
+		function pwUpdate() {
+			let result = confirm("비밀번호를 변경하시겠습니까?");
+			if (result) {
+				 window.location.href = "registerEmail?select=pwSearch";
 				} else {
 					alert("취소되었습니다.");
 				}

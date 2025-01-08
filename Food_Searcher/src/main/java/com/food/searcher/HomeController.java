@@ -122,14 +122,6 @@ public class HomeController {
 		return "home";
 	} // end registerPOST()
 	
-	@GetMapping("logout")
-	public String logoutGET(HttpSession session){
-		log.info("logoutGET()");
-		session.removeAttribute("memberId");
-		
-		return "redirect:/home";
-	}
-	
 	@GetMapping("/home")
 	public void main(Model model, Pagination pagination) {
 		log.info("home()");

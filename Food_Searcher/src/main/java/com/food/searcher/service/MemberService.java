@@ -9,7 +9,7 @@ public interface MemberService {
 	int createMember(MemberVO memberVO);
 	MemberVO getMemberById(String memberId);
 	MemberVO searchId(String memberName, String email);
-	int updatePassword(String memberId, String password);
+	int updatePassword(String memberId, String email, String password);
 	List<MemberVO> getAllMember();
 	int updateMember(MemberVO memberVO);
 	int deleteMember(String memberId);

@@ -10,9 +10,9 @@
 <title>하찬은 이메일 인증</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<h1>이메일 확인</h1>
-	<jsp:include page="emailAuthHeader.jsp" />
+	<%@ include file ="emailAuthHeader.jsp" %>
 
 </body>
 </html>

@@ -36,7 +36,7 @@ textarea {
 <title>${LocalSpecialityVO.localTitle }</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp" />
+	<%@ include file ="../header.jsp" %>
 	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
