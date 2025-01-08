@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.food.searcher.domain.RecipeCommentVO;
+import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.util.Pagination;
@@ -17,6 +19,12 @@ public class RecipeServiceImple implements RecipeService{
 	
 	@Autowired
 	private RecipeMapper recipeMapper;
+	
+	@Autowired
+	private RecipeReplyService recipeReplyService;
+	
+	@Autowired
+	private RecipeCommentService recipeCommentService;
 	
 	@Override
 	public int createBoard(RecipeVO recipeVO) {
@@ -48,6 +56,20 @@ public class RecipeServiceImple implements RecipeService{
 	@Override
 	public int deleteBoard(int recipeId) {
 		log.info("deleteBoard()");
+	      List<RecipeReplyVO> replyList = recipeReplyService.getAllReply(recipeId);
+	      log.info("댓글 목록 : " + replyList);
+	      for(RecipeReplyVO reVO : replyList) {
+	    	  List<RecipeCommentVO> commentList = recipeCommentService.getAllComment(reVO.getReplyId());
+	    	  log.info("대댓글 목록 : " + commentList);
+	    	  for(RecipeCommentVO coVO : commentList) {
+	    		  int result = recipeCommentService.deleteComment(coVO.getRecipeCommentId(), coVO.getRecipeReplyId());
+	    		  log.info(coVO);
+	    		  log.info(result + "행 대댓글 삭제");
+	    	  }
+	    	  log.info(reVO);
+	    	  int result = recipeReplyService.deleteReply(reVO.getReplyId(), reVO.getBoardId());
+	    	  log.info(result + "행 댓글 삭제");
+	      }
 		return recipeMapper.delete(recipeId);
 	}
 
@@ -88,30 +110,6 @@ public class RecipeServiceImple implements RecipeService{
 			log.info("else : " + recipeTitle);
 			return recipeMapper.selectTotalCount();
 		}
-	}
-
-	@Override
-	public List<RecipeVO> getselectSearch(String recipeTitle) {
-		log.info("getselectSearch()");
-		return recipeMapper.selectSearch(recipeTitle);
-	}
-
-	@Override
-	public List<RecipeVO> getSelectId(String memberId) {
-		log.info("getSelectId");
-		return recipeMapper.selectId(memberId);
-	}
-
-	@Override
-	public List<RecipeVO> getSelectContent(String recipeContent) {
-		log.info("getSelectContent");
-		return recipeMapper.selectContent(recipeContent);
-	}
-
-	@Override
-	public List<RecipeVO> getSelectFood(String recipeFood) {
-		log.info("getSelectFood");
-		return recipeMapper.selectFood(recipeFood);
 	}
 
 	@Override

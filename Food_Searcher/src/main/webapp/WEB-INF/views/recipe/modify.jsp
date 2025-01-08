@@ -15,6 +15,15 @@ textarea {
   font-size: 16px;
   resize: none;
 }
+
+    .image-list {
+        display: flex;
+        flex-wrap: wrap; /* 이미지가 가로로 나오고, 공간이 부족할 경우 줄 바꿈 */
+    }
+    .image_item {
+        margin: 5px; /* 이미지 간 간격 */
+    }
+    
 </style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
@@ -22,7 +31,7 @@ textarea {
 <body>
 	<%@ include file ="../header.jsp" %>
 	<h2>글 수정 페이지</h2>
-	<form action="modify" method="POST">
+	<form action="modify" method="POST" enctype="multipart/form-data">
 		<div>
 			<p>번호 : ${recipeVO.recipeId }</p>
 			<input type="hidden" name="recipeId" value="${recipeVO.recipeId }" readonly>
@@ -65,5 +74,27 @@ function goBack() {
 }
 </script>
 	</form>
+	
+		<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${idList}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif' or
+				    			  attachVO.attachExtension eq 'webp'}">
+				        <div class="image_item">
+					        <img width="100px" height="100px" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

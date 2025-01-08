@@ -120,11 +120,12 @@ public class RecipeImageController {
 	@GetMapping("/get")
 	public ResponseEntity<byte[]> getImage(Integer boardId, Integer attachId, String attachExtension) {
 	    log.info("getImage()");
-	    log.info(boardId);
-	    log.info(attachExtension);
+	    log.info("attachId : " + attachId);
+	    log.info("boardId : " + boardId);
+	    log.info("attachExtension : " + attachExtension);
 
 	    // 파일 정보 조회
-	    List<AttachVO> attachList = attachService.getAttachById(boardId);
+	    List<AttachVO> attachList = attachService.getAttachById(attachId);
 	    if (attachList.isEmpty()) {
 	        return ResponseEntity.notFound().build(); // 파일이 존재하지 않으면 404 반환
 	    }
@@ -143,6 +144,7 @@ public class RecipeImageController {
 	    log.info("fileName : " + fileName);
 	    
 	    Path path = Paths.get(savedPath, fileName);
+	    log.info("path : " + path);
 
 	    // 파일 읽기 및 MIME 타입 처리
 	    try {
@@ -153,8 +155,12 @@ public class RecipeImageController {
 	        String contentType = Files.probeContentType(path);
 	        log.info("contentType : " + contentType);
 	        if (contentType == null) {
-	            contentType = "application/octet-stream"; // MIME 타입을 알 수 없는 경우 기본 타입
-	            log.info("contentType : " + contentType);
+	            // 확장자 기반으로 contentType 설정
+	            if (fileName.endsWith(".webp")) {
+	                contentType = "image/webp";
+	            } else {
+	                contentType = "application/octet-stream"; // 기본 타입
+	            }
 	        }
 
 	        // HTTP 응답 설정

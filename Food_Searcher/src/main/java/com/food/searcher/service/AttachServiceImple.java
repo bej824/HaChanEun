@@ -53,4 +53,10 @@ public class AttachServiceImple implements AttachService {
 		log.info("getSelectAll()");
 		return attachMapper.selectAll();
 	}
+
+	@Override
+	public List<AttachVO> getBoardById(int boardId) {
+		log.info("getAttachById()");
+        return attachMapper.selectByBoardId(boardId);
+	}
 }

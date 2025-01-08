@@ -44,30 +44,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM RECIPE WHERE RECIPE_ID = #{recipeId}
 	</select>
 
-	<select id="selectSearch" resultMap="recipeResultMap">
-		<!-- 상세 게시글 조회 -->
-		SELECT * FROM RECIPE WHERE RECIPE_TITLE LIKE '%' || #{recipeTitle} ||
-		'%' ORDER BY RECIPE_ID DESC
-	</select>
-
-	<select id="selectFood" resultMap="recipeResultMap">
-		<!-- 상세 게시글 조회 -->
-		SELECT * FROM RECIPE WHERE RECIPE_FOOD LIKE '%' || #{recipeFood} ||
-		'%' ORDER BY RECIPE_ID DESC
-	</select>
-
-	<select id="selectId" resultMap="recipeResultMap">
-		<!-- 상세 게시글 조회 -->
-		SELECT * FROM RECIPE WHERE MEMBER_ID LIKE '%' || #{memberId} || '%'
-		ORDER BY RECIPE_ID DESC
-	</select>
-
-	<select id="selectContent" resultMap="recipeResultMap">
-		<!-- 상세 게시글 조회 -->
-		SELECT * FROM RECIPE WHERE RECIPE_CONTENT LIKE '%' || #{recipeContent}
-		|| '%' ORDER BY RECIPE_ID DESC
-	</select>
-
 	<update id="update">
 		<!-- 상세 게시글 수정 -->
 		UPDATE RECIPE SET RECIPE_TITLE = #{recipeTitle}, RECIPE_FOOD =

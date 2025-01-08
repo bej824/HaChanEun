@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Log4j
 public class FileUploadUtil {
@@ -135,15 +136,15 @@ public class FileUploadUtil {
     	File destPath = new File(realUploadPath, thumbnailName); 
     	// 원본 파일 저장 경로 및 이름
         File savePath = new File(realUploadPath, chgName); 
-//    	try {
-//			Thumbnails.of(savePath)
-//			          .size(100, 100) // 썸네일 크기 지정
-//			          .outputFormat(extension) // 확장자 설정
-//			          .toFile(destPath); // 저장될 경로와 이름
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+    	try {
+			Thumbnails.of(savePath)
+			          .size(100, 100) // 썸네일 크기 지정
+			          .outputFormat(extension) // 확장자 설정
+			          .toFile(destPath); // 저장될 경로와 이름
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
     

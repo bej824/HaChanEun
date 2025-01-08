@@ -15,10 +15,6 @@ public interface RecipeMapper {
 	int insert(RecipeVO recipeVO); // 게시글 등록
 	List<RecipeVO> selectList(); // 전체 게시글 조회
 	RecipeVO selectOne(int recipeId); // 상세 게시글 조회
-	List<RecipeVO> selectSearch(String recipeTitle);
-	List<RecipeVO> selectId(String memberId);
-	List<RecipeVO> selectContent(String recipeContent);
-	List<RecipeVO> selectFood(String recipeFood);
 	int update(RecipeVO recipeVO); // 상세 게시글 수정
 	int delete(int recipeId); // 상세 게시글 삭제
 	int updateReplyCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 댓글 수 변경

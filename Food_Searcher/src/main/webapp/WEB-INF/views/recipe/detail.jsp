@@ -51,6 +51,14 @@ textarea {
   resize: none;
 }
 
+    .image-list {
+        display: flex;
+        flex-wrap: wrap; /* 이미지가 가로로 나오고, 공간이 부족할 경우 줄 바꿈 */
+    }
+    .image_item {
+        margin: 5px; /* 이미지 간 간격 */
+    }
+
 </style>
 <meta charset="UTF-8">
 <title>${recipeVO.recipeTitle }</title>
@@ -76,17 +84,6 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
-
-	<c:forEach var="attachVO" items="${idList }">
-<%--     <img src="${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
-	<p>
-    <img src="src/main/webapp/image/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
-    
-    <img src="detail/image/${attachVO.attachPath }/${attachVO.attachChgName }" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" style="max-width: 100%; height: auto;">
-	<img src="${imagePath}" alt="${attachVO.attachRealName }.${attachVO.attachExtension }" />
-	</p><br>
-	 --%>
-	</c:forEach>
 	
 	<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
@@ -101,11 +98,9 @@ textarea {
 				    			  attachVO.attachExtension eq 'gif' or
 				    			  attachVO.attachExtension eq 'webp'}">
 				        <div class="image_item">
-				        	<a href="../image/get?boardId=${attachVO.boardId }" target="_blank">
+				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
 					        <img width="100px" height="100px" 
-					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" style="display: none;"/>
-					        <img width="100px" height="100px" 
-					        src="../image/get?boardId=${attachVO.boardId }&attachExtension=${attachVO.attachExtension}"/></a>
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
 				        </div>
 				    </c:if>
 				</c:forEach>
