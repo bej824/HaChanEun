@@ -12,6 +12,6 @@ public interface MemberService {
 	int updatePassword(String memberId, String email, String password);
 	List<MemberVO> getAllMember();
 	int updateMember(MemberVO memberVO);
-	int deleteMember(String memberId);
+	int updateMemberStatus(String memberId, String memberStatus);
 
 }

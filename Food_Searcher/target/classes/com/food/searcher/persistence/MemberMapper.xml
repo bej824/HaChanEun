@@ -54,9 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 	
-	<update id="deleteMemberByMemberId">
+	<update id="updateMemberStatusByMemberId">
 		UPDATE MEMBER SET
-		MEMBER_STATUS = '비활성'
+		MEMBER_STATUS = #{memberStatus}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 

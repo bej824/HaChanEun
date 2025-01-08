@@ -16,6 +16,6 @@ public interface MemberMapper {
 	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
 	List<MemberVO> selectList();
 	int updateMemberByMemberId(MemberVO memberVO);
-	int deleteMemberByMemberId(String memberId);
+	int updateMemberStatusByMemberId(String memberId, String memberStatus);
 
 }

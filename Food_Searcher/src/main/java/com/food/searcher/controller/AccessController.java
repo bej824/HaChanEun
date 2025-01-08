@@ -143,12 +143,14 @@ public class AccessController {
 		return "access/memberPage";
 	}
 
-	@PostMapping("/delete")
-	public String deletePOST(@RequestParam("memberId") String memberId, HttpSession session) {
-		int result = MemberService.deleteMember(memberId);
+	@PostMapping("/statusUpdate")
+	public String statusUpdatePOST(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus,
+			HttpSession session) {
+		log.info("statusUpdatePOST()");
+		int result = MemberService.updateMemberStatus(memberId, memberStatus);
 		log.info(result + "행 삭제");
 		session.removeAttribute("memberId");
-		return "home";
+		return "../home";
 	}
 
 	@GetMapping("/ID")
@@ -159,17 +161,18 @@ public class AccessController {
 
 	@PostMapping("/ID") // 아이디 찾기
 	public String findId(@RequestParam(value = "memberName", required = false) String memberName,
-			Model model) {
-		String email = "admin@test.com";
+			@Param("email") String email, Model model) {
+		
+		log.info("Member Name: " + memberName);
+		log.info("Email: " + email);
+		model.addAttribute("email", email);
+		
 		// 파라미터가 null인 경우 에러 처리
-		if (memberName == null || email == null) {
+		if (memberName == null) {
 			log.error("Missing required parameters: memberName or email");
 			model.addAttribute("error", "Both memberName and email are required.");
 			return "access/ID"; // 에러 메시지를 사용자에게 전달
 		}
-
-		log.info("Member Name: " + memberName);
-		log.info("Email: " + email);
 
 		// MemberService에서 ID 찾기
 		MemberVO memberVO = MemberService.searchId(memberName, email);

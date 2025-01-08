@@ -15,21 +15,25 @@
 		<h1>ID 찾기</h1>
 	<form id="ID" action = "ID" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>
-	<input type="hidden" id="memberId">
-	<div id="confirmMsg" class="message" style="color: red;"></div>
 	<input type="hidden" name="email" id ="email" value="${email }">
 	</form>
 	
-	<button id="btn_register" class="button" onclick="idSearch()">인증</button>
+	<button id="btn_register" class="button" onclick="idSearch()">ID 찾기</button>
 	
 		<hr>
 
 		<c:if test="${not empty memberVO }">
-		<script>
-        let memberId = "${memberVO.memberId}";  // memberVO.memberId 값을 JavaScript 변수에 저장
-    </script>
 		<p>${memberVO.memberName }님의 ID는</p>
 		<p>${memberVO.memberId }입니다.</p>
+		
+		<c:if test="${memberVO. memberStatus == '비활성'}">
+		<p>현재 ${memberVO. memberStatus } 상태입니다.<p>
+		<p>활성화를 원하신다면 뭘 해야될까요?</p>
+		</c:if>
+		
+		<c:if test="${memberVO. memberStatus == '활성'}">
+		<a href="registerEmail?select=pwSearch" class="button">PW 찾기</a>		
+		</c:if>
 		</c:if>
 
 		<c:if test="${empty memberVO }">

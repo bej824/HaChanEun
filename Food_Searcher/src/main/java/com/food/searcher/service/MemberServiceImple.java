@@ -48,9 +48,9 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
-	public int deleteMember(String memberId) {
-		log.info("deleteMember()");
-		return memberMapper.deleteMemberByMemberId(memberId);
+	public int updateMemberStatus(String memberId, String memberStatus) {
+		log.info("updateMemberStatus()");
+		return memberMapper.updateMemberStatusByMemberId(memberId, memberStatus);
 	}
 
 	@Override

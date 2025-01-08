@@ -85,14 +85,15 @@
 	</c:if>
 	</form>
 
-	<form id=deleteForm action="delete" method="post">
+	<form id=deleteForm action="statusUpdate" method="post">
 		<input type="hidden" name="memberId" value="${vo.memberId }">
+		<input type="hidden" name="memberStatus" value="비활성">
 	</form>
 	
 	<br>
 
 	<button onclick="update()" class="button">수정하기</button>
-	<button onclick="deleteMember()" class="button">회원탈퇴</button>
+	<button onclick="statusUpdate()" class="button">회원탈퇴</button>
 	<br>
 	<button onclick="pwUpdate()" class="button">비밀번호 변경</button>
 	
@@ -109,7 +110,7 @@
 			}
 		}
 		
-		function deleteMember() {
+		function statusUpdate() {
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
 				document.getElementById("deleteForm").submit();
