@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <title>회원 개인 정보</title>
 </head>
@@ -84,11 +86,6 @@
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
 	</form>
-
-	<form id=deleteForm action="statusUpdate" method="post">
-		<input type="hidden" name="memberId" value="${vo.memberId }">
-		<input type="hidden" name="memberStatus" value="inactive">
-	</form>
 	
 	<br>
 
@@ -113,11 +110,27 @@
 		function statusUpdate() {
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
-				document.getElementById("deleteForm").submit();
-				alert("이용해주셔서 감사합니다.");
-				} else {
-					alert("취소되었습니다.");
-				}
+				let memberId = '${vo.memberId }';
+				let memberStatus = 'inactive';
+				
+				console.log(status);
+				
+				$.ajax({
+				    type: 'POST',
+				    url: '../access/statusUpdate',
+				    data: { memberId: memberId,
+				    	memberStatus: memberStatus},
+				    success: function(result) {
+				    	console.log(result);
+				      if (result == 1) {
+				    	  alert("회원 탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
+				    	  window.location.href="login";
+				      } else {
+				    	  alert("다시 시도해주세요.");
+				      }
+				    }
+				  });
+		}
 		}
 		
 		function pwUpdate() {

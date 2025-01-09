@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -144,20 +145,21 @@ public class AccessController {
 	}
 	
 	// inactive : 비활성화 계정 / active : 활성화 계정
+	@ResponseBody
 	@PostMapping("/statusUpdate")
-	public String statusUpdatePOST(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus,
+	public int statusUpdatePOST(@RequestParam("memberId") String memberId, @RequestParam("memberStatus") String memberStatus,
 			HttpSession session) {
 		log.info("statusUpdatePOST()");
-		int result = MemberService.updateMemberStatus(memberId, memberStatus);
-		log.info(result + "행 삭제");
+		log.info(memberId + " : " + memberStatus);
+		int result = 0;
+		
+		result = MemberService.updateMemberStatus(memberId, memberStatus);
+		
+		log.info(result + "행 수정");
 		session.removeAttribute("memberId");
 		
-		if(memberStatus.equals("active")) {
-			return String.valueOf(result);
-		} else {
-			return "redirect:/home";			
-			
-		}
+		return result;
+		
 	}
 
 	@GetMapping("/idSearch")
@@ -225,9 +227,11 @@ public class AccessController {
 		try {
 		if(result == 1) {
 			if(session.getAttribute("memberId") != null) {
-				alertMsg = "비밀번호 변경에 성공하였습니다.\n보안을 강화하기 위해 자동으로 로그아웃 처리되었습니다.\n다시 로그인 해주세요.";
+				log.info("로그인 비밀번호 변경");
+				alertMsg = "비밀번호 변경에 성공하였습니다. 보안을 강화하기 위해 자동으로 로그아웃 처리되었습니다. 다시 로그인 해주세요.";
 				session.removeAttribute("memberId");
 			} else {
+				log.info("로그아웃 비밀번호 변경");
 				alertMsg = "비밀번호 변경에 성공하였습니다.";
 			}
 		} else {

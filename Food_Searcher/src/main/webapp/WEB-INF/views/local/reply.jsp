@@ -201,7 +201,7 @@
 								+ this.memberId
 								+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
 								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'" ' + readonly + '>'
-								+ '<button class="btn_comment">답글</button>'
+								+ '<button class="btn_comment">답글 ' + this.commentCount + '개</button>'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<button class="btn_update" '+ disabled + '>수정</button>'
 								+ '<div class="comment"></div>'

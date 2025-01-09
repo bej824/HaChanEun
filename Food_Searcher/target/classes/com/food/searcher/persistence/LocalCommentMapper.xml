@@ -23,6 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (LOCAL_COMMENT_SEQ.NEXTVAL, #{replyId}, #{memberId},
 		#{commentContent}, SYSDATE)
 	</insert>
+	
+	<select id = "selectCountByReplyId" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM LOCAL_COMMENT
+		WHERE LOCAL_REPLY_ID = #{replyId}
+	</select>
 
 	<select id="selectListByCommentId" resultMap="commentResultMap">
 		SELECT * FROM LOCAL_COMMENT

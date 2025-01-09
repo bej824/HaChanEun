@@ -19,7 +19,7 @@
 			required>
 	</c:if>
 	<c:if test="${sessionScope.memberId != null}">
-	<input type="hidden" name="memberId" id="memberId" value="${session.memberId }">
+	<input type="hidden" name="memberId" id="memberId" value="${sessionScope.memberId }">
 	</c:if>
 	<input type="hidden" name="email" id ="email" value="${email }">
 	<br>

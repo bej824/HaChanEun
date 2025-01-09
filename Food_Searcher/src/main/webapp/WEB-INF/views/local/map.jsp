@@ -118,22 +118,14 @@ li {
 	<table>
 		<thead>
 			<tr>
+				<th style="width: 100px">번호</th>
 				<th style="width: 100px">지역</th>
 				<th style="width: 100px">상세</th>
 				<th style="width: 150px">특산품</th>
 				<th style="width: 100px">댓글수</th>
 			</tr>
 		</thead>
-		<tbody>
-			<c:forEach var="LocalSpecialityVO" items="${SpecialityList }">
-				<tr onclick="window.location.href='detail?localId=${LocalSpecialityVO.localId }'">
-					<td>${LocalSpecialityVO.localLocal }</td>
-					<td>${LocalSpecialityVO.localDistrict }</td>
-					<td>${LocalSpecialityVO.localTitle }</td>
-					<td>${LocalSpecialityVO.replyCount }</td>
-				</tr>
-			</c:forEach>
-		</tbody>
+		<tbody></tbody>
 	</table>
 	</div>
 
@@ -184,15 +176,12 @@ li {
 				success : function(result) {
 
 					let tbody = $('table tbody');
-					//let localURL = "localLocal=" + localLocal + "localDistrict=" + localDistrict;
-					//console.log(URL + localURL);
 					tbody.empty(); // 기존 테이블 내용 비우기
 
 					result.forEach(function(LocalSpecialityVO) {
-						let URL = "/detail?localId=" + LocalSpecialityVO.localId;
-						//let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId + '\'">'
 						let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
 								'&localLocal=' + localLocal + '&localDistrict=' + localDistrict +'\'">'
+						 + '<td>' + LocalSpecialityVO.localId + '</td>'
 				         + '<td>' + LocalSpecialityVO.localLocal + '</td>'
 				         + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
 				         + '<td>' + LocalSpecialityVO.localTitle + '</td>'

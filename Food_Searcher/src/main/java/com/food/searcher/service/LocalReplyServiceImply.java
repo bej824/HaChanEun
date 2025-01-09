@@ -45,7 +45,14 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	@Override
 	public List<LocalReplyVO> getAllReply(int localId) {
 		log.info("getAllReply()");
-		return localReplyMapper.selectListByLocalId(localId);
+		List<LocalReplyVO> list = localReplyMapper.selectListByLocalId(localId);
+		for(int i = 0; i < list.size(); i++) {
+			int replyId = list.get(i).getReplyId();
+			int count = localCommentMapper.selectCountByReplyId(replyId);
+			list.get(i).setCommentCount(count);
+		}
+		
+		return list;
 	}
 	
 	@Transactional

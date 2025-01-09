@@ -55,10 +55,7 @@ public class LocalReplyController {
 		log.info("replyAllGET()");
 		
 		List<LocalReplyVO> list = localReplyService.getAllReply(localId);
-		for(int i = 0; i < list.size(); i++) {
-			int replyId = list.get(i).getReplyId();
-			log.info(replyId);
-		}
+		log.info(list);
 		
 		return list;
 	}

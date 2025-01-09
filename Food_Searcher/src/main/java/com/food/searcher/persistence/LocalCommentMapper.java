@@ -12,6 +12,7 @@ public interface LocalCommentMapper {
 	
 	int insertLocalComment(@Param("replyId") int replyId, @Param("memberId") String memberId, 
 			@Param("commentContent") String commentContent);
+	int selectCountByReplyId(@Param("replyId") int replyId);
 	List<LocalCommentVO> selectListByCommentId(@Param("replyId") int replyId);
 	int update(@Param("commentId") int commentId, @Param("commentContent") String commentContent);
 	int delete(@Param("replyId") int replyId, @Param("commentId") int commentId);

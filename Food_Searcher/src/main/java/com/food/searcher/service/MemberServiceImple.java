@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,7 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
-	public int updateMemberStatus(String memberId, String memberStatus) {
+	public int updateMemberStatus(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus) {
 		log.info("updateMemberStatus()");
 		log.info(memberId);
 		log.info(memberStatus);

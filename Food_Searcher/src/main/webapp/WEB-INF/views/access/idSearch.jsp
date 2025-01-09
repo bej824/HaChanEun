@@ -12,8 +12,8 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-		<h1>ID 찾기</h1>
-	<form id="ID" action = "ID" method="POST">
+	<h1>ID 찾기</h1>
+	<form id="idSearchForm" action = "idSearch" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>
 	<input type="hidden" name="email" id ="email" value="${email }">
 	</form>
@@ -28,10 +28,10 @@
 		
 		<c:if test="${memberVO. memberStatus == 'inactive'}">
 
-		<div id = "msg">
+		<p id = "msg">
 		현재 비활성화 상태입니다.
 		활성화 후 로그인 가능합니다.
-		</div>
+		</p>
 		
 		<button id = active onclick = "active()" class="button">활성화</button>
 
@@ -51,7 +51,6 @@
 		function active(){
 			let memberId = '${memberVO.memberId }';
 			let memberStatus = 'active';
-			let msg = document.getElementById('msg');
 			
 			console.log(status);
 			
@@ -61,10 +60,12 @@
 			    data: { memberId: memberId,
 			    	memberStatus: memberStatus},
 			    success: function(result) {
-			      if (result == '1') {
-					msg.html('활성화되었습니다.');
+			    	console.log(result);
+			      if (result == 1) {
+			    	  alert("활성화되었습니다.");
+			    	  window.location.href = "login";
 			      } else {
-			    	msg.html('다시 시도해주세요.');
+			    	  alert("다시 시도해주세요.");
 			      }
 			    }
 			  });
@@ -72,7 +73,7 @@
 		}
 		
 		function idSearch(){
-			document.getElementById("ID").submit();
+			document.getElementById("idSearchForm").submit();
 		}
 	</script>
 

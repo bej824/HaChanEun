@@ -18,5 +18,6 @@ public class LocalReplyVO {
 	private String memberId;
 	private String replyContent;
 	private Date replyDateCreated;
+	private int commentCount;
 
 }
