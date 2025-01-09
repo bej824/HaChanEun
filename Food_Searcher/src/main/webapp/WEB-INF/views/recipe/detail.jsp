@@ -84,68 +84,75 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
-	
-	<!-- 이미지 파일 영역 -->
-	<div class="image-upload">
-		<div class="image-view">
-			<h2>이미지 파일 리스트</h2>
-			<div class="image-list">
-				<!-- 이미지 파일 처리 코드 -->
-				<c:forEach var="attachVO" items="${idList}">
-				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
-				    			  attachVO.attachExtension eq 'jpeg' or 
-				    			  attachVO.attachExtension eq 'png' or 
-				    			  attachVO.attachExtension eq 'gif' or
-				    			  attachVO.attachExtension eq 'webp'}">
-				        <div class="image_item">
-				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
-					        <img width="100px" height="100px" 
-					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
-				        </div>
-				    </c:if>
-				</c:forEach>
-			</div>
-		</div>
-	</div>
 
-	<button onclick="location.href='list'" class="button">글 목록</button>
+    <!-- 이미지 파일 영역 -->
+    <div class="image-upload">
+        <div class="image-view">
+            <h2>이미지 파일 리스트</h2>
+            <div class="image-list">
+                <!-- 이미지 파일 처리 코드 -->
+                <c:forEach var="attachVO" items="${idList}">
+                    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+                                  attachVO.attachExtension eq 'jpeg' or 
+                                  attachVO.attachExtension eq 'png' or 
+                                  attachVO.attachExtension eq 'gif' or
+                                  attachVO.attachExtension eq 'webp'}">
+                        <div class="image_item">
+                            <a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+                                <img width="100px" height="100px" 
+                                     src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
+                            </a>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="location.href='list'" class="button">글 목록</button>
+
+    <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
+    <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
+
+    <c:if test="${empty sessionMemberId}">
+        <button onclick="location.href='../access/login'" class="button">글 수정</button>
+        <button id="deleteBoard" class="button" disabled>글 삭제</button>
+    </c:if>
+
+    <c:if test="${not empty sessionMemberId and sessionMemberId == recipeMemberId}">
+        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정1</button>
+        <button id="deleteBoard" class="button">글 삭제1</button>
+    </c:if>
+
+    <c:if test="${not empty sessionMemberId and sessionMemberId != recipeMemberId}">
+        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" disabled>글 수정2</button>
+        <button id="deleteBoard" class="button" disabled>글 삭제2</button>
+    </c:if>
+<form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
+    <!-- 레시피 ID hidden 필드 -->
+    <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
+</form>
+
+<script>
+    document.getElementById("deleteBoard").addEventListener("click", function(event) {
+        // 삭제 확인 팝업
+        if (confirm("정말로 이 레시피와 관련된 모든 이미지를 삭제하시겠습니까?")) {
+            // 폼을 제출하여 서버로 delete 요청을 보냄
+            document.getElementById("deleteForm").submit();
+        } else {
+            // 취소 시 동작하지 않도록
+            event.preventDefault();
+        }
+    });
+</script>
 	
-	<script>
+		<script>
 function goBackToList() {
     // 이전 페이지로 돌아가기
-    window.location.href = document.referrer || '/searcher/recipe/list';
+    window.location.href = '/searcher/recipe/list?recipeTitle=${recipeTitle}&filterBy=${filterBy}&pageNum=${pageNum}';
 }
 </script>
 	
-	<% 
-    String sessionMemberId = (String) session.getAttribute("memberId");
-	RecipeVO recipeVO = (RecipeVO) request.getAttribute("recipeVO");
-    String recipeMemberId = recipeVO.getMemberId(); // Get memberId from recipeVO
-%>
-
-<% if(sessionMemberId == null){ %>
-    <button onclick="location.href='../access/login'" class="button">글 수정</button>
-    <button id="deleteBoard" class="button" disabled>글 삭제</button>
-<% } else if(sessionMemberId != null && sessionMemberId.equals(recipeMemberId)){ %>
-    <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정1</button>
-    <button id="deleteBoard" class="button">글 삭제1</button>
-<% } else { %>
-    <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" disabled>글 수정2</button>
-    <button id="deleteBoard" class="button" disabled>글 삭제2</button>
-<% } %>
-	<form id="deleteForm" action="delete" method="POST">
-		<input type="hidden" name="recipeId" value="${recipeVO.recipeId }">
-	</form>
-	
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#deleteBoard').click(function(){
-				if(confirm('삭제하시겠습니까?')){
-					$('#deleteForm').submit(); // form 데이터 전송
-				}
-			});
-		}); // end document
-	</script>
 	
 	<%-- 추천 비추천 작업 예정 
 	<button id="up" class="button">추천${recipeVO.like }</button>

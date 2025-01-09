@@ -43,7 +43,7 @@ textarea {
 		</div>
 		<div>
 			<p>작성자 :</p>
-			<input type="text" name="memberId" value="<%=session.getAttribute("memberId")%>" maxlength="10" required>
+			<input type="text" name="memberId" value="${sessionScope.memberId}" maxlength="10" required readonly>
 		</div>
 		<br>
 		<div>

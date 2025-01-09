@@ -73,8 +73,6 @@ function goBack() {
   }
 }
 </script>
-	</form>
-	
 		<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
@@ -91,10 +89,17 @@ function goBack() {
 					        <img width="100px" height="100px" 
 					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
 				        </div>
+				        <ul id="fileList">
+				        <li>
+            				<input type="checkbox" name="deleteFiles" value="${attachVO.attachId }"> ${attachVO.attachRealName }
+        				</li>
+        				</ul>
 				    </c:if>
 				</c:forEach>
 			</div>
 		</div>
 	</div>
+	</form>
+	
 </body>
 </html>
