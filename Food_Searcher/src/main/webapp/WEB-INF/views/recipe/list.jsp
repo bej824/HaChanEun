@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,12 +66,13 @@ li {
 	<%@ include file ="../header.jsp" %>
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
-	<%if(session.getAttribute("memberId") == null){ %>
-		<a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
-	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
-		<a href="register" class="button">글 작성</a>
-	<%} %>
+<c:if test="${empty sessionScope.memberId}">
+    <a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+</c:if>
+
+<c:if test="${not empty sessionScope.memberId}">
+    <a href="register" class="button">글 작성</a>
+</c:if>
 	<hr>
 	<table>
 		<thead>

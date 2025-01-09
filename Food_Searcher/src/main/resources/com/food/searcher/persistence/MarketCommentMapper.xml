@@ -31,4 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	DELETE FROM MARKET_COMMENT WHERE MARKET_COMMENT_ID = #{marketCommentId}
     </delete>
     
+    <delete id="deleteCommentByReply">
+    	DELETE FROM MARKET_COMMENT WHERE MARKET_REPLY_ID = #{marketReplyId}
+    </delete>
+    
  </mapper>

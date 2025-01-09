@@ -1,8 +1,6 @@
 package com.food.searcher.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +21,4 @@ public class RecipeVO {
 	private Date recipeDateCreated;
 	private int replyCount;
 	private String memberId;
-	
-	private List<AttachVO> attachList;
-	
-	public List<AttachVO> getAttachList() {
-		if(attachList == null) {
-			attachList = new ArrayList<AttachVO>();
-		}
-		return attachList;
-	}
 }

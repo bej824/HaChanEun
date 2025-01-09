@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -102,20 +103,22 @@
 <title>댓글 헤더</title>
 </head>
 <body>
-	<div class="replyBox">
-		<div id="replies"></div>
-			<%if(session.getAttribute("memberId") == null){ %>
+<div class="replyBox">
+	<div id="replies"></div>
+
+	<c:if test="${empty sessionScope.memberId}">
 		* 댓글은 로그인이 필요한 서비스입니다.
 		<a href="../access/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
-	<%} %>
-	<%if(session.getAttribute("memberId") != null){ %>
-			<div style="text-align: left;">
-		<%=session.getAttribute("memberId") %><input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
-		<input type="text" id="recipeReplyContent" required>
-		<button id="btnAdd" class="wbutton">작성</button>
-	</div>
-	<%} %>
-	</div>
+	</c:if>
+
+	<c:if test="${not empty sessionScope.memberId}">
+		<div style="text-align: left;">
+			${sessionScope.memberId}<input type="hidden" id="memberId" value="${sessionScope.memberId}">
+			<input type="text" id="recipeReplyContent" required>
+			<button id="btnAdd" class="wbutton">작성</button>
+		</div>
+	</c:if>
+</div>
 
 		<script type="text/javascript">
 		$(document).ready(function(){
@@ -202,7 +205,7 @@
 							let disabled = '';
 							let readonly = '';
 							
-							if('<%=session.getAttribute("memberId") %>' != this.memberId) {
+							if("${ sessionScope.memberId}"!= this.memberId){
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -214,11 +217,11 @@
 								+ replyDate
 								+ '<br><input type="text" id="replyContent" value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
-								+ '<%if(session.getAttribute("memberId") != null){ %>'
+
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<br>'
-								+ '	<%} %>'
+
 								+ '<button class="btn_comment">답글'+this.comments.length +'</button>'
 								+ '<div class="comment"></div>'
 								+ '</pre>'
@@ -393,7 +396,7 @@
 								
 								console.log(this.memberId);
 								
-								if('<%=session.getAttribute("memberId")%>' != this.memberId) {
+								if("${ sessionScope.memberId}"!= this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -409,10 +412,11 @@
 									+ '</div>'
 									
 							}); // end each()
-							+ '<%if(session.getAttribute("memberId") != null){ %>'
-							comment += '<input type="text" id="commentContentAdd" >'
-								+ '<button class="comment_add" value='+ replyId +'>작성</button>';
-								+ '	<%} %>'
+						    <c:if test="${sessionScope.memberId != null}">
+					        // 로그인한 사용자가 있을 경우 댓글 작성 입력란과 버튼을 추가
+					        comment += '<input type="text" id="commentContentAdd" >'
+					            + '<button class="comment_add" value="'+ replyId +'">작성</button>';
+					    </c:if>
 							commentDiv.html(comment);
 						}
 					}
@@ -428,7 +432,7 @@
 		        // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
 		        console.log(this);
 		        
-		        let memberId = "<%=session.getAttribute("memberId")%>"
+		        let memberId = "${sessionScope.memberId}"
 		        let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();  // 댓글 ID
 		        let commentContent = $(this).prevAll('#commentContentAdd').val();
 
@@ -461,7 +465,6 @@
 								if(result == 1) {
 									alert('대댓글 입력 성공');
 									getAllReply();
-									document.getElementById('commentContent').value = '';
 									location.reload();
 								}
 							}

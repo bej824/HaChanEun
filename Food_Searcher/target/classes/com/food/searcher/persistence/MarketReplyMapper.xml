@@ -36,5 +36,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       WHERE MARKET_REPLY_ID = #{marketReplyId}
    </delete>
    
+   <delete id="deleteReplyByMarket">
+   	DELETE FROM MARKET_REPLY WHERE MARKET_ID = #{marketId}
+   </delete>
+   
     
 </mapper>
