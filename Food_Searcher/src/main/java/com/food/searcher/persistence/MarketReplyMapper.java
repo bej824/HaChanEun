@@ -15,5 +15,6 @@ public interface MarketReplyMapper {
 	List<MarketReplyVO> selectListByMarketId(int marketId);
 	int update(MarketReplyVO marketReplyVO);
 	int delete(int marketReplyId);
+	int deleteReplyByMarket(int marketId);
 	
 }

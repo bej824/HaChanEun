@@ -62,7 +62,8 @@ public class MarketCommentController {
 	} // 대댓글 수정
 
 	@DeleteMapping("/commentdelete/{marketCommentId}/{marketReplyId}")
-	public ResponseEntity<Integer> deleteReply(@PathVariable("marketCommentId") int marketCommentId,
+	public ResponseEntity<Integer> deleteReply(
+			@PathVariable("marketCommentId") int marketCommentId,
 			@PathVariable("marketReplyId") int marketReplyId) {
 		log.info("deleteComment()");
 		log.info("marketCommentId = " + marketCommentId);
@@ -71,6 +72,18 @@ public class MarketCommentController {
 
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	} // 대댓글 삭제
+	
+	@DeleteMapping("/commentByReply/{marketReplyId}")
+	public ResponseEntity<Integer> deleteCommentByReply(
+			@PathVariable("marketReplyId") int marketReplyId) {
+		log.info("/commentByReply()");
+		log.info("marketReplyId = " + marketReplyId);
+		
+		int result = marketCommentService.deleteCommentByReply(marketReplyId);
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	} // 댓글에 대한 대댓글 삭제
+	
 
 
 } // end MarketCommentController

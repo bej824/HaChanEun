@@ -9,4 +9,5 @@ public interface MarketReplyService {
 	List<MarketReplyVO> getAllReply(int marketId);
 	int updateReply(int marketReplyId, String marketReplyContent);
 	int deleteReply(int marketReplyId, int marketId);
+	int deleteReplyByMarket(int marketId);
 }

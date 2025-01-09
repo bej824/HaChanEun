@@ -53,5 +53,13 @@ public class MarketCommentServiceImple implements MarketCommentService {
 		return 1;
 	}
 
+	@Override
+	public int deleteCommentByReply(int marketReplyId) {
+		log.info("deleteCommentByReply()");
+		int deleteCommentByReply = marketCommentMapper.deleteCommentByReply(marketReplyId);
+		log.info("댓글에 대한 대댓글 " + deleteCommentByReply + "행 삭제");
+		return 1;
+	}
+
 
 } // end MarketCommentServiceImple

@@ -26,12 +26,18 @@
 		<p>${memberVO.memberName }님의 ID는</p>
 		<p>${memberVO.memberId }입니다.</p>
 		
-		<c:if test="${memberVO. memberStatus == '비활성'}">
-		<p>현재 ${memberVO. memberStatus } 상태입니다.<p>
-		<p>활성화를 원하신다면 뭘 해야될까요?</p>
+		<c:if test="${memberVO. memberStatus == 'inactive'}">
+
+		<div id = "msg">
+		현재 비활성화 상태입니다.
+		활성화 후 로그인 가능합니다.
+		</div>
+		
+		<button id = active onclick = "active()" class="button">활성화</button>
+
 		</c:if>
 		
-		<c:if test="${memberVO. memberStatus == '활성'}">
+		<c:if test="${memberVO. memberStatus == 'active'}">
 		<a href="registerEmail?select=pwSearch" class="button">PW 찾기</a>		
 		</c:if>
 		</c:if>
@@ -41,6 +47,29 @@
 		</c:if>
 
 	<script type="text/javascript">
+	
+		function active(){
+			let memberId = '${memberVO.memberId }';
+			let memberStatus = 'active';
+			let msg = document.getElementById('msg');
+			
+			console.log(status);
+			
+			$.ajax({
+			    type: 'POST',
+			    url: '../access/statusUpdate',
+			    data: { memberId: memberId,
+			    	memberStatus: memberStatus},
+			    success: function(result) {
+			      if (result == '1') {
+					msg.html('활성화되었습니다.');
+			      } else {
+			    	msg.html('다시 시도해주세요.');
+			      }
+			    }
+			  });
+			
+		}
 		
 		function idSearch(){
 			document.getElementById("ID").submit();

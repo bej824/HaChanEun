@@ -50,6 +50,9 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public int updateMemberStatus(String memberId, String memberStatus) {
 		log.info("updateMemberStatus()");
+		log.info(memberId);
+		log.info(memberStatus);
+		
 		return memberMapper.updateMemberStatusByMemberId(memberId, memberStatus);
 	}
 
