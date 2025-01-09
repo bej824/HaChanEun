@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
 </head>
 <body>
 
@@ -16,17 +16,15 @@
 	PW : <input type="password" name="password"> <br>
 	<input type="submit" value="로그인" class="button">
 	</form>
-	<a href="registerEmail?select=ID" class="button">ID 찾기</a>
+	<a href="registerEmail?select=idSearch" class="button">ID 찾기</a>
 	<a href="registerEmail?select=pwSearch" class="button">PW 찾기</a>
 	
-        <c:if test="${not empty alertMsg}">
-            alert("${alertMsg }");
-        </c:if>
+    <c:if test="${not empty alertMsg}">
+       <script> alert("${alertMsg }"); </script>
+    </c:if>
 
 	<c:if test="${sessionScope.memberId != null}">
-    <script>
-        window.location.href = "../home";
-    </script>
+    	<script> window.location.href = "../home"; </script>
 	</c:if>
 	
     

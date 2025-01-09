@@ -89,8 +89,8 @@ public class AccessController {
 			vo = MemberService.getMemberById(memberId);
 			log.info(vo);
 			if (vo.getPassword().equals(password)) {
-				if(vo.getMemberStatus().equals("비활성")) {
-					alertMsg = vo.getMemberStatus() + "된 계정입니다.";
+				if(vo.getMemberStatus().equals("inactive")) {
+					alertMsg = "현재 비활성화된 계정입니다.";
 					log.info(alertMsg);
 					model.addAttribute("alertMsg", alertMsg);
 					return "/access/login";
@@ -142,7 +142,8 @@ public class AccessController {
 
 		return "access/memberPage";
 	}
-
+	
+	// inactive : 비활성화 계정 / active : 활성화 계정
 	@PostMapping("/statusUpdate")
 	public String statusUpdatePOST(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus,
 			HttpSession session) {
@@ -150,16 +151,22 @@ public class AccessController {
 		int result = MemberService.updateMemberStatus(memberId, memberStatus);
 		log.info(result + "행 삭제");
 		session.removeAttribute("memberId");
-		return "../home";
+		
+		if(memberStatus.equals("active")) {
+			return String.valueOf(result);
+		} else {
+			return "redirect:/home";			
+			
+		}
 	}
 
-	@GetMapping("/ID")
+	@GetMapping("/idSearch")
 	public String ID(Model model) {
 		log.info("ID");
-		return "access/ID";
+		return "access/idSearch";
 	}
 
-	@PostMapping("/ID") // 아이디 찾기
+	@PostMapping("/idSearch") // 아이디 찾기
 	public String findId(@RequestParam(value = "memberName", required = false) String memberName,
 			@Param("email") String email, Model model) {
 		
@@ -171,7 +178,7 @@ public class AccessController {
 		if (memberName == null) {
 			log.error("Missing required parameters: memberName or email");
 			model.addAttribute("error", "Both memberName and email are required.");
-			return "access/ID"; // 에러 메시지를 사용자에게 전달
+			return "access/idSearch"; // 에러 메시지를 사용자에게 전달
 		}
 
 		// MemberService에서 ID 찾기
@@ -182,7 +189,7 @@ public class AccessController {
 		if (memberVO == null) {
 			log.error("No member found with the given memberName and email.");
 			model.addAttribute("error", "No member found with the provided details.");
-			return "access/ID";
+			return "access/idSearch";
 		}
 
 		log.info("Returned MemberVO: " + memberVO);
@@ -192,7 +199,7 @@ public class AccessController {
 		// 결과를 모델에 추가하여 뷰에서 사용하도록 설정
 		model.addAttribute("memberVO", memberVO);
 
-		return "access/ID"; // 결과 페이지로 이동
+		return "access/idSearch"; // 결과 페이지로 이동
 	}
 	
 	@GetMapping("/pwSearch")
