@@ -10,12 +10,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="marketTitle" column="MARKET_TITLE" />
 	<result property="marketContent" column="MARKET_CONTENT" />
 	<result property="marketLocal" column="MARKET_LOCAL" />	
+	<result property="marketDistrict" column="MARKET_DISTRICT" />
 	</resultMap>
 	
 	<insert id="insert">
 	<!-- 게시글 등록-->
 		INSERT INTO MARKET VALUES
-		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal})
+		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="selectList" resultMap="marketResultMap">

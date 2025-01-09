@@ -9,10 +9,10 @@ pageEncoding="UTF-8"%>
 
 <style type="text/css">
 .button {
-	  background-color: #04AA6D;
+ background-color: #04AA6D;
   border: none;
   color: white;
-  padding: 6px 12px;
+  padding: 4px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -27,8 +27,20 @@ pageEncoding="UTF-8"%>
 }
 
 textarea {
-  width: 300px;
+  width: 100px;
   height: 100px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(240, 240, 240, 0);
+  font-size: 16px;
+  resize: none;
+}
+
+.content {
+  width: 700px;
+  height: 280px;
   padding: 12px 20px;
   box-sizing: border-box;
   border: 2px solid #ccc;
@@ -54,7 +66,7 @@ button:disabled {
 }
 
 .comment_item {	
-	left : 20px;
+	left : 30px;
 	width: 100%;
 	max-width: 600px; /* 댓글 창의 최대 너비 */
 	margin: 20px auto; /* 화면 중앙에 배치 */
@@ -71,9 +83,8 @@ button:disabled {
 	font-size:14px;
 	font-family:'맑은 고딕', verdana;
 	padding:10px;
-	width:500px;
+	width:700px;
 	height:150px;
-	
 }
 
 .modalBackground {
@@ -125,11 +136,14 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
 	</div>
+	<div>
+		<p>지역 : ${marketVO.marketLocal }</p>
+	</div>
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId }">
 	
 	<div>
-		<textarea rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
+		<textarea class="content" rows="20" cols="120" readonly>${marketVO.marketContent }</textarea>
 		
 	</div>
 	
@@ -145,7 +159,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 	
 	<c:if test="${sessionScope.memberId == 'admin1'}">
     <button id="deleteMarket" class="button">글 삭제</button>
-    <form id="deleteForm" action="delete">
+    <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="marketId" value="${marketVO.marketId }">
     </form>
 	</c:if>
@@ -179,8 +193,10 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
 				 if (confirm('삭제하시겠습니까?')) {
-					 
+				
 				var marketId = $('#marketId').val(); // 게시판 번호 데이터
+				var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
+				
 				$.ajax({
 					type : 'DELETE', 
 					url : '../market/deleteReplyByMarket/' + marketId, 
@@ -195,7 +211,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							console.log("댓글 삭제 실패");
 							}
 						}
-					}); // end ajax
+					}); // end 댓글 삭제
+					
 					$('#deleteForm').submit(); // form 데이터 전송
 				 }	// end confirm
 				 
@@ -269,16 +286,10 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						// .toLocaleString(); 빼면
 						var replyDateCreated = new Date(this.replyDateCreated).toLocaleString();
 						var disabled = '';
-						var disable = '';
 										
 						if("${sessionScope.memberId}" != this.memberId){
 							disabled = 'disabled';
 						}
-						
-						if("${sessionScope.memberId}" == null){
-							disable = 'disabled';
-						}
-						
 					
 						
 						list +=
@@ -295,23 +306,20 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<br>'
 							
 							+ '<div class = "replyFooter">'
+							+ '<%if(session.getAttribute("memberId") != null){ %>'
 							+ '<button class="btn_update"' + disabled + ' > 수정 </button>'
 							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
-							+ '<button class="btn_commentAdd" ' + disable + ' > 답글 작성 </button>'
+							+ '	<%} %>' 
+							+ '<button class="btn_commentAdd"' + disabled + '" > 답글 작성 </button>'
 							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기 </button> '
 							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
 							
 							+ '<ul class="comment_item"></ul>'
-							+ "</div>" // end reply_item
-							
-							
-					
+							list += "</div>"; // end reply_item
 					}); // end each()
-						
+					
 					$('#replies').html(list); // 저장된 데이터를 replies div 표현
-					
-					
 					
 				} // end function
 			);  // end JSON
@@ -324,12 +332,11 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 			var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
 			var commentDiv = $(this).closest('.reply_item').find('.comment_item');
 			
-			console.log("btn_commentList | " + "marketReplyId : " + marketReplyId + " |");
-			
+			console.log("marketReplyId : " + marketReplyId);
 			
 		     var url = '../market/commentall/' + marketReplyId;
-		        
-			$.getJSON(
+		     if(commentDiv.html() == ''){   
+				$.getJSON(
 				url, 			
 				function(data) {
 					console.log(data);
@@ -344,10 +351,10 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						var commentDateCreated = new Date(this.commentDateCreated).toLocaleString();
 						var disabled = '';
 						
-						if('<%=session.getAttribute("memberId") %>' != this.memberId) {
+						if("${sessionScope.memberId}" != this.memberId){
 							disabled = 'disabled';
 						}
-						
+				
 				
 						comment +=
 						 '<ul class="comment_item">'
@@ -363,9 +370,11 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 
 						+ '<br>'
 						+ '<div class = "replyFooter">'
+						+ '<%if(session.getAttribute("memberId") != null){ %>'
 						+ '<button class="btn_updateComment" ' + disabled + '> 수정 </button>'
 						+ '<button class="btn_deleteComment"' + disabled + ' > 삭제 </button>'
-						+'<button class="btn_commentAdd"> 답글 </button>'
+						+ '	<%} %>' 
+						+ '<button class="btn_commentAdd"> 답글 </button>'
 						
 						+ '</ul>'; // end comment_item
 					
@@ -376,7 +385,11 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 				
 				} // end function
 			);  // end JSON
+		     } else {
+		    	 commentDiv.html("");
+		     }
 		}); //end getAllComment
+		
 	
 		// 수정 버튼 클릭 시 모달창 띄우기
 		$(document).on("click", ".btn_update", function(){

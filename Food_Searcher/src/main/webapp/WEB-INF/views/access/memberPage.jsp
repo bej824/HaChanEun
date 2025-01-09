@@ -87,7 +87,7 @@
 
 	<form id=deleteForm action="statusUpdate" method="post">
 		<input type="hidden" name="memberId" value="${vo.memberId }">
-		<input type="hidden" name="memberStatus" value="비활성">
+		<input type="hidden" name="memberStatus" value="inactive">
 	</form>
 	
 	<br>

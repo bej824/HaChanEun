@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.MarketCommentVO;
 import com.food.searcher.domain.MarketReplyVO;
+import com.food.searcher.persistence.MarketCommentMapper;
 import com.food.searcher.persistence.MarketReplyMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -16,10 +18,13 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 
-public class MarketReplyServiceImple implements MarketReplyService {
+public class MarketReplyServiceImple implements MarketReplyService{
 	
 	@Autowired
 	private MarketReplyMapper marketReplyMapper;	
+	
+	@Autowired
+	private MarketCommentMapper marketCommentMapper;
 	
 	
 	@Override
@@ -61,6 +66,8 @@ public class MarketReplyServiceImple implements MarketReplyService {
 		log.info("게시글에 대한 댓글 " + deleteReplyByMarket + "행 삭제");
 		return 1;
 	}
+
+	
 
 
 } // end MarketReplyServiceImple
