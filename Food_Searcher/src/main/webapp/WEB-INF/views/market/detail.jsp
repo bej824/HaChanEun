@@ -116,7 +116,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
-<%session.getAttribute("memberId"); %>
 
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
@@ -140,30 +139,30 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 	<br><br>
 	
 		
-	<% if("admin1".equals(session.getAttribute("memberId"))){ %>
-	<button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
-	<%} %>
+	<c:if test="${sessionScope.memberId == 'admin1'}">
+   	 <button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
+	</c:if>
 	
-	<% if("admin1".equals(session.getAttribute("memberId"))){ %>
-	<button id="deleteMarket" class="button">글 삭제</button>
-	<form id="deleteForm" action="delete">
-		<input type="hidden" name="marketId" value="${marketVO.marketId }">
-	</form>
-	<%} %>
+	<c:if test="${sessionScope.memberId == 'admin1'}">
+    <button id="deleteMarket" class="button">글 삭제</button>
+    <form id="deleteForm" action="delete">
+        <input type="hidden" name="marketId" value="${marketVO.marketId }">
+    </form>
+	</c:if>
 
 	
-	<% if(session.getAttribute("memberId") == null){ %>
-	* 댓글은 로그인이 필요한 서비스입니다.
-	<a href="/searcher/access/login">로그인하기</a>
-	<%} %>
+	<c:if test="${sessionScope.memberId == null}">
+ 	   * 댓글은 로그인이 필요한 서비스입니다.
+ 	   <a href="/searcher/access/login">로그인하기</a>
+	</c:if>
 	
-	<% if(session.getAttribute("memberId") != null){ %>
-		<input type="hidden" name="marketId" value=${marketVO.marketId }>
-		<input type="hidden" name="memberId" value=${sessionScope.memberId }>
-		<textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
-		<button id="btnAdd" class="button">댓글 작성</button>
-	<%} %>
-	
+
+	<c:if test="${sessionScope.memberId != null}">
+  	  <input type="hidden" name="marketId" value="${marketVO.marketId }">
+   	 <input type="hidden" name="memberId" value="${sessionScope.memberId }">
+   	 <textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
+   	 <button id="btnAdd" class="button">댓글 작성</button>
+	</c:if>
 	
 		<div id="replies">
 		<div class="reply_item">
@@ -180,9 +179,27 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
 				 if (confirm('삭제하시겠습니까?')) {
+					 
+				var marketId = $('#marketId').val(); // 게시판 번호 데이터
+				$.ajax({
+					type : 'DELETE', 
+					url : '../market/deleteReplyByMarket/' + marketId, 
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							console.log("댓글 삭제 성공");
+						} else {
+							console.log("댓글 삭제 실패");
+							}
+						}
+					}); // end ajax
 					$('#deleteForm').submit(); // form 데이터 전송
-				 }	
-			});
+				 }	// end confirm
+				 
+			}); // end deleteMarket.click
 		}); // end document
 		
 	</script>
@@ -253,15 +270,16 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						var replyDateCreated = new Date(this.replyDateCreated).toLocaleString();
 						var disabled = '';
 						var disable = '';
-						
-						if('<%=session.getAttribute("memberId") %>' != this.memberId) {
+										
+						if("${sessionScope.memberId}" != this.memberId){
 							disabled = 'disabled';
 						}
 						
-						if('<%=session.getAttribute("memberId") %>' == null) {
+						if("${sessionScope.memberId}" == null){
 							disable = 'disabled';
 						}
 						
+					
 						
 						list +=
 							'<div class="reply_item" value="' + this.marketReplyId + '">'
@@ -280,7 +298,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<button class="btn_update"' + disabled + ' > 수정 </button>'
 							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
 							+ '<button class="btn_commentAdd" ' + disable + ' > 답글 작성 </button>'
-							+ '<button class="btn_commentList" onclick="getAllComment()" value="' + this.marketReplyId + '"> 답글 보기 </button> '
+							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기 </button> '
 							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
 							
@@ -428,7 +446,26 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						alert('댓글 삭제 실패')
 						}
 					}
-				});
+				}); // end reply delete ajax
+				
+				$.ajax({
+					type : 'DELETE',
+					url : '../market/commentByReply/' + marketReplyId,
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							console.log("댓글에 대한 대댓글 삭제 성공!");
+							getAllReply();
+						} else {
+							console.log("댓글에 대한 대댓글 삭제 실패");
+							}
+						}
+				}); // end commentByReply delete ajax
+				
+				
 			} // end deleteConfirm
 		}); // end btn_delete
 	
@@ -477,6 +514,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 					alert('대댓글 입력 성공');
 					getAllReply();
 					$(".commentModal").attr("style", "display:none;");
+					$("#marketCommentContent").val("");
 				} else {
 					alert('대댓글 입력 실패');
 					}

@@ -75,5 +75,16 @@ public class MarketReplyController {
 	      
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 삭제
+	 
+	 @DeleteMapping("/deleteReplyByMarket/{marketId}") 
+	   public ResponseEntity<Integer> deleteReplyByMarket(
+	         @PathVariable("marketId") int marketId) {
+	      log.info("deleteReplyByMarket()");
+	      log.info("marketId = " + marketId);
+	      
+	      int result = marketReplyService.deleteReplyByMarket(marketId);
+	      
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   } // 댓글 삭제
 	
 }

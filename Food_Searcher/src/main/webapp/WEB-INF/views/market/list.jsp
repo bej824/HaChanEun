@@ -77,7 +77,7 @@ li {
 			<c:forEach var="MarketVO" items="${marketList}">
 				<tr onclick="location.href='detail?marketId=${MarketVO.marketId }'">
 					<td>${MarketVO.marketId }</td>
-					<td><a href="detail?marketId=${MarketVO.marketId}">
+					<td>
 					${MarketVO.marketTitle }</a></td>
 				</tr>
 			</c:forEach>

@@ -10,5 +10,6 @@ public interface MarketCommentService {
 	List<MarketCommentVO> getAllComment(int marketReplyId);
 	int updateComment(int marketCommentId, String marketCommentContent);
 	int deleteComment(int marketCommentId, int marketReplyId);
+	int deleteCommentByReply(int marketReplyId);
 
 }

@@ -49,8 +49,16 @@ public class MarketReplyServiceImple implements MarketReplyService {
 	@Override
 	public int deleteReply(int marketReplyId, int marketId) {
 		log.info("deleteReply()");
-		int deleteResult = marketReplyMapper.delete(marketReplyId);
+		int deleteResult = marketReplyMapper.delete(marketReplyId);		
 		log.info(deleteResult + "행 댓글 삭제");
+		return 1;
+	}
+
+	@Override
+	public int deleteReplyByMarket(int marketId) {
+		log.info("deleteReplyByMarket()");
+		int deleteReplyByMarket = marketReplyMapper.deleteReplyByMarket(marketId);
+		log.info("게시글에 대한 댓글 " + deleteReplyByMarket + "행 삭제");
 		return 1;
 	}
 
