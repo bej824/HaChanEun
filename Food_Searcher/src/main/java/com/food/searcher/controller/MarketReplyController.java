@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.food.searcher.domain.MarketCommentVO;
 import com.food.searcher.domain.MarketReplyVO;
+import com.food.searcher.service.MarketCommentService;
 import com.food.searcher.service.MarketReplyService;
 
 import lombok.extern.log4j.Log4j;
@@ -28,6 +30,9 @@ public class MarketReplyController {
 	
 	@Autowired
 	private MarketReplyService marketReplyService;
+	
+	@Autowired MarketCommentService marketCommentService;
+	
 
 	@PostMapping
 	public ResponseEntity<Integer> createReply(@RequestBody MarketReplyVO marketReplyVO) {
@@ -48,6 +53,13 @@ public class MarketReplyController {
 		model.addAttribute("list", list);
 		
 		log.info(list);
+		
+		 for (MarketReplyVO marketReply : list) {
+		        List<MarketCommentVO> commentList = marketCommentService.getAllComment(marketReply.getMarketReplyId());
+		        marketReply.setCommentList(commentList); // 댓글 객체에 대댓글 목록 설정
+		        log.info("데이터 : " + commentList);
+		        log.info(commentList.size());
+		    }
 		
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
 	} // 댓글 출력

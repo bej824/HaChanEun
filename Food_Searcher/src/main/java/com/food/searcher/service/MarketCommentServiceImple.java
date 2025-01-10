@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.MarketCommentVO;
+import com.food.searcher.domain.MarketReplyVO;
+import com.food.searcher.domain.MarketVO;
+import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.persistence.MarketCommentMapper;
+import com.food.searcher.persistence.MarketReplyMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -21,11 +25,15 @@ public class MarketCommentServiceImple implements MarketCommentService {
 	@Autowired
 	private MarketCommentMapper marketCommentMapper;
 	
+	@Autowired
+	private MarketReplyMapper marketReplyMapper;
+	
 	@Override
 	public int createComment(MarketCommentVO marketCommentVO) {
 		log.info("marketCommentVO");
 		int insertResult = marketCommentMapper.insert(marketCommentVO);
 		log.info("대댓글 " + insertResult + "행 삽입");
+	
 		return 1;
 	}
 

@@ -37,11 +37,6 @@
 				maxlength="30" value="${marketVO.marketTitle }" required>
 		</div>
 
-		<div>
-			<p>글 번호 :</p>
-			<input type="text" name="marketId" value="${marketVO.marketId }"
-				readonly>
-		</div>
 
 		 <div>
          <p>지역 : </p>
