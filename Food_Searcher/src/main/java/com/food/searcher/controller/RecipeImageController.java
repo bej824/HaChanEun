@@ -77,42 +77,34 @@ public class RecipeImageController {
 	// 이미지 파일을 호출
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> display(String attachPath, String attachChgName, String attachExtension) {
-	    log.info("display()");
+		log.info("display()");
+		ResponseEntity<byte[]> entity = null;
+		try {
+			// 파일을 읽어와서 byte 배열로 변환
+			String savedPath = uploadPath + File.separator 
+					+ attachPath + File.separator + attachChgName; 
+			if(attachChgName.startsWith("t_")) { // 섬네일 파일에는 확장자 추가
+				savedPath += "." + attachExtension;
+			}
+			Path path = Paths.get(savedPath);
+			byte[] imageBytes = Files.readAllBytes(path);
 
-	    if (attachChgName == null || attachExtension == null) {
-	        return ResponseEntity.badRequest().build(); // 잘못된 요청 시 400
-	    }
 
-	    ResponseEntity<byte[]> entity = null;
-	    try {
-	        String savedPath = uploadPath + File.separator 
-	                + attachPath + File.separator + attachChgName;
+			Path extensionPath = Paths.get("." + attachExtension);
+			// 이미지의 MIME 타입 확인하여 적절한 Content-Type 지정
+			String contentType = Files.probeContentType(extensionPath);
 
-	        // 섬네일 파일의 경우 확장자 추가
-	        if (attachChgName.startsWith("t_")) {
-	            savedPath += "." + attachExtension;
-	        }
+			// HTTP 응답에 byte 배열과 Content-Type을 설정하여 전송
+			HttpHeaders httpHeaders = new HttpHeaders();
+			httpHeaders.setContentType(MediaType.parseMediaType(contentType));
+			entity = new ResponseEntity<byte[]>(imageBytes, httpHeaders, HttpStatus.OK);
+		} catch (IOException e) {
+			// 파일을 읽는 중에 예외 발생 시 예외 처리
+			e.printStackTrace();
+			return ResponseEntity.notFound().build(); // 파일을 찾을 수 없음을 클라이언트에게 알림
+		}
 
-	        Path path = Paths.get(savedPath);
-	        byte[] imageBytes = Files.readAllBytes(path);
-
-	        // MIME 타입 확인
-	        Path extensionPath = Paths.get(savedPath);
-	        String contentType = Files.probeContentType(extensionPath);
-
-	        if (contentType == null) {
-	            contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE; // 기본 MIME 타입
-	        }
-
-	        HttpHeaders httpHeaders = new HttpHeaders();
-	        httpHeaders.setContentType(MediaType.parseMediaType(contentType));
-	        entity = new ResponseEntity<byte[]>(imageBytes, httpHeaders, HttpStatus.OK);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return ResponseEntity.notFound().build(); // 파일을 찾을 수 없음을 알림
-	    }
-
-	    return entity;
+		return entity;
 	}
 
 	

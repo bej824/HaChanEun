@@ -43,7 +43,7 @@ public class FileUploadUtil {
         // '.' 이후의 문자열을 확장자로 추출합니다.
         String extension = fileName.substring(dotIndex + 1);
 
-        return extension;
+        return extension.toLowerCase(); // 소문자로 변경
     }
     
     /**
@@ -128,6 +128,32 @@ public class FileUploadUtil {
         }
     }
 
+    /**
+     * 이미지 파일인지 확인
+     * 
+     * @param file 전송된 파일 객체
+     * @return 파일이면 true
+     */
+    public static boolean isImageFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return false;
+        }
+
+        // ContentType 정보 참조
+        String contentType = file.getContentType();
+
+        // Content Type이 "image/"로 시작하는지 확인
+        return contentType != null && contentType.startsWith("image/");
+    }
+    
+    /**
+     * 원본 이미지로 섬네일 파일을 생성
+     * 
+     * @param uploadPath 업로드된 파일의 기본 경로
+     * @param path 업로드된 파일의 상세 경로
+     * @param chgName 변경된 파일명
+     * @param extension 파일 확장자
+     */
 	public static void createThumbnail(String uploadPath, String path, String chgName, String extension) {
 		String realUploadPath = uploadPath + File.separator + path;
     	String thumbnailName = "t_" + chgName; // 섬네일 파일 이름

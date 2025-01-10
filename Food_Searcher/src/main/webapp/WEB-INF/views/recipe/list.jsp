@@ -78,8 +78,8 @@ li {
 		<thead>
 			<tr>
 				<th style="width: 60px">번호</th>
-				<th style="width: 670px">제목</th>
-				<th style="width: 90px">음식</th>
+				<th style="width: 600px">제목</th>
+				<th style="width: 100px">음식</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
 				<th style="width: 50px">댓글수</th>
@@ -112,6 +112,23 @@ li {
 	    </select>
 	    <button type="submit" class="button">검색</button>
 	</form>
+	
+		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
+		<form id="detailForm" action="detail" method="get">
+			<input type="hidden" name="boardId" >
+			<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="pageSize" >
+	    	<input type="hidden" name="type" >
+			<input type="hidden" name="keyword" >
+		</form>
+		
+		<!-- 페이지 번호와 페이지 사이즈를 전송하는 form -->
+		<form id="listForm" action="list" method="get">
+	    	<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="pageSize" >
+	    	<input type="hidden" name="type">
+			<input type="hidden" name="keyword">
+	    </form>
 <ul>
     <!-- 이전 버튼 생성을 위한 조건문 -->
     <c:if test="${pageMaker.isPrev() }">
