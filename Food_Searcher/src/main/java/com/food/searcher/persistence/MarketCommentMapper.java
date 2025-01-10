@@ -15,7 +15,7 @@ public interface MarketCommentMapper {
 	List<MarketCommentVO> selectListByMarketReplyId(int marketReplyId);
 	int update(MarketCommentVO marketCommentVO);
 	int delete(int marketCommentId);
-	int deleteCommentByReply(int marketReplyId);
+	int deleteCommentByReply(int marketReplyId); // 댓글에 대한 대댓글 삭제
 	
 	
 }

@@ -48,8 +48,7 @@ public class MarketCommentController {
 		List<MarketCommentVO> list = marketCommentService.getAllComment(marketReplyId);
 		return new ResponseEntity<List<MarketCommentVO>>(list, HttpStatus.OK);
 	} // 대댓글 출력
-	
-	// 대댓글 수정, 삭제 메모장에 있음.
+
 	
 	@PutMapping("/commentmodify/{marketCommentId}")
 	public ResponseEntity<Integer> updateComment(@PathVariable("marketCommentId") int marketCommentId,

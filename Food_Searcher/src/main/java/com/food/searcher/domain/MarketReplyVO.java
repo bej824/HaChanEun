@@ -1,6 +1,7 @@
 package com.food.searcher.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,5 @@ public class MarketReplyVO {
 	private String memberId;
 	private String marketReplyContent;
 	private Date replyDateCreated;
-	
+	private List<MarketCommentVO> commentList;
 }

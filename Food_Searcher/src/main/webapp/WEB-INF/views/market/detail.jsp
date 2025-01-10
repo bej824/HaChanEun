@@ -131,9 +131,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
 	<div>
-		<p>글 번호 : ${marketVO.marketId }</p>
-	</div>
-	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
 	</div>
 	<div>
@@ -156,7 +153,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 	<c:if test="${sessionScope.memberId == 'admin1'}">
    	 <button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
 	</c:if>
-	
 	<c:if test="${sessionScope.memberId == 'admin1'}">
     <button id="deleteMarket" class="button">글 삭제</button>
     <form id="deleteForm" action="delete" method="POST">
@@ -185,37 +181,32 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		</div>
 	
 	
-	
-
-	
-	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
+				
+				var marketId = ${marketVO.marketId}
+				
+				console.log("marketId : " + marketId);
+				
 				 if (confirm('삭제하시겠습니까?')) {
-				
-				var marketId = $('#marketId').val(); // 게시판 번호 데이터
-				var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
-				
-				$.ajax({
-					type : 'DELETE', 
-					url : '../market/deleteReplyByMarket/' + marketId, 
-					headers : {
-						'Content-Type' : 'application/json'
-					},
-					success : function(result) {
-						console.log(result);
-						if(result == 1) {
-							console.log("댓글 삭제 성공");
-						} else {
-							console.log("댓글 삭제 실패");
-							}
-						}
-					}); // end 댓글 삭제
-					
+					 $.ajax({
+							type : 'DELETE', 
+							url : '../market/deleteReplyByMarket/' + marketId, 
+							headers : {
+								'Content-Type' : 'application/json'
+							},
+							success : function(result) {
+								console.log(result);
+								if(result == 1) {
+									console.log("댓글 삭제 성공");
+								} else {
+									console.log("댓글 삭제 실패");
+									}
+								}
+							}); // end ajax
+						} // end confirm
 					$('#deleteForm').submit(); // form 데이터 전송
-				 }	// end confirm
-				 
 			}); // end deleteMarket.click
 		}); // end document
 		
@@ -306,12 +297,12 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<br>'
 							
 							+ '<div class = "replyFooter">'
-							+ '<%if(session.getAttribute("memberId") != null){ %>'
 							+ '<button class="btn_update"' + disabled + ' > 수정 </button>'
 							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
+							+ '<%if(session.getAttribute("memberId") != null){ %>'
+							+ '<button class="btn_commentAdd"> 답글 작성 </button>'
 							+ '	<%} %>' 
-							+ '<button class="btn_commentAdd"' + disabled + '" > 답글 작성 </button>'
-							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기 </button> '
+							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기(' + this.commentList.length + ') </button> '
 							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
 							
@@ -379,6 +370,12 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						+ '</ul>'; // end comment_item
 					
 					}); // end each()
+					
+				    <%if(session.getAttribute("memberId") != null){ %>
+				    comment += '<input type="text" class="marketCommentContent" >'
+			            + '<button class="btn_commentAdd" value="'+ marketReplyId +'">작성</button>';
+					<%} %>
+					// 로그인 한 경우 작성 칸과 작성 버튼 추가
 					
 					commentDiv.html(comment); // 저장된 데이터를 comments div 표현
 					
@@ -488,6 +485,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		
 		var commentReplyId =$(this).closest('.reply_item').find('#marketReplyId').val();
 		var commentMemberId = $("#memberId").val();
+		
 		console.log("대댓글 모달 || commentReplyId : " + commentReplyId, "commentMemberId : " + commentMemberId);
 		
 		 $("#commentReplyId").val(commentReplyId);
@@ -500,7 +498,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		var marketReplyId =$('#commentReplyId').val();
 		var memberId = $('#memberId').val();
 		var marketCommentContent = $('#marketCommentContent').val();
-	
 		
 		var obj = {
 				'marketReplyId' : marketReplyId,
@@ -541,7 +538,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		$(".commentModifyModal").attr("style", "display:block;");
 		
 		var commentId = $(this).closest('.comment_item').find('#marketCommentId').val(); 
-		var commentContent = $(this).parent().parent().children(".marketCommentContent").text(); // 원본 댓글 내용 가져오기
+		var commentContent = $(this).parent().parent().children("#marketCommentContent").text(); // 원본 댓글 내용 가져오기
 		
 		console.log("commentId : " + commentId, "commentContent : " + commentContent);
 		
@@ -611,21 +608,18 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 			});
 		} // end deleteConfirm
 	}); // end btn_deleteComment
-	
-	
 
 }); // end document
 
-//getText 함수는 전역에서 정의되어야 합니다.
+// getText 함수는 전역에서 정의되어야 합니다.
 function getText(clickedElement) {
   // 클릭한 span의 텍스트를 가져옵니다.
   let memberId = clickedElement.textContent;
   console.log(memberId);
   
-  $('#commentContentAdd').val(memberId +" → ");
+  $('.marketCommentContent').val(memberId +" → ");
 }
 
-	
 	</script>
 
 <!-- 수정 모달 -->
