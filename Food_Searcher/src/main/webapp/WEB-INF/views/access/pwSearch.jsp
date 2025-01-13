@@ -31,6 +31,8 @@
 	<p>비밀번호 재입력</p>
 		<input type=password name="password2" id="password2"
 			placeholder="비밀번호 입력" required> <br>
+	<!-- CSRF 토큰 -->
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<button class="button" name="update" onclick="update()">비밀번호 수정</button>

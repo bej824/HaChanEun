@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>이메일 인증</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta name="_csrf" content="${_csrf.token}">  <!-- Spring Security가 자동으로 생성한 CSRF 토큰을 포함 -->
+<meta name="_csrf_header" content="${_csrf.headerName}">  <!-- CSRF 토큰 이름을 포함 -->
 <style>
 
 body {
@@ -32,6 +34,8 @@ body {
 	<a id="countdown"></a>
 	<div id="confirmMsg" class="message" style="color:green;"></div>
 	<div id="emailMsg" class="message" style="color: red;"></div>
+	<!-- CSRF 토큰 -->
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	<br>
 	<input type="text" id="emailCheck" name="emailCheck" placeholder="인증번호를 입력해주세요." style="display: none;">
@@ -57,6 +61,10 @@ body {
 		// 메세지 변수
 		const emailMsg = $('#emailMsg');
 		const confirmMsg = $('#confirmMsg');
+		
+		// 시큐리티 변수
+		const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+	    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 	
 		function confirm() {
 			
@@ -67,6 +75,9 @@ body {
 			    type: 'POST',
 			    url: '../access/emailConfirm',
 			    data: { email: email.value},
+			    beforeSend: function (xhr) {
+	                xhr.setRequestHeader(csrfHeader, csrfToken);  // CSRF 토큰을 헤더에 설정
+	            },
 			    success: function(result) {
 			      if (result == '1') {
 					countDown();
@@ -81,13 +92,15 @@ body {
 		
 		
 		function emailAuth() {
-			
 			 if (/^\d+$/.test(emailCheck.value)) {
 			 $.ajax({
 			    type: 'POST',
 			    url: '../access/emailCheck',
 			    data: { email : email.value,
 			    	emailCheck: emailCheck.value },
+			   beforeSend: function (xhr) {
+			                xhr.setRequestHeader(csrfHeader, csrfToken);  // CSRF 토큰을 헤더에 설정
+			            },
 			    success: function(result) {
 			      if (result == '1') {
 			    	confirmMsg.html('인증되었습니다.').css('color', 'green');

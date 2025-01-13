@@ -33,7 +33,7 @@ import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RoleVO;
 import com.food.searcher.service.LocalReplyService;
 import com.food.searcher.service.LocalService;
-import com.food.searcher.service.RoleService;
+import com.food.searcher.service.MemberService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -46,9 +46,6 @@ public class LocalController {
 
 	@Autowired
 	private LocalService localService;
-
-	@Autowired
-	private RoleService RoleService;
 
 	@GetMapping("/map")
 	public void mapGET(Model model, @RequestParam(value = "localLocal", required = false) String localLocal,
@@ -104,24 +101,14 @@ public class LocalController {
 	public void localDetailGET(@RequestParam("localId") String localId,
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
-			HttpSession session, Model model) {
+			HttpSession session, HttpServletResponse response,
+			Model model, LocalSpecialityVO localSpecialityVO) {
 		log.info("localDetailGET()");
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
-		LocalSpecialityVO LocalSpecialityVO = localService.getSpecialityByLocalId(localId);
-		log.info(LocalSpecialityVO);
-
-		String memberId = (String) session.getAttribute("memberId");
-		try {
-			RoleVO roleVO = RoleService.selectRole(memberId);
-			log.info(roleVO.getRoleName());
-			if (roleVO.getRoleName().equals("admin")) {
-				model.addAttribute("roleName", roleVO.getRoleName());
-			}
-		} catch (Exception e) {
-
-		}
-
-		model.addAttribute("LocalSpecialityVO", LocalSpecialityVO);
+		localSpecialityVO = localService.getSpecialityByLocalId(localId);
+		log.info(localSpecialityVO);
+		
+		model.addAttribute("LocalSpecialityVO", localSpecialityVO);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 	}

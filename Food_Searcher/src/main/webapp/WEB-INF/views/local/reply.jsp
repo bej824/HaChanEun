@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,16 +107,14 @@
 		<div id="replies"></div>
 
 		<div class="reply">
-			<c:if test="${ sessionScope.memberId} != this.memberId">
 			<div class="replyMemberId">
-				${ sessionScope.memberId}<input type="hidden"
-					id="memberId" value="${ sessionScope.memberId}">
-				<input type="text" id="headerReplyContent">
-				<div class="timeButton">
-					<button id="btnAdd" class="button">작성</button>
-				</div>
 			</div>
-			</c:if>
+				<sec:authentication property="name" /><input type="hidden"
+					id="memberId" value=<sec:authentication property="name" />>
+			<input type="text" id="headerReplyContent">
+			<div class="timeButton">
+			<button id="btnAdd" class="button">작성</button>
+			</div>
 		</div>
 	</div>
 
