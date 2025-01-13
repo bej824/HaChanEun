@@ -53,27 +53,28 @@ textarea {
 		<div>
 			<p>지역 :</p>
 			<select name="marketLocal">
-				<option value="종로"> 종로</option>
-         <option value="서대문구">서대문구</option>
-         <option value="dobong">도봉구</option>
-         <option value="yangcheon">양천구</option>
-         <option value="seondong">성동구</option>
-         <option value="nowon">노원구</option>
-         <option value="jung">중구</option>
-         <option value="junglang">중랑구</option>
-         <option value="yongsan">용산구</option>
-         <option value="gwangjin">광진구</option>
-         <option value="mapo">마포구</option>
-         <option value="kwanak">관악구</option>
-         <option value="kumcheon">금천구</option>
-         <option value="gangseo">강서구</option>
-         <option value="gangdong">강동구</option>
-         <option value="eunpyeong">은평구</option>
-         <option value="seongbuk">성북구</option>
-         <option value="dongdaemun">동대문구</option>
-         <option value="gangbuk">강북구</option>
-         <option value="gangnam">강남구</option>
-         <option value="yeongduengpo">영등포구</option>
+				<option value="종로">종로</option>
+				<option value="서대문구">서대문구</option>
+				<option value="도봉구">도봉구</option>
+				<option value="양천구">양천구</option>
+				<option value="성동구">성동구</option>
+				<option value="노원구">노원구</option>
+				<option value="중구">중구</option>
+				<option value="중랑구">중랑구</option>
+				<option value="용산구">용산구</option>
+				<option value="광진구">광진구</option>
+				<option value="마포구">마포구</option>
+				<option value="관악구">관악구</option>
+				<option value="금천구">금천구</option>
+				<option value="강서구">강서구</option>
+				<option value="강동구">강동구</option>
+				<option value="은평구">은평구</option>
+				<option value="성북구">성북구</option>
+				<option value="동대문구">동대문구</option>
+				<option value="강북구">강북구</option>
+				<option value="강남구">강남구</option>
+				<option value="영등포구">영등포구</option>
+
 
 
 

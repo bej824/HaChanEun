@@ -91,6 +91,7 @@ li {
 			<th style="width: 60px">번호</th>
 			<th style="width: 700px">제목</th>
 			<th style="width: 120px">지역</th>
+			<th style="width: 60px">댓글 수</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -99,6 +100,7 @@ li {
 			<td>${MarketVO.marketId }</td>
 			<td>${MarketVO.marketTitle }</td>
 			<td>${MarketVO.marketLocal }</td>
+			<td>${MarketVO.marketReplyCount }</td>
 			</tr>
 		</c:forEach>
 	</tbody>

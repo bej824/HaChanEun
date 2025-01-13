@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.food.searcher.domain.MarketCommentVO;
+import com.food.searcher.domain.MarketReplyVO;
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.persistence.MarketMapper;
 import com.food.searcher.util.Pagination;
@@ -20,6 +22,12 @@ public class MarketServiceImple implements MarketService {
 
 	@Autowired
 	MarketMapper marketMapper;
+	
+	@Autowired
+	MarketReplyService marketReplyService;
+	
+	@Autowired
+	MarketCommentService marketCommentService;
 
 	@Override
 	public int createMarket(MarketVO marketVO) {
@@ -49,6 +57,20 @@ public class MarketServiceImple implements MarketService {
 	@Override
 	public int deleteMarket(int marketId) {
 		log.info("deleteMarket()");
+	      List<MarketReplyVO> replyList = marketReplyService.getAllReply(marketId);
+	      log.info("댓글 목록 : " + replyList);
+	      for(MarketReplyVO reVO : replyList) {
+	    	  List<MarketCommentVO> commentList = marketCommentService.getAllComment(reVO.getMarketReplyId());
+	    	  log.info("대댓글 목록 : " + commentList);
+	    	  for(MarketCommentVO coVO : commentList) {
+	    		  int result = marketCommentService.deleteComment(coVO.getMarketCommentId(), coVO.getMarketReplyId());
+	    		  log.info(coVO);
+	    		  log.info(result + "행 대댓글 삭제");
+	    	  }
+	    	  log.info(reVO);
+	    	  int result = marketReplyService.deleteReply(reVO.getMarketReplyId(), reVO.getMarketId());
+	    	  log.info(result + "행 댓글 삭제");
+	      }
 		return marketMapper.delete(marketId);
 	}
 

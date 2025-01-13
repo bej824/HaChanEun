@@ -61,6 +61,14 @@ textarea {
 
 </style>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<!-- css 파일 불러오기 -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/image.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/attach.css">
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
@@ -88,7 +96,7 @@ textarea {
     <!-- 이미지 파일 영역 -->
     <div class="image-upload">
         <div class="image-view">
-            <h2>이미지 파일 리스트</h2>
+            <h2>이미지 파일 리스트1</h2>
             <div class="image-list">
                 <!-- 이미지 파일 처리 코드 -->
                 <c:forEach var="attachVO" items="${idList}">
@@ -108,6 +116,75 @@ textarea {
             </div>
         </div>
     </div>
+    
+    <!-- 이미지 재시도 -->
+
+	<form id="listForm" action="list" method="GET">
+		<input type="hidden" name="pageNum" >
+    	<input type="hidden" name="pageSize" >
+    	<input type="hidden" name="type" >
+    	<input type="hidden" name="keyword" >	
+	</form>
+	<form id="modifyForm" action="modify" method="GET">
+		<input type="hidden" name="boardId">
+		<input type="hidden" name="pageNum" >
+    	<input type="hidden" name="pageSize" >
+    	<input type="hidden" name="type" >
+    	<input type="hidden" name="keyword" >
+	</form>
+	<form id="deleteForm" action="delete" method="POST">
+		<input type="hidden" name="boardId">
+		<input type="hidden" name="pageNum" >
+    	<input type="hidden" name="pageSize" >
+    	<input type="hidden" name="type" >
+    	<input type="hidden" name="keyword" >
+    	<input type="hidden" name="memberId" value="${recipeVO.memberId}">
+    	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+	</form>
+	
+	<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${idList}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif' or
+                                  attachVO.attachExtension eq 'webp'}">
+				        <div class="image_item">
+				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+					        <img width="100px" height="100px" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 첨부 파일 영역 -->
+	<div class="attach-upload">
+		<div class="attach-view">
+			<h2>첨부 파일 리스트</h2>
+			<div class="attach-list">
+			<c:forEach var="attachVO" items="${idList}">
+		 		<c:if test="${not (attachDTO.attachExtension eq 'jpg' or 
+			    			  attachVO.attachExtension eq 'jpeg' or 
+			    			  attachVO.attachExtension eq 'png' or 
+			    			  attachVO.attachExtension eq 'gif')}">
+			    	<div class="attach_item">
+			    	<p><a href="../attach/download?attachId=${attachVO.attachId }">${attachVO.attachRealName }.${attachVO.attachExtension }</a></p>
+			    	</div>
+			    </c:if>
+			</c:forEach>
+			</div>
+		</div>
+	</div>
+
+	<!-- 이미지 재시도 -->
 
     <button onclick="location.href='list'" class="button">글 목록</button>
 
@@ -136,7 +213,7 @@ textarea {
 <script>
     document.getElementById("deleteBoard").addEventListener("click", function(event) {
         // 삭제 확인 팝업
-        if (confirm("정말로 이 레시피와 관련된 모든 이미지를 삭제하시겠습니까?")) {
+        if (confirm("삭제하시겠습니까?")) {
             // 폼을 제출하여 서버로 delete 요청을 보냄
             document.getElementById("deleteForm").submit();
         } else {
@@ -152,6 +229,33 @@ function goBackToList() {
     window.location.href = '/searcher/recipe/list?recipeTitle=${recipeTitle}&filterBy=${filterBy}&pageNum=${pageNum}';
 }
 </script>
+
+	<!-- 목록 -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+		$("#listBoard").click(function(){
+			var listForm = $("#listForm"); // form 객체 참조
+			
+			// c:out을 이용한 현재 페이지 번호값 저장
+			var pageNum = "<c:out value='${pagination.pageNum }' />";
+			var pageSize = "<c:out value='${pagination.pageSize }' />"; 
+			var type = "<c:out value='${pagination.type }' />";
+			var keyword = "<c:out value='${pagination.keyword }' />";
+			
+			// 페이지 번호를 input name='pageNum' 값으로 적용
+			listForm.find("input[name='pageNum']").val(pageNum);
+			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
+			listForm.find("input[name='pageSize']").val(pageSize);
+			// type 값을 적용
+			listForm.find("input[name='type']").val(type);
+			// keyword 값을 적용
+			listForm.find("input[name='keyword']").val(keyword);
+			listForm.submit(); // form 전송
+		}); // end click()
+	});
+
+	</script>
+	<!-- 목록 -->
 	
 	
 	<%-- 추천 비추천 작업 예정 

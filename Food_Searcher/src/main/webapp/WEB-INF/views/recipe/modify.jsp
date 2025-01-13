@@ -62,17 +62,7 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 			<input type="submit" value="등록" class="button">
 			<button onclick="goBack()" class="button">뒤로가기</button>
 		</div>
-		
-<script>
-function goBack() {
-  const referrer = document.referrer;
-  if (referrer) {
-    window.location.href = referrer;  // 이전 페이지로 이동
-  } else {
-    alert("이전 페이지가 없습니다.");
-  }
-}
-</script>
+
 		<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
@@ -100,6 +90,16 @@ function goBack() {
 		</div>
 	</div>
 	</form>
-	
+		
+<script>
+	function goBack() {
+	  const referrer = document.referrer;
+	  if (referrer) {
+	    window.location.href = referrer;  // 이전 페이지로 이동
+	  } else {
+	    alert("이전 페이지가 없습니다.");
+	  }
+	}
+</script>	
 </body>
 </html>

@@ -17,10 +17,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insert">
 	<!-- 게시글 등록-->
 		INSERT INTO MARKET VALUES
-		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR})
+		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR}, 0)
 	</insert>
 	
 	<update id="updateReplyCount">
+	<!-- 댓글 수 추가 -->
 		UPDATE MARKET
 		SET REPLY_COUNT = REPLY_COUNT + #{amount}
 		WHERE MARKET_ID =
