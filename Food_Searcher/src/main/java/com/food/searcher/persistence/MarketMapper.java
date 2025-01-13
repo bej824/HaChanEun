@@ -3,6 +3,7 @@ package com.food.searcher.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.util.Pagination;
@@ -17,5 +18,6 @@ public interface MarketMapper {
 	int delete (int marketId);           // 관리자
 	List<MarketVO> selectListByPagination(Pagination pagination); 
 	int selectTotalCount();
+	int updateReplyCount(@Param("marketId") int marketId, @Param("amount") int amount); // 댓글 수 변경
 		
 }
