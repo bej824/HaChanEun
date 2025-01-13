@@ -16,6 +16,8 @@
 	<form id="idSearchForm" action = "idSearch" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" value="${memberName}" placeholder="ID를 입력해주세요." required> <br>
 	<input type="hidden" name="email" id ="email" value="${email }">
+	<!-- CSRF 토큰 -->
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<button id="btn_register" class="button" onclick="idSearch()">ID 찾기</button>
@@ -52,6 +54,9 @@
 			let memberId = '${memberVO.memberId }';
 			let memberStatus = 'active';
 			
+			const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+		    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+			
 			console.log(status);
 			
 			$.ajax({
@@ -59,6 +64,9 @@
 			    url: '../access/statusUpdate',
 			    data: { memberId: memberId,
 			    	memberStatus: memberStatus},
+			    beforeSend: function (xhr) {
+		             xhr.setRequestHeader(csrfHeader, csrfToken);  // CSRF 토큰을 헤더에 설정
+		            },
 			    success: function(result) {
 			    	console.log(result);
 			      if (result == 1) {

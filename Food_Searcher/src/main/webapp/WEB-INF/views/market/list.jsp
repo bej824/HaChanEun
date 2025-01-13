@@ -55,7 +55,7 @@ li {
         background-color: darkgreen;
     }
 
-#searcher{
+#search{
 	margin-left: 335px;
 }
 
@@ -126,11 +126,11 @@ li {
 	
 	<form>
 	
+	<textarea id="search"></textarea>
 	<select name="searcher">
-				<option value="제목">종로</option>
-				<option value="내용">서대문구</option>
-				<option value="도봉구">도봉구</option>
-				<option value="양천구">양천구</option>
+				<option value="제목">제목</option>
+				<option value="내용">내용</option>
+				<option value="지역">지역</option>
 	</select>
 	
 	</form>

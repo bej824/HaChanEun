@@ -20,6 +20,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberStatus" column="MEMBER_STATUS" />
 	</resultMap>
 	
+	<resultMap type="com.food.searcher.domain.RoleVO"
+		id="roleResultMap">
+		<id property="roleId" column="ROLE_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="roleName" column="ROLE_NAME" />
+	</resultMap>
+	
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
 		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_STATUS)
@@ -57,6 +64,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateMemberStatusByMemberId">
 		UPDATE MEMBER SET
 		MEMBER_STATUS = #{memberStatus}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	<insert id="insertRole">
+		INSERT INTO MEMBER_ROLE
+		(ROLE_ID, MEMBER_ID,
+		ROLE_NAME)
+		VALUES (ROLE_SEQ.NEXTVAL, #{memberId}, "member")
+	</insert>
+
+	<select id="selectRoleByMemberId" resultMap="roleResultMap">
+		SELECT * FROM MEMBER_ROLE
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<update id="updateRoleByMemberId">
+		UPDATE MEMBER_ROLE
+		SET ROLE_NAME = #{roleName}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 
