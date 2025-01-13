@@ -41,7 +41,7 @@ public class AttachController {
    } // end registerGET()
 
    // 첨부 파일 업로드 처리(POST)
-   @PostMapping("/attach")
+   @PostMapping("/attach ")
    public String attachPOST(AttachVO attachVO) {
       log.info("attachPost()");
       log.info("attachDTO = " + attachVO);

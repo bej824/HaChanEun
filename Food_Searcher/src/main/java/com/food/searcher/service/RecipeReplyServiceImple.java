@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.persistence.RecipeReplyMapper;
@@ -21,6 +22,9 @@ public class RecipeReplyServiceImple implements RecipeReplyService{
 	
 	@Autowired
 	private RecipeMapper recipeMapper;
+	
+	@Autowired
+	private RecipeCommentService recipeCommentService;
 	
 	@Transactional(value = "transactionManager") // transactionManager가 관리
 	@Override
@@ -56,6 +60,18 @@ public class RecipeReplyServiceImple implements RecipeReplyService{
 	@Override
 	public int deleteReply(int replyId, int boardId) {
 		log.info("deleteReply()");
+		
+	      List<RecipeCommentVO> list = recipeCommentService.getAllComment(replyId);
+	      log.info(list);
+	      
+	      for(RecipeCommentVO vo : list) {
+	    	  int commentresult = recipeCommentService.deleteComment(vo.getRecipeCommentId(), vo.getRecipeReplyId());
+	    	  log.info(commentresult);
+	    	  int updateResult = recipeMapper
+	  				.updateReplyCount(boardId, -1);
+	    	  log.info("대댓글 삭제" + updateResult);
+	      }
+	      
 		int deleteResult = replyMapper.delete(replyId);
 		log.info(deleteResult + "행 댓글 삭제");
 		int updateResult = recipeMapper

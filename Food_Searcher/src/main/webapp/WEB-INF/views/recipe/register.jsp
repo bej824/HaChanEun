@@ -44,7 +44,7 @@ textarea {
 <body>
 	<% session.getAttribute("memberId"); %>
 	<h2>글 작성 페이지</h2>
-	<form action="register" method="POST" enctype="multipart/form-data">
+	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
 		<div>
 			<p>제목 :</p>
@@ -69,6 +69,7 @@ textarea {
 
 레시피 : </textarea>
 		</div>
+		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 		<div>
 			<input type="submit" class="button" value="등록">
 			<button onclick="goBack()" class="button">뒤로가기</button>

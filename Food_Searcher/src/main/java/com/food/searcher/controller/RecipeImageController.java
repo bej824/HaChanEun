@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.food.searcher.domain.AttachVO;
+import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.AttachService;
 import com.food.searcher.util.FileUploadUtil;
 
@@ -36,11 +37,12 @@ public class RecipeImageController {
     
     @Autowired
     private AttachService attachService;
+    
 
 	@PostMapping
-	public ResponseEntity<ArrayList<AttachVO>> createImage(MultipartFile[] files) {
+	public ResponseEntity<ArrayList<AttachVO>> createImage(RecipeVO recipeVO, MultipartFile[] files) {
 		log.info("createImage()");
-
+		log.info(files);
 		ArrayList<AttachVO> list = new ArrayList<>();
 
 		for (MultipartFile file : files) {
@@ -64,8 +66,8 @@ public class RecipeImageController {
 			attachVO.setAttachChgName(chgName);
 			// 파일 확장자 설정
 			attachVO.setAttachExtension(extension);
-
-			log.info(attachService.createAttach(attachVO) + "행 등록");
+			
+			log.info(attachVO);
 			list.add(attachVO);
 		}
 		
