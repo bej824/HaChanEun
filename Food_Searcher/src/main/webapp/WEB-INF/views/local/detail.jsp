@@ -53,24 +53,22 @@ textarea {
 	</div>
 	<div>
 		<c:choose>
-    <c:when test="${roleName eq 'admin'}">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
         <textarea rows="20" cols="120" name="localContent">${LocalSpecialityVO.localContent }</textarea>
-    </c:when>
-    <c:otherwise>
+    </sec:authorize>
+    <sec:authorize access="!hasRole('ROLE_ADMIN')">
         <textarea rows="20" cols="120" readonly>${LocalSpecialityVO.localContent }</textarea>
-    </c:otherwise>
+    </sec:authorize>
 </c:choose>
 	</div>
 	</form>
 	
 	<button onclick="index()" class="button">글 목록</button>
-	<c:if test="${roleName eq 'admin'}">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<button onclick="update()" class="button">글 수정</button>
-	<button id="deleteBoard" class="button" disabled>글 삭제</button>			
-	</c:if>
+	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
+	</sec:authorize>
 	
-	<jsp:include page="reply.jsp" />
-
 	<script type="text/javascript">
 	
 	function update() {

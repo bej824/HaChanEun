@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.MemberVO;
+import com.food.searcher.domain.RoleVO;
 import com.food.searcher.persistence.MemberMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -66,6 +67,24 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public MemberVO searchId(String memberName, String email) {
 		return memberMapper.searchId(memberName, email);
+	}
+	
+	@Override
+	public int insertRole(String memberId) {
+		log.info("insertRole()");
+		return memberMapper.insertRole(memberId);
+	}
+	
+	@Override
+	public RoleVO selectRole(String memberId) {
+		log.info("selectRole()");
+		return memberMapper.selectRoleByMemberId(memberId);
+	}
+	
+	@Override
+	public int updateRole(String memberId, String roleName) {
+		log.info("updateRole");
+		return memberMapper.updateRoleByMemberId(memberId, roleName);
 	}
 
 }

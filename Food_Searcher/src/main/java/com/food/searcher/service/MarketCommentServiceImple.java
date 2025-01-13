@@ -12,6 +12,7 @@ import com.food.searcher.domain.MarketReplyVO;
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.persistence.MarketCommentMapper;
+import com.food.searcher.persistence.MarketMapper;
 import com.food.searcher.persistence.MarketReplyMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -28,13 +29,19 @@ public class MarketCommentServiceImple implements MarketCommentService {
 	@Autowired
 	private MarketReplyMapper marketReplyMapper;
 	
+	@Autowired
+	private MarketMapper marketMapper;
+	
 	@Override
 	public int createComment(MarketCommentVO marketCommentVO) {
-		log.info("marketCommentVO");
+		log.info("createComment()");
 		int insertResult = marketCommentMapper.insert(marketCommentVO);
-		log.info("대댓글 " + insertResult + "행 삽입");
-	
-		return 1;
+		log.info(insertResult + "행 대댓글 추가");
+		MarketReplyVO marketReplyVO = marketReplyMapper.selectOne(marketCommentVO.getMarketReplyId());
+		int updateResult = marketMapper
+				.updateReplyCount(marketReplyVO.getMarketId(), 1);
+		log.info(updateResult + "행 댓글 카운트 증가");
+		return insertResult;
 	}
 
 	@Override

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class AccessController {
 	@Autowired
-	private MemberService MemberService;
+	private MemberService memberService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	// 회원가입 시 이메일 인증 호출
 	@GetMapping("/registerEmail")
@@ -50,7 +56,7 @@ public class AccessController {
 		Boolean result = false;
 		try {
 
-			vo = MemberService.getMemberById(memberId);
+			vo = memberService.getMemberById(memberId);
 
 			if (vo != null || memberId == "" || memberId.matches(".*[\\W_].*")) {
 				result = true;
@@ -87,7 +93,7 @@ public class AccessController {
 		String alertMsg;
 
 		try {
-			vo = MemberService.getMemberById(memberId);
+			vo = memberService.getMemberById(memberId);
 			log.info(vo);
 			if (vo.getPassword().equals(password)) {
 				if(vo.getMemberStatus().equals("inactive")) {
@@ -121,7 +127,7 @@ public class AccessController {
 	public String memberPageGET(HttpSession session, HttpServletResponse response, Model model, MemberVO vo) {
 		log.info("memberPageGET()");
 		String memberId = (String) session.getAttribute("memberId");
-		vo = MemberService.getMemberById(memberId);
+		vo = memberService.getMemberById(memberId);
 		log.info(vo);
 		model.addAttribute("vo", vo);
 		
@@ -135,10 +141,10 @@ public class AccessController {
 		log.info("updatePOST()");
 
 		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null, null);
-		int result = MemberService.updateMember(vo);
+		int result = memberService.updateMember(vo);
 		log.info(result + "행 수정");
 
-		vo = MemberService.getMemberById(memberId);
+		vo = memberService.getMemberById(memberId);
 		model.addAttribute("vo", vo);
 
 		return "access/memberPage";
@@ -153,7 +159,7 @@ public class AccessController {
 		log.info(memberId + " : " + memberStatus);
 		int result = 0;
 		
-		result = MemberService.updateMemberStatus(memberId, memberStatus);
+		result = memberService.updateMemberStatus(memberId, memberStatus);
 		
 		log.info(result + "행 수정");
 		session.removeAttribute("memberId");
@@ -184,7 +190,7 @@ public class AccessController {
 		}
 
 		// MemberService에서 ID 찾기
-		MemberVO memberVO = MemberService.searchId(memberName, email);
+		MemberVO memberVO = memberService.searchId(memberName, email);
 		log.info(memberVO);
 
 		// 검색 결과가 없으면, 에러 메시지 전달
@@ -221,7 +227,9 @@ public class AccessController {
 			@Param("password") String password, HttpSession session, Model model) {
 		log.info("pwUpdatePOST()");
 		
-		int result = MemberService.updatePassword(memberId, email, password);
+		String encPw = passwordEncoder.encode(password);
+		
+		int result = memberService.updatePassword(memberId, email, encPw);
 		String alertMsg;
 		
 		try {
@@ -244,5 +252,21 @@ public class AccessController {
 		return "/access/login";
 		
 	}
+	
+	@GetMapping("/admin")
+	public void adminGET(HttpSession session, Model model) {
+		log.info("adminGET()");
+
+	} // end adminGET()
+	
+	@PostMapping("/roleUpdate")
+	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
+		log.info("roleUpdate");
+		String roleName = "ROLE_ADMIN";
+		int result = memberService.updateRole(memberId, roleName);
+		log.info(result + "행 수정");
+		
+		return "../home";
+	} // end roleUpdatePOST
 
 }

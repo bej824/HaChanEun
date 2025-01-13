@@ -23,6 +23,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       WHERE MARKET_ID = #{marketId}
       ORDER BY MARKET_REPLY_ID
    </select>
+   
+    <select id="selectOne" resultMap="replyResultMap">
+	 	SELECT * FROM MARKET_REPLY WHERE MARKET_REPLY_ID = #{marketReplyId}
+	 </select>
  
    
    <update id="update">

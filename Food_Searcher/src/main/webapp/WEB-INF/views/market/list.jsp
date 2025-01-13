@@ -41,9 +41,25 @@ li {
   cursor: pointer;
 }
 
-.search {
+.button:hover {
+    background-color: #45a049; /* 마우스를 올렸을 때의 배경색 */
+    color: white; /* 글자색 */
+}
+
+    .button.selected {
+        background-color: red;
+        color: white;
+    }
+
+    .button:active {
+        background-color: darkgreen;
+    }
+
+#search{
 	margin-left: 335px;
 }
+
+
 
 </style>
 <meta charset="UTF-8">
@@ -71,6 +87,7 @@ li {
 				<th style="width: 60px">번호</th>
 				<th style="width: 700px">제목</th>
 				<th style="width: 120px">지역</th>
+				<th style="width: 60px">댓글수</th>
 			</tr>
 		</thead>
 		
@@ -80,6 +97,7 @@ li {
 					<td>${MarketVO.marketId }</td>
 					<td>${MarketVO.marketTitle }</td>
 					<td>${MarketVO.marketLocal }</td>
+					<td>${MarketVO.marketReplyCount	}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -105,5 +123,50 @@ li {
 		</c:if>
 		
 	</ul>
+	
+	<form>
+	
+	<textarea id="search"></textarea>
+	<select name="searcher">
+				<option value="제목">제목</option>
+				<option value="내용">내용</option>
+				<option value="지역">지역</option>
+	</select>
+	
+	</form>
+	
+	<script>
+function changeColor(button, pageNum) {
+    // 현재 URL의 쿼리 파라미터를 가져옵니다.
+    const url = new URL(window.location.href);
+
+    // 페이지 번호를 쿼리 파라미터로 설정
+    url.searchParams.set('pageNum', pageNum);
+
+    // 'recipeTitle'과 'filterBy' 파라미터는 기존 URL에서 가져옵니다.
+    let marketTitle = new URLSearchParams(window.location.search).get('marketTitle');
+    
+    // 'recipeTitle'과 'filterBy'가 없으면 빈 값으로 설정
+    if (recipeTitle === null) {
+        recipeTitle = '';
+    }
+
+
+    // 'recipeTitle'과 'filterBy'를 빈 값으로 설정
+    url.searchParams.set('marketTitle', marketTitle);
+
+    // URL 업데이트
+    window.history.pushState({}, '', url);  // URL을 업데이트
+
+    // 모든 버튼에서 'selected' 클래스를 제거
+    let buttons = document.querySelectorAll('.button');
+    buttons.forEach(function(btn) {
+        btn.classList.remove('selected');
+    });
+
+    // 클릭된 버튼에 'selected' 클래스를 추가
+    button.classList.add('selected');
+}
+</script>
 </body>
 </html>

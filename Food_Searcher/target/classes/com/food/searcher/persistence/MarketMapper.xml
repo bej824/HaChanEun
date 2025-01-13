@@ -11,13 +11,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="marketContent" column="MARKET_CONTENT" />
 	<result property="marketLocal" column="MARKET_LOCAL" />	
 	<result property="marketDistrict" column="MARKET_DISTRICT" />
+	<result property="marketReplyCount" column="REPLY_COUNT" />
 	</resultMap>
 	
 	<insert id="insert">
 	<!-- 게시글 등록-->
 		INSERT INTO MARKET VALUES
-		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR})
+		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR}, 0)
 	</insert>
+	
+	<update id="updateReplyCount">
+	<!-- 댓글 수 추가 -->
+		UPDATE MARKET
+		SET REPLY_COUNT = REPLY_COUNT + #{amount}
+		WHERE MARKET_ID =
+		#{marketId}
+	</update>
 	
 	<select id="selectList" resultMap="marketResultMap">
 	<!-- 전체 게시글 조회 -->
@@ -55,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 게시글 총 갯수 -->
 		SELECT COUNT(*) TOTAL_COUNT FROM MARKET
 	</select>
+
 		
 	
 </mapper>
