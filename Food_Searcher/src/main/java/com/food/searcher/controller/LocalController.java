@@ -101,7 +101,6 @@ public class LocalController {
 	public void localDetailGET(@RequestParam("localId") String localId,
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
-			HttpSession session, HttpServletResponse response,
 			Model model, LocalSpecialityVO localSpecialityVO) {
 		log.info("localDetailGET()");
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);

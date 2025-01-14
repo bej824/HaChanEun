@@ -69,14 +69,15 @@ li {
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 	<h1>전통 시장 리스트</h1>
 	
-	<c:if test="${sessionScope.memberId == 'admin1'}">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<button type="button" style="display: none;">글 작성</button>
-	</c:if>
+	</sec:authorize>
 	
-	<c:if test="${sessionScope.memberId == 'admin1'}">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<a href="/searcher/market/register" class="button">글 작성</a>
-	</c:if>
-
+	</sec:authorize>
+	
+	
 
 	<hr>
 	<table>
@@ -113,7 +114,7 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li><a href="list?pageNum=${num }" class="button">${num }</a></li>
+			<li><a href="list?pageNum=${num }" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
@@ -141,6 +142,7 @@ li {
 
 
 	<script>
+	
 	function changeColor(button, pageNum) {
 	    // 현재 URL의 쿼리 파라미터를 가져옵니다.
 	    const url = new URL(window.location.href);

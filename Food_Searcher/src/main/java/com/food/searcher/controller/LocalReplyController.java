@@ -1,9 +1,11 @@
 package com.food.searcher.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
@@ -37,11 +39,11 @@ public class LocalReplyController {
 	@ResponseBody
 	@PostMapping("/replyAdd")
 	public int replyAddPOST(@RequestBody HeaderReplyVO headerReplyVO,
-			HttpSession session)
+			Principal principal)
 			throws ServletException, IOException {
 		log.info("replyAddPOST()");
 		log.info(headerReplyVO);
-		String memberId = (String) session.getAttribute("memberId");
+		String memberId = principal.getName();
 		int localId = headerReplyVO.getLocalId();
 		String replyContent = headerReplyVO.getHeaderReplyContent();
 		

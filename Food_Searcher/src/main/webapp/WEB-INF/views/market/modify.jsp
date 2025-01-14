@@ -13,23 +13,21 @@
 	<h2>글 수정 페이지</h2>
 	<form action="modify" method="POST">
 	
-		<%  String memberId = null;
-			MarketVO marketVO = new MarketVO();
-		if(session.getAttribute("memberId") != null){
-			memberId = (String) session.getAttribute("memberId");
-		}
+	<!-- http://localhost:8080/searcher/market/modify?marketId=94 -->
 		
-		if(memberId == null){
-			PrintWriter script = response.getWriter();	
-			script.println("<script>");
-			script.println("alert('로그인이 필요합니다.')");
-			script.println("location.href = '/searcher/access/login'");
-			script.println("</script>");
-		}
-			
-		%>
+		<sec:authorize access="hasRole('ROLE_MEMBER')">
+			<script type="text/javascript">
+				alert('관리자만 접근이 가능합니다.');
+				window.history.back();
+			</script>
+		</sec:authorize>
 		
-		
+		<sec:authorize access="isAnonymous()">
+			<script type="text/javascript">
+				alert('로그인이 필요합니다.');
+				window.history.back();
+			</script>
+		</sec:authorize>
 			
 		<div>
 			<p>제목 :</p>

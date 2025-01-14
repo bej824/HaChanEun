@@ -40,7 +40,19 @@ textarea {
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/header.jsp"%>
-
+		<sec:authorize access="hasRole('ROLE_MEMBER')">
+			<script type="text/javascript">
+				alert('관리자만 접근이 가능합니다.');
+				window.history.back();
+			</script>
+		</sec:authorize>
+		
+		<sec:authorize access="isAnonymous()">
+			<script type="text/javascript">
+				alert('로그인이 필요합니다.');
+				window.history.back();
+			</script>
+		</sec:authorize>
 	<h2>글 작성 페이지</h2>
 	<form action="register" method="POST" enctype="multipart/form-data">
 

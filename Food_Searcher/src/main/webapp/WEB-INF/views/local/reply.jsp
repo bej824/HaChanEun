@@ -119,15 +119,18 @@
 	</div>
 
 	<script type="text/javascript">
-	
+		const token = $("meta[name='_csrf']").attr("content");
+		const header = $("meta[name='_csrf_header']").attr("content");
+		const memberId = document.querySelector('meta[name="authenticatedUser"]').getAttribute('content');
+        
 		$(document).ready(function(){
 			getAllReply(); // 함수 호출
+			console.log("로그인한 유저 : " + memberId);
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
 				let localId = $('#localId').val(); // 게시판 번호 데이터
 				console.log(localId);
-				let memberId = $('#memberId').val(); // 작성자 데이터
 				console.log(memberId);
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
 				console.log(headerReplyContent);
@@ -147,6 +150,9 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -190,7 +196,7 @@
 							var disabled = '';
 							var readonly = '';
 							
-							if("${ sessionScope.memberId}"!= this.memberId){
+							if(memberId != this.memberId){
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -233,7 +239,10 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : replyContent, 
+					data : replyContent,
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -258,6 +267,9 @@
 						'Content-Type' : 'application/json'
 					},
 					data : replyId, 
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -370,6 +382,9 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -399,7 +414,10 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : commentContent, 
+					data : commentContent,
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -424,6 +442,9 @@
 						'Content-Type' : 'application/json'
 					},
 					data : commentId, 
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {

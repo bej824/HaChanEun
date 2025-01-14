@@ -1,8 +1,6 @@
 package com.food.searcher.controller;
 
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.food.searcher.config.ServletConfig;
@@ -31,51 +28,29 @@ class MarketControllerTest {
 	
 	// 스프링 MVC를 테스트하는 mock-up 객체
 	private MockMvc mock;
-		
 	
-/*	@Test
-	void testModifyGET() {
-		log.info("testModifyGet()");
-		RequestBuilder requestBuilder = get("/market/modify");
+
+	@Test
+	public void test() {
+		testRegister();
+	}
+	
+	private void testRegister() {
+		log.info("testRegister()");
+		
+		RequestBuilder requestBuilder = post("/market/register")
+				.param("marketTitle", "게시글 등록")
+				.param("marketContent", "게시글 테스트")
+				.param("marketLocal", "종로"); 
+		// request parameter 데이터 적용
 		
 		try {
-			log.info(mock.perform(requestBuilder) // mock 객체 실행
-					.andReturn() // request 실행 결과 리턴
-					.getModelAndView()); // ModelAndView 객체 리턴
+			log.info(mock.perform(requestBuilder).andReturn());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
-	@Test
-	void testModifyPOST() {
-		fail("Not yet implemented");
-	}
-*/
-	@Test
-	void testDelete() {
-		/*
-		@PostMapping("/delete")
-		public String delete(Integer marketId) {
-		log.info("delete()");
-		int result = marketService.deleteMarket(marketId);
-		log.info(result + "행 삭제");
-		return "redirect:/market/list";
-		} 
-		*/
-		log.info("testModifyGet()");
-		RequestBuilder requestBuilder = get("/market/delete");
-		try {
-			log.info(mock.perform(requestBuilder) // mock 객체 실행
-					.andReturn() // request 실행 결과 리턴
-					.getModelAndView()); // ModelAndView 객체 리턴
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
+	
 }
