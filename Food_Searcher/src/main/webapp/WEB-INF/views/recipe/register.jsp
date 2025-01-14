@@ -44,6 +44,7 @@ textarea {
 </head>
 <body>
 	<% session.getAttribute("memberId"); %>
+	<%@ include file ="../header.jsp" %>
 	<h2>글 작성 페이지</h2>
 	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
@@ -53,15 +54,12 @@ textarea {
 		</div>
 		<div>
 			<p>작성자 :</p>
-			<input type="text" name="memberId" value="${sessionScope.memberId}" maxlength="10" required readonly>
+			<input type="text" name="memberId" value="<sec:authentication property="name" />" maxlength="10" required readonly>
 		</div>
 		<br>
 		<div>
 			<p>음식 :</p>
 			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력">
-		</div>
-		<div>
-			<input type="file" name="file" multiple="multiple">
 		</div>
 		<div>
 			<p>내용 :</p>
@@ -70,11 +68,11 @@ textarea {
 
 레시피 : </textarea>
 		</div>
-		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 		<div>
 			<input type="submit" class="button" value="등록">
 			<button onclick="goBack()" class="button">뒤로가기</button>
 		</div>
+		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 		<script type="text/javascript">
@@ -214,8 +212,6 @@ textarea {
 	</script>
 
 	<!-- 이미지 재시도 -->
-	
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<script>
 		$(document).ready(function() {

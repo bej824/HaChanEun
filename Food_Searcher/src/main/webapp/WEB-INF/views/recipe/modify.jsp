@@ -66,16 +66,9 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 			<input type="text" name="recipeFood" value="${recipeVO.recipeFood }" required>
 		</div>
 		<div>
-			<input type="file" name="file" multiple="multiple">
-		</div>
-		<div>
 			<p>내용 : </p>
 			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" 
 maxlength="300" required>${recipeVO.recipeContent }</textarea>
-		</div>
-		<div>
-			<input type="submit" value="등록" class="button">
-			<button onclick="goBack()" class="button">뒤로가기</button>
 		</div>
 
 	<!-- 기존 첨부 파일 리스트 데이터 구성 -->
@@ -87,6 +80,7 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	</c:forEach>
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
+	
 	
 		<button id="change-upload">파일 변경</button>
 	<!-- 이미지 파일 영역 -->
@@ -153,8 +147,10 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	
 	<div class="attachDTOFile-list">
 	</div>
-
+	<sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
 	<button id="modifyBoard">등록</button>
+	</sec:authorize>
+	<button onclick="goBack()" class="button">뒤로가기</button>
 
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 	<script	src="${pageContext.request.contextPath }/resources/js/attach.js"></script>

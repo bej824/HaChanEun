@@ -109,12 +109,12 @@
 
 	<sec:authorize access="isAnonymous()">
 		* 댓글은 로그인이 필요한 서비스입니다.
-		<a href="../access/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
+		<a href="../auth/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
 	</sec:authorize>
 
 	<sec:authorize access="isAuthenticated()">
 		<div style="text-align: left;">
-			${sessionScope.memberId}<input type="hidden" id="memberId" value="${sessionScope.memberId}">
+			<sec:authentication property="name" /><input type="hidden" id="memberId" value="<sec:authentication property="name" />">
 			<input type="text" id="recipeReplyContent" required>
 			<button id="btnAdd" class="wbutton">작성</button>
 		</div>
@@ -122,6 +122,14 @@
 </div>
 
 		<script type="text/javascript">
+		
+		$(document).ajaxSend(function(e, xhr, opt){
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			xhr.setRequestHeader(header, token);
+		});
+		
 		$(document).ready(function(){
 			getAllReply(); // 함수 호출	
 			
@@ -173,6 +181,9 @@
 				console.log(this);
 				let boardId = $('#recipeId').val();
 				console.log("boardID : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("작성자 : " + memberId);
+				console.log(this.memberId);
 				
 				let url = '../recipe/all/' + boardId;
 				console.log("address : " + url);
@@ -206,7 +217,7 @@
 							let disabled = '';
 							let readonly = '';
 							
-							if("${ sessionScope.memberId}"!= this.memberId){
+							if(memberId != this.memberId){
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -354,6 +365,7 @@
 				let recipeCommentId = $(this).closest('.reply_item').find('#recipeCommentId').val();
 				console.log("CommentId : " + recipeCommentId);
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
+				let memberId = "<sec:authentication property="name" />";
 				
 				
 				let url = 'all/' + replyId;
@@ -397,7 +409,7 @@
 								
 								console.log(this.memberId);
 								
-								if("${ sessionScope.memberId}"!= this.memberId){
+								if(memberId != this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -413,11 +425,11 @@
 									+ '</div>'
 									
 							}); // end each()
-						    <c:if test="${sessionScope.memberId != null}">
+							<sec:authorize access="isAuthenticated()">
 					        // 로그인한 사용자가 있을 경우 댓글 작성 입력란과 버튼을 추가
 					        comment += '<input type="text" id="commentContentAdd" >'
 					            + '<button class="comment_add" value="'+ replyId +'">작성</button>';
-					    </c:if>
+					            </sec:authorize>
 							commentDiv.html(comment);
 						}
 					}
@@ -433,7 +445,7 @@
 		        // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
 		        console.log(this);
 		        
-		        let memberId = "${sessionScope.memberId}"
+		        let memberId = "<sec:authentication property="name" />"
 		        let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();  // 댓글 ID
 		        let commentContent = $(this).prevAll('#commentContentAdd').val();
 

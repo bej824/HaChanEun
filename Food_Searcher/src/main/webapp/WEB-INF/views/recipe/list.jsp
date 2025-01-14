@@ -67,7 +67,7 @@ li {
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
 	<sec:authorize access="isAnonymous()">
-	    <a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+	    <a href="/searcher/auth/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
 	</sec:authorize>
 	
 	<sec:authorize access="isAuthenticated()">

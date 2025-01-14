@@ -76,13 +76,13 @@ public class RecipeServiceImple implements RecipeService{
 		int deleteAttachResult = attachMapper.delete(recipeVO.getRecipeId());
 		log.info(deleteAttachResult + "행 파일 정보 삭제");
 		
-		List<AttachVO> attachList = attachMapper.selectByBoardId(recipeVO.getRecipeId());
+		List<AttachVO> attachList = recipeVO.getAttachList();
 		log.info("attachList" + attachList);
 		
 		int insertAttachResult = 0;
 		for(AttachVO attachVO : attachList) {
 			attachVO.setBoardId(recipeVO.getRecipeId()); // 게시글 번호 적용
-			insertAttachResult += attachMapper.update(attachVO);
+			insertAttachResult += attachMapper.insert(attachVO);
 			log.info("attachVO" + attachVO);
 		}
 		log.info(insertAttachResult + "행 파일 정보 등록");

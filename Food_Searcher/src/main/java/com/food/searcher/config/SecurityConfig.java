@@ -54,8 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/access/emailCheck").permitAll()  // 해당 URL에 대한 POST 요청을 허용
         .antMatchers("/access/emailConfirm").permitAll()
-		.antMatchers("/access/idSearch").permitAll()
-		.antMatchers("/recipe/modify").permitAll();
+		.antMatchers("/access/idSearch").permitAll();
         
         //.anyRequest().authenticated(); // 나머지 URL은 인증 없이 접근 불가
 
