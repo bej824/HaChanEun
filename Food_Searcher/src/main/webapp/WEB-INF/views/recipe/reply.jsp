@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,18 +107,18 @@
 <div class="replyBox">
 	<div id="replies"></div>
 
-	<c:if test="${empty sessionScope.memberId}">
+	<sec:authorize access="isAnonymous()">
 		* 댓글은 로그인이 필요한 서비스입니다.
 		<a href="../access/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
-	</c:if>
+	</sec:authorize>
 
-	<c:if test="${not empty sessionScope.memberId}">
+	<sec:authorize access="isAuthenticated()">
 		<div style="text-align: left;">
 			${sessionScope.memberId}<input type="hidden" id="memberId" value="${sessionScope.memberId}">
 			<input type="text" id="recipeReplyContent" required>
 			<button id="btnAdd" class="wbutton">작성</button>
 		</div>
-	</c:if>
+	</sec:authorize>
 </div>
 
 		<script type="text/javascript">

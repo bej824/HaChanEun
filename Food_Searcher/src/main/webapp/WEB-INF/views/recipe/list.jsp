@@ -66,13 +66,13 @@ li {
 	<%@ include file ="../header.jsp" %>
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
-<c:if test="${empty sessionScope.memberId}">
-    <a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
-</c:if>
-
-<c:if test="${not empty sessionScope.memberId}">
-    <a href="register" class="button">글 작성</a>
-</c:if>
+	<sec:authorize access="isAnonymous()">
+	    <a href="/searcher/access/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
+	</sec:authorize>
+	
+	<sec:authorize access="isAuthenticated()">
+	    <a href="register" class="button">글 작성</a>
+	</sec:authorize>
 	<hr>
 	<table>
 		<thead>
@@ -115,7 +115,7 @@ li {
 	
 		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
 		<form id="detailForm" action="detail" method="get">
-			<input type="hidden" name="boardId" >
+			<input type="hidden" name="recipeId" >
 			<input type="hidden" name="pageNum" >
 	    	<input type="hidden" name="pageSize" >
 	    	<input type="hidden" name="type" >
@@ -132,19 +132,19 @@ li {
 <ul>
     <!-- 이전 버튼 생성을 위한 조건문 -->
     <c:if test="${pageMaker.isPrev() }">
-        <li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
+        <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
     </c:if>
 
     <!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
     <c:if test="${not empty pageMaker.startNum }">
         <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
-            <li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
+            <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
         </c:forEach>
     </c:if>
 
     <!-- 다음 버튼 생성을 위한 조건문 -->
     <c:if test="${pageMaker.isNext() }">
-        <li><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
+        <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
     </c:if>
 </ul>
 

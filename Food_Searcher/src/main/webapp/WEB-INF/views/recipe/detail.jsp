@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -191,20 +192,20 @@ textarea {
     <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
     <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
 
-    <c:if test="${empty sessionMemberId}">
+    <sec:authorize access="isAnonymous()">
         <button onclick="location.href='../access/login'" class="button">글 수정</button>
         <button id="deleteBoard" class="button" disabled>글 삭제</button>
-    </c:if>
+    </sec:authorize>
 
-    <c:if test="${not empty sessionMemberId and sessionMemberId == recipeMemberId}">
+    <sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
         <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정1</button>
         <button id="deleteBoard" class="button">글 삭제1</button>
-    </c:if>
+    </sec:authorize>
 
-    <c:if test="${not empty sessionMemberId and sessionMemberId != recipeMemberId}">
+    <sec:authorize access="isAuthenticated() and principal.username != '${recipeVO.memberId }'">
         <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" disabled>글 수정2</button>
         <button id="deleteBoard" class="button" disabled>글 삭제2</button>
-    </c:if>
+     </sec:authorize>
 <form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
     <!-- 레시피 ID hidden 필드 -->
     <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">

@@ -3,6 +3,7 @@ package com.food.searcher.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -117,6 +118,7 @@ public class RecipeController {
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
+	@PreAuthorize("isAuthenticated() and (principal.username == #recipeVO.memberId)")
 	@PostMapping("/modify")
 	public String modifyPOST(RecipeVO recipeVO, 
 	                         @RequestParam("file") List<MultipartFile> files,
