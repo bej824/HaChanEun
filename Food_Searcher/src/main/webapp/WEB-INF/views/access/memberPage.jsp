@@ -85,6 +85,8 @@
 			<input type="radio" name="emailAgree" value="yes">예
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
+	<!-- CSRF 토큰 -->
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<br>
@@ -101,7 +103,12 @@
 		function update() {
 			let result = confirm("수정하시겠습니까?");
 			if (result) {
+			try {
 			document.getElementById("updateForm").submit();
+			alert("수정이 완료되었습니다.");
+			} catch (e) {
+				alert("다시 시도하여주세요.");
+			}
 			} else {
 				alert("수정이 취소되었습니다.");
 			}

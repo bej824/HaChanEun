@@ -1,9 +1,11 @@
 package com.food.searcher.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +37,11 @@ public class LocalCommentController {
 	@ResponseBody
 	@PostMapping("/commentAdd/{localId}")
 	public int commentAddPOST(@PathVariable("localId") int localId, @RequestBody LocalCommentVO localCommentVO,
-			HttpSession session)
+			Principal prrincipal)
 			throws ServletException, IOException {
 		log.info("replyAddPOST()");
 		log.info(localCommentVO);
-		String memberId = (String) session.getAttribute("memberId");
+		String memberId = prrincipal.getName();
 		int replyId = localCommentVO.getReplyId();
 		String commentContent = localCommentVO.getCommentContent();
 		return localCommentService.createComment(localId, replyId, memberId, commentContent);
