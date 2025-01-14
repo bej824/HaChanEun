@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.persistence.AttachMapper;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.util.Pagination;
 
@@ -26,10 +29,27 @@ public class RecipeServiceImple implements RecipeService{
 	@Autowired
 	private RecipeCommentService recipeCommentService;
 	
+	@Autowired
+	private AttachMapper attachMapper;
+	
+	@Transactional(value = "transactionManager") 
 	@Override
 	public int createBoard(RecipeVO recipeVO) {
 		log.info("createBoard()");
+		log.info(recipeVO);
 		int result = recipeMapper.insert(recipeVO);
+		log.info(result + "행 게시글 등록");
+		
+		List<AttachVO> attachList = recipeVO.getAttachList();
+		log.info(attachList);
+		
+		int insertAttachResult = 0;
+		for(AttachVO attachVO : attachList) {
+			attachVO.setBoardId(getAllBoards().get(0).getRecipeId());
+			log.info(attachVO);
+			insertAttachResult += attachMapper.insert(attachVO);
+		}
+		log.info(insertAttachResult + "행 파일 정보 등록");
 		return result;
 	}
 
@@ -46,10 +66,26 @@ public class RecipeServiceImple implements RecipeService{
 		return recipeMapper.selectOne(recipeId);
 	}
 
+	@Transactional(value = "transactionManager")
 	@Override
 	public int updateBoard(RecipeVO recipeVO) {
 		log.info("updateBoard()");
 		log.info(recipeVO);
+		int updateBoardResult = recipeMapper.update(recipeVO);
+		log.info(updateBoardResult + "행 게시글 정보 수정");
+		int deleteAttachResult = attachMapper.delete(recipeVO.getRecipeId());
+		log.info(deleteAttachResult + "행 파일 정보 삭제");
+		
+		List<AttachVO> attachList = attachMapper.selectByBoardId(recipeVO.getRecipeId());
+		log.info("attachList" + attachList);
+		
+		int insertAttachResult = 0;
+		for(AttachVO attachVO : attachList) {
+			attachVO.setBoardId(recipeVO.getRecipeId()); // 게시글 번호 적용
+			insertAttachResult += attachMapper.update(attachVO);
+			log.info("attachVO" + attachVO);
+		}
+		log.info(insertAttachResult + "행 파일 정보 등록");
 		return recipeMapper.update(recipeVO);
 	}
 

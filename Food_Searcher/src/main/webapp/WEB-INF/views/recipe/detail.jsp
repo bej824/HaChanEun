@@ -126,14 +126,14 @@ textarea {
     	<input type="hidden" name="keyword" >	
 	</form>
 	<form id="modifyForm" action="modify" method="GET">
-		<input type="hidden" name="boardId">
+		<input type="hidden" name="recipeId">
 		<input type="hidden" name="pageNum" >
     	<input type="hidden" name="pageSize" >
     	<input type="hidden" name="type" >
     	<input type="hidden" name="keyword" >
 	</form>
 	<form id="deleteForm" action="delete" method="POST">
-		<input type="hidden" name="boardId">
+		<input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
 		<input type="hidden" name="pageNum" >
     	<input type="hidden" name="pageSize" >
     	<input type="hidden" name="type" >

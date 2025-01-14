@@ -14,5 +14,5 @@ public interface AttachMapper {
     List<AttachVO> selectAll();
     List<Integer> selectIdList();
     int update(AttachVO attach);
-    int delete(int attachId);
+    int delete(int boardId);
 }

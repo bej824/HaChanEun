@@ -1,8 +1,6 @@
 package com.food.searcher.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,39 +78,6 @@ public class RecipeController {
 	    int result = recipeService.createBoard(recipeVO);
 	    log.info(result + "행 등록");
 
-	    // recipeId를 가져옵니다.
-	    List<RecipeVO> list = recipeService.getAllBoards();
-	    log.info("recipeId 번호 : " + list.get(0).getRecipeId());
-
-	    // 여러 파일을 처리합니다.
-	    if (files != null && !files.isEmpty()) {
-	        for (MultipartFile file : files) {
-	            if (!file.isEmpty()) {
-	                // UUID 생성
-	                String chgName = UUID.randomUUID().toString() + "." + FileUploadUtil.subStrExtension(file.getOriginalFilename());
-
-	                // 파일 저장
-	                FileUploadUtil.saveFile(uploadPath, file, chgName);
-
-	                // AttachVO 객체 생성
-	                AttachVO attachVO = new AttachVO();
-	                attachVO.setBoardId(list.get(0).getRecipeId());
-	                // 파일 경로 설정
-	                attachVO.setAttachPath(FileUploadUtil.makeDatePath());
-	                // 파일 실제 이름 설정
-	                attachVO.setAttachRealName(FileUploadUtil.subStrName(file.getOriginalFilename()));
-	                // 파일 변경 이름(UUID) 설정
-	                attachVO.setAttachChgName(chgName);
-	                // 파일 확장자 설정
-	                attachVO.setAttachExtension(FileUploadUtil.subStrExtension(file.getOriginalFilename()));
-
-	                // DB에 첨부 파일 정보 저장
-	                log.info(attachVO);
-	                log.info(attachService.createAttach(attachVO) + "행 등록");
-	            }
-	        }
-	    }
-
 	    return "redirect:/recipe/list";
 	}
 	
@@ -159,71 +124,10 @@ public class RecipeController {
 	                         Integer recipeId) {
 	    log.info("modifyPOST()");
 	    log.info("recipeVO = " + recipeVO);
-	    log.info("deleteFileIds = " + deleteFileIds); // 삭제할 파일 ID들이 리스트로 전달됨
-
-	    // 삭제할 파일 IDs가 있으면 Integer로 변환
-	    List<Integer> deleteIds = new ArrayList<>();
-	    if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
-	        for (String id : deleteFileIds) {
-	            try {
-	                log.info("id : " + id); // 삭제할 ID 로그 출력
-	                deleteIds.add(Integer.parseInt(id)); // String을 Integer로 변환
-	            } catch (NumberFormatException e) {
-	                log.error("잘못된 파일 ID 형식: " + id, e);
-	            }
-	        }
-	    }
 
 	    // 1. 게시글 수정 처리
 	    int result = recipeService.updateBoard(recipeVO);
 	    log.info(result + "행 수정");
-
-	    // 2. 파일 삭제 처리 (삭제할 파일이 있을 경우)
-	    if (!deleteIds.isEmpty()) {
-	        // 선택된 파일 삭제 처리
-	        for (Integer attachId : deleteIds) {
-	        	log.info("attachId : " + attachId);
-	            List<AttachVO> attach = attachService.getAttachById(attachId); // 파일 ID로 파일 정보 가져오기
-	            if (attach != null) {
-	                log.info("삭제할 파일 : " + attach);
-	                String path = attach.get(0).getAttachPath();
-	                String chgName = attach.get(0).getAttachChgName();
-	                // 서버에서 파일 삭제
-	                FileUploadUtil.deleteFile(uploadPath, path, chgName);
-	                // DB에서 파일 정보 삭제
-	                attachService.deleteAttach(attachId);
-	                log.info("파일 삭제 완료 : " + attachId);
-	            }
-	        }
-	    } else {
-	        log.info("삭제할 파일이 선택되지 않았습니다.");
-	    }
-
-	    // 3. 새 파일 업로드 처리 (파일이 업로드된 경우에만)
-	    if (files != null && !files.isEmpty()) {
-	        for (MultipartFile file : files) {
-	            if (!file.isEmpty()) {
-	                String chgName = UUID.randomUUID().toString() + "." + FileUploadUtil.subStrExtension(file.getOriginalFilename());
-	                log.info("chgName : " + chgName);
-
-	                // 파일 서버에 저장
-	                FileUploadUtil.saveFile(uploadPath, file, chgName);
-
-	                // 새 이미지 정보 객체 생성하여 DB에 저장
-	                AttachVO attachVO = new AttachVO();
-	                attachVO.setBoardId(recipeVO.getRecipeId());
-	                attachVO.setAttachPath(FileUploadUtil.makeDatePath()); // 저장 경로 생성
-	                attachVO.setAttachRealName(FileUploadUtil.subStrName(file.getOriginalFilename())); // 원본 파일명
-	                attachVO.setAttachChgName(chgName); // 변경된 파일명
-	                attachVO.setAttachExtension(FileUploadUtil.subStrExtension(file.getOriginalFilename())); // 파일 확장자
-
-	                // DB에 파일 정보 등록
-	                int resultImg = attachService.createAttach(attachVO);
-	                log.info(resultImg + "행 등록");
-	                log.info("새로 업로드된 파일 정보: " + attachVO);
-	            }
-	        }
-	    }
 
 	    // 4. 수정된 게시글 상세 페이지로 리디렉션
 	    return "redirect:/recipe/detail?recipeId=" + recipeVO.getRecipeId();
@@ -233,6 +137,7 @@ public class RecipeController {
 	@PostMapping("/delete")
 	public String delete(Integer recipeId) {
 	    log.info("delete()");
+	    log.info("recipeId" + recipeId);
 
 	    // recipeId에 해당하는 모든 이미지 파일 삭제
 	    List<AttachVO> existingAttachVO = attachService.getBoardById(recipeId);

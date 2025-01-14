@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.domain.RecipeReplyVO;
-import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.service.RecipeCommentService;
 import com.food.searcher.service.RecipeReplyService;
 
@@ -36,9 +35,6 @@ import lombok.extern.log4j.Log4j;
 public class ReplyRESTController {
 	@Autowired
 	private RecipeReplyService replyService;
-	
-	@Autowired
-	private RecipeMapper recipeMapper;
 	
 	@Autowired
 	private RecipeCommentService recipeCommentService;
@@ -92,16 +88,7 @@ public class ReplyRESTController {
 	      log.info("deleteReply()");
 	      log.info("replyId = " + replyId);
 	      
-	      List<RecipeCommentVO> list = recipeCommentService.getAllComment(replyId);
-	      log.info(list);
-	      
-	      for(RecipeCommentVO vo : list) {
-	    	  int commentresult = recipeCommentService.deleteComment(vo.getRecipeCommentId(), vo.getRecipeReplyId());
-	    	  log.info(commentresult);
-	    	  int updateResult = recipeMapper
-	  				.updateReplyCount(boardId, -1);
-	    	  log.info("대댓글 삭제" + updateResult);
-	      }
+
 	      int result = replyService.deleteReply(replyId, boardId);
 	      log.info(result);
 	      
