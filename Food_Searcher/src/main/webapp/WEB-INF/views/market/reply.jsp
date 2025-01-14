@@ -90,6 +90,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		
 		function getAllReply() {
 			var marketId = $('#marketId').val();
+			var memberId = $('#memberId').val();
 			
 			var url = '../market/all/' + marketId;
 			$.getJSON(
@@ -107,7 +108,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						var replyDateCreated = new Date(this.replyDateCreated).toLocaleString();
 						var disabled = '';
 										
-						if("${sessionScope.memberId}" != this.memberId){
+						if(memberId != this.memberId){
 							disabled = 'disabled';
 						}
 					
@@ -121,7 +122,6 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<span class="date">' + replyDateCreated
 							+ '</div>'
 							+ '<br>'
-							
 							+ '<div class="marketReplyContent">' + this.marketReplyContent + "</div>"
 							+ '<br>'
 							
@@ -140,7 +140,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 					
 				} // end function
 			);  // end JSON
-		}// end getAllReply()
+		}// end getAllReply()	
 		
 		
 		
@@ -168,7 +168,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						var commentDateCreated = new Date(this.commentDateCreated).toLocaleString();
 						var disabled = '';
 						
-						if("${sessionScope.memberId}" != this.memberId){
+						if(memberId != this.memberId){
 							disabled = 'disabled';
 						}
 				
@@ -186,20 +186,16 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						+ '<div class="marketCommentContent">' + this.marketCommentContent + "</div>"	
 
 						+ '<br>'
-						+ '<div class = "replyFooter">'
-						+ '<%if(session.getAttribute("memberId") != null){ %>'
-						+ '<button class="btn_updateComment" ' + disabled + '> 수정 </button>'
-						+ '<button class="btn_deleteComment"' + disabled + ' > 삭제 </button>'
-						+ '	<%} %>' 
+						+ '<button class="btn_updateComment"> 수정 </button>'
+						+ '<button class="btn_deleteComment"> 삭제 </button>'
 						
 						+ '</ul>'; // end comment_item
 					
 					}); // end each()
 					
-				    <%if(session.getAttribute("memberId") != null){ %>
-				    comment += '<textarea id="marketCommentContent" ></textarea>'
+					 comment += '<textarea id="marketCommentContent" ></textarea>'
 				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '">작성</button>';
-					<%} %>
+					
 					// 대댓글창 맨 아래에 있는 내용 입력 창
 					
 					commentDiv.html(comment); // 저장된 데이터를 comments div 표현
@@ -307,6 +303,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 			
 	// 대댓글 작성 버튼
 	$(document).on('click', '#btn_commentAdd', function() {
+		console.log('Button Clicked');
 		var marketReplyId = $(this).val(); // Id 가져오기
 		var memberId = $('#memberId').val();
 		var marketCommentContent = $('#marketCommentContent').val();

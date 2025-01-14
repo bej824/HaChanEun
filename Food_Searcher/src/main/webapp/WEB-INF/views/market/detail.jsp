@@ -131,29 +131,28 @@ button:disabled {
 	<br><br>
 	
 		
-	<c:if test="${sessionScope.memberId == 'admin1'}">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
    	 <button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
-	</c:if>
-	<c:if test="${sessionScope.memberId == 'admin1'}">
+	</sec:authorize>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
     <button id="deleteMarket" class="button">글 삭제</button>
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="marketId" value="${marketVO.marketId }">
     </form>
-	</c:if>
+	</sec:authorize>
 
 	
-	<c:if test="${sessionScope.memberId == null}">
+	<sec:authorize access="isAnonymous()">
  	   * 댓글은 로그인이 필요한 서비스입니다.
- 	   <a href="/searcher/access/login">로그인하기</a>
-	</c:if>
-	
+ 	   <a href="/searcher/auth/login">로그인하기</a>
+ 	</sec:authorize>
 
-	<c:if test="${sessionScope.memberId != null}">
+	<sec:authorize access="isAuthenticated()">
   	  <input type="hidden" name="marketId" value="${marketVO.marketId }">
-   	 <input type="hidden" name="memberId" value="${sessionScope.memberId }">
+	   	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
    	 <textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
    	 <button id="btnAdd" class="button">댓글 작성</button>
-	</c:if>
+	</sec:authorize>
 	
 		<div id="replies">
 		<div class="reply_item">

@@ -3,13 +3,21 @@ package com.food.searcher.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.service.MarketService;
@@ -47,51 +55,72 @@ public class MarketController {
 	
 	@GetMapping("/register")
 	public void register() {
-		log.info("register");
+		log.info("registerGET()");
 	}
 	
-	
 	@PostMapping("/register")
-	public String marketPOST (MarketVO marketVO, MultipartFile file) {
+	public String marketPOST (HttpSecurity http, MarketVO marketVO, MultipartFile file, RedirectAttributes reAttr) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
+		
 		int result = marketService.createMarket(marketVO);
 		log.info(result + "행 등록");
-
 		return "redirect:/market/list";
 	}
 
 
 	@GetMapping("/detail")
-	public void detail(Model model, Integer marketId) {
+	public void detail(Model model, Integer marketId, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("detail()");
+		log.info("marketId = " + marketId);
+		log.info("pagination = " + pagination);
 		MarketVO marketVO = marketService.getMarketById(marketId);
 		model.addAttribute("marketVO", marketVO);
 	}
 	
 	@GetMapping("/modify")
-	public void modifyGET(Model model, Integer marketId) {
+	public void modifyGET(Model model, Integer marketId, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("modifyGET()");	
+		log.info("marketId = " + marketId);
+		log.info("pagination = " + pagination);
 		MarketVO marketVO = marketService.getMarketById(marketId);
 		model.addAttribute("marketVO", marketVO);
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
 	@PostMapping("/modify")
-	public String modifyPOST(MarketVO marketVO) {
+	public String modifyPOST(MarketVO marketVO, Pagination pagination, RedirectAttributes reAttr) {
 		log.info("modifyPOST()");
 		int result = marketService.updateMarket(marketVO);
 		log.info(result + "행 수정");
+		
+		// redirect에서 값을 전송하기 위한 방법
+		reAttr.addAttribute("pageNum", pagination.getPageNum());
+		reAttr.addAttribute("pageSize", pagination.getPageSize());
+		reAttr.addAttribute("type", pagination.getType());
+		reAttr.addAttribute("keyword", pagination.getKeyword());
+		
+		// 이걸 왜 썼냐면 검색기능 쓸 때 타입이랑 키워드가 있어야 검색이 가능하니까?
+		// 아마 register에서도 타입, 키워드를 넣어줄 거 같은데
+		
 		return "redirect:/market/list";
 	}
 	
 	@PostMapping("/delete")
-	public String delete(Integer marketId) {
+	public String delete(Integer marketId, Pagination pagination, RedirectAttributes reAttr) {
 		log.info("delete()");
 		int result = marketService.deleteMarket(marketId);
 		log.info(result + "행 삭제");
+		
+		reAttr.addAttribute("pageNum", pagination.getPageNum());
+		reAttr.addAttribute("pageSize", pagination.getPageSize());
+		reAttr.addAttribute("type", pagination.getType());
+		reAttr.addAttribute("keyword", pagination.getKeyword());
+		
 		return "redirect:/market/list";
-	}
+		
+	} // end delete
+
 	
 
 	

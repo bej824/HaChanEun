@@ -26,11 +26,27 @@ public class Pagination {
 
 	// 선택된 페이지의 시작 글 일련번호(rn) - #{start}
 	public int getStart() {
+		
+		if(this.pageNum <= 0) { 
+			this.pageNum = 1;
+		}
+		if(this.pageSize <= 0) {
+			this.pageSize = 5;
+		}
+		
 		return (this.pageNum - 1) * this.pageSize + 1;
 	}
 
 	// 선택된 페이지의 마지막 글 일련번호(rn) - #{end}
 	public int getEnd() {
+		
+		if(this.pageNum <= 0) {
+			this.pageNum = 1;
+		}
+		if(this.pageSize <= 0) {
+			this.pageSize = 5;
+		}
+		
 		return this.pageNum * this.pageSize;
 	}
 
