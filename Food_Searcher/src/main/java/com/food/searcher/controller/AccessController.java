@@ -1,6 +1,8 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,7 +50,23 @@ public class AccessController {
 	@PostMapping("/register")
 	public void registerPOST(@RequestParam("email") String email, Model model) {
 		log.info("registerPOST()");
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		String nowDate = now.format(formatter);
+		
 		model.addAttribute("email", email);
+		model.addAttribute("nowDate", nowDate);
+	} // end registerPOST()
+	
+	@ResponseBody
+	@PostMapping("/registerClear")
+	public int registerPOST(@RequestBody MemberVO memberVO) {
+		log.info("registerPOST()");
+		log.info(memberVO);
+		int result = memberService.createMember(memberVO);
+		log.info(result + "행 등록");
+		
+		return result;
 	} // end registerPOST()
 
 	@GetMapping("/idCheck")
@@ -107,7 +126,7 @@ public class AccessController {
 			@RequestParam(value = "emailAgree") String emailAgree, MemberVO vo, Model model) {
 		log.info("updatePOST()");
 
-		vo = new MemberVO(memberId, null, null, null, emailAgree, 0, null, memberMBTI, null, null);
+		vo = new MemberVO(memberId, null, null, null, emailAgree, null, null, memberMBTI, null, null);
 		int result = memberService.updateMember(vo);
 		log.info(result + "행 수정");
 

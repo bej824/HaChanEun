@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
 		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_STATUS)
-		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, '활성')
+		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, 'active')
 
 	</insert>
 	

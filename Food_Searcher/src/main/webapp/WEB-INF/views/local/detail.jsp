@@ -59,6 +59,8 @@ textarea {
         <textarea rows="20" cols="120" readonly>${LocalSpecialityVO.localContent }</textarea>
     </sec:authorize>
 	</div>
+	<!-- CSRF 토큰 -->
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<button onclick="index()" class="button">글 목록</button>

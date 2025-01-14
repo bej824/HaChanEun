@@ -119,16 +119,13 @@
 	</div>
 
 	<script type="text/javascript">
-		const token = $("meta[name='_csrf']").attr("content");
-		const header = $("meta[name='_csrf_header']").attr("content");
-		const memberId = document.querySelector('meta[name="authenticatedUser"]').getAttribute('content');
         
 		$(document).ready(function(){
 			getAllReply(); // 함수 호출
-			console.log("로그인한 유저 : " + memberId);
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
+				security();
 				let localId = $('#localId').val(); // 게시판 번호 데이터
 				console.log(localId);
 				console.log(memberId);
@@ -166,6 +163,8 @@
 			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
+				const memberId = "${authentication.name}"
+				console.log("로그인한 유저 : " + memberId);
 				let localId = $('#localId').val();
 				let url = 'replyAll/' + localId;
 				
@@ -196,7 +195,7 @@
 							var disabled = '';
 							var readonly = '';
 							
-							if(memberId != this.memberId){
+							if('<sec:authentication property="name" />' != this.memberId){
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
@@ -224,11 +223,11 @@
 			// 수정 버튼을 클릭하면 선택된 댓글 수정
 			$('#replies').on('click', '.reply_item .btn_update', function(){
 				console.log(this);
-				
+				security();
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-				var replyId = $(this).prevAll('#replyId').val();
-				var replyContent = $(this).prevAll('#replyContent').val();
+				const replyId = $(this).prevAll('#replyId').val();
+				const replyContent = $(this).prevAll('#replyContent').val();
 				
 				console.log("replyContent : " + replyContent);
 				
@@ -255,10 +254,10 @@
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
+				security();
 				let replyId = $(this).prevAll('#replyId').val();
 				let localId = $('#localId').val();
 				console.log("선택된 댓글 번호 : " + replyId);
-				
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
@@ -321,7 +320,7 @@
 								var disabled = '';
 								var readonly = '';
 								
-								if("${ sessionScope.memberId}"!= this.memberId){
+								if('<sec:authentication property="name" />'!= this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -352,7 +351,7 @@
 		$('#replies').on('click', '.comment_add', function() {
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
-        
+        security();
         let localId = $('#localId').val();
         let memberId = '${sessionScope.memberId}';
         let replyId = $(this).val();  // 댓글 ID
@@ -399,7 +398,7 @@
 		 
 		 $('#replies').on('click', '.reply_item .comment_update', function(){
 				console.log(this);
-				
+				security();
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				let commentId = $(this).prevAll('#commentId').val();
@@ -430,6 +429,7 @@
 			
 			$('#replies').on('click', '.reply_item .comment_delete', function(){
 				console.log(this);
+				security();
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
 				console.log("선택된 댓글 번호 : " + commentId);
@@ -454,6 +454,13 @@
 					}
 				});
 			}); // end comment_delete()
+			
+			function security(){
+				console.log("security()");
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+			}
 
 		}); // end document()
 		

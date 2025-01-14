@@ -123,7 +123,7 @@ textarea[readonly] {
         <sec:authorize access="isAuthenticated()">
         	<div class="myPage">
 			<a><sec:authentication property="name" />님 환영합니다.</a>
-        	<a href="/searcher/access/logout">로그아웃</a>
+        	<a href="/searcher/auth/login">로그아웃</a>
         	<a href="/searcher/access/memberPage">마이페이지</a>
         	</div>
         </sec:authorize>

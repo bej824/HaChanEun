@@ -79,12 +79,17 @@ li {
     display: inline-block;
 }
 
+a:link, a:visited, a:hover, a:active {
+    color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
+    text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
+}
+
 </style>
-<title>특산품</title>
+<title>지역 특산품 안내</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<h1>특산품</h1>
+	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal"

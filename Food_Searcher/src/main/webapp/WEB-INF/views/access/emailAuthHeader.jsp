@@ -71,6 +71,7 @@ body {
 			if(email.value == ""){
 				emailMsg.html('이메일을 확인하여주세요.');
 			} else {
+			countDown();
 			$.ajax({
 			    type: 'POST',
 			    url: '../access/emailConfirm',
@@ -80,7 +81,6 @@ body {
 	            },
 			    success: function(result) {
 			      if (result == '1') {
-					countDown();
 			      } else {
 			    	  emailMsg.html('다시 시도하여주세요.');
 			      }

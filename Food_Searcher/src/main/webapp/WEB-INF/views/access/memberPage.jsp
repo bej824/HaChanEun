@@ -100,6 +100,8 @@
 	<a href="/searcher/access/admin">운영자</a>
 
 	<script type="text/javascript">
+	
+	
 		function update() {
 			let result = confirm("수정하시겠습니까?");
 			if (result) {
@@ -115,6 +117,8 @@
 		}
 		
 		function statusUpdate() {
+			const token = $("meta[name='_csrf']").attr("content");
+			const header = $("meta[name='_csrf_header']").attr("content");
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
 				let memberId = '${vo.memberId }';
@@ -127,11 +131,14 @@
 				    url: '../access/statusUpdate',
 				    data: { memberId: memberId,
 				    	memberStatus: memberStatus},
+				    beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+				        },
 				    success: function(result) {
 				    	console.log(result);
 				      if (result == 1) {
 				    	  alert("회원 탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
-				    	  window.location.href="login";
+				    	  window.location.href="../auth/login";
 				      } else {
 				    	  alert("다시 시도해주세요.");
 				      }
