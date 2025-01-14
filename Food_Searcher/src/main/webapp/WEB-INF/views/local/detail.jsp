@@ -52,14 +52,12 @@ textarea {
 		<p>특산품 : ${LocalSpecialityVO.localTitle }</p>
 	</div>
 	<div>
-		<c:choose>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
         <textarea rows="20" cols="120" name="localContent">${LocalSpecialityVO.localContent }</textarea>
     </sec:authorize>
     <sec:authorize access="!hasRole('ROLE_ADMIN')">
         <textarea rows="20" cols="120" readonly>${LocalSpecialityVO.localContent }</textarea>
     </sec:authorize>
-</c:choose>
 	</div>
 	</form>
 	
@@ -68,6 +66,8 @@ textarea {
 	<button onclick="update()" class="button">글 수정</button>
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
 	</sec:authorize>
+	
+	<%@ include file ="reply.jsp" %>
 	
 	<script type="text/javascript">
 	

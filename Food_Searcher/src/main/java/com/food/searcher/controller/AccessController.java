@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,40 +81,6 @@ public class AccessController {
 
 		return "redirect:/home";
 	}
-
-	@GetMapping("/login")
-	public void loginGET() {
-		log.info("loginGET()");
-	} // end loginGET()
-
-	@PostMapping("/login")
-	public String loginPOST(@RequestParam("memberId") String memberId, @RequestParam("password") String password,
-			HttpSession session, MemberVO vo, Model model) {
-		log.info("loginPOST()");
-		String alertMsg;
-
-		try {
-			vo = memberService.getMemberById(memberId);
-			log.info(vo);
-			if (vo.getPassword().equals(password)) {
-				if(vo.getMemberStatus().equals("inactive")) {
-					alertMsg = "현재 비활성화된 계정입니다.";
-					log.info(alertMsg);
-					model.addAttribute("alertMsg", alertMsg);
-					return "/access/login";
-				} else {
-					session.setAttribute("memberId", memberId);
-					log.info("Session memberId: " + session.getAttribute("memberId"));
-				}
-			} else {
-				log.info("로그인 실패");
-			}
-
-		} catch (Exception e) {
-			
-		}
-		return "redirect:../home";
-	}
 	
 	@GetMapping("logout")
 	public String logoutGET(HttpSession session){
@@ -124,9 +91,9 @@ public class AccessController {
 	}
 
 	@GetMapping("/memberPage")
-	public String memberPageGET(HttpSession session, HttpServletResponse response, Model model, MemberVO vo) {
+	public String memberPageGET(Model model, MemberVO vo, Principal principal) {
 		log.info("memberPageGET()");
-		String memberId = (String) session.getAttribute("memberId");
+		String memberId = principal.getName();
 		vo = memberService.getMemberById(memberId);
 		log.info(vo);
 		model.addAttribute("vo", vo);
@@ -249,7 +216,7 @@ public class AccessController {
 			alertMsg = "아이디가 존재하지 않습니다.\n아이디 찾기를 먼저 진행해주세요.";
 		}
 		model.addAttribute("alertMsg", alertMsg);
-		return "/access/login";
+		return "/auth/login";
 		
 	}
 	
