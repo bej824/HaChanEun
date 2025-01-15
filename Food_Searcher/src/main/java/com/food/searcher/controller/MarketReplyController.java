@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class MarketReplyController {
 	
 	@Autowired MarketCommentService marketCommentService;
 	
-
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping
 	public ResponseEntity<Integer> createReply(@RequestBody MarketReplyVO marketReplyVO) {
 		log.info("createReply()");
@@ -43,6 +44,7 @@ public class MarketReplyController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 						
 	} // 댓글 등록
+	
 	
 	@GetMapping("/all/{marketId}")
 	public ResponseEntity<List<MarketReplyVO>> readAllReply(@PathVariable("marketId") int marketId, Model model){
@@ -64,6 +66,7 @@ public class MarketReplyController {
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
 	} // 댓글 출력
 	
+	 @PreAuthorize("isAuthenticated()")
 	 @PutMapping("/{marketReplyId}") 
 	   public ResponseEntity<Integer> updateReply(
 	         @PathVariable("marketReplyId") int marketReplyId,
@@ -76,10 +79,12 @@ public class MarketReplyController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 수정
 	
+	 @PreAuthorize("isAuthenticated()")
 	 @DeleteMapping("/{marketReplyId}/{marketId}") 
 	   public ResponseEntity<Integer> deleteReply(
 	         @PathVariable("marketReplyId") int marketReplyId, 
 	         @PathVariable("marketId") int marketId) {
+		 
 	      log.info("deleteReply()");
 	      log.info("marketReplyId = " + marketReplyId);
 	      

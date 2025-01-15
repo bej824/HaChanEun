@@ -1,52 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-
-<style type="text/css">
-
-#marketCommentContent {
-width: 100%;
-	padding: 10px;
-	font-size: 14px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background-color: #fff;
-	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
-	outline: none;
-	box-sizing: border-box; /* padding 포함 */
-	text-align: left; /* 왼쪽 정렬 */
-}
-
-div.replyModal { position:relative; z-index:1; display:none; }
-div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
-div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
-div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
-div.modalContent button.modal_cancle { margin-left:20px; }
-div.replyFooter button { font-size:14px; border: 1px solid #999; background:none; margin-right:10px; }
-
-div.commentModal { position:relative; z-index:1; display:none; }
-div.modalCommentContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:380px; padding:20px 10px; background:#fff; border:2px solid #666; }
-div.modalCommentContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
-div.modalCommentContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
-div.modalCommentContent button.modal_comment_cancle { margin-left:20px; }
-
-
-div.commentModifyModal { position:relative; z-index:1; display:none; }
-div.modalModifyContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
-div.modalModifyContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
-div.modalModifyContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
-div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
-</style>
-
+<link rel="stylesheet"
+	href="../resources/css/marketReply.css">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>Insert title here</title>
 </head>
 <body>
 
-
+<form>
+<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+</form>
 	<script type="text/javascript">
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});	  
 	
 	$(document).ready(function(){
 		getAllReply();
@@ -91,8 +72,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		function getAllReply() {
 			var marketId = $('#marketId').val();
 			var memberId = $('#memberId').val();
-			
 			var url = '../market/all/' + marketId;
+			
 			$.getJSON(
 				url, 			
 				function(data) {
@@ -119,7 +100,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<div class="userInfo">'
 							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
 							+ '<span class="memberId">' + this.memberId + '&nbsp'
-							+ '<span class="date">' + replyDateCreated
+							+ '<span class="date">' + replyDateCreated + '&nbsp'
+							+ '<span id="isModified">d</span>'
 							+ '</div>'
 							+ '<br>'
 							+ '<div class="marketReplyContent">' + this.marketReplyContent + "</div>"
@@ -132,7 +114,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
 							
-							+ '<ul class="comment_item"></ul>'
+							+ '<div class="comment"></div>'
 							list += "</div>"; // end reply_item
 					}); // end each()
 					
@@ -147,12 +129,14 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 		
 		$(document).on("click", ".btn_commentList", function(){
 			var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
-			var commentDiv = $(this).closest('.reply_item').find('.comment_item');
+			var commentDiv = $(this).closest('.reply_item').find('.comment');
 			
 			console.log("marketReplyId : " + marketReplyId);
 			
 		     var url = '../market/commentall/' + marketReplyId;
 		     if(commentDiv.html() == ''){   
+		    	// 만약 답글 창이 닫혀있을 경우
+		    	
 				$.getJSON(
 				url, 			
 				function(data) {
@@ -168,17 +152,17 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						var commentDateCreated = new Date(this.commentDateCreated).toLocaleString();
 						var disabled = '';
 						
-						if(memberId != this.memberId){
+						if('<sec:authentication property="name" />'!= this.memberId){
 							disabled = 'disabled';
 						}
 				
 				
 						comment +=
-						 '<ul class="comment_item">'
+						 '<div class="comment_item">'
 						+ '<div class="userInfo">'
 						+ '<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">'
 						+ '<input type="hidden" class="marketReplyId" value="'+ this.marketReplyId +'">'
-						+ '<span class="memberId">' + this.memberId + '&nbsp'
+						+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
 						+ '<span class="date">' + commentDateCreated
 						+ '</div>'
 						+ '<br>'
@@ -186,16 +170,17 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						+ '<div class="marketCommentContent">' + this.marketCommentContent + "</div>"	
 
 						+ '<br>'
-						+ '<button class="btn_updateComment"> 수정 </button>'
-						+ '<button class="btn_deleteComment"> 삭제 </button>'
+						+ '<button class="btn_updateComment"' + disabled + '> 수정 </button>'
+						+ '<button class="btn_deleteComment"' + disabled + '> 삭제 </button>'
 						
-						+ '</ul>'; // end comment_item
+						+ '</div>'; // end comment_item
 					
 					}); // end each()
 					
+					<sec:authorize access="isAuthenticated()">
 					 comment += '<textarea id="marketCommentContent" ></textarea>'
 				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '">작성</button>';
-					
+				    </sec:authorize>
 					// 대댓글창 맨 아래에 있는 내용 입력 창
 					
 					commentDiv.html(comment); // 저장된 데이터를 comments div 표현
@@ -229,6 +214,8 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 			
 			var marketReplyId = $("#marketReplyId").val();
 			var marketReplyContent = $(".modal_repCon").val();
+			
+			
 			console.log("선택된 댓글 번호 : " + marketReplyId + ", 댓글 내용 : " + marketReplyContent);
 			
 			
@@ -246,12 +233,14 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 						alert('댓글 수정 성공!');
 						getAllReply();
 						 $(".replyModal").attr("style", "display:none;");
+						 
 					} else {
 						alert('댓글 수정 실패');
 					}
 				}
 				});
-		}); // end modal_modify_btn
+		}); // end modal_modify_btn	
+		
 			
 		// 삭제 버튼을 클릭하면 선택된 댓글 삭제
 		$('#replies').on('click', '.reply_item .btn_delete', function(){
@@ -303,7 +292,7 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 			
 	// 대댓글 작성 버튼
 	$(document).on('click', '#btn_commentAdd', function() {
-		console.log('Button Clicked');
+		console.log('btn_commentAdd');
 		var marketReplyId = $(this).val(); // Id 가져오기
 		var memberId = $('#memberId').val();
 		var marketCommentContent = $('#marketCommentContent').val();
@@ -419,14 +408,15 @@ div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
 
 }); // end document
 
-// getText 함수는 전역에서 정의되어야 합니다.
 function getText(clickedElement) {
-  // 클릭한 span의 텍스트를 가져옵니다.
   let memberId = clickedElement.textContent;
-  console.log(memberId);
+  console.log("clicked : " + memberId);
   
-  $('.marketCommentContent').val(memberId +" → ");
-}
+  $('#marketCommentContent').val(memberId +" → ");
+} // end getText
+
+
+
 
 	</script>
 

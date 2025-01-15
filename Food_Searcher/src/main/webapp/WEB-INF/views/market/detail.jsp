@@ -6,54 +6,9 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-
-<style type="text/css">
-.button {
- background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 4px 12px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-textarea {
-  width: 100px;
-  height: 100px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: rgb(240, 240, 240, 0);
-  font-size: 16px;
-  resize: none;
-}
-
-.content {
-  width: 700px;
-  height: 280px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: rgb(240, 240, 240, 0);
-  font-size: 16px;
-  resize: none;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
+<link rel="stylesheet"
+	href="../resources/css/marketDetail.css">
+<style>
 
 .reply_item {
 	width: 100%;
@@ -98,17 +53,17 @@ button:disabled {
   }
 
 
-
 </style>
-
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>전통시장</title>
 </head>
 <body>
-<%@ include file ="/WEB-INF/views/header.jsp" %>
-
+		<%@ include file ="/WEB-INF/views/header.jsp" %>
+	    	    
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
 	<div>
@@ -138,6 +93,8 @@ button:disabled {
     <button id="deleteMarket" class="button">글 삭제</button>
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="marketId" value="${marketVO.marketId }">
+        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+        <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
     </form>
 	</sec:authorize>
 
@@ -162,6 +119,17 @@ button:disabled {
 	
 	
 	<script type="text/javascript">
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});	  
+
+		   
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
 				
@@ -190,6 +158,7 @@ button:disabled {
 			}); // end deleteMarket.click
 		}); // end document
 		
+
 	</script>
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId}">
