@@ -84,7 +84,6 @@
     display: none;
 }
 
-
 .btn_add {
 	background-color: #04AA6D;
 	border: none;
@@ -175,7 +174,6 @@
 				});
 			}); // end btnAdd.click()
 			
-			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
 				console.log(this);
@@ -229,11 +227,9 @@
 								+ replyDate
 								+ '<br><input type="text" id="replyContent" value="'+ this.replyContent +'">'
 								+ '&nbsp;&nbsp;'
-
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<br>'
-
 								+ '<button class="btn_comment">답글'+this.comments.length +'</button>'
 								+ '<div class="comment"></div>'
 								+ '</pre>'
@@ -358,7 +354,6 @@
 			}); // end replies.on()		
 			
 			$('#replies').on('click', '.reply_item .btn_comment', function(){
-				
 				$('.reply_item .comment').not($(this).closest('.reply_item').find('.comment')).html('');
 				
 				let replyId = $(this).prevAll('#replyId').val();
@@ -366,7 +361,6 @@
 				console.log("CommentId : " + recipeCommentId);
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
 				let memberId = "<sec:authentication property="name" />";
-				
 				
 				let url = 'all/' + replyId;
 				
@@ -421,7 +415,6 @@
 									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
-									
 									+ '</div>'
 									
 							}); // end each()
@@ -444,7 +437,6 @@
 			$('#replies').on('click', '.comment_add', function() {
 		        // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
 		        console.log(this);
-		        
 		        let memberId = "<sec:authentication property="name" />"
 		        let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();  // 댓글 ID
 		        let commentContent = $(this).prevAll('#commentContentAdd').val();

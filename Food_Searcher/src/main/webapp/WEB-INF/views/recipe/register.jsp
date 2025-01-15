@@ -68,20 +68,8 @@ textarea {
 
 레시피 : </textarea>
 		</div>
-		<div>
-			<input type="submit" class="button" value="등록">
-			<button onclick="goBack()" class="button">뒤로가기</button>
-		</div>
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
-	
-		<script type="text/javascript">
-		function goBack() {
-			window.history.back();
-		}
-	</script>
-	
-	<!-- 이미지 재시도 -->
 	
 		<div class="image-upload">
 		<h2>이미지 파일 업로드</h2>
@@ -108,110 +96,85 @@ textarea {
 	<div class="attachDTOFile-list">
 	</div>
 
-	<button id="registerBoard">등록</button>
+	<button id="registerBoard" class="button">등록</button>
+	<button onclick="goBack()" class="button">뒤로가기</button>
 
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 	<script src="${pageContext.request.contextPath }/resources/js/attach.js"></script>
 
-	<script>
-		// ajaxSend() : AJAX 요청이 전송되려고 할 때 실행할 함수를 지정
-		// ajax 요청을 보낼 때마다 CSRF 토큰을 요청 헤더에 추가하는 코드
-		$(document).ajaxSend(function(e, xhr, opt){
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			
-			xhr.setRequestHeader(header, token);
-		});
-		$(document).ready(function() {
-			// regsiterForm 데이터 전송
-			$('#registerBoard').click(function() {
-				let title = $('#recipeTitle').val().trim(); // 문자열의 양 끝 공백 제거
-	            let content = $('#recipeContent').val().trim();
+<script>
+    // ajaxSend() : AJAX 요청이 전송되려고 할 때 실행할 함수를 지정
+    // ajax 요청을 보낼 때마다 CSRF 토큰을 요청 헤더에 추가하는 코드
+    $(document).ajaxSend(function(e, xhr, opt){
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
 
-	            if (title === '' || content === '') {
-	                alert("제목과 내용을 모두 입력해주세요.");
-	                return;
-	            }
-	            
-				// form 객체 참조
-				let registerForm = $('#registerForm');
-				
-				// attachDTOImg-list의 각 input 태그 접근
-				let i = 0;
-				$('.attachDTOImg-list input[name="attachVO"]').each(function(){
-					console.log(this);
-					// JSON attachVO 데이터를 object 변경
-					let attachVO = JSON.parse($(this).val());
-					// attachPath input 생성
-					let inputPath = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachPath');
-					inputPath.val(attachVO.attachPath);
-					
-					// attachRealName input 생성
-					let inputRealName = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachRealName');
-					inputRealName.val(attachVO.attachRealName);
-					
-					// attachChgName input 생성
-					let inputChgName = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachChgName');
-					inputChgName.val(attachVO.attachChgName);
-					
-					// attachExtension input 생성
-					let inputExtension = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachExtension');
-					inputExtension.val(attachVO.attachExtension);
-					
-					// form에 태그 추가
-					registerForm.append(inputPath);
-					registerForm.append(inputRealName);
-					registerForm.append(inputChgName);
-					registerForm.append(inputExtension);
-					
-					i++;
-				});
-				
-				// attachDTOFile-list의 각 input 태그 접근
-				$('.attachDTOFile-list input[name="attachVO"]').each(function(){
-					console.log(this);
-					// JSON attachVO 데이터를 object 변경
-					let attachVO = JSON.parse($(this).val());
-					// attachPath input 생성
-					let inputPath = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachPath');
-					inputPath.val(attachVO.attachPath);
-					
-					// attachRealName input 생성
-					let inputRealName = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachRealName');
-					inputRealName.val(attachVO.attachRealName);
-					
-					// attachChgName input 생성
-					let inputChgName = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachChgName');
-					inputChgName.val(attachVO.attachChgName);
-					
-					// attachExtension input 생성
-					let inputExtension = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachList[' + i + '].attachExtension');
-					inputExtension.val(attachVO.attachExtension);
-					
-					// form에 태그 추가
-					registerForm.append(inputPath);
-					registerForm.append(inputRealName);
-					registerForm.append(inputChgName);
-					registerForm.append(inputExtension);
-					
-					i++;
-				});
-				registerForm.submit();
-			});
+        xhr.setRequestHeader(header, token);
+    });
 
-		});
-		
-	</script>
+    $(document).ready(function() {
+        // regsiterForm 데이터 전송
+        $('#registerBoard').click(function(e) {
+            e.preventDefault();  // 기본 폼 제출 동작을 막음
 
-	<!-- 이미지 재시도 -->
+            let title = $('#recipeTitle').val().trim(); // 문자열의 양 끝 공백 제거
+            let content = $('#recipeContent').val().trim();
+
+            if (title === '' || content === '') {
+                alert("제목과 내용을 모두 입력해주세요.");
+                return;
+            }
+
+            // form 객체 참조
+            let registerForm = $('#registerForm');
+
+            // 폼 데이터 준비
+            let formData = new FormData(registerForm[0]);  // FormData 객체 생성 (폼 요소를 전송할 수 있음)
+            let i = 0;
+
+            // attachDTOImg-list의 각 input 태그 접근
+            $('.attachDTOImg-list input[name="attachVO"]').each(function(){
+                let attachVO = JSON.parse($(this).val());
+                // attachPath, attachRealName, attachChgName, attachExtension을 hidden input으로 생성
+                formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
+                formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
+                formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
+                formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
+                i++;
+            });
+
+            // attachDTOFile-list의 각 input 태그 접근
+            $('.attachDTOFile-list input[name="attachVO"]').each(function(){
+                let attachVO = JSON.parse($(this).val());
+                // attachPath, attachRealName, attachChgName, attachExtension을 hidden input으로 생성
+                formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
+                formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
+                formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
+                formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
+                i++;
+            });
+
+            // 비동기 요청으로 폼 제출
+            $.ajax({
+                url: 'register',  // 폼의 action URL
+                type: 'POST',                      // HTTP 메서드
+                data: formData,                    // FormData 객체
+                processData: false,                // 자동으로 데이터 처리하지 않음 (파일 업로드 등을 위해)
+                contentType: false,                // Content-Type을 자동으로 설정하지 않음
+                success: function(response) {
+                    // 요청이 성공하면 처리할 코드 (예: 성공 메시지 표시)
+                    console.log('폼 제출 성공');
+                    alert("등록이 완료되었습니다.");
+                    window.location.href = "../recipe/list";
+                },
+                error: function(xhr, status, error) {
+                    // 요청 실패 시 처리할 코드 (예: 오류 메시지 표시)
+                    alert('오류 발생: ' + error);
+                }
+            });
+        });
+    });
+</script>
 
 	<script>
 		$(document).ready(function() {
@@ -243,6 +206,12 @@ textarea {
 				}
 			});
 		});
+	</script>
+	
+	<script type="text/javascript">
+		function goBack() {
+			window.history.back();
+		}
 	</script>
 </body>
 </html>

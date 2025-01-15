@@ -8,14 +8,11 @@ import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.util.Pagination;
 
 public interface RecipeService {
-	int createBoard(RecipeVO recipeVO);
-	List<RecipeVO> getAllBoards();
-	RecipeVO getBoardById(int recipeId);
-	int updateBoard(RecipeVO recipeVO);
-	int deleteBoard(int recipeId);
-	List<RecipeVO> getPagingBoards(Pagination pagination);
-	List<RecipeVO> getTitleByPagination(Pagination pagination, String recipeTitle);
-	int getTotalCount(@Param("recipeTitle") String recipeTitle, @Param("filterBy") String filterBy);
-	int getTitleTotalCount(String recipeTitle);
-	List<RecipeVO> getPagingBoards(String recipeTitle, String filterBy, Pagination pagination);
+	int createBoard(RecipeVO recipeVO); // 게시글 등록
+	List<RecipeVO> getAllBoards(); // 전체 게시글 조회
+	RecipeVO getBoardById(int recipeId); // 특정 게시글 조회
+	int updateBoard(RecipeVO recipeVO); // 특정 게시글 수정
+	int deleteBoard(int recipeId); // 특정 게시글 삭제
+	List<RecipeVO> getPagingBoards(Pagination pagination); // 게시글 페이징 처리 조회
+	int getTotalCount(@Param("recipeTitle") String recipeTitle, @Param("filterBy") String filterBy);  // 게시글 수 조회
 }
