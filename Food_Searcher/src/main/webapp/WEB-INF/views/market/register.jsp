@@ -7,7 +7,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <style type="text/css">
 .button {
 	background-color: #04AA6D;
@@ -36,10 +35,15 @@ textarea {
 </style>
 
 <meta charset="UTF-8">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <title>Insert title here</title>
+
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/header.jsp"%>
+<%@ include file="/WEB-INF/views/header.jsp"%>
+	    
 		<sec:authorize access="hasRole('ROLE_MEMBER')">
 			<script type="text/javascript">
 				alert('관리자만 접근이 가능합니다.');
@@ -53,14 +57,19 @@ textarea {
 				window.history.back();
 			</script>
 		</sec:authorize>
+		
 	<h2>글 작성 페이지</h2>
+	
 	<form action="register" method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 
 		<div>
 			<p>제목 :</p>
-			<input type="text" name="marketTitle" placeholder="제목 입력"
+			<input type="text" id="makretTitle" name="marketTitle" placeholder="제목 입력"
 				maxlength="20" required>
 		</div>
+		
+		<sec:authentication property="principal" var="principal"/>
 
 		<div>
 			<p>지역 :</p>
@@ -99,8 +108,6 @@ textarea {
 
 		<div>
 
-
-
 			<p>내용 :</p>
 			<div class="addImage" id="imageShow">
 				<!-- 이미지 띄울 공간 -->
@@ -113,11 +120,19 @@ textarea {
 			<br> <input type="submit" value="등록">
 
 			<script>
+			
+			$(document).ajaxSend(function(e, xhr, opt){
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				
+				xhr.setRequestHeader(header, token);
+			});
+		
 				// 미리보기
 				function loadFile(input) {
 					let file = input.files[0]; // 선택파일 가져오기
-
 					let newImage = document.createElement("img"); //새 이미지 태그 생성
+					
 
 					//이미지 source 가져오기
 					newImage.src = URL.createObjectURL(file);
