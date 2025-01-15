@@ -1,0 +1,45 @@
+#marketCommentContent {
+width: 100%;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #fff;
+	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
+	outline: none;
+	box-sizing: border-box; /* padding 포함 */
+	text-align: left; /* 왼쪽 정렬 */
+}
+
+.btn_updateComment, .btn_deleteComment {
+ background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+div.replyModal { position:relative; z-index:1; display:none; }
+div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.modalContent button.modal_cancle { margin-left:20px; }
+div.replyFooter button { font-size:14px; border: 1px solid #999; background:none; margin-right:10px; }
+
+div.commentModal { position:relative; z-index:1; display:none; }
+div.modalCommentContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:380px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.modalCommentContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+div.modalCommentContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.modalCommentContent button.modal_comment_cancle { margin-left:20px; }
+
+
+div.commentModifyModal { position:relative; z-index:1; display:none; }
+div.modalModifyContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.modalModifyContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+div.modalModifyContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }

@@ -9,18 +9,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.AttachService;
 import com.food.searcher.service.RecipeService;
-import com.food.searcher.util.FileUploadUtil;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -32,10 +29,7 @@ import lombok.extern.log4j.Log4j;
 public class RecipeController {
 
 	@Autowired
-	private String uploadPath;
-	   
-	   @Autowired
-	   private AttachService attachService;
+	private AttachService attachService;
 	
 	@Autowired
 	private RecipeService recipeService;
@@ -58,17 +52,22 @@ public class RecipeController {
 		pageMaker.setPagination(pagination);
 		log.info(pageMaker);
 		pageMaker.setTotalCount(recipeService.getTotalCount(recipeTitle, filterBy));
-		log.info(recipeService.getTotalCount(recipeTitle, filterBy));
 		log.info(pageMaker);
 		log.info(pageMaker.getEndNum());
-		
+		if(pageMaker.getEndNum() >= pageNum && pageNum > 0) {
         model.addAttribute("recipeTitle", recipeTitle);
         model.addAttribute("filterBy", filterBy);
         model.addAttribute("pageNum", pageNum);
 	
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
-
+		} else {
+			pagination.setPageNum(1);
+			List<RecipeVO> reRecipeList = recipeService.getPagingBoards(pagination);
+			pageMaker.setPagination(pagination);
+			model.addAttribute("pageMaker", pageMaker);
+			model.addAttribute("recipeList", reRecipeList);
+		}
 	}
 	
 	@GetMapping("/register")
@@ -92,10 +91,8 @@ public class RecipeController {
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
 	// 조회된 게시글 데이터를 detail.jsp로 전송
 	@GetMapping("/detail")
-	public void detail(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @ModelAttribute("pagination") Pagination pagination, Model model, Integer recipeId) {
+	public void detail(Model model, Integer recipeId) {
 		log.info("detail()");
-		log.info("recipeTitle : " + recipeTitle + " filterBy : " + filterBy);
-		log.info("pagination : " + pagination);
 		log.info("레시피 ID : " + recipeId);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
@@ -132,10 +129,7 @@ public class RecipeController {
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
 	@PreAuthorize("isAuthenticated() and (principal.username == #recipeVO.memberId)")
 	@PostMapping("/modify")
-	public String modifyPOST(RecipeVO recipeVO, 
-	                         @RequestParam("file") List<MultipartFile> files,
-	                         @RequestParam(name = "deleteFiles", required = false) List<String> deleteFileIds, 
-	                         Integer recipeId, HttpSession session) {
+	public String modifyPOST(RecipeVO recipeVO, Integer recipeId, HttpSession session) {
 	    log.info("modifyPOST()");
 	    log.info("recipeVO = " + recipeVO);
 
@@ -150,28 +144,9 @@ public class RecipeController {
 	   // detail.jsp에서 boardId를 전송받아 게시글 데이터 삭제
 	@PreAuthorize("isAuthenticated() and (principal.username == #recipeVO.memberId)")
 	@PostMapping("/delete")
-	public String delete(Integer recipeId) {
+	public String delete(RecipeVO recipeVO, Integer recipeId) {
 	    log.info("delete()");
 	    log.info("recipeId" + recipeId);
-
-	    // recipeId에 해당하는 모든 이미지 파일 삭제
-	    List<AttachVO> existingAttachVO = attachService.getBoardById(recipeId);
-	    log.info("existingAttachVO : " + existingAttachVO);
-
-	    if (existingAttachVO != null && !existingAttachVO.isEmpty()) {
-	        for (AttachVO attach : existingAttachVO) {
-	            log.info("attach : " + attach);
-	            try {
-	                // 서버에서 파일 삭제
-	                FileUploadUtil.deleteFile(uploadPath, attach.getAttachPath(), attach.getAttachChgName());
-
-	                // DB에서 파일 정보 삭제
-	                attachService.deleteAttach(attach.getAttachId());
-	            } catch (Exception e) {
-	                log.error("파일 삭제 중 오류 발생: ", e);
-	            }
-	        }
-	    }
 
 	    // 레시피 삭제
 	    int result = recipeService.deleteBoard(recipeId);

@@ -53,13 +53,15 @@ public class MarketController {
 		
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")
 	public void register() {
 		log.info("registerGET()");
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
-	public String marketPOST (HttpSecurity http, MarketVO marketVO, MultipartFile file, RedirectAttributes reAttr) {
+	public String marketPOST (HttpSecurity http, MarketVO marketVO, MultipartFile file) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
 		
@@ -78,27 +80,24 @@ public class MarketController {
 		model.addAttribute("marketVO", marketVO);
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
-	public void modifyGET(Model model, Integer marketId, @ModelAttribute("pagination") Pagination pagination) {
+	public void modifyGET(Model model, Integer marketId) {
 		log.info("modifyGET()");	
 		log.info("marketId = " + marketId);
-		log.info("pagination = " + pagination);
 		MarketVO marketVO = marketService.getMarketById(marketId);
 		model.addAttribute("marketVO", marketVO);
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modifyPOST(MarketVO marketVO, Pagination pagination, RedirectAttributes reAttr) {
+	public String modifyPOST(MarketVO marketVO) {
 		log.info("modifyPOST()");
 		int result = marketService.updateMarket(marketVO);
+		log.info(marketVO);
 		log.info(result + "행 수정");
 		
-		// redirect에서 값을 전송하기 위한 방법
-		reAttr.addAttribute("pageNum", pagination.getPageNum());
-		reAttr.addAttribute("pageSize", pagination.getPageSize());
-		reAttr.addAttribute("type", pagination.getType());
-		reAttr.addAttribute("keyword", pagination.getKeyword());
 		
 		// 이걸 왜 썼냐면 검색기능 쓸 때 타입이랑 키워드가 있어야 검색이 가능하니까?
 		// 아마 register에서도 타입, 키워드를 넣어줄 거 같은데

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.MarketCommentVO;
 import com.food.searcher.domain.MarketReplyVO;
+import com.food.searcher.domain.RecipeCommentVO;
 import com.food.searcher.persistence.MarketMapper;
 import com.food.searcher.persistence.MarketReplyMapper;
 
@@ -25,6 +27,8 @@ public class MarketReplyServiceImple implements MarketReplyService{
 	@Autowired
 	private MarketMapper marketMapper;
 	
+	@Autowired
+	private MarketCommentService marketCommentService;
 	
 	@Transactional(value = "transactionManager") 
 	@Override
@@ -60,12 +64,23 @@ public class MarketReplyServiceImple implements MarketReplyService{
 	@Override
 	public int deleteReply(int marketReplyId, int marketId) {
 		log.info("deleteReply()");
-		int deleteResult = marketReplyMapper.delete(marketReplyId);		
-		log.info(deleteResult + "행 댓글 삭제");
-		int updateResult = marketMapper.updateReplyCount(marketId, -1);
-		log.info(updateResult + "행 댓글 카운트 삭제");
+		
+		List<MarketCommentVO> list = marketCommentService.getAllComment(marketReplyId);
+	      log.info(list);
+	      for(MarketCommentVO vo : list) {
+	    	  int commentresult = marketCommentService.deleteComment(vo.getMarketCommentId(), vo.getMarketReplyId());
+	    	  log.info(commentresult);
+	    	  int updateResult = marketMapper.updateReplyCount(marketId, -1);
+	    	  log.info(updateResult + "행 댓글 카운트 삭제");
+	      }
+		
+	      int deleteResult = marketReplyMapper.delete(marketReplyId);		
+	      log.info(deleteResult + "행 댓글 삭제");
+	      int updateResult = marketMapper.updateReplyCount(marketId, -1);
+    	  log.info(updateResult + "행 댓글 카운트 삭제");
+	      
 		return 1;
-	}
+	} // 댓글 삭제, 댓글+대댓글 카운트 삭제
 	
 	
 	@Override
@@ -74,7 +89,7 @@ public class MarketReplyServiceImple implements MarketReplyService{
 		int deleteReplyByMarket = marketReplyMapper.deleteReplyByMarket(marketId);
 		log.info("게시글에 대한 댓글 " + deleteReplyByMarket + "행 삭제");
 		return 1;
-	}
+	} // 게시글에 대한 댓글 삭제
 
 	@Override
 	public MarketReplyVO getReplyById(int marketReplyId) {

@@ -93,30 +93,6 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
-
-    <!-- 이미지 파일 영역 -->
-    <div class="image-upload">
-        <div class="image-view">
-            <h2>이미지 파일 리스트1</h2>
-            <div class="image-list">
-                <!-- 이미지 파일 처리 코드 -->
-                <c:forEach var="attachVO" items="${idList}">
-                    <c:if test="${attachVO.attachExtension eq 'jpg' or 
-                                  attachVO.attachExtension eq 'jpeg' or 
-                                  attachVO.attachExtension eq 'png' or 
-                                  attachVO.attachExtension eq 'gif' or
-                                  attachVO.attachExtension eq 'webp'}">
-                        <div class="image_item">
-                            <a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
-                                <img width="100px" height="100px" 
-                                     src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
-                            </a>
-                        </div>
-                    </c:if>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
     
     <!-- 이미지 재시도 -->
 
@@ -153,8 +129,7 @@ textarea {
 				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
 				    			  attachVO.attachExtension eq 'jpeg' or 
 				    			  attachVO.attachExtension eq 'png' or 
-				    			  attachVO.attachExtension eq 'gif' or
-                                  attachVO.attachExtension eq 'webp'}">
+				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
 				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
 					        <img width="100px" height="100px" 
@@ -172,10 +147,10 @@ textarea {
 			<h2>첨부 파일 리스트</h2>
 			<div class="attach-list">
 			<c:forEach var="attachVO" items="${idList}">
-		 		<c:if test="${not (attachDTO.attachExtension eq 'jpg' or 
+		 		<c:if test="${not (attachDTO.attachExtension eq 'gif' or 
 			    			  attachVO.attachExtension eq 'jpeg' or 
 			    			  attachVO.attachExtension eq 'png' or 
-			    			  attachVO.attachExtension eq 'gif')}">
+			    			  attachVO.attachExtension eq 'jpg')}">
 			    	<div class="attach_item">
 			    	<p><a href="../attach/download?attachId=${attachVO.attachId }">${attachVO.attachRealName }.${attachVO.attachExtension }</a></p>
 			    	</div>

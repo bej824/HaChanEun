@@ -82,7 +82,7 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	</form>
 	
 	
-		<button id="change-upload">파일 변경</button>
+		<button id="change-upload" class="button">파일 변경</button>
 	<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
@@ -93,8 +93,7 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
                     <c:if test="${attachVO.attachExtension eq 'jpg' or 
                                   attachVO.attachExtension eq 'jpeg' or 
                                   attachVO.attachExtension eq 'png' or 
-                                  attachVO.attachExtension eq 'gif' or
-                                  attachVO.attachExtension eq 'webp'}">
+                                  attachVO.attachExtension eq 'gif'}">
                         <div class="image_item">
                             <a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
                                 <img width="100px" height="100px" 
@@ -148,112 +147,84 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	<div class="attachDTOFile-list">
 	</div>
 	<sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
-	<button id="modifyBoard">등록</button>
+	<button id="modifyBoard" class="button">등록</button>
 	</sec:authorize>
 	<button onclick="goBack()" class="button">뒤로가기</button>
 
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 	<script	src="${pageContext.request.contextPath }/resources/js/attach.js"></script>
 	
-	<script type="text/javascript">
-	
-	$(document).ajaxSend(function(e, xhr, opt){
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		xhr.setRequestHeader(header, token);
-	});
-	
-	$(document).ready(function(){
-	    // 이미지 변경 버튼 클릭 시
-	    $('#change-upload').click(function(){
-	    	if(!confirm('기존에 업로드 파일들은 삭제됩니다. 계속 하시겠습니까?')){
-	    		return;
-	    	}
-	        $('.image-modify').show();
-	        $('.image-view').hide();
-	        $('.attach-modify').show();
-	        $('.attach-view').hide();
-	        $('.input-attach-list').remove(); // input-attach-list 삭제
-	    });
+    <script type="text/javascript">
+        $(document).ajaxSend(function(e, xhr, opt) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
-		// modifyForm 데이터 전송
-		$('#modifyBoard').click(function() {
-			// form 객체 참조
-			let modifyForm = $('#modifyForm');
-			
-			// attachVOImg-list의 각 input 태그 접근
-			let i = 0;
-			$('.attachDTOImg-list input[name="attachVO"]').each(function(){
-				console.log(this);
-				// JSON attachVO 데이터를 object 변경
-				let attachVO = JSON.parse($(this).val());
-				// attachPath input 생성
-				let inputPath = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachPath');
-				inputPath.val(attachVO.attachPath);
-				
-				// attachRealName input 생성
-				let inputRealName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachRealName');
-				inputRealName.val(attachVO.attachRealName);
-				
-				// attachChgName input 생성
-				let inputChgName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachChgName');
-				inputChgName.val(attachVO.attachChgName);
-				
-				// attachExtension input 생성
-				let inputExtension = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachExtension');
-				inputExtension.val(attachVO.attachExtension);
-				
-				// form에 태그 추가
-				modifyForm.append(inputPath);
-				modifyForm.append(inputRealName);
-				modifyForm.append(inputChgName);
-				modifyForm.append(inputExtension);
-				
-				i++;
-			});
-			
-			// attachVOFile-list의 각 input 태그 접근
-			$('.attachDTOFile-list input[name="attachVO"]').each(function(){
-				console.log(this);
-				// JSON attachVO 데이터를 object 변경
-				let attachVO = JSON.parse($(this).val());
-				// attachPath input 생성
-				let inputPath = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachPath');
-				inputPath.val(attachVO.attachPath);
-				
-				// attachRealName input 생성
-				let inputRealName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachRealName');
-				inputRealName.val(attachVO.attachRealName);
-				
-				// attachChgName input 생성
-				let inputChgName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachChgName');
-				inputChgName.val(attachVO.attachChgName);
-				
-				// attachExtension input 생성
-				let inputExtension = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachExtension');
-				inputExtension.val(attachVO.attachExtension);
-				
-				// form에 태그 추가
-				modifyForm.append(inputPath);
-				modifyForm.append(inputRealName);
-				modifyForm.append(inputChgName);
-				modifyForm.append(inputExtension);
-				
-				i++;
-			});
-			modifyForm.submit();
-		});
-	});
-	</script>
+            xhr.setRequestHeader(header, token);
+        });
+        let isUploadChanged = false; // 버튼이 클릭되었는지 여부를 추적하는 변수
+
+        $(document).ready(function() {
+            // 이미지 변경 버튼 클릭 시
+            $('#change-upload').click(function() {
+                if (!confirm('기존에 업로드 파일들은 삭제됩니다. 계속 하시겠습니까?')) {
+                    return;
+                }
+                isUploadChanged = true; // 버튼 클릭 시, 삭제 작업이 허용됨
+                $('.image-modify').show();
+                $('.image-view').hide();
+                $('.attach-modify').show();
+                $('.attach-view').hide();
+                $('.input-attach-list').remove(); // input-attach-list 삭제
+            });
+
+            // 수정 버튼 클릭 시 폼 데이터 전송
+            $('#modifyBoard').click(function() {
+                let modifyForm = $('#modifyForm');
+                let formData = new FormData(modifyForm[0]);
+                let i = 0;
+
+                if (isUploadChanged) {
+                // attachDTOImg-list의 각 input 태그 접근
+                $('.attachDTOImg-list input[name="attachVO"]').each(function() {
+                    let attachVO = JSON.parse($(this).val());
+                    formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
+                    formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
+                    formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
+                    formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
+                    i++;
+                });
+
+                // attachDTOFile-list의 각 input 태그 접근
+                $('.attachDTOFile-list input[name="attachVO"]').each(function() {
+                    let attachVO = JSON.parse($(this).val());
+                    formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
+                    formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
+                    formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
+                    formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
+                    i++;
+                });
+                } else {
+                	
+                }
+
+                // 비동기적으로 폼 전송
+                $.ajax({
+                    url: 'modify', // 서버 URL
+                    type: 'POST',
+                    data: formData,
+                    processData: false,  // jQuery가 데이터 처리하지 않도록 설정
+                    contentType: false,  // jQuery가 Content-Type을 설정하지 않도록 설정
+                    success: function(response) {
+                        alert('업로드 성공!');
+                        window.location.href = "../recipe/detail?recipeId="+"${recipeVO.recipeId }";
+                    },
+                    error: function(xhr, status, error) {
+                        alert('업로드 실패: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
 		
 <script>
 	function goBack() {

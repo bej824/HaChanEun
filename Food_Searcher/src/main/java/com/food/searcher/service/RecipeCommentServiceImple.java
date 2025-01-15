@@ -45,12 +45,6 @@ public class RecipeCommentServiceImple implements RecipeCommentService{
 	}
 
 	@Override
-	public RecipeCommentVO getCommentById(int recipeCommentId) {
-		// TODO Auto-generated method stub - No
-		return null;
-	}
-
-	@Override
 	public int updateComment(int recipeCommentId, String commentContent) {
 		log.info("updateReply");
 		RecipeCommentVO recipeCommentVO = new RecipeCommentVO();
