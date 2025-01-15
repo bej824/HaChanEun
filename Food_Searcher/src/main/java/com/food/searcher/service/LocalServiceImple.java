@@ -33,14 +33,8 @@ public class LocalServiceImple implements LocalService {
 		log.info("getAllSpeciality()");
 		log.info("localLocal : " + localLocal);
 		log.info("localDistrict : " + localDistrict);
+		
 		return localMapper.selectList(localLocal, localDistrict);
-	}
-	
-	@Transactional
-	@Override
-	public List<LocalSpecialityVO> getDistrictByLocal(String localLocal) {
-		log.info("getDistrictByLocal()");
-		return localMapper.selectDistrict(localLocal);
 	}
 	
 	@Override
@@ -82,14 +76,6 @@ public class LocalServiceImple implements LocalService {
 		
 		
 		return localMapper.delete(localId);
-	}
-	
-	@Transactional
-	@Override
-	public int getTotalCount() {
-		log.info("getTotalCount()");
-		
-		return localMapper.selectTotalCount();
 	}
 
 }

@@ -28,13 +28,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 
 	</select>
-
-	<select id="selectDistrict" resultMap="localResultMap">
-		<!-- 상세 지역 조회 -->
-		SELECT DISTINCT LOCAL_DISTRICT
-		FROM LOCAL_SPECIALITY
-		WHERE LOCAL_LOCAL = #{localLocal}
-	</select>
 	
 	<select id="selectByLocalTitle" resultMap="localResultMap">
 		<!-- 검색어를 통한 특산품 조회 -->
@@ -71,11 +64,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE LOCAL_SPECIALITY
 	SET REPLY_COUNT = REPLY_COUNT - #{countDown}
 	WHERE LOCAL_ID = #{localId}
-	</select>
-
-	<select id="selectTotalCount" resultType="Integer">
-		SELECT COUNT(*)
-		TOTAL_COUNT FROM LOCAL_SPECIALITY
 	</select>
 
 </mapper>

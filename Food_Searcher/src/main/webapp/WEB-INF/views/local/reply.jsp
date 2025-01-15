@@ -109,12 +109,14 @@
 		<div class="reply">
 			<div class="replyMemberId">
 			</div>
+				<sec:authorize access="isAuthenticated()">
 				<sec:authentication property="name" /><input type="hidden"
 					id="memberId" value=<sec:authentication property="name" />>
-			<input type="text" id="headerReplyContent">
-			<div class="timeButton">
-			<button id="btnAdd" class="button">작성</button>
-			</div>
+				<input type="text" id="headerReplyContent">
+				<div class="timeButton">
+				<button id="btnAdd" class="button">작성</button>
+				</div>
+				</sec:authorize>
 		</div>
 	</div>
 
@@ -125,10 +127,12 @@
 			
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
-				security();
 				let localId = $('#localId').val(); // 게시판 번호 데이터
-				console.log(localId);
-				console.log(memberId);
+				let memberId = '<sec:authentication property="name" />'
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
 				console.log(headerReplyContent);
 				// javascript 객체 생성
@@ -223,7 +227,10 @@
 			// 수정 버튼을 클릭하면 선택된 댓글 수정
 			$('#replies').on('click', '.reply_item .btn_update', function(){
 				console.log(this);
-				security();
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				const replyId = $(this).prevAll('#replyId').val();
@@ -254,7 +261,10 @@
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
 				console.log(this);
-				security();
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
 				let replyId = $(this).prevAll('#replyId').val();
 				let localId = $('#localId').val();
 				console.log("선택된 댓글 번호 : " + replyId);
@@ -351,9 +361,12 @@
 		$('#replies').on('click', '.comment_add', function() {
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
-        security();
+        
+        const token = $("meta[name='_csrf']").attr("content");
+		const header = $("meta[name='_csrf_header']").attr("content");
+        
         let localId = $('#localId').val();
-        let memberId = '${sessionScope.memberId}';
+        let memberId = '<sec:authentication property="name" />';
         let replyId = $(this).val();  // 댓글 ID
         let commentContent = $(this).prevAll('#commentContent').val();
 
@@ -398,7 +411,10 @@
 		 
 		 $('#replies').on('click', '.reply_item .comment_update', function(){
 				console.log(this);
-				security();
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				let commentId = $(this).prevAll('#commentId').val();
@@ -429,7 +445,10 @@
 			
 			$('#replies').on('click', '.reply_item .comment_delete', function(){
 				console.log(this);
-				security();
+				
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
 				console.log("선택된 댓글 번호 : " + commentId);
@@ -454,13 +473,6 @@
 					}
 				});
 			}); // end comment_delete()
-			
-			function security(){
-				console.log("security()");
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
-			}
 
 		}); // end document()
 		

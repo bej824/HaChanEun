@@ -31,7 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     	log.info(memberId);
         // 사용자 ID를 이용하여 회원 정보와 권한 정보를 조회
         MemberVO member = memberMapper.selectMemberByMemberId(memberId);
-        log.info(member);
         RoleVO role = memberMapper.selectRoleByMemberId(memberId);
         
         // 조회된 회원 정보가 없을 경우 예외 처리

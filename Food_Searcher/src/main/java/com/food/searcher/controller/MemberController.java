@@ -3,22 +3,17 @@ package com.food.searcher.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,12 +27,9 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/access")
 @Log4j
-public class AccessController {
+public class MemberController {
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	// 회원가입 시 이메일 인증 호출
 	@GetMapping("/registerEmail")
@@ -100,14 +92,6 @@ public class AccessController {
 
 		return "redirect:/home";
 	}
-	
-	@GetMapping("logout")
-	public String logoutGET(HttpSession session){
-		log.info("logoutGET()");
-		session.removeAttribute("memberId");
-		
-		return "redirect:/home";
-	}
 
 	@GetMapping("/memberPage")
 	public String memberPageGET(Model model, MemberVO vo, Principal principal) {
@@ -136,11 +120,12 @@ public class AccessController {
 		return "access/memberPage";
 	}
 	
+	// 이후 수정
 	// inactive : 비활성화 계정 / active : 활성화 계정
 	@ResponseBody
 	@PostMapping("/statusUpdate")
-	public int statusUpdatePOST(@RequestParam("memberId") String memberId, @RequestParam("memberStatus") String memberStatus,
-			HttpSession session) {
+	public int statusUpdatePOST(@RequestParam("memberId") String memberId, 
+			@RequestParam("memberStatus") String memberStatus) {
 		log.info("statusUpdatePOST()");
 		log.info(memberId + " : " + memberStatus);
 		int result = 0;
@@ -148,7 +133,6 @@ public class AccessController {
 		result = memberService.updateMemberStatus(memberId, memberStatus);
 		
 		log.info(result + "행 수정");
-		session.removeAttribute("memberId");
 		
 		return result;
 		
@@ -210,7 +194,7 @@ public class AccessController {
 	
 	@PostMapping("/pwUpdate")
 	public String pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
-			@Param("password") String password, HttpSession session, Model model) {
+			@Param("password") String password, Model model, PasswordEncoder passwordEncoder) {
 		log.info("pwUpdatePOST()");
 		
 		String encPw = passwordEncoder.encode(password);
@@ -220,14 +204,8 @@ public class AccessController {
 		
 		try {
 		if(result == 1) {
-			if(session.getAttribute("memberId") != null) {
-				log.info("로그인 비밀번호 변경");
-				alertMsg = "비밀번호 변경에 성공하였습니다. 보안을 강화하기 위해 자동으로 로그아웃 처리되었습니다. 다시 로그인 해주세요.";
-				session.removeAttribute("memberId");
-			} else {
-				log.info("로그아웃 비밀번호 변경");
-				alertMsg = "비밀번호 변경에 성공하였습니다.";
-			}
+			log.info("로그아웃 비밀번호 변경");
+			alertMsg = "비밀번호 변경에 성공하였습니다.";
 		} else {
 			alertMsg = "아이디 또는 이메일이 맞지 않습니다.\n아이디 찾기를 먼저 진행해주세요.";
 		}
@@ -240,7 +218,7 @@ public class AccessController {
 	}
 	
 	@GetMapping("/admin")
-	public void adminGET(HttpSession session, Model model) {
+	public void adminGET(Model model) {
 		log.info("adminGET()");
 
 	} // end adminGET()

@@ -37,7 +37,6 @@ table {
     border-width: 1px;
     text-align: center;
     width: 100%; /* 테이블 너비 100%로 설정하여 컨테이너에 맞게 확장 */
-    border: 2px solid black; /* 검은색 테두리 추가 */
 }
 
 /* 테이블 컨테이너 */
@@ -92,8 +91,7 @@ a:link, a:visited, a:hover, a:active {
 	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
-	<select name="localLocal" id="localLocal"
-		onchange="listUpdate(this.value, null)">
+	<select name="localLocal" id="localLocal">
 		<option value="">전체</option>
 		<option value="경기도" <c:if test="${localLocal == '경기도'}">selected</c:if>>경기도</option>
 		<option value="강원도" <c:if test="${localLocal == '강원도'}">selected</c:if>>강원도</option>
@@ -106,8 +104,7 @@ a:link, a:visited, a:hover, a:active {
 		<option value="제주도" <c:if test="${localLocal == '제주도'}">selected</c:if>>제주도</option>
 	</select>
 	&nbsp;&nbsp;
-	<select name="localDistrict" id="localDistrict"
-	onchange="listUpdate(document.getElementById('localLocal').value, this.value)">
+	<select name="localDistrict" id="localDistrict">
 	<option value="">전체</option>
 	</select>
 	
@@ -136,75 +133,103 @@ a:link, a:visited, a:hover, a:active {
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			let localLocal = "${localLocal }"
-			let localDistrict = "${localDistrict }"
+			let indexLocalLocal = "${localLocal }"
+			let indexLocalDistrict = "${localDistrict }"
 			
-			if(localDistrict == 'null'){
-				localDistrict = "";
-			} 
-				listUpdate(localLocal, localDistrict);
-			}) // end ready
-	
-		function listUpdate(localLocal, localDistrict) {
-			console.log(localLocal, localDistrict);
+			listUpdate(indexLocalLocal, '');
 			
-			
-			$.ajax({
-				type : 'GET',
-				url : 'listDistrict',
-				data : {localLocal : localLocal},
-				success : function(result) {
-					
-					let selectOption = $("#localDistrict" );
-					selectOption.empty();
-					selectOption.append('<option value="">' + 
-							    '전체</option>');
-					result.forEach(function(districtList){
-					let districtOption =
-						'<option value="' + districtList + '">' + 
-						    districtList + '</option>';
-					selectOption.append(districtOption);
-					});
-					if (localDistrict) {
-	                    selectOption.val(localDistrict);  // 선택된 값을 세팅
-	                }
-				}
-			})
-			
-			$.ajax({
-				type : 'GET',
-				url : 'localUpdate',
-				data : {
-					localLocal : localLocal,
-					localDistrict : localDistrict
-				},
-				success : function(result) {
-
-					let tbody = $('table tbody');
-					tbody.empty(); // 기존 테이블 내용 비우기
-
-					result.forEach(function(LocalSpecialityVO) {
-						let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
-								'&localLocal=' + localLocal + '&localDistrict=' + localDistrict +'\'">'
-						 + '<td>' + LocalSpecialityVO.localId + '</td>'
-				         + '<td>' + LocalSpecialityVO.localLocal + '</td>'
-				         + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
-				         + '<td>' + LocalSpecialityVO.localTitle + '</td>'
-				         + '<td>' + LocalSpecialityVO.replyCount + '</td>'
-				         + '</tr>';
-
-						tbody.append(row); // 새로운 데이터 행 추가
-					});
-
-				} // end function()
+			// localLocal만 선택되었을 때
+			$('#localLocal').change(function(){
+				let localLocal = $(this).val();
+			    let localDistrict = '';
+			    listUpdate(localLocal, localDistrict);
 			});
-		} // end function localUpdate()
-		
-		function titleSearch(){
-			let localTitle = document.getElementById('localTitle').value;
-			console.log("검색어 : " + localTitle);
-		}
-		
+			
+			// localDistrict까지 둘 다 선별되었을 때
+			$('#localDistrict').change(function(){
+				let localLocal = $('#localLocal').val();
+			    let localDistrict = $(this).val();
+			    listUpdate(localLocal, localDistrict);
+			});
+				
+			function listUpdate(localLocal, localDistrict) {
+			    console.log(localLocal, localDistrict);
+			    
+			    $.ajax({
+			        type: 'GET',
+			        url: 'localUpdate',
+			        data: {
+			            localLocal: localLocal,
+			            localDistrict: localDistrict
+			        },
+			        success: function(result) {
+			            let tbody = $('table tbody');
+			            tbody.empty(); // 기존 테이블 내용 비우기
+			            
+			            // 중복되는 localDistrict 선별을 위한 변수
+			            let localDistrict_optionVal = "";
+			            let localDistrict_selectOption = $("#localDistrict");
+			            
+			            if(localDistrict == ''){
+			            
+			            localDistrict_selectOption.empty();
+			            localDistrict_selectOption.append('<option value="">전체</option>');
+			            
+			            }
+			            
+			            result.forEach(function(LocalSpecialityVO) {
+			            	
+			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
+			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrict +'\'">'
+			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
+			                    + '<td>' + LocalSpecialityVO.localLocal + '</td>'
+			                    + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
+			                    + '<td>' + LocalSpecialityVO.localTitle + '</td>'
+			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
+			                    + '</tr>';
+			            	if(indexLocalDistrict != ''){
+			            		if(indexLocalDistrict == LocalSpecialityVO.localDistrict){
+			            			tbody.append(row); // 새로운 데이터 행 추가
+			            		}
+			            	} else {
+			                tbody.append(row); // 새로운 데이터 행 추가
+			            	}
+			                
+			                if(localLocal == ''){
+			                	
+			                } else {
+			                if(localDistrict == ''){
+			                	
+			                // 지역 중복 체크 및 옵션 추가
+			                if (localDistrict_optionVal != LocalSpecialityVO.localDistrict) {
+			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
+			                    let districtOption =
+			                        '<option value="' + localDistrict_optionVal + '">' + 
+			                        localDistrict_optionVal + '</option>';
+			                    localDistrict_selectOption.append(districtOption); // 새로운 지역 옵션 추가
+			                }			                	
+			                	
+			                }
+			            	
+			                }
+			                
+			            });
+			            
+			         	// 선택된 값을 세팅
+			            if (localDistrict) {
+			            	localDistrict_selectOption.val(localDistrict);
+		                } else if(indexLocalDistrict){ // indexLocalDistrict가 있다면 선택하고 공백으로 초기화
+		                	localDistrict_selectOption.val(indexLocalDistrict);
+		                	indexLocalDistrict = '';
+		                }
+			        } // end success function
+			    }); // end ajax
+			    
+			} // end listUpdate
+			
+			}) // end ready
+			
 	</script>
+	
 </body>
 </html>

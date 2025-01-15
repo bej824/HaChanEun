@@ -7,7 +7,8 @@ import org.springframework.security.core.userdetails.User;
 
 import lombok.Getter;
 
-
+// MemberVO로 해서 같이 쓰지 않는 이유는 User을 상속받아야되기 때문.
+// 다형성을 위해서.
 @Getter
 public class CustomUser extends User { // User 클래스 상속
 
