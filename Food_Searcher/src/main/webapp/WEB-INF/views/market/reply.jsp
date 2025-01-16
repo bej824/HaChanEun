@@ -74,6 +74,7 @@
 			var memberId = $('#memberId').val();
 			var url = '../market/all/' + marketId;
 			
+			
 			$.getJSON(
 				url, 			
 				function(data) {
@@ -88,6 +89,7 @@
 						// .toLocaleString(); 빼면
 						var replyDateCreated = new Date(this.replyDateCreated).toLocaleString();
 						var disabled = '';
+						modified = '';
 										
 						if(memberId != this.memberId){
 							disabled = 'disabled';
@@ -101,7 +103,7 @@
 							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
 							+ '<span class="memberId">' + this.memberId + '&nbsp'
 							+ '<span class="date">' + replyDateCreated + '&nbsp'
-							+ '<span id="isModified">d</span>'
+							+ '<span id="isModified">' + modified + '</span>'
 							+ '</div>'
 							+ '<br>'
 							+ '<div class="marketReplyContent">' + this.marketReplyContent + "</div>"
@@ -167,7 +169,7 @@
 						+ '</div>'
 						+ '<br>'
 						
-						+ '<div class="marketCommentContent">' + this.marketCommentContent + "</div>"	
+						+ '<div id="marketCommentContent">' + this.marketCommentContent + "</div>"	
 
 						+ '<br>'
 						+ '<button class="btn_updateComment"' + disabled + '> 수정 </button>'
@@ -178,7 +180,7 @@
 					}); // end each()
 					
 					<sec:authorize access="isAuthenticated()">
-					 comment += '<textarea id="marketCommentContent" ></textarea>'
+					 comment += '<textarea id="addCommentContent" ></textarea>'
 				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '">작성</button>';
 				    </sec:authorize>
 					// 대댓글창 맨 아래에 있는 내용 입력 창
@@ -203,20 +205,19 @@
 			
 			console.log("replyId : " + replyId, "replyContent : " + replyContent);
 			
-			 $(".modal_repCon").val(replyContent);
-			 $("#marketReplyId").val(replyId);
+			 $("#modal_repCon").val(replyContent);
+			 $("#modalReplyId").val(replyId);
 			 
 			}); // end modal
 		
 		// 수정 버튼을 클릭하면 선택된 댓글 수정
-		$(".modal_modify_btn").click(function(){
+		$(".modal_modify_btn").on("click", function(){
 			console.log(this);
 			
-			var marketReplyId = $("#marketReplyId").val();
-			var marketReplyContent = $(".modal_repCon").val();
-			
-			
-			console.log("선택된 댓글 번호 : " + marketReplyId + ", 댓글 내용 : " + marketReplyContent);
+			var marketReplyId = $("#modalReplyId").val();
+			var marketReplyContent = $("#modal_repCon").val();
+						
+			console.log("수정된 댓글 번호 : " + marketReplyId + ", 수정된 댓글 내용 : " + marketReplyContent);
 			
 			
 			// ajax 요청
@@ -233,7 +234,8 @@
 						alert('댓글 수정 성공!');
 						getAllReply();
 						 $(".replyModal").attr("style", "display:none;");
-						 
+						 console.log("modified");
+						 modified.innerHTML = '(수정됨)';
 					} else {
 						alert('댓글 수정 실패');
 					}
@@ -295,7 +297,7 @@
 		console.log('btn_commentAdd');
 		var marketReplyId = $(this).val(); // Id 가져오기
 		var memberId = $('#memberId').val();
-		var marketCommentContent = $('#marketCommentContent').val();
+		var marketCommentContent = $('#addCommentContent').val();
 		
 		var obj = {
 				'marketReplyId' : marketReplyId,
@@ -335,23 +337,23 @@
 		$(".commentModifyModal").attr("style", "display:block;");
 		
 		var commentId = $(this).closest('.comment_item').find('#marketCommentId').val(); 
-		var commentContent = $(this).parent().parent().children(".marketCommentContent").text(); // 원본 댓글 내용 가져오기
+		var commentContent = $(this).closest('.comment_item').find('#marketCommentContent').text();  // 원본 댓글 내용 가져오기
 		
 		console.log("commentId : " + commentId, "commentContent : " + commentContent);
 		
-		 $(".modal_comCon").val(commentContent);
-		 $("#marketCommentId").val(commentId);
+		 $("#modal_comCon").val(commentContent);
+		 $("#modalCommentId").val(commentId);
 		 
 		}); // end modal
 		
-	
+	//addcommentcontent
 	// 선택된 대댓글 수정
 	$(".comment_modify_btn").click(function(){
 		console.log(this);
 		
-		var marketCommentId = $("#marketCommentId").val();
-		var marketCommentContent = $(".modal_comCon").val();
-		console.log("선택된 대댓글 번호 : " + marketCommentId + ", 대댓글 내용 : " + marketCommentContent);
+		var marketCommentId = $("#modalCommentId").val();
+		var marketCommentContent = $("#modal_comCon").val();
+		console.log("수정된 대댓글 번호 : " + marketCommentId + ", 수정된 대댓글 내용 : " + marketCommentContent);
 		
 		
 		// ajax 요청
@@ -412,22 +414,24 @@ function getText(clickedElement) {
   let memberId = clickedElement.textContent;
   console.log("clicked : " + memberId);
   
-  $('#marketCommentContent').val(memberId +" → ");
+  $('#addCommentContent').val(memberId +" → ");
 } // end getText
 
 
-
-
+$(".modal_modify_btn").on("click", function(){
+	console.log("modified");
+	modified.innerHTML = '(수정됨)';
+});
 	</script>
 
 <!-- 수정 모달 -->
 <div class="replyModal">
 
  <div class="modalContent">
-  <input type="hidden" class="marketReplyId" value="${marketReplyVO.marketReplyId }">  
+  <input type="hidden" id="modalReplyId">  
   <p> 댓글 아이디 : </p>
   <div>
-   <textarea class="modal_repCon" name="modal_repCon"></textarea>
+   <textarea id="modal_repCon" name="modal_repCon"></textarea>
   </div>
   
   <div>
@@ -446,9 +450,9 @@ function getText(clickedElement) {
 <div class="commentModifyModal">
 
  <div class="modalModifyContent">
-  <input type="hidden" class="marketReplyId" value="${marketReplyVO.marketReplyId }">  
+  <input type="hidden" id="modalCommentId">  
   <div>
-   <textarea class="modal_comCon" name="modal_comCon"></textarea>
+   <textarea id="modal_comCon" name="modal_comCon"></textarea>
   </div>
   
   <div>
@@ -465,13 +469,13 @@ function getText(clickedElement) {
 
 <script>
 
-$(".modal_cancle").click(function(){	
-   $(".replyModal").attr("style", "display:none;");
-});
+	$(".modal_cancle").click(function(){	
+ 	  $(".replyModal").attr("style", "display:none;");
+	});
 
-$(".modify_comment_cancle").click(function(){
-	$(".commentModifyModal").attr("style", "display:none;");
-});
+	$(".modify_comment_cancle").click(function(){
+		$(".commentModifyModal").attr("style", "display:none;");
+	});
 
 	
 </script>

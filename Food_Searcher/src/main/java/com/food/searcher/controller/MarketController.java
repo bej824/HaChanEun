@@ -33,9 +33,6 @@ import lombok.extern.log4j.Log4j;
 public class MarketController {
 	
 	@Autowired
-	private String uploadPath; // Bean으로 설정된 uploadPath() 객체 주입
-	
-	@Autowired
 	private MarketService marketService;
 	
 	@GetMapping("/list")
@@ -61,7 +58,7 @@ public class MarketController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
-	public String marketPOST (HttpSecurity http, MarketVO marketVO, MultipartFile file) {
+	public String marketPOST (MarketVO marketVO) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
 		
