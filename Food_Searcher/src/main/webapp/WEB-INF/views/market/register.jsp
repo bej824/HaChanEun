@@ -60,7 +60,7 @@ textarea {
 		
 	<h2>글 작성 페이지</h2>
 	
-	<form action="register" method="POST" enctype="multipart/form-data">
+	<form action="register" method="POST">
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 
 		<div>
@@ -119,33 +119,7 @@ textarea {
 				placeholder="내용 입력" maxlength="300" required></textarea>
 			<br> <input type="submit" value="등록">
 
-			<script>
-			
-			$(document).ajaxSend(function(e, xhr, opt){
-				var token = $("meta[name='_csrf']").attr("content");
-				var header = $("meta[name='_csrf_header']").attr("content");
-				
-				xhr.setRequestHeader(header, token);
-			});
 		
-				// 미리보기
-				function loadFile(input) {
-					let file = input.files[0]; // 선택파일 가져오기
-					let newImage = document.createElement("img"); //새 이미지 태그 생성
-					
-
-					//이미지 source 가져오기
-					newImage.src = URL.createObjectURL(file);
-					newImage.style.width = "10%";
-					newImage.style.height = "10%";
-					newImage.style.objectFit = "cover"; // div에 넘치지 않고 들어가게
-
-					//이미지를 imageShow div에 추가
-					let container = document.getElementById('imageShow');
-					container.appendChild(newImage);
-				}
-			</script>
-
 		</div>
 
 

@@ -129,18 +129,42 @@ pageEncoding="UTF-8"%>
 		xhr.setRequestHeader(header, token);
 	});	  
 
-		   
+		// 댓글 삭제 관련
+		
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
-				
 				var marketId = ${marketVO.marketId}
-				
-				console.log("marketId : " + marketId);
+				var url = '../market/all/' + marketId;
+				console.log("marketId : " + marketId, ", url : " + url);
 				
 				 if (confirm('삭제하시겠습니까?')) {
+					 
+					 $.getJSON(
+								url, 			
+								function(data) {
+									console.log(data);
+					 
+						$.ajax({
+							type : 'DELETE',
+							url : '../market/commentByReply/' + marketReplyId,
+							headers : {
+								'Content-Type' : 'application/json'
+							},
+							success : function(result) {
+								console.log(result);
+								if(result == 1) {
+									console.log("댓글에 대한 대댓글 삭제 성공!");
+									getAllReply();
+								} else {
+									console.log("댓글에 대한 대댓글 삭제 실패");
+									}
+								}
+						}); // end commentByReply
+						
+						
 					 $.ajax({
 							type : 'DELETE', 
-							url : '../market/deleteReplyByMarket/' + marketId, 
+							url : '../market/deleteReplyByMarket/' + data, 
 							headers : {
 								'Content-Type' : 'application/json'
 							},
@@ -152,7 +176,10 @@ pageEncoding="UTF-8"%>
 									console.log("댓글 삭제 실패");
 									}
 								}
-							}); // end ajax
+							}); // end deleteReplyByMarket
+							
+
+								});
 						} // end confirm
 					$('#deleteForm').submit(); // form 데이터 전송
 			}); // end deleteMarket.click
