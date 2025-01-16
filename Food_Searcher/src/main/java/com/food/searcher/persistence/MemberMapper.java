@@ -15,7 +15,7 @@ public interface MemberMapper {
 	// 멤버 관리
 	int insertMember(MemberVO memberVO);
 	MemberVO selectMemberByMemberId(String memberId);
-	MemberVO searchId(@Param("memberName") String memberName, @Param("email") String email);
+	List<MemberVO> searchId(@Param("memberName") String memberName, @Param("email") String email);
 	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
 	List<MemberVO> selectList();
 	int updateMemberByMemberId(MemberVO memberVO);

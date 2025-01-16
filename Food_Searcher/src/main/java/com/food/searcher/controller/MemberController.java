@@ -32,6 +32,10 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	
 	// 회원가입 시 이메일 인증 호출
 	@GetMapping("/registerEmail")
 	public void rigisterEmailGET(@RequestParam(value="select") String select, Model model) {
@@ -55,9 +59,12 @@ public class MemberController {
 	@PostMapping("/registerClear")
 	public int registerPOST(@RequestBody MemberVO memberVO) {
 		log.info("registerPOST()");
-		log.info(memberVO);
-		int result = memberService.createMember(memberVO);
-		log.info(result + "행 등록");
+		
+		int result = 0;
+		memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
+		log.info("회원가입 정보 등록 : " + memberVO);
+		
+		result = memberService.createMember(memberVO);
 		
 		return result;
 	} // end registerPOST()
@@ -154,15 +161,15 @@ public class MemberController {
 	
 	@ResponseBody
 	@PostMapping("/idSearchAjax") // 아이디 찾기
-	public MemberVO idSearchAjaxPOST(@RequestParam("memberName") String memberName,
+	public List<MemberVO> idSearchAjaxPOST(@RequestParam("memberName") String memberName,
 			@Param("email") String email, MemberVO memberVO) {
 		log.info("idSearchAjaxPOST()");
 		log.info(memberName);
 		log.info(email);
 		
-		memberVO = memberService.searchId(memberName, email);
+		List<MemberVO> memberIdList = memberService.searchId(memberName, email);
 
-		return memberVO;
+		return memberIdList;
 	}
 	
 	@GetMapping("/pwSearch")
@@ -186,13 +193,13 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/pwUpdate")
 	public int pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
-			@Param("password") String password, Model model, PasswordEncoder passwordEncoder) {
+			@Param("password") String password, Model model) {
 		log.info("pwUpdatePOST()");
-		
 		int result = 0;
 		
+		String encPw = passwordEncoder.encode(password);
+
 		try {
-			String encPw = passwordEncoder.encode(password);
 			result = memberService.updatePassword(memberId, email, encPw);
 			
 		} catch (Exception e) {

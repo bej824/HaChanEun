@@ -47,6 +47,7 @@
 		 		let password2 = document.getElementById("password2").value;
 		 		let email = document.getElementById("email").value;
 		 		
+		 		
 				// 비밀번호와 비밀번호 재입력이 일치하는지 확인
     			if (password !== password2) {
       				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");

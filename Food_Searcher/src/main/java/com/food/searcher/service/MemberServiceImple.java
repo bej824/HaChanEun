@@ -65,7 +65,7 @@ public class MemberServiceImple implements MemberService {
 	}
 
 	@Override
-	public MemberVO searchId(String memberName, String email) {
+	public List<MemberVO> searchId(String memberName, String email) {
 		log.info("searchId()");
 		
 		return memberMapper.searchId(memberName, email);
