@@ -5,32 +5,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet"
+	href="../resources/css/Detail.css">
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 	
 </script>
 <style type="text/css">
-.comment_item {
-	margin-left: 30px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
-	margin-bottom: 10px;
-}
+
 
 .disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
-textarea {
-	width: 700px;
-	height: 280px;
-	padding: 12px 20px;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 4px;
-	background-color: rgb(240, 240, 240, 0);
-	font-size: 16px;
-	resize: none;
-}
 </style>
 <meta charset="UTF-8">
 <title>${LocalSpecialityVO.localTitle }</title>

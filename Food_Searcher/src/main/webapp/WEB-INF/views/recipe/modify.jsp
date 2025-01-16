@@ -81,8 +81,9 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
-	
+	<sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
 		<button id="change-upload" class="button">파일 변경</button>
+		</sec:authorize>
 	<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">

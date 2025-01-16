@@ -16,6 +16,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.food.searcher.service.CustomUserDetailsService;
 
+import lombok.extern.log4j.Log4j;
+
 // Spring Security의 설정을 정의하는 클래스
 // WebSecurityConfigurerAdapter를 상속하여 보안 기능을 구성
 @Configuration
@@ -37,7 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests()
 				.antMatchers("/searcher/**").permitAll()
-				.antMatchers("/searcher/access.admin").access("hasRole('ROLE_ADMIN')");
+				.antMatchers("/searcher/access.admin").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/recipe/register").access("hasRole('ROLE_MEMBER')")
+				.antMatchers("/recipe/modify").access("hasRole('ROLE_MEMBER')");
 
 		// 접근 제한 경로 설정
 		httpSecurity.exceptionHandling().accessDeniedPage("/auth/accessDenied");

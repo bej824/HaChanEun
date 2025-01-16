@@ -5,98 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet"
+	href="../resources/css/Reply.css">
 <style>
-/* 댓글창을 감싸는 replyBox 스타일 */
-.replyBox {
-	width: 100%;
-	max-width: 600px; /* 댓글 창의 최대 너비 */
-	margin: 20px auto; /* 화면 중앙에 배치 */
-	padding: 15px 20px; /* 패딩을 조정해서 더 컴팩트하게 */
-	border: 1px solid #ddd; /* 테두리 */
-	border-radius: 10px; /* 둥근 테두리 */
-	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-}
-
-/* 댓글 입력란 스타일 (왼쪽 정렬) */
-.replyBox input[type="text"] {
-	width: 100%;
-	padding: 10px;
-	font-size: 14px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background-color: #fff;
-	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
-	outline: none;
-	box-sizing: border-box; /* padding 포함 */
-	text-align: left; /* 왼쪽 정렬 */
-}
-
-/* 댓글 리스트 스타일 */
-.replyBox .reply-list {
-	margin-top: 20px;
-	padding: 0;
-	list-style: none;
-}
-
-.replyMemberId {
-	font-size: 14px;
-	color: #505050;
-}
-
-.timeButton {
-	text-align: right;
-}
-
-.comment {
-	width: 100%;
-	max-width: 600px; /* 댓글 창의 최대 너비 */
-	padding: 15px 20px; /* 패딩을 조정해서 더 컴팩트하게 */
-	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-}
-
-.btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	margin: 4px 2px;
-	cursor: pointer;
-	float: right;
-}
-
-.btn_update:disabled, .btn_delete:disabled, .comment_update:disabled, .comment_delete:disabled, .comment_add:disabled {
-    display: none;
-}
-
-.btn_comment {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	margin: 4px 2px;
-	cursor: pointer;
-	float: left;
-}
-
-.btn_add {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
-	float: right;
-}
 </style>
 
 <meta charset="UTF-8">
@@ -121,6 +32,13 @@
 	</div>
 
 	<script type="text/javascript">
+	
+		$(document).ajaxSend(function(e, xhr, opt){
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+		
+			xhr.setRequestHeader(header, token);
+		});
         
 		$(document).ready(function(){
 			getAllReply(); // 함수 호출
@@ -129,9 +47,6 @@
 			$('#btnAdd').click(function(){
 				let localId = $('#localId').val(); // 게시판 번호 데이터
 				let memberId = '<sec:authentication property="name" />'
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
 				console.log(headerReplyContent);
@@ -151,9 +66,6 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -224,46 +136,57 @@
 				
 			} // end getAllReply()
 			
-			// 수정 버튼을 클릭하면 선택된 댓글 수정
-			$('#replies').on('click', '.reply_item .btn_update', function(){
-				console.log(this);
+			// 수정 버튼 클릭시 모달 띄우기 
+			$(document).on("click", ".btn_update", function(){
+				$(".replyModal").attr("style", "display:block;");
 				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
+				var replyId = $(this).closest('.reply_item').find('#replyId').val();   // 댓글 Id 가져오기
+				var replyContent = $(this).closest('.reply_item').find("#replyContent").val(); // 원본 댓글 내용 가져오기
 				
-				// 선택된 댓글의 replyId, replyContent 값을 저장
-				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-				const replyId = $(this).prevAll('#replyId').val();
-				const replyContent = $(this).prevAll('#replyContent').val();
+				console.log("replyId : " + replyId, "replyContent : " + replyContent);
 				
-				console.log("replyContent : " + replyContent);
+				 $(".modal_repCon").val(replyContent);
+				 $("#localReplyId").val(replyId);
 				
-				// ajax 요청
-				$.ajax({
-					type : 'PUT', 
-					url : 'updateReply/' + replyId,
-					headers : {
-						'Content-Type' : 'application/json'
-					},
-					data : replyContent,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
-					success : function(result) {
-						console.log(result);
-						if(result == 1) {
-							alert('댓글 수정 성공!');
-							getAllReply();
+				}); // end modal
+				 
+				// 수정 버튼을 클릭하면 선택된 댓글 수정
+				$(".modal_modify_btn").on("click", function(){
+					console.log(this);
+					
+					const token = $("meta[name='_csrf']").attr("content");
+					const header = $("meta[name='_csrf_header']").attr("content");
+					
+					// 선택된 댓글의 replyId, replyContent 값을 저장
+					// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
+					const replyId = $("#localReplyId").val();
+					const replyContent = $(".modal_repCon").val();
+					
+					console.log("선택된 replyId : " + replyId, ", 수정된 replyContent : " + replyContent);
+					
+					// ajax 요청
+					$.ajax({
+						type : 'PUT', 
+						url : 'updateReply/' + replyId,
+						headers : {
+							'Content-Type' : 'application/json'
+						},
+						data : replyContent,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
+				            },
+						success : function(result) {
+							console.log(result);
+							if(result == 1) {
+								alert('댓글 수정 성공!');
+								getAllReply();
+								$(".replyModal").attr("style", "display:none;");
+							}
 						}
-					}
-				});
-			}); // end btn_update()
+					});
+				}); // end btn_update()
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
-				console.log(this);
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				let replyId = $(this).prevAll('#replyId').val();
 				let localId = $('#localId').val();
@@ -276,9 +199,6 @@
 						'Content-Type' : 'application/json'
 					},
 					data : replyId, 
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -362,9 +282,6 @@
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
         
-        const token = $("meta[name='_csrf']").attr("content");
-		const header = $("meta[name='_csrf_header']").attr("content");
-        
         let localId = $('#localId').val();
         let memberId = '<sec:authentication property="name" />';
         let replyId = $(this).val();  // 댓글 ID
@@ -394,9 +311,6 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -409,7 +323,23 @@
 			
 		 }); // end comment_add()
 		 
-		 $('#replies').on('click', '.reply_item .comment_update', function(){
+		// 대댓글 수정 모달창 띄우기
+			$(document).on("click", ".comment_update", function(){
+				$(".commentModifyModal").attr("style", "display:block;");
+				
+				var commentId =  $(this).closest('.comment_item').find("#commentId").val(); // 원본 댓글 내용 가져오기
+				var commentContent =  $(this).closest('.comment_item').find("#commentContent").val(); // 원본 댓글 내용 가져오기
+				
+				console.log("commentId : " + commentId, "commentContent : " + commentContent);
+				
+				 $("#modal_comCon").val(commentContent);
+				 $("#localCommentId").val(commentId);
+				 
+				}); // end modal
+		 
+				
+				// 대댓글 수정 버튼 클릭 시
+				$(".comment_modify_btn").click(function(){
 				console.log(this);
 				
 				const token = $("meta[name='_csrf']").attr("content");
@@ -417,10 +347,10 @@
 				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-				let commentId = $(this).prevAll('#commentId').val();
-				let commentContent = $(this).prevAll('#commentContent').val();
+				let commentId = $('#localCommentId').val();
+				let commentContent = $('#modal_comCon').val();
 				
-				console.log("commentContent : " + commentContent);
+				console.log("수정된 commentId : " + commentId, "수정된 commentContent : " + commentContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -438,16 +368,15 @@
 						if(result == 1) {
 							alert('대댓글 수정 성공!');
 							getAllReply();
+							 $(".commentModifyModal").attr("style", "display:none;");
 						}
 					}
 				});
 			}); // end comment_update()
 			
+			
 			$('#replies').on('click', '.reply_item .comment_delete', function(){
 				console.log(this);
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
@@ -460,10 +389,7 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : commentId, 
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
+					data : commentId,
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -478,6 +404,58 @@
 		
 		
 	</script>
+
+<!-- 수정 모달 -->
+<div class="replyModal">
+
+ <div class="modalContent">
+  <input type="hidden" id="localReplyId">  
+  <div>
+   <textarea class="modal_repCon" name="modal_repCon"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="modal_modify_btn">수정</button>
+   <button type="button" class="modal_cancle">취소</button>
+  </div>
+  
+ </div>
+
+ <div class="modalBackground"></div>
+ 
+</div>
+
+<!-- 대댓글 수정 모달 -->
+<div class="commentModifyModal">
+
+ <div class="modalModifyContent">
+  <input type="hidden" id="localCommentId">  
+  <div>
+   <textarea id="modal_comCon" name="modal_comCon"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="comment_modify_btn">수정</button>
+   <button type="button" class="modify_comment_cancle">취소</button>
+  </div>
+  
+ </div>
+
+ <div class="modalBackground"></div>
+ 
+</div>
+
+<script>
+	// 모달에서 취소 버튼 클릭시 실행(모달 숨기기)
+	$(".modal_cancle").click(function(){	
+	    $(".replyModal").attr("style", "display:none;");
+	});
+	
+	// 대댓글 수정 취소
+	$(".modify_comment_cancle").click(function(){
+		$(".commentModifyModal").attr("style", "display:none;");
+	});
+</script>
 
 </body>
 </html>
