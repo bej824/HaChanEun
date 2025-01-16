@@ -121,6 +121,13 @@
 	</div>
 
 	<script type="text/javascript">
+	
+		$(document).ajaxSend(function(e, xhr, opt){
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+		
+			xhr.setRequestHeader(header, token);
+		});
         
 		$(document).ready(function(){
 			getAllReply(); // 함수 호출
@@ -129,9 +136,6 @@
 			$('#btnAdd').click(function(){
 				let localId = $('#localId').val(); // 게시판 번호 데이터
 				let memberId = '<sec:authentication property="name" />'
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
 				console.log(headerReplyContent);
@@ -151,9 +155,6 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -260,10 +261,6 @@
 			}); // end btn_update()
 			
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
-				console.log(this);
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				let replyId = $(this).prevAll('#replyId').val();
 				let localId = $('#localId').val();
@@ -276,9 +273,6 @@
 						'Content-Type' : 'application/json'
 					},
 					data : replyId, 
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -362,9 +356,6 @@
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
         
-        const token = $("meta[name='_csrf']").attr("content");
-		const header = $("meta[name='_csrf_header']").attr("content");
-        
         let localId = $('#localId').val();
         let memberId = '<sec:authentication property="name" />';
         let replyId = $(this).val();  // 댓글 ID
@@ -394,9 +385,6 @@
 						'Content-Type' : 'application/json' // json content-type 설정
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 						console.log(result);
 						if(result == 1) {
@@ -411,9 +399,6 @@
 		 
 		 $('#replies').on('click', '.reply_item .comment_update', function(){
 				console.log(this);
-				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
 				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
@@ -430,9 +415,6 @@
 						'Content-Type' : 'application/json'
 					},
 					data : commentContent,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -446,9 +428,6 @@
 			$('#replies').on('click', '.reply_item .comment_delete', function(){
 				console.log(this);
 				
-				const token = $("meta[name='_csrf']").attr("content");
-				const header = $("meta[name='_csrf_header']").attr("content");
-				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
 				console.log("선택된 댓글 번호 : " + commentId);
@@ -460,10 +439,7 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : commentId, 
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-			            },
+					data : commentId,
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {

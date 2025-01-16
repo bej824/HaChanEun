@@ -3,6 +3,7 @@ package com.food.searcher.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -137,47 +138,31 @@ public class MemberController {
 		return result;
 		
 	}
-
+	
 	@GetMapping("/idSearch")
-	public String ID(Model model) {
-		log.info("ID");
-		return "access/idSearch";
+	public String idSearchGET() {
+		log.info("idSearchGET()");
+		return "redirect:registerEmail?select=idSearch";
 	}
 
-	@PostMapping("/idSearch") // 아이디 찾기
-	public String findId(@RequestParam(value = "memberName", required = false) String memberName,
-			@Param("email") String email, Model model) {
+	@PostMapping("/idSearch")
+	public void idSearchPOST(@Param("email") String email, Model model) {
+		log.info("idSearchPOST()");
 		
-		log.info("Member Name: " + memberName);
-		log.info("Email: " + email);
 		model.addAttribute("email", email);
+	}
+	
+	@ResponseBody
+	@PostMapping("/idSearchAjax") // 아이디 찾기
+	public MemberVO idSearchAjaxPOST(@RequestParam("memberName") String memberName,
+			@Param("email") String email, MemberVO memberVO) {
+		log.info("idSearchAjaxPOST()");
+		log.info(memberName);
+		log.info(email);
 		
-		// 파라미터가 null인 경우 에러 처리
-		if (memberName == null) {
-			log.error("Missing required parameters: memberName or email");
-			model.addAttribute("error", "Both memberName and email are required.");
-			return "access/idSearch"; // 에러 메시지를 사용자에게 전달
-		}
+		memberVO = memberService.searchId(memberName, email);
 
-		// MemberService에서 ID 찾기
-		MemberVO memberVO = memberService.searchId(memberName, email);
-		log.info(memberVO);
-
-		// 검색 결과가 없으면, 에러 메시지 전달
-		if (memberVO == null) {
-			log.error("No member found with the given memberName and email.");
-			model.addAttribute("error", "No member found with the provided details.");
-			return "access/idSearch";
-		}
-
-		log.info("Returned MemberVO: " + memberVO);
-
-        model.addAttribute("memberName", memberName);
-        model.addAttribute("email", email);
-		// 결과를 모델에 추가하여 뷰에서 사용하도록 설정
-		model.addAttribute("memberVO", memberVO);
-
-		return "access/idSearch"; // 결과 페이지로 이동
+		return memberVO;
 	}
 	
 	@GetMapping("/pwSearch")
@@ -187,33 +172,34 @@ public class MemberController {
 	}
 	
 	@PostMapping("/pwSearch")
-	public void pwSearchPOST(@Param("email") String email, Model model) {
+	public void pwSearchPOST(@RequestParam(value="memberId", required=false) String memberId,
+			@RequestParam("email") String email, Model model) {
 		log.info("pwSearchPOST()");
+		
+		if(memberId == null) {
+			memberId = "";
+		}
+		model.addAttribute("memberId", memberId);
 		model.addAttribute("email", email);
 	}
 	
+	@ResponseBody
 	@PostMapping("/pwUpdate")
-	public String pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
+	public int pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
 			@Param("password") String password, Model model, PasswordEncoder passwordEncoder) {
 		log.info("pwUpdatePOST()");
 		
-		String encPw = passwordEncoder.encode(password);
-		
-		int result = memberService.updatePassword(memberId, email, encPw);
-		String alertMsg;
+		int result = 0;
 		
 		try {
-		if(result == 1) {
-			log.info("로그아웃 비밀번호 변경");
-			alertMsg = "비밀번호 변경에 성공하였습니다.";
-		} else {
-			alertMsg = "아이디 또는 이메일이 맞지 않습니다.\n아이디 찾기를 먼저 진행해주세요.";
-		}
+			String encPw = passwordEncoder.encode(password);
+			result = memberService.updatePassword(memberId, email, encPw);
+			
 		} catch (Exception e) {
-			alertMsg = "아이디가 존재하지 않습니다.\n아이디 찾기를 먼저 진행해주세요.";
+			
 		}
-		model.addAttribute("alertMsg", alertMsg);
-		return "/auth/login";
+		
+		return result;
 		
 	}
 	

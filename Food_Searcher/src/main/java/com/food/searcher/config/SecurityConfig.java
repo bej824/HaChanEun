@@ -16,6 +16,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.food.searcher.service.CustomUserDetailsService;
 
+import lombok.extern.log4j.Log4j;
+
 // Spring Security의 설정을 정의하는 클래스
 // WebSecurityConfigurerAdapter를 상속하여 보안 기능을 구성
 @Configuration

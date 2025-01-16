@@ -27,6 +27,12 @@ public class LocalServiceImple implements LocalService {
 	@Autowired
 	private LocalCommentMapper localCommentMapper;
 	
+	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
+		log.info("createSpeciality()");
+		
+		return localMapper.insertSepeciality(localSpecialityVO);
+	}
+	
 	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {
@@ -41,6 +47,12 @@ public class LocalServiceImple implements LocalService {
 	public List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle) {
 		log.info("getSpecialityByLocalTitle()");
 		return localMapper.selectByLocalTitle(localTitle);
+	}
+	
+	@Override
+	public List<String> getDistrictByLocal(String localLocal) {
+		log.info("getDistrictByLocal()");
+		return localMapper.selectDistrict(localLocal);
 	}
 	
 	@Transactional
