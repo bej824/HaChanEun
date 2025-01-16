@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>이메일 인증</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<meta name="_csrf" content="${_csrf.token}">  <!-- Spring Security가 자동으로 생성한 CSRF 토큰을 포함 -->
-<meta name="_csrf_header" content="${_csrf.headerName}">  <!-- CSRF 토큰 이름을 포함 -->
 <style>
 
 body {
@@ -28,6 +24,7 @@ body {
 </style>
 </head>
 <body>
+
 	<!-- 사용 시 '"헤더를 적용시킬 url" + ?select="form을 전달할 url"로 작성할 것.' -->
 	<form  id="emailForm" action="${select }" method="POST">
 	<input type="text" id="email" name="email" placeholder="이메일을 입력해주세요.">
@@ -45,6 +42,14 @@ body {
 	<button id="btn_auth" class="button" onclick="emailAuth()" style="display: none;">인증</button>
 
 	<script type="text/javascript">
+	
+		$(document).ajaxSend(function(e, xhr, opt){
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+	
+			xhr.setRequestHeader(header, token);
+		});
+	
 		
 		// 카운트 제한 변수
 		const count = 300; // 재발송 시간
@@ -61,10 +66,6 @@ body {
 		// 메세지 변수
 		const emailMsg = $('#emailMsg');
 		const confirmMsg = $('#confirmMsg');
-		
-		// 시큐리티 변수
-		const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-	    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 	
 		function confirm() {
 			
@@ -76,9 +77,6 @@ body {
 			    type: 'POST',
 			    url: '../access/emailConfirm',
 			    data: { email: email.value},
-			    beforeSend: function (xhr) {
-	                xhr.setRequestHeader(csrfHeader, csrfToken);  // CSRF 토큰을 헤더에 설정
-	            },
 			    success: function(result) {
 			      if (result == '1') {
 			      } else {
@@ -98,9 +96,6 @@ body {
 			    url: '../access/emailCheck',
 			    data: { email : email.value,
 			    	emailCheck: emailCheck.value },
-			   beforeSend: function (xhr) {
-			                xhr.setRequestHeader(csrfHeader, csrfToken);  // CSRF 토큰을 헤더에 설정
-			            },
 			    success: function(result) {
 			      if (result == '1') {
 			    	confirmMsg.html('인증되었습니다.').css('color', 'green');

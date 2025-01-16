@@ -34,6 +34,22 @@ public class LocalController {
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 	}
+	
+	@GetMapping("register")
+	public void registerSpecialityGET(){
+		log.info("registerSpecialityGET()");
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("createSpeciality")
+	public int createSpecialityPOST(LocalSpecialityVO localSpecialityVO) {
+		log.info("createSpecialityPOST()");
+		log.info("등록할 특산품 : " + localSpecialityVO);
+		int result = localService.createSpeciality(localSpecialityVO);
+		
+		return result;
+	}
 
 	@ResponseBody
 	@GetMapping("localUpdate")
@@ -45,6 +61,16 @@ public class LocalController {
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
 
 		return SpecialityList;
+	}
+	
+	@ResponseBody
+	@GetMapping("listDistrict")
+	public List<String> localDistrictGET(@RequestParam("localLocal") String localLocal) {
+		log.info("localDistrictGET()");
+		List<String> districtList = localService.getDistrictByLocal(localLocal);
+		log.info(districtList);
+		
+		return districtList;
 	}
 
 	@PostMapping("update")

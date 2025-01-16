@@ -1,9 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 
 .search {
@@ -130,8 +128,13 @@ a:link, a:visited, a:hover, a:active {
 		<tbody></tbody>
 	</table>
 	</div>
+	
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<button onclick="insertSpeciality()" class="button">특산품 등록</button>
+	</sec:authorize>
 
 	<script type="text/javascript">
+	
 		$(document).ready(function(){
 			let indexLocalLocal = "${localLocal }"
 			let indexLocalDistrict = "${localDistrict }"
@@ -227,8 +230,13 @@ a:link, a:visited, a:hover, a:active {
 			    
 			} // end listUpdate
 			
+			
 			}) // end ready
 			
+			function insertSpeciality(){
+				console.log("insertSpeciality()");
+				window.location.href = 'register';
+			}
 	</script>
 	
 </body>

@@ -1,7 +1,3 @@
-<%@page import="com.food.searcher.service.MemberService"%>
-<%@page import="com.food.searcher.domain.MemberVO"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -75,6 +71,13 @@
 	<script type="text/javascript">
 	let memberAge = "";
     let memberConstellation = "";
+    
+    $(document).ajaxSend(function(e, xhr, opt){
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+		xhr.setRequestHeader(header, token);
+	});
 	
 	function birth(birthday){
 		const birthMsg = $('#birthMsg');
@@ -231,9 +234,6 @@
 					'Content-Type' : 'application/json' // json content-type 설정
 				}, 
 				data : JSON.stringify(obj), // JSON으로 변환
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-		            },
 				success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 					console.log(result);
 					if(result == 1) {

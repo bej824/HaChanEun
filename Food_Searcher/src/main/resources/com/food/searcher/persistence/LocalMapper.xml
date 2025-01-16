@@ -16,6 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="replyCount" column="REPLY_COUNT" />
 
 	</resultMap>
+	
+	<insert id ="insertSepeciality">
+		INSERT INTO MEMBER 
+		(LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, LOCAL_CONTENT, REPLY_COUNT)
+		VALUES (LOCALSPECIALITY_SEQ.NEXTVAL, #{localLocal}, #{localDistrict}, #{localTitle}, #{localContent}, 0)
+	</insert>
 
 	<select id="selectList" resultMap="localResultMap">
 		<!-- 특산품 조회 검색어가 null이거나 ''이면 무시됨 -->
@@ -27,6 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND LOCAL_DISTRICT = #{localDistrict}
 		</if>
 
+	</select>
+	
+	<select id="selectDistrict" resultType="String">
+		<!-- 상세 지역 조회 -->
+		SELECT DISTINCT LOCAL_DISTRICT
+		FROM LOCAL_SPECIALITY
+		WHERE LOCAL_LOCAL = #{localLocal}
 	</select>
 	
 	<select id="selectByLocalTitle" resultMap="localResultMap">

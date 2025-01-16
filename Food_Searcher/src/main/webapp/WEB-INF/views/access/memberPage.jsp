@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <title>회원 개인 정보</title>
 </head>
@@ -100,7 +97,12 @@
 	<a href="/searcher/access/admin">운영자</a>
 
 	<script type="text/javascript">
-	
+		$(document).ajaxSend(function(e, xhr, opt){
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			xhr.setRequestHeader(header, token);
+		});
 	
 		function update() {
 			let result = confirm("수정하시겠습니까?");
@@ -117,8 +119,6 @@
 		}
 		
 		function statusUpdate() {
-			const token = $("meta[name='_csrf']").attr("content");
-			const header = $("meta[name='_csrf_header']").attr("content");
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
 				let memberId = '${vo.memberId }';
@@ -131,9 +131,6 @@
 				    url: '../access/statusUpdate',
 				    data: { memberId: memberId,
 				    	memberStatus: memberStatus},
-				    beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
-				        },
 				    success: function(result) {
 				    	console.log(result);
 				      if (result == 1) {
