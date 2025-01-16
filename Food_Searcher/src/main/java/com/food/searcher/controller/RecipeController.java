@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,7 @@ public class RecipeController {
 	private RecipeService recipeService;
 	
 	@GetMapping("/list")
-	public void list(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @RequestParam(defaultValue = "1") int pageNum, Model model, Pagination pagination) {
+	public void list(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Model model, Pagination pagination) {
 		log.info("list()");
 		log.info("pagination : " + pagination);
 		log.info("recipeTitle : " + recipeTitle);
@@ -51,7 +52,7 @@ public class RecipeController {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		log.info(pageMaker);
-		pageMaker.setTotalCount(recipeService.getTotalCount(recipeTitle, filterBy));
+		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
 		log.info(pageMaker);
 		log.info(pageMaker.getEndNum());
 		if(pageMaker.getEndNum() >= pageNum && pageNum > 0) {
@@ -91,9 +92,14 @@ public class RecipeController {
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
 	// 조회된 게시글 데이터를 detail.jsp로 전송
 	@GetMapping("/detail")
-	public void detail(Model model, Integer recipeId) {
+	public void detail(Model model, Integer recipeId, @RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("detail()");
 		log.info("레시피 ID : " + recipeId);
+		log.info("recipeTitle : " + recipeTitle);
+		log.info("filterBy : " + filterBy);
+		pagination.setKeyword(recipeTitle);
+		pagination.setType(filterBy);
+		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
 		if(recipeId.equals(recipeVO.getRecipeId())) {

@@ -93,8 +93,6 @@ textarea {
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
-    
-    <!-- 이미지 재시도 -->
 
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
@@ -131,7 +129,7 @@ textarea {
 				    			  attachVO.attachExtension eq 'png' or 
 				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
-				        	<a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+				        	<a href="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" target="_blank">
 					        <img width="100px" height="100px" 
 					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
 				        </div>
@@ -160,27 +158,15 @@ textarea {
 		</div>
 	</div>
 
-	<!-- 이미지 재시도 -->
-
-    <button onclick="location.href='list'" class="button">글 목록</button>
+    <a href="/searcher/recipe/list?recipeTitle=${pagination.keyword}&filterBy=${pagination.type}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
 
     <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
     <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
 
-    <sec:authorize access="isAnonymous()">
-        <button onclick="location.href='../access/login'" class="button">글 수정</button>
-        <button id="deleteBoard" class="button" disabled>글 삭제</button>
-    </sec:authorize>
-
     <sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
-        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정1</button>
-        <button id="deleteBoard" class="button">글 삭제1</button>
+        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
+        <button id="deleteBoard" class="button">글 삭제</button>
     </sec:authorize>
-
-    <sec:authorize access="isAuthenticated() and principal.username != '${recipeVO.memberId }'">
-        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" disabled>글 수정2</button>
-        <button id="deleteBoard" class="button" disabled>글 삭제2</button>
-     </sec:authorize>
 <form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
     <!-- 레시피 ID hidden 필드 -->
     <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
@@ -198,15 +184,7 @@ textarea {
         }
     });
 </script>
-	
-		<script>
-function goBackToList() {
-    // 이전 페이지로 돌아가기
-    window.location.href = '/searcher/recipe/list?recipeTitle=${recipeTitle}&filterBy=${filterBy}&pageNum=${pageNum}';
-}
-</script>
 
-	<!-- 목록 -->
 	<script type="text/javascript">
 		$(document).ready(function(){
 		$("#listBoard").click(function(){
@@ -231,8 +209,6 @@ function goBackToList() {
 	});
 
 	</script>
-	<!-- 목록 -->
-	
 	
 	<%-- 추천 비추천 작업 예정 
 	<button id="up" class="button">추천${recipeVO.like }</button>
@@ -242,12 +218,9 @@ function goBackToList() {
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 
-
-
 	<div style="text-align: center;">
 		<div id="replies"></div>
 	</div>
-
 
 </body>
 </html>

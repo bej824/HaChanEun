@@ -146,7 +146,9 @@ public class RecipeImageController {
 	        log.info("imageBytes : " + imageBytes);
 	        
 	        // MIME 타입 추출
-	        String contentType = Files.probeContentType(path);
+	        Path extensionPath = Paths.get("." + attachExtension);
+	        log.info(extensionPath);
+	        String contentType = Files.probeContentType(extensionPath);
 	        log.info("contentType : " + contentType);
 	        if (contentType == null) {
 	            // 확장자 기반으로 contentType 설정

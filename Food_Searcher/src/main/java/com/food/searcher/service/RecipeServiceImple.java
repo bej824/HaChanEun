@@ -1,6 +1,7 @@
 package com.food.searcher.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,55 +105,17 @@ public class RecipeServiceImple implements RecipeService{
 	}
 
 	@Override
-	public int getTotalCount(String recipeTitle, String filterBy) {
+	public int getTotalCount(Pagination pagination) {
 		log.info("getTotalCount()");
-		if (filterBy == null) {
-			log.info("filterBy : " + filterBy);
-			log.info("recipeTitle : " + recipeTitle);
-			return recipeMapper.selectTotalCount();
-		}
-		else if(filterBy.equals("RECIPE_TITLE")) {
-			log.info("RECIPE_TITLE : " + filterBy);
-			return recipeMapper.titleTotalCount(recipeTitle);
-		} else if(filterBy.equals("RECIPE_FOOD")) {
-			log.info("RECIPE_FOOD : " + filterBy);
-			return recipeMapper.foodTotalCount(recipeTitle);
-		} else if(filterBy.equals("RECIPE_CONTENT")) {
-			log.info("RECIPE_CONTENT" + filterBy);
-			return recipeMapper.contentTotalCount(recipeTitle);
-		} else if(filterBy.equals("MEMBER_ID")) {
-			log.info("MEMBER_ID" + filterBy);
-			return recipeMapper.memberTotalCount(recipeTitle);
-		} else {
-			log.info("else : " + filterBy);
-			log.info("else : " + recipeTitle);
-			return recipeMapper.selectTotalCount();
-		}
+		return recipeMapper.selectTotalCount(pagination);
 	}
 
 	@Override
 	public List<RecipeVO> getPagingBoards(Pagination pagination) {
 		log.info("getPagingBoards()");
-		log.info("pagination : " + pagination);
-		if(pagination.getType() == null) {
-			log.info("null : " + pagination.getType());
-			return recipeMapper.selectListByPagination(pagination);			
-		}
-		else if(pagination.getType().equals("RECIPE_TITLE")){
-			log.info("RECIPE_TITLE : " + pagination.getType());
-			return recipeMapper.selectTitleByPagination(pagination.getKeyword(), pagination);
-		} else if(pagination.getType().equals("RECIPE_FOOD")) {
-			log.info("RECIPE_FOOD : " + pagination.getType());
-			return recipeMapper.selectFoodByPagination(pagination.getKeyword(), pagination);
-		} else if(pagination.getType().equals("RECIPE_CONTENT")) {
-			log.info("RECIPE_CONTENT : " + pagination.getType());
-			return recipeMapper.selectContentByPagination(pagination.getKeyword(), pagination);
-		} else if(pagination.getType().equals("MEMBER_ID")) {
-			log.info("MEMBER_ID : " + pagination.getType());
-			return recipeMapper.selectMemberByPagination(pagination.getKeyword(), pagination);
-		} else {
-			return recipeMapper.selectListByPagination(pagination);
-		}
+		List<RecipeVO> list = recipeMapper.selectListByPagination(pagination);
+		
+		return list.stream().collect(Collectors.toList());
 	}
 
 }

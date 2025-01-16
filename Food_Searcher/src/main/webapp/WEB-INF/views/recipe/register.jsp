@@ -96,7 +96,9 @@ textarea {
 	<div class="attachDTOFile-list">
 	</div>
 
+	<sec:authorize access="isAuthenticated()">
 	<button id="registerBoard" class="button">등록</button>
+	</sec:authorize>
 	<button onclick="goBack()" class="button">뒤로가기</button>
 
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>

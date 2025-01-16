@@ -59,6 +59,9 @@ li {
 	margin-left: 335px;
 }
 </style>
+<!-- jquery 라이브러리 import -->
+<script src="https://code.jquery.com/jquery-3.7.1.js">
+</script>
 <meta charset="UTF-8">
 <title>레시피 공유 게시판</title>
 </head>
@@ -66,13 +69,7 @@ li {
 	<%@ include file ="../header.jsp" %>
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
-	<sec:authorize access="isAnonymous()">
-	    <a href="/searcher/auth/login?redirect=${pageContext.request.requestURI}" class="button">글 작성</a>
-	</sec:authorize>
-	
-	<sec:authorize access="isAuthenticated()">
 	    <a href="register" class="button">글 작성</a>
-	</sec:authorize>
 	<hr>
 	<table>
 		<thead>
@@ -87,7 +84,7 @@ li {
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }'">
+				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
 					<td>${RecipeVO.recipeId }</td>
 					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
@@ -186,6 +183,32 @@ function changeColor(button, pageNum) {
 }
 </script>
 
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#searchForm button").on("click", function(e){
+				var searchForm = $("#searchForm");
+				e.preventDefault(); // a 태그 이벤트 방지
+				
+				var keywordVal = searchForm.find("input[name='keyword']").val();
+				console.log(keywordVal);
+				if(keywordVal == '') {
+					alert('검색 내용을 입력하세요.');
+					return;
+				}
+				
+				var pageNum = 1; // 검색 후 1페이지로 고정
+				// 현재 페이지 사이즈값 저장
+				var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
+				 
+				// 페이지 번호를 input name='pageNum' 값으로 적용
+				searchForm.find("input[name='pageNum']").val(pageNum);
+				// 선택된 옵션 값을 input name='pageSize' 값으로 적용
+				searchForm.find("input[name='pageSize']").val(pageSize);
+				searchForm.submit(); // form 전송
+			}); // end on()
+			
+		}); // end document()
+	</script>
 
 </body>
 </html>
