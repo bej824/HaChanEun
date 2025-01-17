@@ -159,7 +159,10 @@
 </form>
 
 <script>
-    document.getElementById("deleteBoard").addEventListener("click", function(event) {
+	let deleteButton = document.getElementById("deleteBoard");
+
+	if (deleteButton) {
+		deleteButton.addEventListener("click", function(event) {
         // 삭제 확인 팝업
         if (confirm("삭제하시겠습니까?")) {
             // 폼을 제출하여 서버로 delete 요청을 보냄
@@ -169,6 +172,7 @@
             event.preventDefault();
         }
     });
+	}
 </script>
 
 	<script type="text/javascript">

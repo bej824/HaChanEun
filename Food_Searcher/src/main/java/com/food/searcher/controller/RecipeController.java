@@ -92,13 +92,9 @@ public class RecipeController {
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
 	// 조회된 게시글 데이터를 detail.jsp로 전송
 	@GetMapping("/detail")
-	public void detail(Model model, Integer recipeId, @RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @ModelAttribute("pagination") Pagination pagination) {
+	public void detail(Model model, Integer recipeId, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("detail()");
 		log.info("레시피 ID : " + recipeId);
-		log.info("recipeTitle : " + recipeTitle);
-		log.info("filterBy : " + filterBy);
-		pagination.setKeyword(recipeTitle);
-		pagination.setType(filterBy);
 		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
@@ -106,11 +102,7 @@ public class RecipeController {
 		model.addAttribute("recipeVO", recipeVO);
 		List<AttachVO> attachVO = attachService.getBoardById(recipeId);
 		log.info("AttachVO : " + attachVO);
-		if(attachVO != null  && !attachVO.isEmpty()) {
 		model.addAttribute("idList", attachVO);
-		} else {
-			log.info("attachVO is null");
-		}
 		}
 	}
 	

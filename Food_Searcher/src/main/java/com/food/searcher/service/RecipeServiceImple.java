@@ -42,8 +42,6 @@ public class RecipeServiceImple implements RecipeService{
 		
 		int insertAttachResult = 0;
 		for(AttachVO attachVO : attachList) {
-			attachVO.setBoardId(getAllBoards().get(0).getRecipeId());
-			log.info(attachVO);
 			insertAttachResult += attachMapper.insert(attachVO);
 		}
 		log.info(insertAttachResult + "행 파일 정보 등록");
@@ -53,14 +51,25 @@ public class RecipeServiceImple implements RecipeService{
 	@Override
 	public List<RecipeVO> getAllBoards() {
 		log.info("getAllBoards()");
-		return recipeMapper.selectList();
+		List<RecipeVO> list = recipeMapper.selectList();
+		log.info("list : " + list);
+		return list.stream().collect(Collectors.toList());
 	}
 
 	@Override
 	public RecipeVO getBoardById(int recipeId) {
 		log.info("getBoardById()");
-		log.info(recipeId);
-		return recipeMapper.selectOne(recipeId);
+		log.info("recipeId : " + recipeId);
+		RecipeVO recipeVO = recipeMapper.selectOne(recipeId);
+		log.info("recipeVO : " + recipeVO);
+		List<AttachVO> list = attachMapper.selectByBoardId(recipeId);
+		log.info("list" + list);
+		
+		List<AttachVO> attachList = list.stream().collect(Collectors.toList());
+		log.info("attachList : " + attachList);
+		recipeVO.setAttachList(attachList);
+		log.info("attachList 추가 recipeVO : " + recipeVO);
+		return recipeVO;
 	}
 
 	@Transactional(value = "transactionManager")
@@ -73,11 +82,9 @@ public class RecipeServiceImple implements RecipeService{
 		log.info(updateBoardResult + "행 게시글 정보 수정");
 		List<AttachVO> attachList = recipeVO.getAttachList();
 		log.info("attachList" + attachList);
-		
-		if (!attachList.isEmpty()) {
+
 		int deleteAttachResult = attachMapper.delete(recipeVO.getRecipeId());
 		log.info(deleteAttachResult + "행 파일 정보 삭제");
-		}
 		
 		int insertAttachResult = 0;
 		for(AttachVO attachVO : attachList) {
@@ -89,6 +96,7 @@ public class RecipeServiceImple implements RecipeService{
 		return updateBoardResult;
 	}
 
+	@Transactional(value = "transactionManager")
 	@Override
 	public int deleteBoard(int recipeId) {
 		log.info("deleteBoard()");

@@ -3,7 +3,6 @@ package com.food.searcher.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +81,11 @@ public class RecipeAttachController {
         log.info("download()");
         
         // attachId로 상세 정보 조회
-        List<AttachVO> attachVO =  attachService.getAttachById(attachId);
-        String attachPath = attachVO.get(0).getAttachPath();
-        String attachChgName = attachVO.get(0).getAttachChgName();
-        String attachExtension = attachVO.get(0).getAttachExtension();
-        String attachRealName = attachVO.get(0).getAttachRealName();
+        AttachVO attachVO =  attachService.getAttachById(attachId);
+        String attachPath = attachVO.getAttachPath();
+        String attachChgName = attachVO.getAttachChgName();
+        String attachExtension = attachVO.getAttachExtension();
+        String attachRealName = attachVO.getAttachRealName();
         log.info(attachVO);
         
         // 서버에 저장된 파일 정보 생성

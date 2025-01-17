@@ -18,8 +18,7 @@
 	<div id="replies"></div>
 
 	<sec:authorize access="isAnonymous()">
-		* 댓글은 로그인이 필요한 서비스입니다.
-		<a href="../auth/login?redirect=${pageContext.request.requestURI}">로그인 하기</a>
+		* 댓글 작성은 로그인이 필요한 서비스입니다.
 	</sec:authorize>
 
 	<sec:authorize access="isAuthenticated()">
@@ -130,6 +129,14 @@
 								disabled = 'disabled';
 								readonly = 'readonly';
 							}
+							
+							let commentcount;
+							if(this.comments.length == 0) {
+								commentcount = '<button class="btn_commentList">답글</button>'
+							} else {
+								commentcount = '<button class="btn_commentList">답글'+this.comments.length +'</button>'
+							}
+							
 							list += '<div class="reply_item">'
 								+ '<pre>'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
@@ -141,7 +148,7 @@
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>'
 								+ '<br>'
-								+ '<button class="btn_comment">답글'+this.comments.length +'</button>'
+								+ commentcount
 								+ '<div class="comment"></div>'
 								+ '</pre>'
 
@@ -292,7 +299,7 @@
 				});
 			}); // end replies.on()		
 			
-			$('#replies').on('click', '.reply_item .btn_comment', function(){
+			$('#replies').on('click', '.reply_item .btn_commentList', function(){
 				$('.reply_item .comment').not($(this).closest('.reply_item').find('.comment')).html('');
 				
 				let replyId = $(this).prevAll('#replyId').val();
@@ -351,7 +358,7 @@
 									+ '<input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
 									+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
+									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'><br>'
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
 									+ '</div>'
@@ -360,7 +367,7 @@
 							<sec:authorize access="isAuthenticated()">
 					        // 로그인한 사용자가 있을 경우 댓글 작성 입력란과 버튼을 추가
 					        comment += '<input type="text" id="commentContentAdd" >'
-					            + '<button class="comment_add" value="'+ replyId +'">작성</button>';
+					            + '<button class="btn_commentAdd" value="'+ replyId +'">작성</button>';
 					            </sec:authorize>
 							commentDiv.html(comment);
 						}
@@ -373,7 +380,7 @@
 				
 			}) // end btn_comment()
 			
-			$('#replies').on('click', '.comment_add', function() {
+			$('#replies').on('click', '.btn_commentAdd', function() {
 		        // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
 		        console.log(this);
 		        let memberId = "<sec:authentication property="name" />"
@@ -414,7 +421,7 @@
 							}
 						});
 					
-				 }); // end comment_add()
+				 }); // end btn_commentAdd()
 				 
 		}); // end document()
 		

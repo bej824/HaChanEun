@@ -133,7 +133,7 @@ li {
     </c:if>
 
     <!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
-    <c:if test="${not empty pageMaker.startNum }">
+    <c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
         <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
             <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
         </c:forEach>

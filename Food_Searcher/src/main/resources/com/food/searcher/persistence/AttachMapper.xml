@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insert">
-		INSERT INTO ATTACH 
+		INSERT INTO RECIPE_ATTACH 
 		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, 
 		ATTACH_CHG_NAME, ATTACH_EXTENSION)
 		VALUES (ATTACH_SEQ.NEXTVAL, #{boardId}, #{attachPath}, #{attachRealName}, 
@@ -26,25 +26,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="selectAll" resultMap="attachResultMap">
-		SELECT * FROM ATTACH
+		SELECT * FROM RECIPE_ATTACH
 	</select>
 	
 	<select id="selectByBoardId" resultMap="attachResultMap">
-		SELECT * FROM ATTACH 
+		SELECT * FROM RECIPE_ATTACH 
 		WHERE BOARD_ID = #{boardId}
 	</select>
 	
 	<select id="selectByAttachId" resultMap="attachResultMap"> 
-		SELECT * FROM ATTACH 
+		SELECT * FROM RECIPE_ATTACH 
 		WHERE ATTACH_ID = #{attachId} 
 	</select>
 
 	<select id="selectIdList" resultType="Integer">
-		SELECT ATTACH_ID FROM ATTACH
+		SELECT ATTACH_ID FROM RECIPE_ATTACH
 	</select>
 
 	<update id="update">
-		UPDATE ATTACH
+		UPDATE RECIPE_ATTACH
 		SET ATTACH_PATH = #{attachPath},
     	ATTACH_REAL_NAME = #{attachRealName},
     	ATTACH_CHG_NAME = #{attachChgName},
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<delete id="delete">
-		DELETE FROM ATTACH
+		DELETE FROM RECIPE_ATTACH
 		WHERE BOARD_ID = #{boardId}
 	</delete>
 

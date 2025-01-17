@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.food.searcher.domain.AttachVO;
-import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.AttachService;
 import com.food.searcher.util.FileUploadUtil;
 
@@ -40,7 +38,7 @@ public class RecipeImageController {
     
 
 	@PostMapping
-	public ResponseEntity<ArrayList<AttachVO>> createImage(RecipeVO recipeVO, MultipartFile[] files) {
+	public ResponseEntity<ArrayList<AttachVO>> createImage(MultipartFile[] files) {
 		log.info("createImage()");
 		log.info(files);
 		ArrayList<AttachVO> list = new ArrayList<>();
@@ -110,67 +108,42 @@ public class RecipeImageController {
 	}
 
 	
-	
 	@GetMapping("/get")
-	public ResponseEntity<byte[]> getImage(Integer boardId, Integer attachId, String attachExtension) {
-	    log.info("getImage()");
-	    log.info("attachId : " + attachId);
-	    log.info("boardId : " + boardId);
-	    log.info("attachExtension : " + attachExtension);
+	public ResponseEntity<byte[]> getImage(int attachId, String attachExtension) {
+		log.info("getImage()");
+		
+		AttachVO attachVO = attachService.getAttachById(attachId);
+		ResponseEntity<byte[]> entity = null;
+		try {
+			// 파일을 읽어와서 byte 배열로 변환
+			String savedPath = uploadPath + File.separator 
+					+ attachVO.getAttachPath() + File.separator; 
 
-	    // 파일 정보 조회
-	    List<AttachVO> attachList = attachService.getAttachById(attachId);
-	    if (attachList.isEmpty()) {
-	        return ResponseEntity.notFound().build(); // 파일이 존재하지 않으면 404 반환
-	    }
-	    log.info("attachList : " + attachList);
+			if(attachExtension != null) {
+				savedPath += "t_" + attachVO.getAttachChgName() + "." + attachVO.getAttachExtension();					
+			} else {
+				savedPath += attachVO.getAttachChgName();
+			}
+			Path path = Paths.get(savedPath);
+			byte[] imageBytes = Files.readAllBytes(path);
 
-	    AttachVO attachVO = attachList.get(0); // 첫 번째 첨부 파일 정보
-	    log.info("AttachVO: " + attachVO);
-	    
-	    // 파일 경로 설정
-	    String savedPath = uploadPath + File.separator 
-	            + attachVO.getAttachPath() + File.separator;
-	    log.info("Saved path: " + savedPath);
 
-	    // 파일 이름과 확장자 처리
-	    String fileName = attachVO.getAttachChgName();
-	    log.info("fileName : " + fileName);
-	    
-	    Path path = Paths.get(savedPath, fileName);
-	    log.info("path : " + path);
+			Path extensionPath = Paths.get("." + attachVO.getAttachExtension());
+			// 이미지의 MIME 타입 확인하여 적절한 Content-Type 지정
+			String contentType = Files.probeContentType(extensionPath);
 
-	    // 파일 읽기 및 MIME 타입 처리
-	    try {
-	        byte[] imageBytes = Files.readAllBytes(path);
-	        log.info("imageBytes : " + imageBytes);
-	        
-	        // MIME 타입 추출
-	        Path extensionPath = Paths.get("." + attachExtension);
-	        log.info(extensionPath);
-	        String contentType = Files.probeContentType(extensionPath);
-	        log.info("contentType : " + contentType);
-	        if (contentType == null) {
-	            // 확장자 기반으로 contentType 설정
-	            if (fileName.endsWith(".webp")) {
-	                contentType = "image/webp";
-	            } else {
-	                contentType = "application/octet-stream"; // 기본 타입
-	            }
-	        }
+			// HTTP 응답에 byte 배열과 Content-Type을 설정하여 전송
+			HttpHeaders httpHeaders = new HttpHeaders();
+			httpHeaders.setContentType(MediaType.parseMediaType(contentType));
+			entity = new ResponseEntity<byte[]>(imageBytes, httpHeaders, HttpStatus.OK);
+		} catch (IOException e) {
+			// 파일을 읽는 중에 예외 발생 시 예외 처리
+			e.printStackTrace();
+			return ResponseEntity.notFound().build(); // 파일을 찾을 수 없음을 클라이언트에게 알림
+		}
 
-	        // HTTP 응답 설정
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.parseMediaType(contentType));
-	        log.info("headers : " + headers);
-	        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-
-	    } catch (IOException e) {
-	        log.error("Error reading file", e);
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 파일 읽기 실패 시 500 반환
-	    }
+		return entity;
 	}
-
 	
     // 섬네일 및 원본 이미지 삭제 기능
     @PostMapping("/delete")
