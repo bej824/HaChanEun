@@ -7,7 +7,9 @@ pageEncoding="UTF-8"%>
 <html>
 <head>
 <link rel="stylesheet"
-	href="../resources/css/marketDetail.css">
+	href="../resources/css/Detail.css">
+<link rel="stylesheet"
+	href="../resources/css/Reply.css">
 <style>
 
 .reply_item {
@@ -107,7 +109,7 @@ pageEncoding="UTF-8"%>
 	<sec:authorize access="isAuthenticated()">
   	  <input type="hidden" name="marketId" value="${marketVO.marketId }">
 	   	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-   	 <textarea name="marketReplyContent" id="marketReplyContent" class="reply_insert"></textarea>
+   	 <textarea name="marketReplyContent" id= "marketReplyContent" class="reply_insert"></textarea>
    	 <button id="btnAdd" class="button">댓글 작성</button>
 	</sec:authorize>
 	
@@ -133,8 +135,11 @@ pageEncoding="UTF-8"%>
 		
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
+				// 게시글 삭제 클릭 시
 				var marketId = ${marketVO.marketId}
 				var url = '../market/all/' + marketId;
+				// 게시글ID 불러오기. url은 댓글 출력 url
+				
 				console.log("marketId : " + marketId, ", url : " + url);
 				
 				 if (confirm('삭제하시겠습니까?')) {
@@ -143,7 +148,8 @@ pageEncoding="UTF-8"%>
 								url, 			
 								function(data) {
 									console.log(data);
-					 
+					 // 위의 url로 출력된 댓글을 data로 받아옴
+									
 						$.ajax({
 							type : 'DELETE',
 							url : '../market/commentByReply/' + marketReplyId,
@@ -189,7 +195,6 @@ pageEncoding="UTF-8"%>
 	</script>
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId}">
-	<input type="hidden" id="memberId" value="<%=session.getAttribute("memberId") %>">
 		
 	<!-- 댓글 -->
 	<%@ include file ="/WEB-INF/views/market/reply.jsp" %>

@@ -32,12 +32,15 @@ public class MarketCommentServiceImple implements MarketCommentService {
 	@Autowired
 	private MarketMapper marketMapper;
 	
+	@Transactional(value = "transactionManager")
 	@Override
 	public int createComment(MarketCommentVO marketCommentVO) {
 		log.info("createComment()");
+		
 		int insertResult = marketCommentMapper.insert(marketCommentVO);
-		log.info(insertResult + "행 대댓글 추가");
 		MarketReplyVO marketReplyVO = marketReplyMapper.selectOne(marketCommentVO.getMarketReplyId());
+		log.info(insertResult + "행 대댓글 추가");
+		
 		int updateResult = marketMapper
 				.updateReplyCount(marketReplyVO.getMarketId(), 1);
 		log.info(updateResult + "행 댓글 카운트 증가");
@@ -59,7 +62,6 @@ public class MarketCommentServiceImple implements MarketCommentService {
 		return marketCommentMapper.update(marketCommentVO);
 	}
 	
-	@Transactional(value = "transactionManager")
 	@Override
 	public int deleteComment(int marketCommentId, int marketReplyId) {
 		log.info("deleteReply()");

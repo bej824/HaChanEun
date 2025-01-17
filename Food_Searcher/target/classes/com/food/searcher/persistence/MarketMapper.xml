@@ -54,16 +54,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 페이지네이션 -->
 	SELECT * FROM
 	(
-		SELECT ROW_NUMBER() OVER(ORDER BY MARKET_ID DESC)
-		AS RN, MARKET.* FROM MARKET
+		SELECT ROW_NUMBER() OVER(ORDER BY MARKET_ID DESC) AS RN, MARKET.*
+		FROM MARKET
 	)
-	WHERE RN BETWEEN #{start} AND #{end}
+		<choose>
+				<when test="type == 'title'.toString()">
+					WHERE MARKET_TITLE LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'content'.toString()">
+					WHERE MARKET_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'writer'.toString()">
+					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose>	   
 	</select>
 	
 	<select id="selectTotalCount" resultType="Integer">
 	<!-- 게시글 총 갯수 -->
 		SELECT COUNT(*) TOTAL_COUNT FROM MARKET
 	</select>
+	
+	
 
 		
 	

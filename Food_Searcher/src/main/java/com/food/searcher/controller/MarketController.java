@@ -96,9 +96,6 @@ public class MarketController {
 		log.info(result + "행 수정");
 		
 		
-		// 이걸 왜 썼냐면 검색기능 쓸 때 타입이랑 키워드가 있어야 검색이 가능하니까?
-		// 아마 register에서도 타입, 키워드를 넣어줄 거 같은데
-		
 		return "redirect:/market/list";
 	}
 	
