@@ -29,6 +29,13 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
+	public int memberIdCheck(String memberId) {
+		log.info("MemberCheck()");
+		
+		return memberMapper.countMemberById(memberId);
+	}
+	
+	@Override
 	public MemberVO getMemberById(String memberId) {
 		log.info("getMemberById()");
 		MemberVO vo = memberMapper.selectMemberByMemberId(memberId);
@@ -71,6 +78,7 @@ public class MemberServiceImple implements MemberService {
 		return memberMapper.searchId(memberName, email);
 	}
 	
+	// 멤버 권한 관련
 	@Override
 	public int insertRole(String memberId) {
 		log.info("insertRole()");

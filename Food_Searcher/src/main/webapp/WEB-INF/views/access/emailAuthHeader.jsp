@@ -61,7 +61,6 @@ body {
 		
 		// email 변수
 		const email = document.getElementById('email');
-		const emailCheck = document.getElementById('emailCheck');
 		
 		// 메세지 변수
 		const emailMsg = $('#emailMsg');
@@ -90,6 +89,7 @@ body {
 		
 		
 		function emailAuth() {
+			let emailCheck = document.getElementById('emailCheck');
 			 if (/^\d+$/.test(emailCheck.value)) {
 			 $.ajax({
 			    type: 'POST',
@@ -123,12 +123,14 @@ body {
 		        btn_confirm.disabled = true;
 				btn_confirm.textContent = "인증번호 재발송";
 		        
+				emailCheck.textContent = '';
 				emailCheck.style.display = '';
 				
 				 emailMsg.html('재발송은 30초 후 가능합니다.');
 				 confirmMsg.html('인증번호가 발송되었습니다. 인증번호는 5분까지 유효합니다.');
 				
 				const timeoverInterval = setInterval(function(){
+					let emailCheck = document.getElementById('emailCheck');
 					timelimit--; // 인증 유효시간
 			        countdown.textContent = timelimit; // 지울 예정
 					

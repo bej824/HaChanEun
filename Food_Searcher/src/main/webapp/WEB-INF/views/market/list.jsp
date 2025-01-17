@@ -135,13 +135,32 @@ li {
 		<button type="submit" class="button">검색</button>
 
 	</form>
+	
+	<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
+		<form id="detailForm" action="detail" method="get">
+			<input type="hidden" name="boardId" >
+			<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="pageSize" >
+	    	<input type="hidden" name="type" >
+			<input type="hidden" name="keyword" >
+		</form>
+		
 
 
 
 
 
 
-	<script>
+	<script type="text/javascript">
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});	  
 	
 	function changeColor(button, pageNum) {
 	    // 현재 URL의 쿼리 파라미터를 가져옵니다.
@@ -177,7 +196,8 @@ li {
 
 	    // 클릭된 버튼에 'selected' 클래스를 추가
 	    button.classList.add('selected');
-	}
+	} // end changeColor
+	
 	
 	</script>
 </body>

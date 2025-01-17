@@ -6,8 +6,11 @@
 <html>
 <head>
 <link rel="stylesheet"
-	href="../resources/css/marketReply.css">
+	href="../resources/css/Reply.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<style>
+
+</style>
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -181,7 +184,7 @@
 					
 					<sec:authorize access="isAuthenticated()">
 					 comment += '<textarea id="addCommentContent" ></textarea>'
-				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '">작성</button>';
+				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '"> 답글 작성</button>';
 				    </sec:authorize>
 					// 대댓글창 맨 아래에 있는 내용 입력 창
 					
@@ -429,7 +432,6 @@ $(".modal_modify_btn").on("click", function(){
 
  <div class="modalContent">
   <input type="hidden" id="modalReplyId">  
-  <p> 댓글 아이디 : </p>
   <div>
    <textarea id="modal_repCon" name="modal_repCon"></textarea>
   </div>

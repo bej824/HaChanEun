@@ -8,6 +8,7 @@ import com.food.searcher.domain.RoleVO;
 public interface MemberService {
 	
 	int createMember(MemberVO memberVO);
+	int memberIdCheck(String memberId);
 	MemberVO getMemberById(String memberId);
 	List<MemberVO> searchId(String memberName, String email);
 	int updatePassword(String memberId, String email, String password);
