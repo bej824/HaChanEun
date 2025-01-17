@@ -161,13 +161,20 @@
 	} // end birth
 
 	function checkId(memberId) {
-		  console.log("memberId :", memberId);  // 입력한 아이디 값이 콘솔에 출력되는지 확인
+		  console.log("memberId :", memberId);
+		  idCheck = false;
+		  
+		  if (/[\W_]/.test(memberId)) {
+			  $('#idMsg').html('아이디는 공백이나 특수문자를 사용할 수 없습니다.').css('color', 'red');
+				return;
+			}
+		  
 		  $.ajax({
 		    type: 'GET',
 		    url: '../access/idCheck',
 		    data: { memberId: memberId },
 		    success: function(result) {
-		      if (!result) {
+		      if (result == 0) {
 		        $('#idMsg').html('사용 가능한 아이디입니다.').css('color', 'green');
 		        idCheck = true;
 		      } else {
