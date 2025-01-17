@@ -200,13 +200,7 @@ public class MemberController {
 		int result = 0;
 		
 		String encPw = passwordEncoder.encode(password);
-
-		try {
-			result = memberService.updatePassword(memberId, email, encPw);
-			
-		} catch (Exception e) {
-			
-		}
+		result = memberService.updatePassword(memberId, email, encPw);
 		
 		return result;
 		
