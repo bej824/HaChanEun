@@ -39,6 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
+	<select id ="countMemberById" resultType="Integer">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
 	<select id="selectList" resultMap="memberResultMap">
 		SELECT * FROM MEMBER
 	</select>

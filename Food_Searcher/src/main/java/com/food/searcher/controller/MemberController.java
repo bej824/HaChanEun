@@ -36,14 +36,14 @@ public class MemberController {
 	private PasswordEncoder passwordEncoder;
 	
 	
-	// 회원가입 시 이메일 인증 호출
+	// 이메일 인증 호출
 	@GetMapping("/registerEmail")
 	public void rigisterEmailGET(@RequestParam(value="select") String select, Model model) {
 		log.info("registerEmailGET()");
 		model.addAttribute("select", select);
 	}
 
-	// register.jsp 페이지 호출
+	// 회원가입 페이지 호출
 	@PostMapping("/register")
 	public void registerPOST(@RequestParam("email") String email, Model model) {
 		log.info("registerPOST()");
@@ -55,38 +55,32 @@ public class MemberController {
 		model.addAttribute("nowDate", nowDate);
 	} // end registerPOST()
 	
+	// 회원가입 시 아이디 중복 체크
+	@ResponseBody
+	@GetMapping("/idCheck")
+	public int idCheckGET(@RequestParam("memberId") String memberId, MemberVO memberVO) {
+		log.info("idCheckGET");
+		
+		int result = memberService.memberIdCheck(memberId);
+
+		return result;
+	}
+	
+	// 회원가입 정보 db 저장
 	@ResponseBody
 	@PostMapping("/registerClear")
 	public int registerPOST(@RequestBody MemberVO memberVO) {
 		log.info("registerPOST()");
 		
 		int result = 0;
-		memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
+		String encPw = passwordEncoder.encode(memberVO.getPassword());
+		memberVO.setPassword(encPw);
 		log.info("회원가입 정보 등록 : " + memberVO);
 		
 		result = memberService.createMember(memberVO);
 		
 		return result;
 	} // end registerPOST()
-
-	@GetMapping("/idCheck")
-	@ResponseBody
-	public Boolean idCheckGET(@RequestParam("memberId") String memberId, MemberVO vo) {
-		log.info("idCheckGET");
-		Boolean result = false;
-		try {
-
-			vo = memberService.getMemberById(memberId);
-
-			if (vo != null || memberId == "" || memberId.matches(".*[\\W_].*")) {
-				result = true;
-			}
-		} catch (Exception e) {
-			result = false;
-		}
-
-		return result;
-	}
 
 	@RequestMapping("/login") // 로그인 후 지정 위치로 ...
 	public String login(HttpServletRequest request, HttpServletResponse response) {
@@ -100,30 +94,32 @@ public class MemberController {
 
 		return "redirect:/home";
 	}
-
+	
+	// 로그인 후 자신의 정보 확인 가능한 페이지
 	@GetMapping("/memberPage")
-	public String memberPageGET(Model model, MemberVO vo, Principal principal) {
+	public String memberPageGET(Model model, MemberVO memberVO, Principal principal) {
 		log.info("memberPageGET()");
 		String memberId = principal.getName();
-		vo = memberService.getMemberById(memberId);
-		log.info(vo);
-		model.addAttribute("vo", vo);
+		memberVO = memberService.getMemberById(memberId);
+		log.info(memberVO);
+		model.addAttribute("vo", memberVO);
 		
 		return "access/memberPage";
 	}
-
+	
+	// 로그인 후 멤버페이지에서의 정보수정
 	@PostMapping("/update")
 	public String updatePOST(@RequestParam("memberId") String memberId,
 			@RequestParam(value = "memberMBTI", required = false) String memberMBTI,
-			@RequestParam(value = "emailAgree") String emailAgree, MemberVO vo, Model model) {
+			@RequestParam(value = "emailAgree") String emailAgree, MemberVO memberVO, Model model) {
 		log.info("updatePOST()");
 
-		vo = new MemberVO(memberId, null, null, null, emailAgree, null, null, memberMBTI, null, null);
-		int result = memberService.updateMember(vo);
+		memberVO = new MemberVO(memberId, null, null, null, emailAgree, null, null, memberMBTI, null, null);
+		int result = memberService.updateMember(memberVO);
 		log.info(result + "행 수정");
 
-		vo = memberService.getMemberById(memberId);
-		model.addAttribute("vo", vo);
+		memberVO = memberService.getMemberById(memberId);
+		model.addAttribute("memberVO", memberVO);
 
 		return "access/memberPage";
 	}
@@ -146,12 +142,14 @@ public class MemberController {
 		
 	}
 	
+	// ID 찾을 때 GET 루트 방지
 	@GetMapping("/idSearch")
 	public String idSearchGET() {
 		log.info("idSearchGET()");
 		return "redirect:registerEmail?select=idSearch";
 	}
-
+	
+	// ID 찾기 정규 루트
 	@PostMapping("/idSearch")
 	public void idSearchPOST(@Param("email") String email, Model model) {
 		log.info("idSearchPOST()");
@@ -159,6 +157,7 @@ public class MemberController {
 		model.addAttribute("email", email);
 	}
 	
+	// ID 찾기 확인
 	@ResponseBody
 	@PostMapping("/idSearchAjax") // 아이디 찾기
 	public List<MemberVO> idSearchAjaxPOST(@RequestParam("memberName") String memberName,
@@ -167,17 +166,19 @@ public class MemberController {
 		log.info(memberName);
 		log.info(email);
 		
-		List<MemberVO> memberIdList = memberService.searchId(memberName, email);
+		List<MemberVO> result = memberService.searchId(memberName, email);
 
-		return memberIdList;
+		return result;
 	}
 	
+	// 비밀번호 찾기 GET 루트 방지
 	@GetMapping("/pwSearch")
 	public String pwSearchGET() {
 		log.info("pwSearchGET()");
 		return "redirect:registerEmail?select=pwSearch";
 	}
 	
+	// 비밀번호 찾기 정규 루트
 	@PostMapping("/pwSearch")
 	public void pwSearchPOST(@RequestParam(value="memberId", required=false) String memberId,
 			@RequestParam("email") String email, Model model) {
@@ -190,6 +191,7 @@ public class MemberController {
 		model.addAttribute("email", email);
 	}
 	
+	// 비밀번호 찾기 이후 초기화
 	@ResponseBody
 	@PostMapping("/pwUpdate")
 	public int pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
