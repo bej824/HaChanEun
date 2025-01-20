@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace : 연결할 Mapper 인터페이스 경로 및 이름 -->
+<mapper namespace="com.food.searcher.persistence.RecipeLikesMapper">
+
+	<!-- <resultMap> : DB 쿼리 변환 데이터와 Entity(VO) 클래스의 멤버 변수 매핑을 정의하는 태그 - 속성 
+		: type : 연결할 클래스의 패키지와 이름 id : SQL 쿼리 정의 태그에서 인식되는 이름 -->
+	<resultMap type="com.food.searcher.domain.RecipeLikesVO" id="recipeLikesResultMap">
+	
+			<!-- <id> : key 컬럼 매핑 태그 <result> : 일반 컬럼 매핑 태그 - 속성 : property : Entity(VO) 
+			멤버 변수 column : DB 테이블 컬럼 -->
+		<id property="recipeLikesId" column="RECIPE_LIKES_ID" />
+		<result property="recipeBoardId" column="RECIPE_BOARD_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="memberAge" column="MEMBER_AGE" />
+		<result property="memberGender" column="MEMBER_GENDER" />
+		<result property="memberMBTI" column="MEMBER_MBTI" />
+		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
+		<result property="memberLike" column="MEMBER_LIKE" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_BOARD_ID, MEMBER_ID, 
+		MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_LIKE)
+		VALUES (RECIPE_LIKES_SEQ.NEXTVAL,
+		#{recipeBoardId}, #{memberId}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, #{memberLike})
+	</insert>
+	
+	<select id="selectMemberLikes" resultMap="recipeLikesResultMap">
+		SELECT *
+		FROM RECIPE_LIKES
+		WHERE RECIPE_BOARD_ID = #{recipeBoardId}
+		AND MEMBER_ID = #{memberId}
+	</select>
+	
+	<update id="updateMemberLikes">
+		UPDATE RECIPE_LIKES
+		SET MEMBER_LIKE = #{memberLike}
+		WHERE RECIPE_BOARD_ID = #{recipeBoardId}
+		AND MEMBER_ID = #{memberId}
+	</update>
+	
+</mapper>

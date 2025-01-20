@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.AttachVO;
+import com.food.searcher.domain.MemberVO;
+import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.AttachService;
+import com.food.searcher.service.MemberService;
+import com.food.searcher.service.RecipeLikesService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -34,6 +38,12 @@ public class RecipeController {
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private RecipeLikesService likesService;
 	
 	@GetMapping("/list")
 	public void list(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Model model, Pagination pagination) {
@@ -98,6 +108,12 @@ public class RecipeController {
 		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
+		MemberVO memberVO = memberService.getMemberById(recipeVO.getMemberId());
+		log.info("memberVO : " + memberVO);
+		model.addAttribute("memberVO", memberVO);
+		RecipeLikesVO likesVO = likesService.getMemberLikes(recipeId, memberVO.getMemberId());
+		log.info("likesVO : " + likesVO);
+		model.addAttribute("likesVO", likesVO);
 		if(recipeId.equals(recipeVO.getRecipeId())) {
 		model.addAttribute("recipeVO", recipeVO);
 		List<AttachVO> attachVO = attachService.getBoardById(recipeId);

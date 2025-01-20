@@ -115,38 +115,9 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 		</div>
 	</div>
 	
-	<!-- 첨부 파일 영역 -->
-	<div class="attach-upload">
-		<div class="attach-view">
-			<h2>첨부 파일 리스트</h2>
-			<div class="attach-list">
-			<c:forEach var="attachVO" items="${idList}">
-		 		<c:if test="${not (attachVO.attachExtension eq 'jpg' or 
-			    			  attachVO.attachExtension eq 'jpeg' or 
-			    			  attachVO.attachExtension eq 'png' or 
-			    			  attachVO.attachExtension eq 'gif')}">
-			    	<div class="attach_item">
-			    	<p><a href="../attach/download?attachId=${attachVO.attachId }">${attachVO.attachRealName }.${attachVO.attachExtension }</a></p>
-			    	</div>
-			    </c:if>
-			</c:forEach>		
-			</div>
-		</div>
-		<div class="attach-modify" style="display : none;">
-			<h2>첨부 파일 업로드</h2>
-			<p>* 첨부 파일은 최대 3개까지 가능합니다.</p>
-			<p>* 최대 용량은 10MB 입니다.</p>
-			<input type="file" id="attachInput" name="files" multiple="multiple"><br>
-			<h2>선택한 첨부 파일 정보 :</h2>
-			<div class="attach-list"></div>
-		</div>
-	</div>
-	
 	<div class="attachDTOImg-list">
 	</div>
-	
-	<div class="attachDTOFile-list">
-	</div>
+
 	<sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
 	<button id="modifyBoard" class="button">등록</button>
 	</sec:authorize>
@@ -173,8 +144,6 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
                 isUploadChanged = true; // 버튼 클릭 시, 삭제 작업이 허용됨
                 $('.image-modify').show();
                 $('.image-view').hide();
-                $('.attach-modify').show();
-                $('.attach-view').hide();
                 $('.input-attach-list').remove(); // input-attach-list 삭제
             });
 
@@ -187,16 +156,6 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
                 if (isUploadChanged) {
                 // attachDTOImg-list의 각 input 태그 접근
                 $('.attachDTOImg-list input[name="attachVO"]').each(function() {
-                    let attachVO = JSON.parse($(this).val());
-                    formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
-                    formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
-                    formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
-                    formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
-                    i++;
-                });
-
-                // attachDTOFile-list의 각 input 태그 접근
-                $('.attachDTOFile-list input[name="attachVO"]').each(function() {
                     let attachVO = JSON.parse($(this).val());
                     formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
                     formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
