@@ -23,6 +23,8 @@ public class RecipeVO {
 	private Date recipeDateCreated;
 	private int replyCount;
 	private String memberId;
+	private int likesCount;
+	private int dislikesCount;
 	
 	private List<AttachVO> attachList;
 	

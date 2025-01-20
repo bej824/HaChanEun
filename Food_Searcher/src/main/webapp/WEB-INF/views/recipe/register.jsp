@@ -80,16 +80,6 @@ textarea {
 		<div class="image-list"></div>
 	</div>
 
-	<hr>
-	<div class="attach-upload">
-		<h2>첨부 파일 업로드</h2>
-		<p>* 첨부 파일은 최대 3개까지 가능합니다.</p>
-		<p>* 최대 용량은 10MB 입니다.</p>
-		<input type="file" id="attachInput" name="files" multiple="multiple"><br>
-		<h2>선택한 첨부 파일 정보 :</h2>
-		<div class="attach-list"></div>
-	</div>
-
 	<div class="attachDTOImg-list">
 	</div>
 	
@@ -136,17 +126,6 @@ textarea {
 
             // attachDTOImg-list의 각 input 태그 접근
             $('.attachDTOImg-list input[name="attachVO"]').each(function(){
-                let attachVO = JSON.parse($(this).val());
-                // attachPath, attachRealName, attachChgName, attachExtension을 hidden input으로 생성
-                formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
-                formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
-                formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
-                formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
-                i++;
-            });
-
-            // attachDTOFile-list의 각 input 태그 접근
-            $('.attachDTOFile-list input[name="attachVO"]').each(function(){
                 let attachVO = JSON.parse($(this).val());
                 // attachPath, attachRealName, attachChgName, attachExtension을 hidden input으로 생성
                 formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);

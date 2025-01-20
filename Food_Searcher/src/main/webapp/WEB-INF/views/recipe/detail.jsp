@@ -37,7 +37,6 @@
   cursor: not-allowed;
 }
 
-
     .image-list {
         display: flex;
         flex-wrap: wrap; /* 이미지가 가로로 나오고, 공간이 부족할 경우 줄 바꿈 */
@@ -124,25 +123,6 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- 첨부 파일 영역 -->
-	<div class="attach-upload">
-		<div class="attach-view">
-			<h2>첨부 파일 리스트</h2>
-			<div class="attach-list">
-			<c:forEach var="attachVO" items="${idList}">
-		 		<c:if test="${not (attachDTO.attachExtension eq 'gif' or 
-			    			  attachVO.attachExtension eq 'jpeg' or 
-			    			  attachVO.attachExtension eq 'png' or 
-			    			  attachVO.attachExtension eq 'jpg')}">
-			    	<div class="attach_item">
-			    	<p><a href="../attach/download?attachId=${attachVO.attachId }">${attachVO.attachRealName }.${attachVO.attachExtension }</a></p>
-			    	</div>
-			    </c:if>
-			</c:forEach>
-			</div>
-		</div>
-	</div>
 
     <a href="/searcher/recipe/list?recipeTitle=${pagination.keyword}&filterBy=${pagination.type}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
 
@@ -204,6 +184,65 @@
 	<button id="up" class="button">추천${recipeVO.like }</button>
 	<button id="down" class="button">비추천${recipeVO.unlike }</button>
 	--%>
+	
+	<sec:authorize access="isAnonymous()">
+	<a class="button">좋아요${recipeVO.likesCount }</a>
+	<a class="button">싫어요${recipeVO.dislikesCount }</a>
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+	<button id="up" class="button">좋아요${recipeVO.likesCount }</button>
+	<button id="down" class="button">싫어요${recipeVO.dislikesCount }</button>
+	</sec:authorize>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#up').click(function(){
+			let boardId = $('#recipeId').val();
+			console.log("recipeId : " + boardId);
+			let memberId = $('#memberId').val();
+			console.log("memberId : " + memberId);
+			let memberAge = ${memberVO.memberAge};
+			console.log("memberAge : " + memberAge);
+			let memberGender = "${memberVO.memberGender}";
+			console.log("memberGender : " + memberGender);
+			let memberMBTI = "${memberVO.memberMBTI}";
+			console.log("memberMBTI : " + memberMBTI);
+			let memberConstellation = "${memberVO.memberConstellation}";
+			console.log("memberConstellation : " + memberConstellation);
+			let memberLike = 1;
+			console.log(memberLike);
+			
+			let obj = {
+					'recipeBoardId' : boardId,
+					'memberId' : memberId,
+					'memberAge' : memberAge,
+					'memberGender' : memberGender,
+					'memberMBTI' : memberMBTI,
+					'memberConstellation' : memberConstellation,
+					'memberLike' : memberLike
+			}
+			console.log(obj);
+			if("<sec:authentication property="name" />" != "${likesVO.memberId}") {
+			console.log()
+			$.ajax({
+				type : 'POST',
+				url : '../likes',
+				headers : { // 헤더 정보
+					'Content-Type' : 'application/json' // json content-type 설정
+				}, 
+				data : JSON.stringify(obj),
+				success : function(result) {
+					console.log(result);
+					if(result == 1) {
+						alert('좋아요!');
+						location.reload();
+					}
+				}
+			});
+			}
+		});
+	});
+	</script>
 
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
