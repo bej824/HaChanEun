@@ -38,6 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("UsernameNotFound");
         }
         
+        if (member.getMemberStatus().equals("inactive")) {
+        	throw new UsernameNotFoundException("UserInactive");
+        }
+        	
         // 회원의 역할을 Spring Security의 GrantedAuthority 타입으로 변환하여 리스트에 추가
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
@@ -46,6 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserDetails userDetails = new CustomUser(member, 
 								        		authorities);
         return userDetails;
+        
     }
 
 }

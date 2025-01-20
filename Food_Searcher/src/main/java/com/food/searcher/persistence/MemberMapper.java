@@ -18,9 +18,7 @@ public interface MemberMapper {
 	MemberVO selectMemberByMemberId(String memberId);
 	List<MemberVO> searchId(@Param("memberName") String memberName, @Param("email") String email);
 	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
-	List<MemberVO> selectList();
 	int updateMemberByMemberId(MemberVO memberVO);
-	int updateMemberStatusByMemberId(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus);
 	
 	// 멤버 권한
 	int insertRole(@RequestParam("memberId") String memberId);

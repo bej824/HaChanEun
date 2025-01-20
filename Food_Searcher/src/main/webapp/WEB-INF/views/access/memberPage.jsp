@@ -12,73 +12,73 @@
 	<h1>Member Page</h1>
 
 	<form id="updateForm" action="update" method="post">
-		<p>아이디 : ${vo.memberId }</p>
-		<input type="hidden" name="memberId" value="${vo.memberId }">
+		<p>아이디 : ${memberVO.memberId }</p>
+		<input type="hidden" name="memberId" value="${memberVO.memberId }">
 
-		<p>이름 : ${vo.memberName }</p>
+		<p>이름 : ${memberVO.memberName }</p>
 
 		<p>
 			성별 :
-			<c:if test="${vo.memberGender == 'male'}">
+			<c:if test="${memberVO.memberGender == 'male'}">
 		남성 
 		</c:if>
-			<c:if test="${vo.memberGender == 'female'}">
+			<c:if test="${memberVO.memberGender == 'female'}">
 		여성 
 		</c:if>
 		</p>
-		<p>나이 : ${vo.memberAge }</p>
+		<p>나이 : ${memberVO.memberAge }</p>
 
-		<p>별자리 : ${vo.memberConstellation }</p>
+		<p>별자리 : ${memberVO.memberConstellation }</p>
 
 		<p>
-			MBTI : <select name="memberMBTI" id="mbti">
+			MBTI : <select name="memberMBTI" id="memberMBTI">
 				<!-- MBTI 유형 옵션 -->
 				<option value=" "
-					<c:if test="${vo.memberMBTI == ' '}">selected</c:if>> </option>
+					<c:if test="${memberVO.memberMBTI == ' '}">selected</c:if>> </option>
 				<option value="ISTJ"
-					<c:if test="${vo.memberMBTI == 'ISTJ'}">selected</c:if>>ISTJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ISTJ'}">selected</c:if>>ISTJ</option>
 				<option value="ISFJ"
-					<c:if test="${vo.memberMBTI == 'ISFJ'}">selected</c:if>>ISFJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ISFJ'}">selected</c:if>>ISFJ</option>
 				<option value="INFJ"
-					<c:if test="${vo.memberMBTI == 'INFJ'}">selected</c:if>>INFJ</option>
+					<c:if test="${memberVO.memberMBTI == 'INFJ'}">selected</c:if>>INFJ</option>
 				<option value="INTJ"
-					<c:if test="${vo.memberMBTI == 'INTJ'}">selected</c:if>>INTJ</option>
+					<c:if test="${memberVO.memberMBTI == 'INTJ'}">selected</c:if>>INTJ</option>
 				<option value="ISTP"
-					<c:if test="${vo.memberMBTI == 'ISTP'}">selected</c:if>>ISTP</option>
+					<c:if test="${memberVO.memberMBTI == 'ISTP'}">selected</c:if>>ISTP</option>
 				<option value="ISFP"
-					<c:if test="${vo.memberMBTI == 'ISFP'}">selected</c:if>>ISFP</option>
+					<c:if test="${memberVO.memberMBTI == 'ISFP'}">selected</c:if>>ISFP</option>
 				<option value="INFP"
-					<c:if test="${vo.memberMBTI == 'INFP'}">selected</c:if>>INFP</option>
+					<c:if test="${memberVO.memberMBTI == 'INFP'}">selected</c:if>>INFP</option>
 				<option value="INTP"
-					<c:if test="${vo.memberMBTI == 'INTP'}">selected</c:if>>INTP</option>
+					<c:if test="${memberVO.memberMBTI == 'INTP'}">selected</c:if>>INTP</option>
 				<option value="ESTP"
-					<c:if test="${vo.memberMBTI == 'ESTP'}">selected</c:if>>ESTP</option>
+					<c:if test="${memberVO.memberMBTI == 'ESTP'}">selected</c:if>>ESTP</option>
 				<option value="ESFP"
-					<c:if test="${vo.memberMBTI == 'ESFP'}">selected</c:if>>ESFP</option>
+					<c:if test="${memberVO.memberMBTI == 'ESFP'}">selected</c:if>>ESFP</option>
 				<option value="ENFP"
-					<c:if test="${vo.memberMBTI == 'ENFP'}">selected</c:if>>ENFP</option>
+					<c:if test="${memberVO.memberMBTI == 'ENFP'}">selected</c:if>>ENFP</option>
 				<option value="ENTP"
-					<c:if test="${vo.memberMBTI == 'ENTP'}">selected</c:if>>ENTP</option>
+					<c:if test="${memberVO.memberMBTI == 'ENTP'}">selected</c:if>>ENTP</option>
 				<option value="ESTJ"
-					<c:if test="${vo.memberMBTI == 'ESTJ'}">selected</c:if>>ESTJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ESTJ'}">selected</c:if>>ESTJ</option>
 				<option value="ESFJ"
-					<c:if test="${vo.memberMBTI == 'ESFJ'}">selected</c:if>>ESFJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ESFJ'}">selected</c:if>>ESFJ</option>
 				<option value="ENFJ"
-					<c:if test="${vo.memberMBTI == 'ENFJ'}">selected</c:if>>ENFJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ENFJ'}">selected</c:if>>ENFJ</option>
 				<option value="ENTJ"
-					<c:if test="${vo.memberMBTI == 'ENTJ'}">selected</c:if>>ENTJ</option>
+					<c:if test="${memberVO.memberMBTI == 'ENTJ'}">selected</c:if>>ENTJ</option>
 			</select>
 		</p>
 
-		<p> 이메일 : ${vo.email }</p>
-			<input type="hidden" name="email" value="${vo.email }" readonly="readonly">
+		<p> 이메일 : ${memberVO.email }</p>
+			<input type="hidden" name="email" value="${memberVO.email }" readonly="readonly">
 
 		<p>이메일 광고 수신 동의</p>
-		<c:if test="${vo.emailAgree == 'yes'}">
+		<c:if test="${memberVO.emailAgree == 'yes'}">
 			<input type="radio" name="emailAgree" value="yes" checked="checked">예
 		<input type="radio" name="emailAgree" value="no">아니오
 	</c:if>
-		<c:if test="${vo.emailAgree == 'no'}">
+		<c:if test="${memberVO.emailAgree == 'no'}">
 			<input type="radio" name="emailAgree" value="yes">예
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
@@ -88,10 +88,10 @@
 	
 	<br>
 
-	<button onclick="update()" class="button">수정하기</button>
-	<button onclick="statusUpdate()" class="button">회원탈퇴</button>
+	<button id="btn_update" class="button">수정하기</button>
+	<button id="btn_inactive" class="button">회원탈퇴</button>
 	<br>
-	<button onclick="pwUpdate()" class="button">비밀번호 변경</button>
+	<button id="btn_pwUpdate" class="button">비밀번호 변경</button>
 	
 	<br>
 	<a href="/searcher/access/admin">운영자</a>
@@ -103,26 +103,53 @@
 
 			xhr.setRequestHeader(header, token);
 		});
+		
+		$(document).ready(function(){
+			
+		$('#btn_update').click(function(){
+			let memberId = '<sec:authentication property="name" />';
+			let emailAgree = document.querySelector('input[name="emailAgree"]:checked').value;
+			let memberMBTI = document.getElementById('memberMBTI').value;
+			
+			update(memberId, emailAgree, memberMBTI);
+		});
+		
+		$('#btn_inactive').click(function(){
+			let memberId = '${memberVO.memberId }';
+			let memberStatus = 'inactive';
+			
+			inactive(memberId, memberStatus);
+			
+		});
+		
+		$('#btn_pwUpdate').click(function(){
+			pwUpdate();
+		});
 	
-		function update() {
+		function update(memberId, emailAgree, memberMBTI) {
 			let result = confirm("수정하시겠습니까?");
 			if (result) {
-			try {
-			document.getElementById("updateForm").submit();
-			alert("수정이 완료되었습니다.");
-			} catch (e) {
-				alert("다시 시도하여주세요.");
-			}
-			} else {
-				alert("수정이 취소되었습니다.");
+				$.ajax({
+				    type: 'POST',
+				    url: '../access/update',
+				    data: { memberId: memberId,
+				    	emailAgree: emailAgree,
+				    	memberMBTI: memberMBTI},
+				    success: function(result) {
+				    	console.log(result);
+				      if (result == 1) {
+				    	  alert("수정이 완료되었습니다.");
+				      } else {
+				    	  alert("다시 시도해주세요.");
+				      }
+				    }
+				  });
 			}
 		}
 		
-		function statusUpdate() {
+		function inactive(memberId, memberStatus) {
 			let result = confirm("회원 탈퇴하시겠습니까?");
 			if (result) {
-				let memberId = '${vo.memberId }';
-				let memberStatus = 'inactive';
 				
 				console.log(status);
 				
@@ -152,6 +179,8 @@
 					alert("취소되었습니다.");
 				}
 		}
+		
+		})
 	</script>
 
 

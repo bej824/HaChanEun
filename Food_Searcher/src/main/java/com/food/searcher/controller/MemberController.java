@@ -102,39 +102,56 @@ public class MemberController {
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
 		log.info(memberVO);
-		model.addAttribute("vo", memberVO);
+		model.addAttribute("memberVO", memberVO);
 		
 		return "access/memberPage";
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정
+	@ResponseBody
 	@PostMapping("/update")
-	public String updatePOST(@RequestParam("memberId") String memberId,
+	public int updatePOST(@RequestParam("memberId") String memberId,
 			@RequestParam(value = "memberMBTI", required = false) String memberMBTI,
-			@RequestParam(value = "emailAgree") String emailAgree, MemberVO memberVO, Model model) {
+			@RequestParam(value = "emailAgree", required = false) String emailAgree,
+			MemberVO memberVO, Model model) {
 		log.info("updatePOST()");
 
 		memberVO = new MemberVO(memberId, null, null, null, emailAgree, null, null, memberMBTI, null, null);
 		int result = memberService.updateMember(memberVO);
 		log.info(result + "행 수정");
 
-		memberVO = memberService.getMemberById(memberId);
-		model.addAttribute("memberVO", memberVO);
-
-		return "access/memberPage";
+		return result;
+	}
+	
+	// email 변경. 인증 관련 요소이기에 컨트롤러만 별도로 빼놓음
+	@ResponseBody
+	@PostMapping("/emailUpdate")
+	public int emailUpdatePOST(@RequestParam("memberId") String memberId,
+			@RequestParam("email") String email, MemberVO memberVO) {
+		log.info("emailUpdatePOST()");
+		memberVO = new MemberVO(memberId, null, null, email, null, null, null, null, null, null);
+		int result = 0;
+		
+		result = memberService.updateMember(memberVO);
+		
+		log.info(result + "행 수정");
+		
+		return result;
 	}
 	
 	// 이후 수정
 	// inactive : 비활성화 계정 / active : 활성화 계정
+	// 계정 활성, 비활성 관련 요소이기에 컨트롤러만 별도로 빼놓음
 	@ResponseBody
 	@PostMapping("/statusUpdate")
 	public int statusUpdatePOST(@RequestParam("memberId") String memberId, 
-			@RequestParam("memberStatus") String memberStatus) {
+			@RequestParam("memberStatus") String memberStatus, MemberVO memberVO) {
 		log.info("statusUpdatePOST()");
 		log.info(memberId + " : " + memberStatus);
+		memberVO = new MemberVO(memberId, null, null, null, null, null, null, null, null, memberStatus);
 		int result = 0;
 		
-		result = memberService.updateMemberStatus(memberId, memberStatus);
+		result = memberService.updateMember(memberVO);
 		
 		log.info(result + "행 수정");
 		

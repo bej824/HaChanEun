@@ -45,10 +45,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
-	<select id="selectList" resultMap="memberResultMap">
-		SELECT * FROM MEMBER
-	</select>
-	
 	<select id="searchId" resultMap="memberResultMap">
 		SELECT * FROM MEMBER
 		WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
@@ -61,17 +57,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="updateMemberByMemberId">
-		UPDATE MEMBER SET 
-		EMAIL_AGREE = #{emailAgree},
-		MEMBER_MBTI = #{memberMBTI}
+		UPDATE MEMBER SET
+		<if test="email != null">
+		EMAIL = #{email},
+		</if>
+		<if test="memberMBTI != null">
+		MEMBER_MBTI = #{memberMBTI},
+		</if>
+		<if test="memberStatus != null">
+		MEMBER_STATUS = #{memberStatus},
+		</if>
+		EMAIL_AGREE = #{emailAgree}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 	
-	<update id="updateMemberStatusByMemberId">
-		UPDATE MEMBER SET
-		MEMBER_STATUS = #{memberStatus}
-		WHERE MEMBER_ID = #{memberId}
-	</update>
 	
 	<insert id="insertRole">
 		INSERT INTO MEMBER_ROLE

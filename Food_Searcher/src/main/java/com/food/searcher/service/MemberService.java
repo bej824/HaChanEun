@@ -12,9 +12,7 @@ public interface MemberService {
 	MemberVO getMemberById(String memberId);
 	List<MemberVO> searchId(String memberName, String email);
 	int updatePassword(String memberId, String email, String password);
-	List<MemberVO> getAllMember();
 	int updateMember(MemberVO memberVO);
-	int updateMemberStatus(String memberId, String memberStatus);
 	
 	int insertRole(String memberId);
 	RoleVO selectRole(String memberId);
