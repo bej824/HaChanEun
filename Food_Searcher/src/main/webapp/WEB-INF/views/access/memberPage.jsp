@@ -11,9 +11,7 @@
 	<%@ include file ="../header.jsp" %>
 	<h1>Member Page</h1>
 
-	<form id="updateForm" action="update" method="post">
-		<p>아이디 : ${memberVO.memberId }</p>
-		<input type="hidden" name="memberId" value="${memberVO.memberId }">
+		<p>아이디 : <sec:authentication property="name" /></p>
 
 		<p>이름 : ${memberVO.memberName }</p>
 
@@ -70,8 +68,7 @@
 			</select>
 		</p>
 
-		<p> 이메일 : ${memberVO.email }</p>
-			<input type="hidden" name="email" value="${memberVO.email }" readonly="readonly">
+		<p> 이메일 : ${memberVO.email } <button id="btn_emailUpdate" name="btn_emailUpdate" class="button">수정</button></p>
 
 		<p>이메일 광고 수신 동의</p>
 		<c:if test="${memberVO.emailAgree == 'yes'}">
@@ -82,9 +79,6 @@
 			<input type="radio" name="emailAgree" value="yes">예
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
-	<!-- CSRF 토큰 -->
-	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-	</form>
 	
 	<br>
 
@@ -115,7 +109,7 @@
 		});
 		
 		$('#btn_inactive').click(function(){
-			let memberId = '${memberVO.memberId }';
+			let memberId = '<sec:authentication property="name" />';
 			let memberStatus = 'inactive';
 			
 			inactive(memberId, memberStatus);
@@ -123,7 +117,15 @@
 		});
 		
 		$('#btn_pwUpdate').click(function(){
-			pwUpdate();
+			window.location.href = "pwUpdate";
+		});
+		
+		$('#btn_emailUpdate').click(function(){
+			let emailUpdate = confirm("이메일을 변경하시려면 이메일 인증 후 가능합니다.\n 변경하시겠습니까?");
+			if(emailUpdate){
+				window.location.href = "registerEmail?select=emailUpdate";
+			}
+			
 		});
 	
 		function update(memberId, emailAgree, memberMBTI) {
@@ -169,15 +171,6 @@
 				    }
 				  });
 		}
-		}
-		
-		function pwUpdate() {
-			let result = confirm("비밀번호를 변경하시겠습니까?");
-			if (result) {
-				 window.location.href = "registerEmail?select=pwSearch";
-				} else {
-					alert("취소되었습니다.");
-				}
 		}
 		
 		})

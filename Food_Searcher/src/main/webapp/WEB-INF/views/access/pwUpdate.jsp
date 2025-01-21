@@ -9,12 +9,13 @@
 <body>
 	<%@ include file ="../header.jsp" %>
 	
-	<h1>비밀번호 찾기</h1>
+	<h1>비밀번호 변경</h1>
 	
-	<p>아이디</p>
-	<input type="text" name="memberId" id="memberId" placeholder="아이디 입력" required>
+	<p>현재 비밀번호</p>
+	<input type=password name="oldPassword" id="oldPassword"
+			placeholder="비밀번호 입력" required>
 	<br>
-	<p>비밀번호</p>
+	<p>새로운 비밀번호</p>
 		<input type=password name="password" id="password"
 			placeholder="비밀번호 입력" required> <br>
 
@@ -36,7 +37,7 @@
 		$(document).ready(function(){
 			
 			$('#btn_update').click(function(){
-				let memberId = document.getElementById("memberId").value;
+				let oldPassword = document.getElementById("oldPassword").value;
 				let password = document.getElementById("password").value;
 		 		let password2 = document.getElementById("password2").value;
 		 		let email = '${email }';
@@ -48,16 +49,16 @@
       				return;
     			}
 				
-				pwUpdate(memberId, password, email);
+				pwUpdate(oldPassword, password, email);
 			
 			});
 			
-		function pwUpdate(memberId, password, email) {
+		function pwUpdate(oldPassword, password, email) {
 			
     		$.ajax({
 			    type: 'POST',
 			    url: 'pwUpdate',
-			    data: { memberId : memberId,
+			    data: { oldPassword: oldPassword,
 			    		password: password,
 			    		email: email},
 			    success: function(result) {
@@ -65,7 +66,7 @@
 			    		alert("수정이 완료되었습니다. 로그인 화면으로 이동합니다.");
 			    		window.location.href="../auth/login";
 			    	} else {
-			    		alert("다시 시도하여주십시오.");
+			    		alert("현재 비밀번호를 다시 한번 확인해주세요.");
 			    	}
 			    }
     		});
@@ -75,6 +76,7 @@
 		})
 	
 	</script>
+	
 
 </body>
 </html>

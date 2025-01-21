@@ -4,12 +4,15 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.CustomUser;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.service.MemberService;
 
@@ -74,8 +78,12 @@ public class MemberController {
 		
 		int result = 0;
 		String encPw = passwordEncoder.encode(memberVO.getPassword());
+		String memberId = memberVO.getMemberId();
+		String roleName = "ROLE_MEMBER";
 		memberVO.setPassword(encPw);
 		log.info("회원가입 정보 등록 : " + memberVO);
+		
+		memberService.createRole(memberId, roleName);
 		
 		result = memberService.createMember(memberVO);
 		
@@ -97,14 +105,12 @@ public class MemberController {
 	
 	// 로그인 후 자신의 정보 확인 가능한 페이지
 	@GetMapping("/memberPage")
-	public String memberPageGET(Model model, MemberVO memberVO, Principal principal) {
+	public void memberPageGET(Model model, MemberVO memberVO, Principal principal) {
 		log.info("memberPageGET()");
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
-		log.info(memberVO);
 		model.addAttribute("memberVO", memberVO);
 		
-		return "access/memberPage";
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정
@@ -116,42 +122,37 @@ public class MemberController {
 			MemberVO memberVO, Model model) {
 		log.info("updatePOST()");
 
-		memberVO = new MemberVO(memberId, null, null, null, emailAgree, null, null, memberMBTI, null, null);
-		int result = memberService.updateMember(memberVO);
+		int result = memberService.updateMember(memberId, memberMBTI, emailAgree);
 		log.info(result + "행 수정");
 
 		return result;
 	}
 	
+	
 	// email 변경. 인증 관련 요소이기에 컨트롤러만 별도로 빼놓음
 	@ResponseBody
 	@PostMapping("/emailUpdate")
-	public int emailUpdatePOST(@RequestParam("memberId") String memberId,
-			@RequestParam("email") String email, MemberVO memberVO) {
+	public int emailUpdatePOST(@RequestParam("email") String email, Principal principal) {
 		log.info("emailUpdatePOST()");
-		memberVO = new MemberVO(memberId, null, null, email, null, null, null, null, null, null);
-		int result = 0;
 		
-		result = memberService.updateMember(memberVO);
+		String memberId = principal.getName();
+		int result = memberService.updateEmail(memberId, email);
 		
 		log.info(result + "행 수정");
 		
 		return result;
 	}
 	
-	// 이후 수정
 	// inactive : 비활성화 계정 / active : 활성화 계정
 	// 계정 활성, 비활성 관련 요소이기에 컨트롤러만 별도로 빼놓음
 	@ResponseBody
 	@PostMapping("/statusUpdate")
 	public int statusUpdatePOST(@RequestParam("memberId") String memberId, 
-			@RequestParam("memberStatus") String memberStatus, MemberVO memberVO) {
+			@RequestParam("memberStatus") String memberStatus) {
 		log.info("statusUpdatePOST()");
 		log.info(memberId + " : " + memberStatus);
-		memberVO = new MemberVO(memberId, null, null, null, null, null, null, null, null, memberStatus);
-		int result = 0;
 		
-		result = memberService.updateMember(memberVO);
+		int result = memberService.updateStatus(memberId, memberStatus);
 		
 		log.info(result + "행 수정");
 		
@@ -208,16 +209,25 @@ public class MemberController {
 		model.addAttribute("email", email);
 	}
 	
+	// 로그인 상태에서의 비밀번호 찾기
+	@GetMapping("/pwUpdate")
+	public void pwUpdateGET() {
+		log.info("pwUpdateGET()");
+		
+	}
+	
 	// 비밀번호 찾기 이후 초기화
 	@ResponseBody
 	@PostMapping("/pwUpdate")
-	public int pwUpdatePOST(@Param("memberId") String memberId, @Param("email") String email,
-			@Param("password") String password, Model model) {
+	public int pwUpdatePOST(String email, String password, String oldPassword,
+			Principal principal, Model model) {
 		log.info("pwUpdatePOST()");
 		int result = 0;
 		
-		String encPw = passwordEncoder.encode(password);
-		result = memberService.updatePassword(memberId, email, encPw);
+		String memberId = principal.getName();
+		
+		password = passwordEncoder.encode(password);
+		result = memberService.updatePassword(memberId, email, password);
 		
 		return result;
 		
@@ -233,7 +243,7 @@ public class MemberController {
 	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
 		log.info("roleUpdate");
 		String roleName = "ROLE_ADMIN";
-		int result = memberService.updateRole(memberId, roleName);
+		int result = memberService.createRole(memberId, roleName);
 		log.info(result + "행 수정");
 		
 		return "../home";

@@ -16,13 +16,23 @@ public interface MemberMapper {
 	int insertMember(MemberVO memberVO);
 	int countMemberById(String memberId);
 	MemberVO selectMemberByMemberId(String memberId);
+	
+	// 아이디 찾기
 	List<MemberVO> searchId(@Param("memberName") String memberName, @Param("email") String email);
+	
+	// 비밀번호 초기화
 	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
-	int updateMemberByMemberId(MemberVO memberVO);
+	
+	// 회원 정보 수정
+	int updateMemberByMemberId(@Param("memberId") String memberId, @Param("memberMBTI") String memberMBTI, @Param("emailAgree") String emailAgree);
+	// 계정 활성 비활성 업데이트
+	int updateStatusByMemberId(@Param("memberId") String memberId, @Param("memberStatus") String memberStatus);
+	// email 업데이트
+	int updateEmailByMemberId(@Param("memberId") String memberId, @Param("email") String email);
 	
 	// 멤버 권한
-	int insertRole(@RequestParam("memberId") String memberId);
-	RoleVO selectRoleByMemberId(@RequestParam("memberId") String memberId);
-	int updateRoleByMemberId(@RequestParam("memberId") String memberId, @RequestParam("roleName") String roleName);
+	int insertRole(@Param("memberId") String memberId, @Param("roleName") String roleName);
+	RoleVO selectRoleByMemberId(@Param("memberId") String memberId);
+	int updateRoleByMemberId(@Param("memberId") String memberId, @Param("roleName") String roleName);
 
 }

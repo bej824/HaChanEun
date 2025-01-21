@@ -57,17 +57,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="updateMemberByMemberId">
-		UPDATE MEMBER SET
-		<if test="email != null">
-		EMAIL = #{email},
-		</if>
-		<if test="memberMBTI != null">
+		UPDATE MEMBER
+		SET
 		MEMBER_MBTI = #{memberMBTI},
-		</if>
-		<if test="memberStatus != null">
-		MEMBER_STATUS = #{memberStatus},
-		</if>
 		EMAIL_AGREE = #{emailAgree}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	<update id="updateStatusByMemberId">
+		UPDATE MEMBER 
+		SET MEMBER_STATUS = #{memberStatus}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	<update id="updateEmailByMemberId">
+		UPDATE MEMBER 
+		SET EMAIL = #{email}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
 	
@@ -76,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO MEMBER_ROLE
 		(ROLE_ID, MEMBER_ID,
 		ROLE_NAME)
-		VALUES (ROLE_SEQ.NEXTVAL, #{memberId}, "member")
+		VALUES (ROLE_SEQ.NEXTVAL, #{memberId}, #{roleName})
 	</insert>
 
 	<select id="selectRoleByMemberId" resultMap="roleResultMap">
