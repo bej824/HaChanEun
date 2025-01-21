@@ -21,4 +21,6 @@ public interface RecipeMapper {
 	// @Param : 자바 객체의 속성을 mapper에 매핑
 	List<RecipeVO> selectListByPagination(Pagination pagination); // 전체 게시글 페이징 처리
 	int selectTotalCount(Pagination pagination); // 게시글 수 조회
+	int updateLikesCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 좋아요 수 변경
+	int updateDislikesCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 싫어요 수 변경
 }

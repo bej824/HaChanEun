@@ -20,4 +20,5 @@ public class RecipeLikesVO {
 	private String memberMBTI;
 	private String memberConstellation;
 	private int memberLike;
+	private int previousMemberLike;
 }

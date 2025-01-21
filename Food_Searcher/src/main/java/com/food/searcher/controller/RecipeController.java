@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -102,18 +103,21 @@ public class RecipeController {
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
 	// 조회된 게시글 데이터를 detail.jsp로 전송
 	@GetMapping("/detail")
-	public void detail(Model model, Integer recipeId, @ModelAttribute("pagination") Pagination pagination) {
+	public void detail(Model model, Integer recipeId, Principal principal, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("detail()");
 		log.info("레시피 ID : " + recipeId);
+		log.info("memberId : " + principal);
 		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
-		MemberVO memberVO = memberService.getMemberById(recipeVO.getMemberId());
-		log.info("memberVO : " + memberVO);
+		
+		if(principal != null) {
+		MemberVO memberVO = memberService.getMemberById(principal.getName());
 		model.addAttribute("memberVO", memberVO);
-		RecipeLikesVO likesVO = likesService.getMemberLikes(recipeId, memberVO.getMemberId());
+		RecipeLikesVO likesVO = likesService.getMemberLikes(recipeId, principal.getName());
 		log.info("likesVO : " + likesVO);
 		model.addAttribute("likesVO", likesVO);
+		}
 		if(recipeId.equals(recipeVO.getRecipeId())) {
 		model.addAttribute("recipeVO", recipeVO);
 		List<AttachVO> attachVO = attachService.getBoardById(recipeId);
