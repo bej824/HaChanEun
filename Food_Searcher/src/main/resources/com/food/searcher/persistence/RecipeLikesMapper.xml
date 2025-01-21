@@ -29,6 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{recipeBoardId}, #{memberId}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, #{memberLike})
 	</insert>
 	
+	<update id="update">
+		UPDATE RECIPE_LIKES
+		SET MEMBER_LIKE = #{memberLike} WHERE RECIPE_BOARD_ID = #{recipeBoardId} AND MEMBER_ID = #{memberId}
+	</update>
+	
 	<select id="selectMemberLikes" resultMap="recipeLikesResultMap">
 		SELECT *
 		FROM RECIPE_LIKES

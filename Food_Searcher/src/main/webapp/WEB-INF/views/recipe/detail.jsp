@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="../resources/css/Detail.css">
 <!-- jquery 라이브러리 import -->
@@ -44,6 +45,15 @@
     .image_item {
         margin: 5px; /* 이미지 간 간격 */
     }
+    
+	.container {
+      display: flex;
+      justify-content: center;  /* 수평 중앙 정렬 */
+    }
+    
+    #up, #down:hover {
+      cursor: pointer;  /* 마우스가 아이콘 위에 올려지면 손 모양으로 변경 */
+    }
 
 </style>
 <meta charset="UTF-8">
@@ -56,6 +66,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/attach.css">
 <title>${recipeVO.recipeTitle }</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
@@ -78,6 +89,7 @@
 	<div>
 		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
 	</div>
+	 
 
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
@@ -105,7 +117,7 @@
 	<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
-			<h2>이미지 파일 리스트</h2>
+			<h3>이미지 파일 리스트</h3>
 			<div class="image-list">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${idList}">
@@ -116,7 +128,7 @@
 				        <div class="image_item">
 				        	<a href="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" target="_blank">
 					        <img width="100px" height="100px" 
-					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/></a>
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
 				        </div>
 				    </c:if>
 				</c:forEach>
@@ -136,6 +148,7 @@
 <form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
     <!-- 레시피 ID hidden 필드 -->
     <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
+   
 </form>
 
 <script>
@@ -186,17 +199,31 @@
 	--%>
 	
 	<sec:authorize access="isAnonymous()">
-	<a class="button">좋아요${recipeVO.likesCount }</a>
-	<a class="button">싫어요${recipeVO.dislikesCount }</a>
+	<div class="container">
+	<i class="glyphicon glyphicon-thumbs-up" style="font-size:26px;color:red;">좋아요${recipeVO.likesCount }&nbsp;</i>
+	<i class="glyphicon glyphicon-thumbs-down" style="font-size:26px;color:blue;">싫어요${recipeVO.dislikesCount }</i>
+	</div>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
-	<button id="up" class="button">좋아요${recipeVO.likesCount }</button>
-	<button id="down" class="button">싫어요${recipeVO.dislikesCount }</button>
-	</sec:authorize>
+	<div class="container">
+	<i id="upfill"class="bi bi-hand-thumbs-up-fill" style="font-size:26px;color:red; display: none;">좋아요${recipeVO.likesCount }&nbsp;</i>
+	<i id="up" class="bi bi-hand-thumbs-up" style="font-size:26px;color:red;">좋아요${recipeVO.likesCount }&nbsp;</i>
+	<i id="downfill" class="bi bi-hand-thumbs-down-fill" style="font-size:26px;color:blue; display: none;">싫어요${recipeVO.dislikesCount }</i>
+	<i id="down" class="bi bi-hand-thumbs-down" style="font-size:26px;color:blue;">싫어요${recipeVO.dislikesCount }</i>
+	
+	</div>
 	
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#up').click(function(){
+			if ($('#up').is(':visible')) {
+			$('#upfill').show(); // 아이콘 채우기 안되네...
+            $('#up').hide();
+			} else {
+				$('#upfill').hide();
+	            $('#up').show();
+			}
+			if("${likesVO.memberLike}" == ""){
 			let boardId = $('#recipeId').val();
 			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
@@ -209,6 +236,7 @@
 			console.log("memberMBTI : " + memberMBTI);
 			let memberConstellation = "${memberVO.memberConstellation}";
 			console.log("memberConstellation : " + memberConstellation);
+			
 			let memberLike = 1;
 			console.log(memberLike);
 			
@@ -240,13 +268,228 @@
 				}
 			});
 			}
+			} else if("${likesVO.memberLike}" == "1") {
+				let boardId = $('#recipeId').val();
+				console.log("recipeId : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("memberId : " + memberId);
+				let memberAge = ${memberVO.memberAge};
+				console.log("memberAge : " + memberAge);
+				let memberGender = "${memberVO.memberGender}";
+				console.log("memberGender : " + memberGender);
+				let memberMBTI = "${memberVO.memberMBTI}";
+				console.log("memberMBTI : " + memberMBTI);
+				let memberConstellation = "${memberVO.memberConstellation}";
+				console.log("memberConstellation : " + memberConstellation);
+				let memberLike = 0;
+				let previousMemberLike = 1;
+				let obj = {
+						'recipeBoardId' : boardId,
+						'memberId' : memberId,
+						'memberAge' : memberAge,
+						'memberGender' : memberGender,
+						'memberMBTI' : memberMBTI,
+						'memberConstellation' : memberConstellation,
+						'memberLike' : memberLike,
+						'previousMemberLike' : previousMemberLike
+				}
+				
+				$.ajax({
+					type : 'PUT',
+					url : '../likes/' + boardId,
+					headers : { // 헤더 정보
+						'Content-Type' : 'application/json' // json content-type 설정
+					}, 
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('좋아요 취소');
+							location.reload();
+						}
+					}
+				});
+			} else if("${likesVO.memberLike}" == "0") {
+				let boardId = $('#recipeId').val();
+				console.log("recipeId : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("memberId : " + memberId);
+				let memberAge = ${memberVO.memberAge};
+				console.log("memberAge : " + memberAge);
+				let memberGender = "${memberVO.memberGender}";
+				console.log("memberGender : " + memberGender);
+				let memberMBTI = "${memberVO.memberMBTI}";
+				console.log("memberMBTI : " + memberMBTI);
+				let memberConstellation = "${memberVO.memberConstellation}";
+				console.log("memberConstellation : " + memberConstellation);
+				let memberLike = 1;
+				let obj = {
+						'recipeBoardId' : boardId,
+						'memberId' : memberId,
+						'memberAge' : memberAge,
+						'memberGender' : memberGender,
+						'memberMBTI' : memberMBTI,
+						'memberConstellation' : memberConstellation,
+						'memberLike' : memberLike
+				}
+				
+				$.ajax({
+					type : 'PUT',
+					url : '../likes/' + boardId,
+					headers : { // 헤더 정보
+						'Content-Type' : 'application/json' // json content-type 설정
+					}, 
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('좋아요!');
+							location.reload();
+						}
+					}
+				});
+			}
+		});
+		
+		
+		$('#down').click(function(){
+			if("${likesVO.memberLike}" == ""){
+				let boardId = $('#recipeId').val();
+				console.log("recipeId : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("memberId : " + memberId);
+				let memberAge = ${memberVO.memberAge};
+				console.log("memberAge : " + memberAge);
+				let memberGender = "${memberVO.memberGender}";
+				console.log("memberGender : " + memberGender);
+				let memberMBTI = "${memberVO.memberMBTI}";
+				console.log("memberMBTI : " + memberMBTI);
+				let memberConstellation = "${memberVO.memberConstellation}";
+				console.log("memberConstellation : " + memberConstellation);
+				
+				let memberLike = 2;
+				console.log(memberLike);
+				
+				let obj = {
+						'recipeBoardId' : boardId,
+						'memberId' : memberId,
+						'memberAge' : memberAge,
+						'memberGender' : memberGender,
+						'memberMBTI' : memberMBTI,
+						'memberConstellation' : memberConstellation,
+						'memberLike' : memberLike
+				}
+				console.log(obj);
+				if("<sec:authentication property="name" />" != "${likesVO.memberId}") {
+				console.log()
+				$.ajax({
+					type : 'POST',
+					url : '../likes',
+					headers : { // 헤더 정보
+						'Content-Type' : 'application/json' // json content-type 설정
+					}, 
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('싫어요!');
+							location.reload();
+						}
+					}
+				});
+				}
+			}  else if("${likesVO.memberLike}" == "2") {
+				let boardId = $('#recipeId').val();
+				console.log("recipeId : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("memberId : " + memberId);
+				let memberAge = ${memberVO.memberAge};
+				console.log("memberAge : " + memberAge);
+				let memberGender = "${memberVO.memberGender}";
+				console.log("memberGender : " + memberGender);
+				let memberMBTI = "${memberVO.memberMBTI}";
+				console.log("memberMBTI : " + memberMBTI);
+				let memberConstellation = "${memberVO.memberConstellation}";
+				console.log("memberConstellation : " + memberConstellation);
+				let memberLike = 0;
+				let previousMemberLike = 2;
+				
+				let obj = {
+						'recipeBoardId' : boardId,
+						'memberId' : memberId,
+						'memberAge' : memberAge,
+						'memberGender' : memberGender,
+						'memberMBTI' : memberMBTI,
+						'memberConstellation' : memberConstellation,
+						'memberLike' : memberLike,
+						'previousMemberLike' : previousMemberLike
+				}
+				
+				$.ajax({
+					type : 'PUT',
+					url : '../likes/' + boardId,
+					headers : { // 헤더 정보
+						'Content-Type' : 'application/json' // json content-type 설정
+					}, 
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('싫어요 취소');
+							location.reload();
+						}
+					}
+				});
+			} else if("${likesVO.memberLike}" == "0") {
+				let boardId = $('#recipeId').val();
+				console.log("recipeId : " + boardId);
+				let memberId = $('#memberId').val();
+				console.log("memberId : " + memberId);
+				let memberAge = ${memberVO.memberAge};
+				console.log("memberAge : " + memberAge);
+				let memberGender = "${memberVO.memberGender}";
+				console.log("memberGender : " + memberGender);
+				let memberMBTI = "${memberVO.memberMBTI}";
+				console.log("memberMBTI : " + memberMBTI);
+				let memberConstellation = "${memberVO.memberConstellation}";
+				console.log("memberConstellation : " + memberConstellation);
+				
+				let memberLike = 2;
+				console.log(memberLike);
+				
+				let obj = {
+						'recipeBoardId' : boardId,
+						'memberId' : memberId,
+						'memberAge' : memberAge,
+						'memberGender' : memberGender,
+						'memberMBTI' : memberMBTI,
+						'memberConstellation' : memberConstellation,
+						'memberLike' : memberLike
+				}
+				
+				$.ajax({
+					type : 'PUT',
+					url : '../likes/' + boardId,
+					headers : { // 헤더 정보
+						'Content-Type' : 'application/json' // json content-type 설정
+					}, 
+					data : JSON.stringify(obj),
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('싫어요!');
+							location.reload();
+						}
+					}
+				});
+			}
 		});
 	});
 	</script>
+	</sec:authorize>
 
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
-
 	<div style="text-align: center;">
 		<div id="replies"></div>
 	</div>
