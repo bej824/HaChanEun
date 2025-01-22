@@ -129,6 +129,10 @@ textarea[readonly] {
 	font-size:26px;
 	color: #ffffff;
 	text-decoration: none;
+	
+	display:flex;
+	align-items: center;
+	justify-content: center;
 }
 
 

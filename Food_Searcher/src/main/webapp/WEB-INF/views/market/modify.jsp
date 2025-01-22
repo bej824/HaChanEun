@@ -5,26 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-
-#marketArea {
-	left:45px;
-	position:relative;
-	width:860px;
-	height:2326px;
-	margin-right:100px;
-	font-size:16px;
-	
-}
-</style>
+<link rel="stylesheet"
+	href="../resources/css/Detail.css">
+	<link rel="stylesheet"
+	href="../resources/css/Base.css">
 <meta charset="UTF-8">
 <title>${marketVO.marketTitle }</title>
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
-
-<div id="marketArea">
+<div id="area">
 	<h2>글 수정 페이지</h2>
 	
 	<form action="modify" method="POST">
