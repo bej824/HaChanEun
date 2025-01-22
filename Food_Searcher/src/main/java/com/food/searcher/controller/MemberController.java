@@ -70,6 +70,18 @@ public class MemberController {
 		return result;
 	}
 	
+	@ResponseBody
+	@PostMapping("/pwCheck")
+	public boolean pwCheckPOST(@RequestParam("password") String password, Principal principal) {
+		log.info("pwCheckPOST()");
+		
+		String memberId = principal.getName();
+		String encodedPassword = memberService.searchPw(memberId);
+		boolean result = passwordEncoder.matches(password, encodedPassword);
+		
+		return result;
+	}
+	
 	// 회원가입 정보 db 저장
 	@ResponseBody
 	@PostMapping("/registerClear")
@@ -216,15 +228,15 @@ public class MemberController {
 		
 	}
 	
-	// 비밀번호 찾기 이후 초기화
+	// 비밀번호 변경
 	@ResponseBody
 	@PostMapping("/pwUpdate")
-	public int pwUpdatePOST(String email, String password, String oldPassword,
+	public int pwUpdatePOST(@RequestParam("memberId") String memberId,
+			String email, String password, String oldPassword,
 			Principal principal, Model model) {
 		log.info("pwUpdatePOST()");
 		int result = 0;
 		
-		String memberId = principal.getName();
 		
 		password = passwordEncoder.encode(password);
 		result = memberService.updatePassword(memberId, email, password);

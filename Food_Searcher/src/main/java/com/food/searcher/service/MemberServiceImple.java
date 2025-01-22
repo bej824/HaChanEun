@@ -37,6 +37,7 @@ public class MemberServiceImple implements MemberService {
 		return memberMapper.countMemberById(memberId);
 	}
 	
+	
 	// 멤버 페이지에서의 회원 정보 확인 및 아이디 확인
 	@Override
 	public MemberVO getMemberById(String memberId) {
@@ -45,13 +46,25 @@ public class MemberServiceImple implements MemberService {
 		return memberVO;
 	}
 	
+	// 아이디 찾기
+	@Override
+	public List<MemberVO> searchId(String memberName, String email) {
+		log.info("searchId()");
+		
+		return memberMapper.searchId(memberName, email);
+	}
+	
+	@Override
+	public String searchPw(String memberId) {
+		log.info("searchPw()");
+		
+		return memberMapper.searchPw(memberId);
+	}
+	
 	// 회원 비밀번호 변경
 	@Override
 	public int updatePassword(String memberId, String email, String password) {
 		log.info("updatePassword()");
-		log.info(memberId);
-		log.info(email);
-		log.info(password);
 		
 		return memberMapper.updatePasswordByMemberId(memberId, email, password);
 	}
@@ -79,15 +92,6 @@ public class MemberServiceImple implements MemberService {
 		return memberMapper.updateMemberByMemberId(memberId, memberMBTI, emailAgree);
 	}
 	
-	
-	// 아이디 찾기
-	@Override
-	public List<MemberVO> searchId(String memberName, String email) {
-		log.info("searchId()");
-		
-		return memberMapper.searchId(memberName, email);
-	}
-	
 	// 멤버 권한 관련
 	// 권한 부여
 	@Override
@@ -98,7 +102,7 @@ public class MemberServiceImple implements MemberService {
 	
 	// 권한 확인
 	@Override
-	public RoleVO selectRole(String memberId) {
+	public List<RoleVO> selectRole(String memberId) {
 		log.info("selectRole()");
 		return memberMapper.selectRoleByMemberId(memberId);
 	}

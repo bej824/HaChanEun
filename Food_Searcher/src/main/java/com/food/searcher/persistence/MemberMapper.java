@@ -20,6 +20,9 @@ public interface MemberMapper {
 	// 아이디 찾기
 	List<MemberVO> searchId(@Param("memberName") String memberName, @Param("email") String email);
 	
+	// 비밀번호 확인
+	String searchPw(@Param("memberId") String memberId);
+	
 	// 비밀번호 초기화
 	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
 	
@@ -32,7 +35,7 @@ public interface MemberMapper {
 	
 	// 멤버 권한
 	int insertRole(@Param("memberId") String memberId, @Param("roleName") String roleName);
-	RoleVO selectRoleByMemberId(@Param("memberId") String memberId);
+	List<RoleVO> selectRoleByMemberId(@Param("memberId") String memberId);
 	int updateRoleByMemberId(@Param("memberId") String memberId, @Param("roleName") String roleName);
 
 }

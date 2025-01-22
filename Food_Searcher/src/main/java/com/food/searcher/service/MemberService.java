@@ -10,7 +10,9 @@ public interface MemberService {
 	int createMember(MemberVO memberVO); // 계정 생성
 	int memberIdCheck(String memberId); // 아이디 중복 확인
 	MemberVO getMemberById(String memberId); // 멤버페이지 자기정보 확인
+	
 	List<MemberVO> searchId(String memberName, String email); // id찾기
+	String searchPw(String memberId);
 	
 	int updatePassword(String memberId, String email, String password); // 비밀번호 업데이트
 	int updateEmail(String memberId, String email); // 이메일 업데이트
@@ -19,7 +21,7 @@ public interface MemberService {
 	
 	
 	int createRole(String memberId, String roleName);
-	RoleVO selectRole(String memberId);
+	List<RoleVO> selectRole(String memberId);
 	int updateRole(String memberId, String roleName);
 
 }
