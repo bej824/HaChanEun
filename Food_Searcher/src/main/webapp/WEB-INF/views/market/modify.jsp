@@ -5,11 +5,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+
+#marketArea {
+	left:45px;
+	position:relative;
+	width:860px;
+	height:2326px;
+	margin-right:100px;
+	font-size:16px;
+	
+}
+</style>
 <meta charset="UTF-8">
 <title>${marketVO.marketTitle }</title>
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+
+<div id="marketArea">
 	<h2>글 수정 페이지</h2>
 	
 	<form action="modify" method="POST">
@@ -24,16 +39,9 @@
 	<!-- http://localhost:8080/searcher/market/modify?marketId=94 -->
 		
 
-		<sec:authorize access="hasRole('ROLE_MEMBER')">
+		<sec:authorize access="!hasRole('ROLE_ADMIN')">
 			<script type="text/javascript">
 				alert('관리자만 접근이 가능합니다.');
-				window.history.back();
-			</script>
-		</sec:authorize>
-		
-		<sec:authorize access="isAnonymous()">
-			<script type="text/javascript">
-				alert('로그인이 필요합니다.');
 				window.history.back();
 			</script>
 		</sec:authorize>
@@ -86,5 +94,6 @@
 			
 		</div>
 	</form>
+	</div>
 </body>
 </html>

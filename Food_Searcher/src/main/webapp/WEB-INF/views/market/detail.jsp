@@ -10,51 +10,9 @@ pageEncoding="UTF-8"%>
 	href="../resources/css/Detail.css">
 <link rel="stylesheet"
 	href="../resources/css/Reply.css">
+	<link rel="stylesheet"
+	href="../resources/css/Base.css">
 <style>
-
-.reply_item {
-	width: 100%;
-	max-width: 600px; /* 댓글 창의 최대 너비 */
-	margin: 20px auto; /* 화면 중앙에 배치 */
-	padding: 15px 20px; /* 패딩을 조정해서 더 컴팩트하게 */
-	border: 1px solid #ddd; /* 테두리 */
-	border-radius: 10px; /* 둥근 테두리 */
-	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-}
-
-.comment_item {	
-	left : 30px;
-	width: 100%;
-	max-width: 600px; /* 댓글 창의 최대 너비 */
-	margin: 20px auto; /* 화면 중앙에 배치 */
-	padding: 15px 20px; /* 패딩을 조정해서 더 컴팩트하게 */
-	border: 1px solid #ddd; /* 테두리 */
-	border-radius: 10px; /* 둥근 테두리 */
-	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-}
-
-
-.reply_insert {
-	padding:30px 0;
-	margin:10px 0;
-	font-size:14px;
-	font-family:'맑은 고딕', verdana;
-	padding:10px;
-	width:700px;
-	height:150px;
-}
-
-.modalBackground {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0, 0, 0, 0.5);
-  z-index:-1;
-  }
-
-
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -65,7 +23,8 @@ pageEncoding="UTF-8"%>
 </head>
 <body>
 		<%@ include file ="/WEB-INF/views/header.jsp" %>
-	    	    
+	<div id="container">
+   	<div id="homeArea">
 	<!-- 게시글 -->
 	<h2>글 보기</h2>
 	<div>
@@ -109,16 +68,17 @@ pageEncoding="UTF-8"%>
 	<sec:authorize access="isAuthenticated()">
   	  <input type="hidden" name="marketId" value="${marketVO.marketId }">
 	   	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-   	 <textarea name="marketReplyContent" id= "marketReplyContent" class="reply_insert"></textarea>
+   	 <input type="text" name="marketReplyContent" id= "marketReplyContent" />
    	 <button id="btnAdd" class="button">댓글 작성</button>
 	</sec:authorize>
-	
+		
+	<div class="replyBox">
 		<div id="replies">
 		<div class="reply_item">
 			<div class="comments"></div>
 		</div>
 		</div>
-	
+	</div>
 	
 	<script type="text/javascript">
 	
@@ -198,7 +158,9 @@ pageEncoding="UTF-8"%>
 		
 	<!-- 댓글 -->
 	<%@ include file ="/WEB-INF/views/market/reply.jsp" %>
-
+	</div>
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+	</div>
 
 </body>
 </html>

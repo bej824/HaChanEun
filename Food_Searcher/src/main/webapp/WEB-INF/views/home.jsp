@@ -26,7 +26,7 @@ li {
 }
 
 .button {
-	  background-color: #04AA6D;
+ background-color: #04AA6D;
   border: none;
   color: white;
   padding: 6px 12px;
@@ -37,11 +37,18 @@ li {
   margin: 4px 2px;
   cursor: pointer;
 }
+
 </style>
+
+<link rel="stylesheet"
+	href="./resources/css/Base.css">
 <title>Home</title>
 </head>
 <body>
 	<%@ include file ="header.jsp" %>
+	<div id="container">
+   		<div id="area">
+	
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
@@ -52,7 +59,6 @@ li {
 	
 	</c:if>
 
-	
 	<a href="recipe/list" class="button">레시피 공유</a>
 	<table border="1">
 	<thead>
@@ -107,6 +113,9 @@ li {
 		
 	<a href="local/map" class="button">특산품</a>
 	
-	
+	</div>
+	<!-- end homeArea -->
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+	</div>
 </body>
 </html>

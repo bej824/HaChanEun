@@ -1,19 +1,30 @@
-.button, .btn_update, .btn_delete, .btn_comment, .btn_commentupdate, .btn_commentdelete {
-  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 4px 12px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+.button, .btnAdd, .btn_update, .btn_delete, .btn_comment, .btn_commentUpdate, .btn_commentDelete, .btn_commentAdd, #button {
+   font-size:14px;
+   padding:5px 10px;
+   margin:10px 0;
+   background:#fff;
+   border:1px solid #ccc; 
 }
 
-#marketReplyContent, .reply_insert {
-	width: 500px;
-	height: 100px;
+button:hover {
+	/* 커서 갖다댄 버튼 색 변경 */
+    background: #dcdcdc;
+}
+
+
+.replyBox {
+ 	max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+replyBox input[type="text"] {
+	background-color: #7FFFD4 /* 구분용 */
+	width: 100%;
 	padding: 10px;
 	font-size: 14px;
 	border: 1px solid #ccc;
@@ -22,6 +33,7 @@
 	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
 	outline: none;
 	box-sizing: border-box; /* padding 포함 */
+	text-align: left; /* 왼쪽 정렬 */
 }
 
 .modalBackground {
@@ -45,15 +57,12 @@
 	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 }
 
-
-textarea {
-	width: 700px;
-	height: 280px;
-	padding: 12px 20px;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 4px;
-	background-color: rgb(240, 240, 240, 0);
-	font-size: 16px;
-	resize: none;
+#marketArea {
+	left:45px;
+	position:relative;
+	width:860px;
+	height:2326px;
+	margin-right:100px;
+	font-size:16px;
+	
 }
