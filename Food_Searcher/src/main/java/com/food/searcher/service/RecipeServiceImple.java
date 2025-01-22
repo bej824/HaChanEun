@@ -42,6 +42,7 @@ public class RecipeServiceImple implements RecipeService{
 		
 		int insertAttachResult = 0;
 		for(AttachVO attachVO : attachList) {
+			attachVO.setBoardId(getAllBoards().get(0).getRecipeId());
 			insertAttachResult += attachMapper.insert(attachVO);
 		}
 		log.info(insertAttachResult + "행 파일 정보 등록");
