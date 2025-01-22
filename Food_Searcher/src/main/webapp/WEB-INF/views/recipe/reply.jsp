@@ -358,7 +358,7 @@
 									+ '<input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
 									+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'><br>'
+									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
 									+ '</div>'

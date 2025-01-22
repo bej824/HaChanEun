@@ -49,7 +49,7 @@ li {
 	<%@ include file ="../header.jsp" %>
 	
 	<h1>ID 찾기</h1>
-	<form id="emailForm" action="pwSearch" method="POST">
+	<form id="idSearchForm" action="pwSearch" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" placeholder="이름을 입력해주세요." required>
 	<br> <br>
 	email : <input type="text" name="email" id ="email" value="${email }" readonly="readonly">
@@ -107,6 +107,7 @@ li {
 			let radioButton = document.querySelector('input[name="memberRadio"]:checked');
 			let memberId = radioButton.getAttribute('dataId');
 			let memberStatus = radioButton.getAttribute('dataStatus');
+			let email = '${email }';
 			
 			console.log(memberId);
 			console.log(memberStatus);
@@ -115,10 +116,10 @@ li {
 	    		
 		    	let pwSearch = confirm(memberId + "계정을 선택하셨습니다. \n 패스워드찾기로 이동하시겠습니까?");
 		    	if (pwSearch) {
-		    		let emailForm = document.getElementById("emailForm");
-		    		emailForm.memberId.value = memberId;
-		    		emailForm.email.value=email;
-		    		emailForm.submit();
+		    		let idSearchForm = document.getElementById("idSearchForm");
+		    		idSearchForm.memberId.value = memberId;
+		    		idSearchForm.email.value=email;
+		    		idSearchForm.submit();
 		    	}
 		    		
 		    } else if(memberStatus == "inactive") {
@@ -127,14 +128,6 @@ li {
 		    		
 		    	if (result) {
 		    		active(memberId);
-		    		
-		    		let pwSearch = confirm("패스워드찾기로 이동하시겠습니까?");
-			    	if (pwSearch) {
-			    		let emailForm = document.getElementById("emailForm");
-			    		emailForm.memberId.value = memberId;
-			    		emailForm.email.value=email;
-			    		emailForm.submit();
-			    	}
 		    	}
 		    	
 		    }
@@ -189,7 +182,14 @@ li {
 			    success: function(result) {
 			    	console.log(result);
 			      if (result == 1) {
-			    	  alert("활성화되었습니다.");
+			    	alert("활성화되었습니다.");
+			    	let pwSearch = confirm("패스워드찾기로 이동하시겠습니까?");
+				    if (pwSearch) {
+				    	let idSearchForm = document.getElementById("idSearchForm");
+				    	idSearchForm.memberId.value = memberId;
+				    	idSearchForm.email.value=email;
+				    	idSearchForm.submit();
+				    }
 			      } else {
 			    	  alert("다시 시도해주세요.");
 			      }

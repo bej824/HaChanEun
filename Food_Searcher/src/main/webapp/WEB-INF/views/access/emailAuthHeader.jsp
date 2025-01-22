@@ -154,7 +154,24 @@ body {
 			}
 		
 		function register(){
-			document.getElementById("emailForm").submit();		
+			let emailForm = document.getElementById("emailForm");
+			if(emailForm.action.endsWith('emailUpdate')){
+				$.ajax({
+				    type: 'POST',
+				    url: 'emailUpdate',
+				    data: {email: email.value},
+				    success: function(result) {
+				      if (result == '1') {
+				    	  alert("이메일 변경이 완료되었습니다.");
+				    	  window.location.href="/searcher/access/memberPage";
+				      } else {
+				    	  emailMsg.html('다시 시도하여주세요.');
+				      }
+				    }
+				  });
+			} else {
+				emailForm.submit();				
+			}
 		}
 	</script>
 

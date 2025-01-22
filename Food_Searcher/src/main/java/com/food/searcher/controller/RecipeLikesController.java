@@ -3,7 +3,9 @@ package com.food.searcher.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,14 @@ public class RecipeLikesController {
 		log.info("createLikes()");
 		log.info("recipeLikesVO : " + recipeLikesVO);
 		int result = likesService.createLike(recipeLikesVO);
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@PutMapping("/{boardId}")
+	public ResponseEntity<Integer> updateLikes(@PathVariable("boardId") int boardId, @RequestBody RecipeLikesVO recipeLikesVO){
+		log.info("updateLikes()");
+		log.info("recipeLikesVO : " + recipeLikesVO);
+		int result = likesService.updateLike(recipeLikesVO);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 }

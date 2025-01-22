@@ -24,7 +24,7 @@ public class MemberServiceImple implements MemberService {
 	// 회원가입
 	@Override
 	public int createMember(MemberVO memberVO) {
-		log.info("createBoard()");
+		log.info("createMember()");
 		int result = memberMapper.insertMember(memberVO);
 		return result;
 	}
@@ -37,6 +37,7 @@ public class MemberServiceImple implements MemberService {
 		return memberMapper.countMemberById(memberId);
 	}
 	
+	
 	// 멤버 페이지에서의 회원 정보 확인 및 아이디 확인
 	@Override
 	public MemberVO getMemberById(String memberId) {
@@ -45,12 +46,19 @@ public class MemberServiceImple implements MemberService {
 		return memberVO;
 	}
 	
-	// 회원 정보 수정
+	// 아이디 찾기
 	@Override
-	public int updateMember(MemberVO memberVO) {
-		log.info("updateMember()");
-		int result = memberMapper.updateMemberByMemberId(memberVO);
-		return result;
+	public List<MemberVO> searchId(String memberName, String email) {
+		log.info("searchId()");
+		
+		return memberMapper.searchId(memberName, email);
+	}
+	
+	@Override
+	public String searchPw(String memberId) {
+		log.info("searchPw()");
+		
+		return memberMapper.searchPw(memberId);
 	}
 	
 	// 회원 비밀번호 변경
@@ -62,23 +70,39 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
-	public List<MemberVO> searchId(String memberName, String email) {
-		log.info("searchId()");
+	public int updateEmail(String memberId, String email) {
+		log.info("updateEmail()");
 		
-		return memberMapper.searchId(memberName, email);
+		return memberMapper.updateEmailByMemberId(memberId, email);
+	}
+	
+	@Override
+	public int updateStatus(String memberId, String memberStatus) {
+		log.info("updateStatus()");
+		log.info(memberId + " : " + memberStatus);
+		
+		return memberMapper.updateStatusByMemberId(memberId, memberStatus);
+	}
+	
+	// 회원 정보 수정
+	@Override
+	public int updateMember(String memberId, String memberMBTI, String emailAgree) {
+		log.info("updateMember()");
+		
+		return memberMapper.updateMemberByMemberId(memberId, memberMBTI, emailAgree);
 	}
 	
 	// 멤버 권한 관련
 	// 권한 부여
 	@Override
-	public int insertRole(String memberId) {
-		log.info("insertRole()");
-		return memberMapper.insertRole(memberId);
+	public int createRole(String memberId, String roleName) {
+		log.info("createRole()");
+		return memberMapper.insertRole(memberId, roleName);
 	}
 	
 	// 권한 확인
 	@Override
-	public RoleVO selectRole(String memberId) {
+	public List<RoleVO> selectRole(String memberId) {
 		log.info("selectRole()");
 		return memberMapper.selectRoleByMemberId(memberId);
 	}

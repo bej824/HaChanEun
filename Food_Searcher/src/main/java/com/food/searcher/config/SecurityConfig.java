@@ -2,6 +2,7 @@ package com.food.searcher.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests()
-				.antMatchers("/searcher/**").permitAll()
-				.antMatchers("/searcher/access.admin").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/access/admin").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/recipe/register").access("hasRole('ROLE_MEMBER')")
 				.antMatchers("/recipe/modify").access("hasRole('ROLE_MEMBER')");
 
@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/access/emailCheck").permitAll()  // 해당 URL에 대한 POST 요청을 허용
         .antMatchers("/access/emailConfirm").permitAll()
 		.antMatchers("/access/idSearch").permitAll()
+		.antMatchers("/access/pwSearch").permitAll()
 		.antMatchers("/home").permitAll();
         
         //.anyRequest().authenticated(); // 나머지 URL은 인증 없이 접근 불가

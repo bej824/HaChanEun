@@ -9,13 +9,13 @@
 <body>
 	<%@ include file ="../header.jsp" %>
 	
-	<h1>비밀번호 찾기</h1>
+	<h1>비밀번호 변경</h1>
 	
-	<p>아이디</p>
-	<input type="text" name="memberId" id="memberId" value='${memberId }'
-	placeholder="아이디 입력" required>
+	<p>현재 비밀번호</p>
+	<input type=password name="oldPassword" id="oldPassword"
+			placeholder="비밀번호 입력" required>
 	<br>
-	<p>비밀번호</p>
+	<p>새로운 비밀번호</p>
 		<input type=password name="password" id="password"
 			placeholder="비밀번호 입력" required> <br>
 
@@ -24,6 +24,10 @@
 			placeholder="비밀번호 입력" required> <br>
 	
 	<button id=btn_update class="button" name="update">비밀번호 수정</button>
+	
+	<sec:authorize access="!isAuthenticated()">
+	<script>window.location.href="../auth/login";</script>
+	</sec:authorize>
 	
 	<script type="text/javascript">
 	
@@ -35,38 +39,48 @@
 		});
 		
 		$(document).ready(function(){
-			
 			$('#btn_update').click(function(){
-				let memberId = document.getElementById("memberId").value;
+				let memberId = '<sec:authentication property="name" />';
+				let oldPassword = document.getElementById("oldPassword").value;
 				let password = document.getElementById("password").value;
 		 		let password2 = document.getElementById("password2").value;
 		 		let email = '${email }';
 		 		
-		 		
-				// 비밀번호와 비밀번호 재입력이 일치하는지 확인
-    			if (password !== password2) {
-      				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      				return;
-    			}
-				
-				pwUpdate(memberId, password, email);
+		 		$.ajax({
+				    type: 'POST',
+				    url: 'pwCheck',
+				    data: { password: oldPassword},
+				    success: function(result) {
+				    	if(result) {
+				    		// 비밀번호와 비밀번호 재입력이 일치하는지 확인
+			    			if (password !== password2) {
+			      				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+			      				return;
+			    			}
+				    		pwUpdate(password, email);
+				    		
+				    	} else {
+				    		alert("비밀번호를 다시 한번 확인해주세요.");
+				    		return;
+				    	}
+				    }
+	    		});
 			
 			});
 			
-		function pwUpdate(memberId, password, email) {
+		function pwUpdate(password, email) {
 			
     		$.ajax({
 			    type: 'POST',
 			    url: 'pwUpdate',
-			    data: { memberId : memberId,
-			    		password: password,
+			    data: { password: password,
 			    		email: email},
 			    success: function(result) {
 			    	if(result == 1) {
 			    		alert("수정이 완료되었습니다. 로그인 화면으로 이동합니다.");
 			    		window.location.href="../auth/login";
 			    	} else {
-			    		alert("다시 시도하여주십시오.");
+			    		alert("다시 한번 시도해주세요.");
 			    	}
 			    }
     		});
@@ -76,6 +90,7 @@
 		})
 	
 	</script>
+	
 
 </body>
 </html>
