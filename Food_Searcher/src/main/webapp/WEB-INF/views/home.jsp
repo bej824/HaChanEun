@@ -48,11 +48,6 @@ li {
 	<%@ include file ="header.jsp" %>
 	<div id="container">
    		<div id="area">
-	
-	<h1>Hello world!</h1>
-
-	<P>The time on the server is ${serverTime}.</P>
-	
 
 	<c:if test="${session.memberId != null}">	
 		<p>${session.memberId }님 환영합니다.</p>
@@ -114,8 +109,7 @@ li {
 	<a href="local/map" class="button">특산품</a>
 	
 	</div>
-	<!-- end homeArea -->
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+	
 	</div>
 </body>
 </html>

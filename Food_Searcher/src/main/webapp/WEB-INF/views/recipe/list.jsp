@@ -56,7 +56,7 @@ li {
     }
 
 .search {
-	margin-left: 335px;
+	margin-left: 750px;
 }
 </style>
 <!-- jquery 라이브러리 import -->
@@ -135,7 +135,8 @@ li {
     <!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
     <c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
         <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
-            <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
+        	<c:if test="${num > 0 }"></c:if>
+            <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a></li>
         </c:forEach>
     </c:if>
 
@@ -181,6 +182,15 @@ function changeColor(button, pageNum) {
     // 클릭된 버튼에 'selected' 클래스를 추가
     button.classList.add('selected');
 }
+
+
+function isNumber(value) {
+    if (isNaN(value) || value <= 0) {
+      alert('숫자만 입력 가능합니다.');
+      return false;  // 링크 이동을 막음
+    }
+    return true;  // 숫자일 경우 링크 이동
+  }
 </script>
 
 	<script type="text/javascript">
@@ -208,6 +218,9 @@ function changeColor(button, pageNum) {
 			}); // end on()
 			
 		}); // end document()
+		
+		
+		
 	</script>
 
 </body>

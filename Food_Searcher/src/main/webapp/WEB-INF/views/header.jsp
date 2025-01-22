@@ -22,7 +22,7 @@ body {
 	margin-left: 100px;
 	height: 200px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-between; /* 자식 요소들을 양 맨 끝에 배치*/
 	align-items: center;
 	background-color: #04AA6D;
 	padding: 10px 20px;
@@ -105,7 +105,11 @@ body {
 }
 
 textarea[readonly] {
+	width: 700px;
+	height: 280px;
+	padding: 12px 20px;
     background-color: #f2f2f2;
+    resize: none;
 }
 
 #memberForm{
@@ -142,6 +146,7 @@ textarea[readonly] {
     	<sec:authorize access="isAuthenticated()">
         	<div class="myPage">
 			<a><sec:authentication property="name" />님 환영합니다.</a>
+			<br>
         	<a href="/searcher/auth/login">로그아웃</a>
         	<a href="/searcher/access/memberPage">마이페이지</a>
         	</div>
@@ -161,6 +166,9 @@ textarea[readonly] {
         </div>
     
     </div>
+    
+    <!-- end homeArea -->
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
 
 </body>
 </html>
