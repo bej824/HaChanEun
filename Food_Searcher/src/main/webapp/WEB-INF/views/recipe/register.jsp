@@ -53,10 +53,9 @@ textarea {
 			<input type="text" id="recipeTitle" name="recipeTitle" placeholder="제목 입력" maxlength="20" required>
 		</div>
 		<div>
-			<p>작성자 :</p>
-			<input type="text" name="memberId" value="<sec:authentication property="name" />" maxlength="10" required readonly>
+			<p>작성자 : <sec:authentication property="name" /></p>
+			<input type="hidden" name="memberId" value="<sec:authentication property="name" />" maxlength="10">
 		</div>
-		<br>
 		<div>
 			<p>음식 :</p>
 			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력">
