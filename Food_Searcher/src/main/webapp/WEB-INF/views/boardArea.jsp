@@ -7,7 +7,7 @@
 
 #boardArea {
 	width: 150px;
-    height: 500px;
+    height: 120vh;
     font-size: 20px;
     font-family: "나눔고딕";
     line-height: 2.1;
@@ -17,7 +17,7 @@
     text-decoration: none;
  	float: left;
  	box-sizing: border-box;
- 	margin-right: 100px;
+ 	margin-right: 70px;
 	margin-left: 100px;
 }
 

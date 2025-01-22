@@ -43,8 +43,8 @@ textarea {
 <title>글 작성 페이지</title>
 </head>
 <body>
-	<% session.getAttribute("memberId"); %>
 	<%@ include file ="../header.jsp" %>
+	<div class="fixed-element">
 	<h2>글 작성 페이지</h2>
 	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
@@ -70,7 +70,7 @@ textarea {
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
-		<div class="image-upload">
+	<div class="image-upload">
 		<h2>이미지 파일 업로드</h2>
 		<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 		<p>* 최대 용량은 10MB 입니다.</p>
@@ -89,9 +89,8 @@ textarea {
 	<button id="registerBoard" class="button">등록</button>
 	</sec:authorize>
 	<button onclick="goBack()" class="button">뒤로가기</button>
-
+	</div>
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
-	<script src="${pageContext.request.contextPath }/resources/js/attach.js"></script>
 
 <script>
     // ajaxSend() : AJAX 요청이 전송되려고 할 때 실행할 함수를 지정

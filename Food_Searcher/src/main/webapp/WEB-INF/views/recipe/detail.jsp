@@ -15,23 +15,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
 <style type="text/css">
-.button, .btn_update, .btn_delete, .btn_comment, .btn_commentupdate, .btn_commentdelete {
-  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 4px 12px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.reply_item {
-        margin-left: 1px; /* 대댓글은 부모 댓글보다 30px 들여쓰기 */
-        margin-bottom: 10px;
-    }
 
 .disabled {
   opacity: 0.6;
@@ -49,19 +32,15 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <!-- css 파일 불러오기 -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/image.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/attach.css">
-<title>${recipeVO.recipeTitle }</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<%session.getAttribute("memberId"); %>
+	<div class="fixed-element">
 	<h2>글 보기</h2>
 	<div>
 		<p>글 번호 : ${recipeVO.recipeId }</p>
@@ -184,13 +163,8 @@
 
 	</script>
 	
-	<%-- 추천 비추천 작업 예정 
-	<button id="up" class="button">추천${recipeVO.like }</button>
-	<button id="down" class="button">비추천${recipeVO.unlike }</button>
-	--%>
-	
 	<%@ include file="likes.jsp"%>
-
+	</div>
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 	<div style="text-align: center;">

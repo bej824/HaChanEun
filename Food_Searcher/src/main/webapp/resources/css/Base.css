@@ -1,10 +1,9 @@
 #container{
 	margin: auto;
-	overflow:hidden;	
+	overflow:hidden;
 }
 
 #homeArea {
-    position: relative;
     font-size: 16px;
     width: 1300px;
     height:auto;
@@ -14,11 +13,8 @@
 }
 
 #area {
-	position: relative;
-    font-size: 16px;
-    width: 1200px;
-    height:auto;
-    box-sizing: border-box;
-    float:right;
-    margin-right: 100px;
+	display:flex;
+	flex-direction: column;
+	margin-right: 100px;
+	align-items:flex-start;
 }
