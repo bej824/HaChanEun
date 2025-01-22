@@ -72,10 +72,7 @@ li {
 <body>
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 	
-	
-	<div id="container">
-	<div id="homeArea">
-	
+	<div id="area">
 	<h1>전통 시장 리스트</h1>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -203,8 +200,6 @@ li {
 	
 	
 	</script>
-	</div>
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
 	</div>
 </body>
 </html>

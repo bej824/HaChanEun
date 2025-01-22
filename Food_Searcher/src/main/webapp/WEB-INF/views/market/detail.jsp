@@ -23,9 +23,8 @@ pageEncoding="UTF-8"%>
 </head>
 <body>
 		<%@ include file ="/WEB-INF/views/header.jsp" %>
-	<div id="container">
-   	<div id="homeArea">
 	<!-- 게시글 -->
+	<div id="area">
 	<h2>글 보기</h2>
 	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
@@ -62,7 +61,6 @@ pageEncoding="UTF-8"%>
 	
 	<sec:authorize access="isAnonymous()">
  	   * 댓글은 로그인이 필요한 서비스입니다.
- 	   <a href="/searcher/auth/login">로그인하기</a>
  	</sec:authorize>
 
 	<sec:authorize access="isAuthenticated()">
@@ -71,7 +69,7 @@ pageEncoding="UTF-8"%>
    	 <input type="text" name="marketReplyContent" id= "marketReplyContent" />
    	 <button id="btnAdd" class="button">댓글 작성</button>
 	</sec:authorize>
-		
+	
 	<div class="replyBox">
 		<div id="replies">
 		<div class="reply_item">
@@ -159,8 +157,5 @@ pageEncoding="UTF-8"%>
 	<!-- 댓글 -->
 	<%@ include file ="/WEB-INF/views/market/reply.jsp" %>
 	</div>
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
-	</div>
-
 </body>
 </html>

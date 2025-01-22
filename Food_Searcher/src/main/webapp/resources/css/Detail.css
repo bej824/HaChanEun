@@ -13,7 +13,7 @@ button:hover {
 
 
 .replyBox {
- 	max-width: 600px;
+ 	min-width: 600px;
     margin: 0 auto;
     padding: 20px;
     background: #f9f9f9;
@@ -57,12 +57,8 @@ replyBox input[type="text"] {
 	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 }
 
-#marketArea {
-	left:45px;
-	position:relative;
-	width:860px;
-	height:2326px;
-	margin-right:100px;
-	font-size:16px;
-	
+
+#content {
+	resize:none;
 }
+

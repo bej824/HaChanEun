@@ -46,8 +46,6 @@ li {
 </head>
 <body>
 	<%@ include file ="header.jsp" %>
-	<div id="container">
-   		<div id="area">
 	
 	<h1>Hello world!</h1>
 
@@ -112,10 +110,5 @@ li {
 	<br>
 		
 	<a href="local/map" class="button">특산품</a>
-	
-	</div>
-	<!-- end homeArea -->
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
-	</div>
 </body>
 </html>

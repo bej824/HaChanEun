@@ -21,8 +21,6 @@ body {
 	margin-right: 100px;
 	margin-left: 100px;
 	height: 200px;
-	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	background-color: #04AA6D;
 	padding: 10px 20px;
@@ -125,6 +123,10 @@ textarea[readonly] {
 	font-size:26px;
 	color: #ffffff;
 	text-decoration: none;
+	
+	display:flex;
+	align-items: center;
+	justify-content: center;
 }
 
 
@@ -161,6 +163,9 @@ textarea[readonly] {
         </div>
     
     </div>
+    
+    <!-- end homeArea -->
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
 
 </body>
 </html>
