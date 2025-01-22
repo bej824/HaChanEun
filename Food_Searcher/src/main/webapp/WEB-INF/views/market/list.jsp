@@ -58,7 +58,11 @@ li {
 #search {
 	margin-left: 335px;
 }
+
 </style>
+<link rel="stylesheet"
+	href="../resources/css/Base.css">
+	
 <meta charset="UTF-8">
 <title>전통시장 리스트</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js">
@@ -67,6 +71,11 @@ li {
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/header.jsp"%>
+	
+	
+	<div id="container">
+	<div id="homeArea">
+	
 	<h1>전통 시장 리스트</h1>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -136,21 +145,15 @@ li {
 
 	</form>
 	
-	<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
-		<form id="detailForm" action="detail" method="get">
-			<input type="hidden" name="boardId" >
-			<input type="hidden" name="pageNum" >
-	    	<input type="hidden" name="pageSize" >
-	    	<input type="hidden" name="type" >
-			<input type="hidden" name="keyword" >
-		</form>
 		
-
-
-
-
-
-
+		<!-- 페이지 번호와 페이지 사이즈를 전송하는 form -->
+		<form id="listForm" action="list" method="get">
+	    	<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="pageSize" >
+	    	<input type="hidden" name="type">
+			<input type="hidden" name="keyword">
+	    </form>
+	    		
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -200,5 +203,8 @@ li {
 	
 	
 	</script>
+	</div>
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+	</div>
 </body>
 </html>

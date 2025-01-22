@@ -12,19 +12,25 @@
 <title>헤더</title>
 <style>
 body {
-	margin: 0;
+	margin: 20px;
 	font-family: Arial, sans-serif;
 }
 
 .navbar {
+	margin: 20px auto;
+	margin-right: 100px;
+	margin-left: 100px;
+	height: 200px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	background-color: #04AA6D;
 	padding: 10px 20px;
 	color: white;
+	border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+	
 .logo a {
 	font-size: 20px;
 	font-weight: bold;
@@ -59,13 +65,12 @@ body {
 }
 
 .navbar .login {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .navbar .login a {
 	color: #ffffff;
 	text-decoration: none;
-	margin-left: 15px;
 }
 
 .navbar .login a:hover {
@@ -103,6 +108,26 @@ textarea[readonly] {
     background-color: #f2f2f2;
 }
 
+#memberForm{
+	box-sizing: border-box;
+	border-radius: 8px;
+	left:20px;
+	top:20px;
+	border: 1px solid #ccc;
+	width: 180px;
+	height: 180px;
+	text-align:center;
+	font-size: 20px;
+	line-height: 2.1;
+}
+
+#front_img{
+	font-size:26px;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+
 </style>
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
@@ -113,27 +138,27 @@ textarea[readonly] {
     <!-- 네비게이션 바 -->
     <div class="navbar">
     
-        <div class="logo">
-        	<a href="/searcher/home">Home</a>
-        </div>
-        <ul>
-            <li><a href="/searcher/recipe/list">레시피 공유</a></li>
-            <li><a href="/searcher/market/list">전통시장</a></li>
-            <li><a href="/searcher/local/map">특산품</a></li>
-        </ul>
-        <sec:authorize access="isAuthenticated()">
+        <div id="memberForm">
+    	<sec:authorize access="isAuthenticated()">
         	<div class="myPage">
 			<a><sec:authentication property="name" />님 환영합니다.</a>
         	<a href="/searcher/auth/login">로그아웃</a>
         	<a href="/searcher/access/memberPage">마이페이지</a>
         	</div>
         </sec:authorize>
+        
    		<sec:authorize access="!isAuthenticated()">
     		<div class="login">
         	<a href="/searcher/auth/login">로그인</a>
+        	<br>
         	<a href="/searcher/access/registerEmail?select=register">회원가입</a>
         	</div>
     	</sec:authorize>
+    	</div>
+        
+        <div id="front_img">
+        <a href="/searcher/home">Home</a>
+        </div>
     
     </div>
 

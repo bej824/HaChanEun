@@ -50,6 +50,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
 	</select>
 	
+	<select id="searchPw" resultType="String">
+		SELECT PASSWORD
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
 	<update id="updatePasswordByMemberId">
 		UPDATE MEMBER SET 
 		PASSWORD = #{password}

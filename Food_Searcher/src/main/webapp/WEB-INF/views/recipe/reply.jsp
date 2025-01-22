@@ -121,6 +121,8 @@
 							let replyDate = year + "." + month + "." + day + "."
 							+ hours + ":" + minutes;
 							
+							let replyDated = new Date(this.replyDateCreated).toLocaleString();
+							
 							console.log("날짜 : ", replyDateCreated);
 							let disabled = '';
 							let readonly = '';
@@ -134,24 +136,21 @@
 							if(this.comments.length == 0) {
 								commentcount = '<button class="btn_commentList">답글</button>'
 							} else {
-								commentcount = '<button class="btn_commentList">답글'+this.comments.length +'</button>'
+								commentcount = '<button class="btn_commentList">답글 보기 ('+this.comments.length +')</button>'
 							}
 							
 							list += '<div class="reply_item">'
-								+ '<pre>'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
-								+ this.memberId
-								+ '&nbsp;&nbsp;' // 공백
-								+ replyDate
-								+ '<br><input type="text" id="replyContent" value="'+ this.replyContent +'">'
-								+ '&nbsp;&nbsp;'
+								+ this.memberId + '&nbsp;&nbsp;' // 공백
+								+ replyDated + '&nbsp;&nbsp;'
+								+ '<button class="btn_update " '+ disabled +' >수정</button>' + '&nbsp'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
-								+ '<button class="btn_update " '+ disabled +' >수정</button>'
+								
+								+ '<div class="replyContent" id="replyContent">' + this.replyContent + '</div>'
 								+ '<br>'
+								
 								+ commentcount
 								+ '<div class="comment"></div>'
-								+ '</pre>'
-
 					            list += '</div>'; // 댓글 닫기
 						}); // end each()
 				        
@@ -344,6 +343,8 @@
 								let replyDate = year + "." + month + "." + day + "."
 								+ hours + ":" + minutes;
 								
+								let commentDated = new Date(this.commentDateCreated).toLocaleString();
+								
 								let disabled = '';
 								let readonly = '';
 								
@@ -356,17 +357,20 @@
 
 								comment += '<div class="comment_item">'
 									+ '<input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
-									+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
-									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<br><input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'" '+ readonly +'>'
+									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
+									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
+									
+									+ '<br>' + '</div>'
+									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
+									+ '<br>'
 									+ '</div>'
 									
 							}); // end each()
 							<sec:authorize access="isAuthenticated()">
 					        // 로그인한 사용자가 있을 경우 댓글 작성 입력란과 버튼을 추가
-					        comment += '<input type="text" id="commentContentAdd" >'
+					        comment += '<textarea id="commentContentAdd"></textarea>' + '<br>'
 					            + '<button class="btn_commentAdd" value="'+ replyId +'">작성</button>';
 					            </sec:authorize>
 							commentDiv.html(comment);

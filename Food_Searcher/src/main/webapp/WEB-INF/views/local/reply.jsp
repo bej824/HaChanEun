@@ -108,6 +108,8 @@
 							let replyDate = year + "." + month + "." + day + "."
 							+ hours + ":" + minutes;
 							
+							let replyDated = new Date(this.replyDateCreated).toLocaleString();
+							
 							var disabled = '';
 							var readonly = '';
 							
@@ -118,14 +120,15 @@
 							
 							list += '<div class="reply_item">'
 								+ '<input type="hidden" id="replyId" value="'+ this.replyId +'">'
-								+ this.memberId
-								+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-								+ '<input type="text" id="replyContent" value="'+ this.replyContent +'" ' + readonly + '>'
-								+ '<button class="btn_comment">답글 ' + this.commentCount + '개</button>'
-								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
+								+ this.memberId + '&nbsp;&nbsp;'
+							    + replyDated + '&nbsp;&nbsp;'
 								+ '<button class="btn_update" '+ disabled + '>수정</button>'
+								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
+								+ '<div class="replyContent" id="replyContent">' + this.replyContent + '</div>'
+								+ '<br>'
+								
+								+ '<button class="btn_commentList">답글 보기 (' + this.commentCount + ')</button>'
 								+ '<div class="comment"></div>'
-								+ '<br> <br>'
 								+ '</div>'
 								
 						}); // end each()
@@ -209,7 +212,7 @@
 				});
 			}); // end btn_delete()
 			
-			$('#replies').on('click', '.reply_item .btn_comment', function(){
+			$('#replies').on('click', '.reply_item .btn_commentList', function(){
 				let replyId = $(this).prevAll('#replyId').val();
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
 				
@@ -247,6 +250,8 @@
 								let replyDate = year + "." + month + "." + day + "."
 								+ hours + ":" + minutes;
 								
+								let commentDated = new Date(this.commentDateCreated).toLocaleString();
+								
 								var disabled = '';
 								var readonly = '';
 								
@@ -257,19 +262,21 @@
 								
 								comment += '<div class="comment_item">'
 									+ '<input type="hidden" id="commentId" value="'+ this.commentId +'">'
-									+ this.memberId
-									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + replyDate
-									+ '<input type="text" id="commentContent" class="commentContent" value="'+ this.commentContent +'">'
-									+ '<button class="comment_delete" '+ disabled +' >삭제</button>'
-									+ '<button class="comment_update" '+ disabled + '>수정</button>'
+									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
+									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp'
+									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
+									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
+									+ '<br>' + '</div>'
+									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
+									+ '<br>'
 									+ '</div>'
 									
 							}); // end each()
-							comment += '<input type="text" id="commentContent">'
-								+ '<button class="comment_add" value='+ replyId +'>작성</button>';
+							comment += '<textarea id="commentContentAdd"></textarea>' + '<br>'
+								+ '<button class="btn_commentAdd" value='+ replyId +'>작성</button>';
 							commentDiv.html(comment);
 						}
-					}
+					}			
 				});
 				}
 				else {
@@ -278,14 +285,14 @@
 				
 			}) // end btn_comment()
 			
-		$('#replies').on('click', '.comment_add', function() {
+		$('#replies').on('click', '.btn_commentAdd', function() {
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
         console.log(this);
         
         let localId = $('#localId').val();
         let memberId = '<sec:authentication property="name" />';
         let replyId = $(this).val();  // 댓글 ID
-        let commentContent = $(this).prevAll('#commentContent').val();
+        let commentContent = $(this).prevAll('#commentContentAdd').val();
 
         console.log("replyId: " + replyId);
         console.log("memberId: " + memberId);
@@ -324,7 +331,7 @@
 		 }); // end comment_add()
 		 
 		// 대댓글 수정 모달창 띄우기
-			$(document).on("click", ".comment_update", function(){
+			$(document).on("click", ".btn_commentupdate", function(){
 				$(".commentModifyModal").attr("style", "display:block;");
 				
 				var commentId =  $(this).closest('.comment_item').find("#commentId").val(); // 원본 댓글 내용 가져오기
@@ -375,7 +382,7 @@
 			}); // end comment_update()
 			
 			
-			$('#replies').on('click', '.reply_item .comment_delete', function(){
+			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
 				console.log(this);
 				
 				let localId = $('#localId').val();
@@ -402,7 +409,14 @@
 
 		}); // end document()
 		
-		
+	    // getText 함수는 전역에서 정의되어야 합니다.
+	    function getText(clickedElement) {
+	      // 클릭한 span의 텍스트를 가져옵니다.
+	      let memberId = clickedElement.textContent;
+	      console.log(memberId);
+	      
+	      $('#commentContentAdd').val(memberId +" → ");
+	    }
 	</script>
 
 <!-- 수정 모달 -->

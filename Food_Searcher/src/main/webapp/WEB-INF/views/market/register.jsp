@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style type="text/css">
 .button {
 	background-color: #04AA6D;
@@ -32,8 +33,11 @@ textarea {
 	font-size: 16px;
 	resize: none;
 }
-</style>
 
+
+</style>
+<link rel="stylesheet"
+	href="../resources/css/Base.css">
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -43,7 +47,8 @@ textarea {
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-	    
+		<div id="container">
+	    <div id="homeArea">
 		<sec:authorize access="hasRole('ROLE_MEMBER')">
 			<script type="text/javascript">
 				alert('관리자만 접근이 가능합니다.');
@@ -124,5 +129,8 @@ textarea {
 
 
 	</form>
+	</div>
+	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
+	</div>
 </body>
 </html>

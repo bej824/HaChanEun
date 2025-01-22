@@ -12,7 +12,8 @@
 	<h1>비밀번호 찾기</h1>
 	
 	<p>아이디</p>
-	<input type="text" name="memberId" id="memberId" placeholder="아이디 입력" required>
+	<input type="text" name="memberId" id="memberId" value='${memberId }'
+	placeholder="아이디 입력" required>
 	<br>
 	<p>비밀번호</p>
 		<input type=password name="password" id="password"

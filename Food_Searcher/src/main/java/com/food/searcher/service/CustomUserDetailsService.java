@@ -28,10 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
     	log.info("loadUserByUsername()");
     	String memberId = username;
-    	log.info(memberId);
         // 사용자 ID를 이용하여 회원 정보와 권한 정보를 조회
         MemberVO member = memberMapper.selectMemberByMemberId(memberId);
-        RoleVO role = memberMapper.selectRoleByMemberId(memberId);
+        List<RoleVO> role = memberMapper.selectRoleByMemberId(memberId);
+        log.info(member);
+        
         
         // 조회된 회원 정보가 없을 경우 예외 처리
         if (member == null) {
@@ -44,7 +45,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         	
         // 회원의 역할을 Spring Security의 GrantedAuthority 타입으로 변환하여 리스트에 추가
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        for(int i = 0; i < role.size(); i++) {
+        	authorities.add(new SimpleGrantedAuthority(role.get(i).getRoleName()));        	
+        }
         
         // UserDetails 객체를 생성하여 회원 정보와 역할 정보를 담아 반환
         UserDetails userDetails = new CustomUser(member, 

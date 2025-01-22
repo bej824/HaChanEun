@@ -7,17 +7,15 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Reply.css">
+	<link rel="stylesheet"
+	href="../resources/css/Base.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<style>
-
-</style>
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>Insert title here</title>
 </head>
 <body>
-
 <form>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 </form>
@@ -105,16 +103,15 @@
 							+ '<div class="userInfo">'
 							+ '<input type="hidden" id="marketReplyId" value="'+ this.marketReplyId +'">'
 							+ '<span class="memberId">' + this.memberId + '&nbsp'
-							+ '<span class="date">' + replyDateCreated + '&nbsp'
+							+ '<span class="date">' + replyDateCreated + '&nbsp' + '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'
 							+ '<span id="isModified">' + modified + '</span>'
+							+ '<button class="btn_update"' + disabled + ' > 수정 </button>' + '&nbsp'
+							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
 							+ '</div>'
-							+ '<br>'
 							+ '<div class="marketReplyContent">' + this.marketReplyContent + "</div>"
 							+ '<br>'
 							
 							+ '<div class = "replyFooter">'
-							+ '<button class="btn_update"' + disabled + ' > 수정 </button>'
-							+ '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
 							+ '<button class="btn_commentList" value="' + this.marketReplyId + '"> 답글 보기(' + this.commentList.length + ') </button> '
 							+ '<input type="hidden" class="commentMemberId" value="' + this.memberId + '">' 
 							+ "</div>" // end replyFooter
@@ -167,23 +164,20 @@
 						+ '<div class="userInfo">'
 						+ '<input type="hidden" id="marketCommentId" value="' + this.marketCommentId + '">'
 						+ '<input type="hidden" class="marketReplyId" value="'+ this.marketReplyId +'">'
-						+ '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
-						+ '<span class="date">' + commentDateCreated
+						+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
+						+ '<span class="date">' + commentDateCreated + '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'
+						+ '<button class="btn_commentUpdate"' + disabled + '> 수정 </button>'
+						+ '<button class="btn_commentDelete"' + disabled + '> 삭제 </button>'
 						+ '</div>'
-						+ '<br>'
-						
 						+ '<div id="marketCommentContent">' + this.marketCommentContent + "</div>"	
 
 						+ '<br>'
-						+ '<button class="btn_updateComment"' + disabled + '> 수정 </button>'
-						+ '<button class="btn_deleteComment"' + disabled + '> 삭제 </button>'
-						
 						+ '</div>'; // end comment_item
 					
 					}); // end each()
 					
 					<sec:authorize access="isAuthenticated()">
-					 comment += '<textarea id="addCommentContent" ></textarea>'
+					 comment += '<textarea id="addCommentContent" ></textarea>' + '<br>'
 				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '"> 답글 작성</button>';
 				    </sec:authorize>
 					// 대댓글창 맨 아래에 있는 내용 입력 창
@@ -336,7 +330,7 @@
 	
 	
 	// 대댓글 수정 모달창 띄우기
-	$(document).on("click", ".btn_updateComment", function(){
+	$(document).on("click", ".btn_commentUpdate", function(){
 		$(".commentModifyModal").attr("style", "display:block;");
 		
 		var commentId = $(this).closest('.comment_item').find('#marketCommentId').val(); 
@@ -349,7 +343,6 @@
 		 
 		}); // end modal
 		
-	//addcommentcontent
 	// 선택된 대댓글 수정
 	$(".comment_modify_btn").click(function(){
 		console.log(this);
@@ -381,7 +374,7 @@
 	}); // end modal_modify_btn
 		
 	// 삭제 버튼을 클릭하면 선택된 대댓글 삭제
-	$(document).on('click', '.comment_item .btn_deleteComment', function(){
+	$(document).on('click', '.comment_item .btn_commentDelete', function(){
 		console.log(this);
 		
 		var marketReplyId =  $(this).closest('.comment_item').find('.marketReplyId').val();
@@ -481,7 +474,6 @@ $(".modal_modify_btn").on("click", function(){
 
 	
 </script>
-
 
 </body>
 </html>
