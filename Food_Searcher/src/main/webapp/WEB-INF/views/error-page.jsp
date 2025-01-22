@@ -7,13 +7,14 @@
 </head>
 <body>
 	<%@ include file ="header.jsp" %>
+	
     <h1>접근할수 없는 페이지입니다</h1>
-    <button onclick="goBack()" class="button">이전 페이지로 이동</button>
 
     <script>
-        function goBack() {
             window.history.back();
-        }
+            setTimeout(function(){
+                window.location.href = "../home"; // 리다이렉트할 URL
+            }, 50);
     </script>
 </body>
 </html>

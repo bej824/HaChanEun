@@ -51,32 +51,45 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
-	<button onclick="index()" class="button">글 목록</button>
+	<button id="btn_index" class="button">글 목록</button>
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<button onclick="update()" class="button">글 수정</button>
+	<button id="btn_update" class="button">글 수정</button>
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
 	</sec:authorize>
 	
 	<%@ include file ="reply.jsp" %>
 	
 	<script type="text/javascript">
+	let likes = 0;
 	
-	function update() {
+	$(document).ready(function(){
+			
+	$('#btn_update').click(function(){
 		let result = confirm("수정하시겠습니까?");
 		if (result) {
 		document.getElementById("updateForm").submit();
 		} else {
 			alert("수정이 취소되었습니다.");
 		}
-	} // end update()
+	})
 	
 		
-	function index() {
-		let localLocal = '${localLocal }'
-		let localDistrict = '${localDistrict }'
-		window.location.href='map?localLocal=${localLocal }&localDistrict=${localDistrict }';
-	}
+	$('#btn_index').click(function(){
+		let localLocal = '${localLocal }';
+		let localDistrict = '${localDistrict }';
+		
+		if(localLocal != "" && localLocal != '${LocalSpecialityVO.localLocal }'){
+			localLocal = "";
+			localDistrict = "";
+		}
+		if(localDistrict != "" && localDistrict != '${LocalSpecialityVO.localDistrict }'){
+			localDistrict = "";
+		}
+		
+		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict;
+	})
 	
+	})
 	</script>
 
 </body>

@@ -16,7 +16,7 @@
 		<p>이름 : ${memberVO.memberName }</p>
 
 		<p>
-			성별 :
+		성별 :
 			<c:if test="${memberVO.memberGender == 'male'}">
 		남성 
 		</c:if>
@@ -117,7 +117,10 @@
 		});
 		
 		$('#btn_pwUpdate').click(function(){
-			window.location.href = "pwUpdate";
+			let result = confirm("비밀번호를 수정하시겠습니까?");
+			if(result){
+			window.location.href = "pwUpdate";				
+			}
 		});
 		
 		$('#btn_emailUpdate').click(function(){

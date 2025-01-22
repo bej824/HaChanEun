@@ -7,13 +7,12 @@
 .search {
     margin: 20px auto; /* 검색 상자의 상단 여백 설정 */
     padding: 20px; /* 내부 여백 설정 */
-    width: 100%; /* 전체 너비 설정 */
     text-align: center; /* 내용 중앙 정렬 */
     background-color: #f9f9f9; /* 배경 색상 설정 */
     border-radius: 10px; /* 둥근 테두리 */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
     margin-top: 20px; /* 상단 여백 */
-    margin-left: 10px; /* 수평 중앙 정렬 */
+    margin-left: auto; /* 수평 중앙 정렬 */
     margin-right: auto; /* 수평 중앙 정렬 */
 }
 
@@ -125,7 +124,17 @@ a:link, a:visited, a:hover, a:active {
 				<th style="width: 100px">댓글수</th>
 			</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody>
+  		<c:forEach var="specialityList" items="${specialityList}">
+    	<tr onclick="window.location.href='detail?localId=${specialityList.localId}&localLocal=${localLocal}&localDistrict=${localDistrict}'">
+    		<td>${specialityList.localId}</td>
+    		<td>${specialityList.localLocal}</td>
+    		<td>${specialityList.localDistrict}</td>
+    		<td>${specialityList.localTitle}</td>
+    		<td>${specialityList.replyCount}</td>
+		</tr>
+  		</c:forEach>
+	</tbody>
 	</table>
 	</div>
 	
@@ -136,10 +145,12 @@ a:link, a:visited, a:hover, a:active {
 	<script type="text/javascript">
 	
 		$(document).ready(function(){
-			let indexLocalLocal = "${localLocal }"
-			let indexLocalDistrict = "${localDistrict }"
+			let indexLocalLocal = "${localLocal }";
+			let indexLocalDistrict = "${localDistrict }";
 			
-			listUpdate(indexLocalLocal, '');
+			if(indexLocalLocal != ''){
+			listUpdate(indexLocalLocal, '');				
+			}
 			
 			// localLocal만 선택되었을 때
 			$('#localLocal').change(function(){
@@ -157,6 +168,15 @@ a:link, a:visited, a:hover, a:active {
 				
 			function listUpdate(localLocal, localDistrict) {
 			    console.log(localLocal, localDistrict);
+			    
+			    if(!/^[가-힣]+$/.test(localLocal)) {
+			    	localLocal = "";
+			    	localDistrict = "";
+			    }
+			    
+			    if(!/^[가-힣]+$/.test(localDistrict)) {
+			    	LocalDistrict = "";
+			    }
 			    
 			    $.ajax({
 			        type: 'GET',
@@ -190,30 +210,22 @@ a:link, a:visited, a:hover, a:active {
 			                    + '<td>' + LocalSpecialityVO.localTitle + '</td>'
 			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
 			                    + '</tr>';
-			            	if(indexLocalDistrict != ''){
-			            		if(indexLocalDistrict == LocalSpecialityVO.localDistrict){
+			            	if(indexLocalDistrict != '' && indexLocalDistrict == LocalSpecialityVO.localDistrict){
 			            			tbody.append(row); // 새로운 데이터 행 추가
-			            		}
-			            	} else {
+			            	} else if(indexLocalDistrict == '') {
 			                tbody.append(row); // 새로운 데이터 행 추가
 			            	}
 			                
-			                if(localLocal == ''){
-			                	
-			                } else {
-			                if(localDistrict == ''){
-			                	
 			                // 지역 중복 체크 및 옵션 추가
-			                if (localDistrict_optionVal != LocalSpecialityVO.localDistrict) {
+			                if(localLocal != '' && localDistrict == '' &&
+			                	localDistrict_optionVal != LocalSpecialityVO.localDistrict){
+			                	
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
 			                    let districtOption =
 			                        '<option value="' + localDistrict_optionVal + '">' + 
 			                        localDistrict_optionVal + '</option>';
 			                    localDistrict_selectOption.append(districtOption); // 새로운 지역 옵션 추가
-			                }			                	
-			                	
-			                }
-			            	
+			                
 			                }
 			                
 			            });

@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,7 +83,8 @@ public class MemberController {
 		return result;
 	}
 	
-	// 회원가입 정보 db 저장
+	// 회원가입 정보 저장
+	@Transactional
 	@ResponseBody
 	@PostMapping("/registerClear")
 	public int registerPOST(@RequestBody MemberVO memberVO) {
@@ -126,6 +128,7 @@ public class MemberController {
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정
+	@Transactional
 	@ResponseBody
 	@PostMapping("/update")
 	public int updatePOST(@RequestParam("memberId") String memberId,
@@ -142,6 +145,7 @@ public class MemberController {
 	
 	
 	// email 변경. 인증 관련 요소이기에 컨트롤러만 별도로 빼놓음
+	@Transactional
 	@ResponseBody
 	@PostMapping("/emailUpdate")
 	public int emailUpdatePOST(@RequestParam("email") String email, Principal principal) {
@@ -157,6 +161,7 @@ public class MemberController {
 	
 	// inactive : 비활성화 계정 / active : 활성화 계정
 	// 계정 활성, 비활성 관련 요소이기에 컨트롤러만 별도로 빼놓음
+	@Transactional
 	@ResponseBody
 	@PostMapping("/statusUpdate")
 	public int statusUpdatePOST(@RequestParam("memberId") String memberId, 
@@ -229,6 +234,7 @@ public class MemberController {
 	}
 	
 	// 비밀번호 변경
+	@Transactional
 	@ResponseBody
 	@PostMapping("/pwUpdate")
 	public int pwUpdatePOST(@RequestParam("memberId") String memberId,
@@ -251,6 +257,7 @@ public class MemberController {
 
 	} // end adminGET()
 	
+	@Transactional
 	@PostMapping("/roleUpdate")
 	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
 		log.info("roleUpdate");

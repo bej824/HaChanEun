@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ public class LocalCommentController {
 	@Autowired
 	LocalCommentService localCommentService;
 	
+	@Transactional
 	@ResponseBody
 	@PostMapping("/commentAdd/{localId}")
 	public int commentAddPOST(@PathVariable("localId") int localId, @RequestBody LocalCommentVO localCommentVO,
@@ -58,6 +60,7 @@ public class LocalCommentController {
 	    return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@Transactional
 	@PutMapping("/updateComment/{commentId}") // PUT : 댓글 수정
 	   public ResponseEntity<Integer> updateComment(
 	         @PathVariable("commentId") int commentId,
@@ -68,6 +71,7 @@ public class LocalCommentController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
+	@Transactional
 	@PutMapping("/deleteComment/{localId}/{commentId}")
 		public ResponseEntity<Integer> deleteComment(@PathVariable("localId") int localId,
 				@PathVariable("commentId") int commentId){

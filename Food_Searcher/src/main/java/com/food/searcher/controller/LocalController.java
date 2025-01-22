@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +29,9 @@ public class LocalController {
 		log.info("mapGET()");
 		
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
-		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
+		List<LocalSpecialityVO> specialityList = localService.getAllSpeciality(localLocal, localDistrict);
 		
-		model.addAttribute("SpecialityList", SpecialityList);
+		model.addAttribute("specialityList", specialityList);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 	}
@@ -41,6 +42,7 @@ public class LocalController {
 		
 	}
 	
+	@Transactional
 	@ResponseBody
 	@PostMapping("createSpeciality")
 	public int createSpecialityPOST(LocalSpecialityVO localSpecialityVO) {
@@ -72,7 +74,8 @@ public class LocalController {
 		
 		return districtList;
 	}
-
+	
+	@Transactional
 	@PostMapping("update")
 	public String localUpdatePOST(@RequestParam("Id") String localId, @RequestParam("localContent") String localContent,
 			LocalSpecialityVO localSpecialityVO) {

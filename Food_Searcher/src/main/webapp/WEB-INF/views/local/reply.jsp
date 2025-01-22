@@ -28,6 +28,7 @@
 				<button id="btnAdd" class="button">작성</button>
 				</div>
 				</sec:authorize>
+
 		</div>
 	</div>
 
@@ -272,8 +273,11 @@
 									+ '</div>'
 									
 							}); // end each()
+							
+							<sec:authorize access="isAuthenticated()">
 							comment += '<textarea id="commentContentAdd"></textarea>' + '<br>'
 								+ '<button class="btn_commentAdd" value='+ replyId +'>작성</button>';
+							</sec:authorize>
 							commentDiv.html(comment);
 						}
 					}			

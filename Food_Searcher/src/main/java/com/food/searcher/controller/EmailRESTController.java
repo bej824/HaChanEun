@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public class EmailRESTController {
 	@Autowired
 	private EmailAuthUtil emailAuth;
 	
+	@Transactional
 	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email, HttpServletRequest request) 
 			throws ServletException, IOException {

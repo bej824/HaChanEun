@@ -114,8 +114,6 @@ li {
 	<a href="local/map" class="button">특산품</a>
 	
 	</div>
-	<!-- end homeArea -->
-	<%@ include file="/WEB-INF/views/boardArea.jsp" %>
 	</div>
 </body>
 </html>
