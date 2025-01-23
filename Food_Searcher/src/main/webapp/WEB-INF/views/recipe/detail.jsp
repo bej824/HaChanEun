@@ -8,9 +8,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="../resources/css/Detail.css">
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
@@ -34,12 +31,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- css 파일 불러오기 -->
 <link rel="stylesheet"
+	href="../resources/css/Detail.css">
+<link rel="stylesheet"
+	href="../resources/css/Base.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/image.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<div class="fixed-element">
 	<h2>글 보기</h2>
 	<div>
@@ -106,8 +108,7 @@
 		</div>
 	</div>
 
-    <a href="/searcher/recipe/list?recipeTitle=${pagination.keyword}&filterBy=${pagination.type}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
-
+    <a href="/searcher/recipe/list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
     <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
     <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
 
@@ -138,30 +139,6 @@
 	}
 </script>
 
-	<script type="text/javascript">
-		$(document).ready(function(){
-		$("#listBoard").click(function(){
-			var listForm = $("#listForm"); // form 객체 참조
-			
-			// c:out을 이용한 현재 페이지 번호값 저장
-			var pageNum = "<c:out value='${pagination.pageNum }' />";
-			var pageSize = "<c:out value='${pagination.pageSize }' />"; 
-			var type = "<c:out value='${pagination.type }' />";
-			var keyword = "<c:out value='${pagination.keyword }' />";
-			
-			// 페이지 번호를 input name='pageNum' 값으로 적용
-			listForm.find("input[name='pageNum']").val(pageNum);
-			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-			listForm.find("input[name='pageSize']").val(pageSize);
-			// type 값을 적용
-			listForm.find("input[name='type']").val(type);
-			// keyword 값을 적용
-			listForm.find("input[name='keyword']").val(keyword);
-			listForm.submit(); // form 전송
-		}); // end click()
-	});
-
-	</script>
 	
 	<%@ include file="likes.jsp"%>
 	</div>
@@ -170,6 +147,6 @@
 	<div style="text-align: center;">
 		<div id="replies"></div>
 	</div>
-
+	</div>
 </body>
 </html>

@@ -59,6 +59,10 @@ li {
 	margin-left: 335px;
 }
 
+.selected {
+
+}
+
 </style>
 <link rel="stylesheet"
 	href="../resources/css/Base.css">
@@ -98,16 +102,40 @@ li {
 
 		<tbody>
 			<c:forEach var="MarketVO" items="${marketList}">
-				<tr onclick="location.href='detail?marketId=${MarketVO.marketId }'">
+			<tr>
 					<td>${MarketVO.marketId }</td>
-					<td>${MarketVO.marketTitle }</td>
+					<td class="detail_button"><a href="${MarketVO.marketId }"><span><c:out value="${MarketVO.marketTitle }" /></span></a></td>
 					<td>${MarketVO.marketLocal }</td>
 					<td>${MarketVO.marketReplyCount	}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	
+	<form id="searchForm" method="get" action="list">
+		<input type="hidden" name="pageNum">
+	    <input type="hidden" name="pageSize">
+		<select name="type">
+			<option value="제목">제목</option>
+			<option value="내용">내용</option>
+			<option value="지역">지역</option>
+		</select>
+		<input type="text" name="keyword">
+		<button> 검색 </button>
 
+	</form>
+	
+		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
+	    <form id="detailForm" action="detail" method="get">
+			<input type="hidden" name="marketId" >
+			<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="pageSize" >
+	    	<input type="hidden" name="type" >
+			<input type="hidden" name="keyword" >
+		</form>
+		
+					
 
 
 	<ul>
@@ -131,18 +159,6 @@ li {
 
 	</ul>
 
-	<form id="searchForm" method="GET" action="list" class="search">
-		<input type="text" name="" placeholder="검색어 입력" required> <select
-			name="filterBy">
-			<option value="제목">제목</option>
-			<option value="내용">내용</option>
-			<option value="지역">지역</option>
-		</select>
-		<button type="submit" class="button">검색</button>
-
-	</form>
-	
-		
 		<!-- 페이지 번호와 페이지 사이즈를 전송하는 form -->
 		<form id="listForm" action="list" method="get">
 	    	<input type="hidden" name="pageNum" >
@@ -150,6 +166,8 @@ li {
 	    	<input type="hidden" name="type">
 			<input type="hidden" name="keyword">
 	    </form>
+	    
+		
 	    		
 	<script type="text/javascript">
 	
@@ -162,41 +180,79 @@ li {
 		xhr.setRequestHeader(header, token);
 	});	  
 	
-	function changeColor(button, pageNum) {
-	    // 현재 URL의 쿼리 파라미터를 가져옵니다.
-	    const url = new URL(window.location.href);
+	$(document).ready(function(){
+		
+		// pagination_button을 클릭하면 페이지 이동
+		$(".pagination_button a").on("click", function(e){
+			var listForm = $("#listForm"); // form 객체 참조
+			e.preventDefault(); // a 태그 이벤트 방지
+		
+			var pageNum = $(this).attr("href"); // a태그의 href 값 저장
+			// 현재 페이지 사이즈값 저장
+			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
+			var type = "<c:out value='${pageMaker.pagination.type }' />";
+			var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
+			 
+			// 페이지 번호를 input name='pageNum' 값으로 적용
+			listForm.find("input[name='pageNum']").val(pageNum);
+			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
+			listForm.find("input[name='pageSize']").val(pageSize);
+			// type 값을 적용
+			listForm.find("input[name='type']").val(type);
+			// keyword 값을 적용
+			listForm.find("input[name='keyword']").val(keyword);
+			listForm.submit(); // form 전송
+		}); // end on()
+		
+		// detail_button을 클릭하면 페이지 이동
+		$(".detail_button a").on("click", function(e){
+			var detailForm = $("#detailForm");
+			e.preventDefault(); // a 태그 이벤트 방지
+		
+			var boardId = $(this).attr("href"); // a태그의 href 값 저장
 
-	    // 페이지 번호를 쿼리 파라미터로 설정
-	    url.searchParams.set('pageNum', pageNum);
-
-	    // 'recipeTitle'과 'filterBy' 파라미터는 기존 URL에서 가져옵니다.
-	    let marketTitle = new URLSearchParams(window.location.search).get('marketTitle');
-	    let filterBy = new URLSearchParams(window.location.search).get('filterBy');
-	    
-	    // 'recipeTitle'과 'filterBy'가 없으면 빈 값으로 설정
-	    if (marketTitle === null) {
-	    	marketTitle = '';
-	    }
-	    if (filterBy === null) {
-	        filterBy = '';
-	    }
-
-	    // 'recipeTitle'과 'filterBy'를 빈 값으로 설정
-	    url.searchParams.set('marketTitle', marketTitle);
-	    url.searchParams.set('filterBy', filterBy);
-
-	    // URL 업데이트
-	    window.history.pushState({}, '', url);  // URL을 업데이트
-
-	    // 모든 버튼에서 'selected' 클래스를 제거
-	    let buttons = document.querySelectorAll('.button');
-	    buttons.forEach(function(btn) {
-	        btn.classList.remove('selected');
-	    });
-
-	    // 클릭된 버튼에 'selected' 클래스를 추가
-	    button.classList.add('selected');
-	} // end changeColor
+			var type = "<c:out value='${pageMaker.pagination.type }' />";
+			var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
+			var pageNum = "<c:out value='${pageMaker.pagination.pageNum }' />";
+			// 현재 페이지 사이즈값 저장
+			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
+			 
+			// 클릭된 게시글 번호를 input name='boardId' 값으로 적용
+			detailForm.find("input[name='marketId']").val(boardId);
+			// 페이지 번호를 input name='pageNum' 값으로 적용
+			detailForm.find("input[name='pageNum']").val(pageNum);
+			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
+			detailForm.find("input[name='pageSize']").val(pageSize);
+			// type 값을 적용
+			detailForm.find("input[name='type']").val(type);
+			// keyword 값을 적용
+			detailForm.find("input[name='keyword']").val(keyword);
+			detailForm.submit(); // form 전송
+		}); // end on()
+		
+		$("#searchForm button").on("click", function(e){
+			var searchForm = $("#searchForm");
+			e.preventDefault(); // a 태그 이벤트 방지
+			
+			var keywordVal = searchForm.find("input[name='keyword']").val();
+			console.log(keywordVal);
+			if(keywordVal == '') {
+				alert('검색 내용을 입력하세요.');
+				return;
+			}
+			
+			var pageNum = 1; // 검색 후 1페이지로 고정
+			// 현재 페이지 사이즈값 저장
+			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
+			 
+			// 페이지 번호를 input name='pageNum' 값으로 적용
+			searchForm.find("input[name='pageNum']").val(pageNum);
+			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
+			searchForm.find("input[name='pageSize']").val(pageSize);
+			searchForm.submit(); // form 전송
+		}); // end on()
+		
+	}); // end document()
 	
 	
 	</script>

@@ -83,9 +83,7 @@
 		<!-- https://news.seoul.go.kr/economy/archives/66052 -->
 
 		<br>
-
 		<div>
-
 			<p>내용 :</p>
 			<div class="addImage" id="imageShow">
 				<!-- 이미지 띄울 공간 -->
@@ -96,12 +94,9 @@
 			<textarea rows="20" cols="120" name="marketContent"
 				placeholder="내용 입력" maxlength="300" required></textarea>
 			<br> <input type="submit" value="등록">
-
-		
 		</div>
-
-
 	</form>
+	
 	</div>
 </body>
 </html>

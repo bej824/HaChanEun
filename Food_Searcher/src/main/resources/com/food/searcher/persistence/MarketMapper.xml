@@ -58,23 +58,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM MARKET
 	
 		<choose>
-				<when test="type == 'title'.toString()">
+				<when test="type == 'MARKET_TITLE'.toString()">
 					WHERE MARKET_TITLE LIKE '%'||#{keyword}||'%'
 				</when>
-				<when test="type == 'content'.toString()">
+				<when test="type == 'MARKET_CONTENT'.toString()">
 					WHERE MARKET_CONTENT LIKE '%'||#{keyword}||'%'
 				</when>
-				<when test="type == 'writer'.toString()">
-					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
+				<when test="type == 'MARKET_LOCAL'.toString()">
+					WHERE MARKET_LOCAL LIKE '%'||#{keyword}||'%'
 				</when>
 			</choose>	   
 			) 
 			WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
-	<select id="selectTotalCount" resultType="Integer">
-	<!-- 게시글 총 갯수 -->
-		SELECT COUNT(*) TOTAL_COUNT FROM MARKET
+		<select id="selectTotalCount" resultType="Integer">
+		SELECT COUNT(*)
+		TOTAL_COUNT FROM MARKET
+			<choose>
+				<when test="type == 'MARKET_TITLE'.toString()">
+					WHERE MARKET_TITLE LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'MARKET_CONTENT'.toString()">
+					WHERE MARKET_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'MARKET_LOCAL'.toString()">
+					WHERE MARKET_LOCAL LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose>	
 	</select>
 	
 	
