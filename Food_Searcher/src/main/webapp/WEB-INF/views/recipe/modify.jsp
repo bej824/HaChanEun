@@ -34,6 +34,8 @@ textarea {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- css 파일 불러오기 -->
 <link rel="stylesheet"
+	href="../resources/css/Base.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/image.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/attach.css">
@@ -41,6 +43,7 @@ textarea {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<h2>글 수정 페이지</h2>
 	<form id="modifyForm" action="modify" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="pageNum" value="${pagination.pageNum}">
@@ -58,8 +61,6 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 		</div>
 		<div>
 			<p>작성자 : ${recipeVO.memberId}</p>
-			<input type="hidden" name="memberId" value="${recipeVO.memberId}">
-			
 		</div>
 		<div>
 			<p>음식 : </p>
@@ -118,10 +119,13 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 	<div class="attachDTOImg-list">
 	</div>
 
+	<div class="button-container">
 	<sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
 	<button id="modifyBoard" class="button">등록</button>
 	</sec:authorize>
 	<button onclick="goBack()" class="button">뒤로가기</button>
+	</div>
+	</div>
 
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 	<script	src="${pageContext.request.contextPath }/resources/js/attach.js"></script>

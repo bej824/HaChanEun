@@ -29,6 +29,11 @@ textarea {
 	font-size: 16px;
 	resize: none;
 }
+
+.image-drop,
+.image-list {
+    text-align: center;
+}
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,6 +42,8 @@ textarea {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- css 파일 불러오기 -->
 <link rel="stylesheet"
+	href="../resources/css/Base.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/image.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/attach.css">
@@ -44,7 +51,7 @@ textarea {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<div class="fixed-element">
+	<div id="area">
 	<h2>글 작성 페이지</h2>
 	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
@@ -54,7 +61,6 @@ textarea {
 		</div>
 		<div>
 			<p>작성자 : <sec:authentication property="name" /></p>
-			<input type="hidden" name="memberId" value="<sec:authentication property="name" />" maxlength="10">
 		</div>
 		<div>
 			<p>음식 :</p>
@@ -85,10 +91,12 @@ textarea {
 	<div class="attachDTOFile-list">
 	</div>
 
+	<div class="button-container">
 	<sec:authorize access="isAuthenticated()">
 	<button id="registerBoard" class="button">등록</button>
 	</sec:authorize>
 	<button onclick="goBack()" class="button">뒤로가기</button>
+	</div>
 	</div>
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 
@@ -185,6 +193,9 @@ textarea {
 				}
 			});
 		});
+	</script>
+	<script>
+	document.getElementById("memberId").readOnly = true;
 	</script>
 	
 	<script type="text/javascript">

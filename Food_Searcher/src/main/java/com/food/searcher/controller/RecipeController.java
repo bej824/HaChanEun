@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.MemberVO;
@@ -54,32 +53,27 @@ public class RecipeController {
 		log.info("filterBy : " + filterBy);
 		log.info("pageNum : " + pageNum);
 		pagination.setKeyword(recipeTitle);
-		pagination.setType(filterBy);
+		pagination.setType(filterBy);		
 		log.info("필터 적용 pagination : " + pagination);
-		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
-		log.info("vo list : " + recipeList);
-		log.info(recipeList.size());
-		
+
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		log.info(pageMaker);
 		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
+		pageMaker.adjustPageNum();
 		log.info(pageMaker);
 		log.info(pageMaker.getEndNum());
-		if(pageMaker.getEndNum() >= pageNum && pageNum > 0) {
+		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
+		log.info("vo list : " + recipeList);
+		log.info(recipeList.size());
+		
         model.addAttribute("recipeTitle", recipeTitle);
         model.addAttribute("filterBy", filterBy);
         model.addAttribute("pageNum", pageNum);
 	
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
-		} else {
-			pagination.setPageNum(1);
-			List<RecipeVO> reRecipeList = recipeService.getPagingBoards(pagination);
-			pageMaker.setPagination(pagination);
-			model.addAttribute("pageMaker", pageMaker);
-			model.addAttribute("recipeList", reRecipeList);
-		}
+		model.addAttribute("totalPages", pageMaker.getTotalPages());
 	}
 	
 	@GetMapping("/register")
@@ -89,10 +83,12 @@ public class RecipeController {
 	
 	// register.jsp에서 전송받은 게시글 데이터를 저장
 	@PostMapping("/register")
-	public String registerPOST(RecipeVO recipeVO, RedirectAttributes reAttr) {
+	public String registerPOST(RecipeVO recipeVO, Principal principal) {
 	    log.info("registerPOST()");
+	    log.info(principal);
+	    log.info("User role: " + principal.getName());
+	    recipeVO.setMemberId(principal.getName());
 	    log.info("recipeVO = " + recipeVO.toString());
-	    log.info("reAttr : " + reAttr);
 
 	    int result = recipeService.createBoard(recipeVO);
 	    log.info(result + "행 등록");
@@ -106,7 +102,7 @@ public class RecipeController {
 	public void detail(Model model, Integer recipeId, Principal principal, @ModelAttribute("pagination") Pagination pagination) {
 		log.info("detail()");
 		log.info("레시피 ID : " + recipeId);
-		log.info("memberId : " + principal);
+		log.info("memberId : " + principal);	
 		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
@@ -145,17 +141,18 @@ public class RecipeController {
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
-	@PreAuthorize("isAuthenticated() and (principal.username == #recipeVO.memberId)")
 	@PostMapping("/modify")
-	public String modifyPOST(RecipeVO recipeVO, Integer recipeId, HttpSession session) {
+	public String modifyPOST(RecipeVO recipeVO, Integer recipeId, Principal principal, HttpSession session) {
 	    log.info("modifyPOST()");
+	    log.info(principal);
+	    log.info("User role: " + principal.getName());
+	    recipeVO.setMemberId(principal.getName());
 	    log.info("recipeVO = " + recipeVO);
 
 	    // 1. 게시글 수정 처리
 	    int result = recipeService.updateBoard(recipeVO);
 	    log.info(result + "행 수정");
 
-	    // 4. 수정된 게시글 상세 페이지로 리디렉션
 	    return "redirect:/recipe/detail?recipeId=" + recipeVO.getRecipeId();
 	}
 

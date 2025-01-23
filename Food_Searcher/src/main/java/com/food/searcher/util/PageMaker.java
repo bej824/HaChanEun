@@ -25,6 +25,10 @@ public class PageMaker {
 		
 	} // end calcTotalPageNum()
 	
+    public int getTotalPages() {
+        return calcTotalPageNum();
+    }
+	
 	// 임시 끝 번호 계산값
 	private int tempEndNum() {
 		return (int) Math.ceil((double) pagination.getPageNum() / pageCount) * pageCount;
@@ -47,6 +51,21 @@ public class PageMaker {
 			return tempEndNum; // 끝 번호가 임시 끝 번호
 		}
 	} // end getEndNum()
+	
+	// 페이지 번호가 범위를 벗어났을 경우 조정하는 메서드
+    public void adjustPageNum() {
+        int totalPages = calcTotalPageNum(); // 전체 페이지 수
+
+        // 페이지 번호가 1보다 작으면 1로 설정
+        if (pagination.getPageNum() <= 0) {
+            pagination.setPageNum(1);
+        }
+
+        // 페이지 번호가 전체 페이지 수보다 크면 마지막 페이지로 설정
+        if (pagination.getPageNum() > totalPages) {
+            pagination.setPageNum(totalPages);
+        }
+    } // end adjustPageNum()
 	
 	// 화면에 보이는 시작 페이지 번호보다 작은 숫자의 페이지 번호 존재 여부
 	public boolean isPrev() {

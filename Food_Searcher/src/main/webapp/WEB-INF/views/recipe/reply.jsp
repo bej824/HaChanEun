@@ -370,7 +370,7 @@
 							}); // end each()
 							<sec:authorize access="isAuthenticated()">
 					        // 로그인한 사용자가 있을 경우 댓글 작성 입력란과 버튼을 추가
-					        comment += '<textarea id="commentContentAdd"></textarea>' + '<br>'
+					        comment += '<textarea id="commentContentAdd"></textarea>'
 					            + '<button class="btn_commentAdd" value="'+ replyId +'">작성</button>';
 					            </sec:authorize>
 							commentDiv.html(comment);
