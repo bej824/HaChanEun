@@ -9,33 +9,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		id="localLikesResultMap">
 
 		<id property="likesId" column="LIKES_ID" />
-		<result property="boardId" column="BOARD_ID" />
+		<result property="localId" column="LOCAL_ID" />
 		<result property="memberId" column="MEMBER_ID" />
-		<result property="memberAge" column="MEMBER_AGE" />
-		<result property="memberGender" column="MEMBER_GENDER" />
-		<result property="memberMBTI" column="MEMBER_MBTI" />
-		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
 		<result property="memberLike" column="MEMBER_LIKE" />
 
 	</resultMap>
 	
 	<insert id="insertLocalLikes">
-		INSERT INTO LOCAL_LIKES
-		(LIKES_ID, BOARD_ID, MEMBER_ID, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_LIKE)
-		VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, 0)
+	INSERT INTO LOCAL_LIKES
+    (LIKES_ID, LOCAL_ID, MEMBER_ID, MEMBER_LIKE)
+	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, 0)
 	</insert>
 	
-	<select id="selectMemberLikes" resultMap="localLikesResultMap">
-		SELECT MEMBER_LIKE
+	<select id="countLikesByMemberId" resultType="Integer">
+		SELECT COUNT(*)
 		FROM LOCAL_LIKES
-		WHERE BOARD_ID = #{boardId}
+		WHERE LOCAL_ID = #{localId}
 		AND MEMBER_ID = #{memberId}
 	</select>
 	
-	<update id="updateMemberLikes">
-		UPDATE LOCAL_LIKES
-		SET MEMBER_LIKE = #{memberLike}
-		WHERE BOARD_ID = #{boardId}
+	<select id="selectLikesBylocalId" resultType="Map">
+   	 	SELECT 
+        COUNT(CASE WHEN MEMBER_LIKE = '1' THEN 1 END) AS likeCount,
+        COUNT(CASE WHEN MEMBER_LIKE = '2' THEN 1 END) AS disLikeCount
+    	FROM LOCAL_LIKES
+    	WHERE LOCAL_ID = #{localId}
+	</select>
+	
+	<update id="updateLikesByMemberId">
+		UPDATE LOCAL_LIKE
+		SET MEMBER_LIKES = #{memberLike}
+		WHERE LOCAL_ID = #{localId}
 		AND MEMBER_ID = #{memberId}
 	</update>
 	

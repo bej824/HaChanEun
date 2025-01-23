@@ -11,10 +11,10 @@
     <h1>접근할수 없는 페이지입니다</h1>
 
     <script>
-            window.history.back();
-            setTimeout(function(){
-                window.location.href = "../home"; // 리다이렉트할 URL
-            }, 50);
+            //window.history.back();
+            //setTimeout(function(){
+            //    window.location.href = "../home"; // 리다이렉트할 URL
+            //}, 50);
     </script>
 </body>
 </html>

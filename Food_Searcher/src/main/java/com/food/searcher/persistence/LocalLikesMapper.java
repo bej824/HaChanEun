@@ -1,18 +1,19 @@
 package com.food.searcher.persistence;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-
-import com.food.searcher.domain.LocalLikesVO;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface LocalLikesMapper {
 	
-	int insertLocalLikes(LocalLikesVO localLikesVO);
+	int insertLocalLikes(@Param("localId") int localId, @Param("memberId") String memberId);
 	
-	List<LocalLikesVO> selectMemberLikes(int boardId, int memberId);
+	int countLikesByMemberId(@Param("localId") int localId, @Param("memberId") String memberId);
 	
-	int updateMemberLikes(int boardId, int memberId, int memberLikes);
+	Map<String, Object> selectLikesBylocalId(@Param("localId") int localId);
+	
+	int updateLikesByMemberId(@Param("localId") int localId, @Param("memberId") String memberId, @Param("memberLike") int memberLike);
 
 }

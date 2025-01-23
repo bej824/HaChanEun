@@ -1,4 +1,5 @@
 package com.food.searcher.controller;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.service.LocalService;
 
@@ -87,17 +89,23 @@ public class LocalController {
 
 		return location;
 	}
-
+	
 	@GetMapping("/detail")
-	public void localDetailGET(@RequestParam("localId") String localId,
+	public void localDetailGET(@RequestParam("localId") int localId,
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
-			Model model, LocalSpecialityVO localSpecialityVO) {
+			Principal principal, Model model, LocalSpecialityVO localSpecialityVO) {
 		log.info("localDetailGET()");
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
-		localSpecialityVO = localService.getSpecialityByLocalId(localId);
-		log.info(localSpecialityVO);
 		
+		String memberId = null;
+		try {
+			memberId = principal.getName();			
+		} catch (Exception e) {
+		}
+		
+		localSpecialityVO = localService.getSpecialityByLocalId(localId, memberId);
+
 		model.addAttribute("LocalSpecialityVO", localSpecialityVO);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);

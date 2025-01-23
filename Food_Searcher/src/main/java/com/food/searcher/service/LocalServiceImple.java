@@ -1,6 +1,8 @@
 package com.food.searcher.service;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,13 +29,15 @@ public class LocalServiceImple implements LocalService {
 	@Autowired
 	private LocalCommentMapper localCommentMapper;
 	
+	@Autowired
+	private LocalLikesService localLikesService;
+	
 	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
 		log.info("createSpeciality()");
 		
 		return localMapper.insertSepeciality(localSpecialityVO);
 	}
 	
-	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {
 		log.info("getAllSpeciality()");
@@ -46,6 +50,7 @@ public class LocalServiceImple implements LocalService {
 	@Override
 	public List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle) {
 		log.info("getSpecialityByLocalTitle()");
+		
 		return localMapper.selectByLocalTitle(localTitle);
 	}
 	
@@ -57,8 +62,16 @@ public class LocalServiceImple implements LocalService {
 	
 	@Transactional
 	@Override
-	public LocalSpecialityVO getSpecialityByLocalId(String localId) {
+	public LocalSpecialityVO getSpecialityByLocalId(int localId, String memberId) {
 		log.info("getSpecialityByLocalId()");
+		
+		if(memberId != null) {
+			int memberIdLikeCount = localLikesService.countLikes(localId, memberId);
+			if(memberIdLikeCount == 0) {
+				localLikesService.createLikes(localId, memberId);			
+			}
+		}
+		
 		return localMapper.selectByLocalId(localId);
 	}
 	

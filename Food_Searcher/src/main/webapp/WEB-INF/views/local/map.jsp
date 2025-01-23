@@ -2,6 +2,7 @@
 	language="java"%>
 <html>
 <head>
+<link rel="stylesheet" href="../resources/css/Base.css">
 <style type="text/css">
 
 .search {
@@ -39,7 +40,7 @@ table {
 /* 테이블 컨테이너 */
 .table-container {
 	border-top: 2px solid black;
-    width: 50%; /* 테이블이 컨테이너의 전체 너비를 차지하게 설정 */
+    width: 100%; /* 테이블이 컨테이너의 전체 너비를 차지하게 설정 */
     height: 455px; /* 원하는 높이 설정 */
     overflow-y: auto; /* 수직 방향으로 스크롤 추가 */
     margin-left: 10; /* 자동 왼쪽 여백 설정 */
@@ -78,6 +79,11 @@ li {
 a:link, a:visited, a:hover, a:active {
     color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
     text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
+    transform: none !important; 
+    position: static !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
 }
 
 </style>
@@ -85,6 +91,7 @@ a:link, a:visited, a:hover, a:active {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
@@ -149,7 +156,7 @@ a:link, a:visited, a:hover, a:active {
 			let indexLocalDistrict = "${localDistrict }";
 			
 			if(indexLocalLocal != ''){
-			listUpdate(indexLocalLocal, '');				
+			listUpdate(indexLocalLocal, '');
 			}
 			
 			// localLocal만 선택되었을 때
@@ -178,6 +185,12 @@ a:link, a:visited, a:hover, a:active {
 			    	LocalDistrict = "";
 			    }
 			    
+			    // 목록으로 되돌아온 후, 다시 가면 '전체'로 이동되어 이를 방지하기 위한 코드
+			    let localDistrictSelect = localDistrict;
+			    if(indexLocalDistrict != ""){
+			    	localDistrictSelect = indexLocalDistrict;
+			    }
+			    
 			    $.ajax({
 			        type: 'GET',
 			        url: 'localUpdate',
@@ -203,7 +216,7 @@ a:link, a:visited, a:hover, a:active {
 			            result.forEach(function(LocalSpecialityVO) {
 			            	
 			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
-			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrict +'\'">'
+			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect +'\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localLocal + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
@@ -211,13 +224,13 @@ a:link, a:visited, a:hover, a:active {
 			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
 			                    + '</tr>';
 			            	if(indexLocalDistrict != '' && indexLocalDistrict == LocalSpecialityVO.localDistrict){
-			            			tbody.append(row); // 새로운 데이터 행 추가
+			            	tbody.append(row); // 새로운 데이터 행 추가
 			            	} else if(indexLocalDistrict == '') {
 			                tbody.append(row); // 새로운 데이터 행 추가
 			            	}
 			                
 			                // 지역 중복 체크 및 옵션 추가
-			                if(localLocal != '' && localDistrict == '' &&
+			                if(localLocal != ''&& localDistrict == '' &&
 			                	localDistrict_optionVal != LocalSpecialityVO.localDistrict){
 			                	
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
@@ -250,6 +263,7 @@ a:link, a:visited, a:hover, a:active {
 				window.location.href = 'register';
 			}
 	</script>
+	</div>
 	
 </body>
 </html>

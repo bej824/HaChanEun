@@ -12,8 +12,25 @@
 <title>헤더</title>
 <style>
 body {
+	transform: none !important; 
+    position: static !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
 	margin: 20px;
 	font-family: Arial, sans-serif;
+}
+
+.logo a {
+	font-size: 20px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.logo a:hover {
+	color: #007BFF;
+	text-decoration: none;
 }
 
 .navbar {
@@ -28,18 +45,7 @@ body {
 	padding: 10px 20px;
 	color: white;
 	border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 	
-.logo a {
-	font-size: 20px;
-	font-weight: bold;
-	text-decoration: none;
-	color: #ffffff;
-}
-
-.logo a:hover {
-	color: #007BFF;
 }
 
 .navbar ul {
@@ -64,31 +70,28 @@ body {
 	color: #ff9800;
 }
 
-.navbar .login {
-	font-size: 16px;
-}
-
-.navbar .login a {
-	color: #ffffff;
-	text-decoration: none;
-}
-
-.navbar .login a:hover {
-	text-decoration: underline;
-}
-
-.navbar .myPage {
+.login {
+	color: black;
 	font-size: 14px;
 }
 
-.navbar .myPage a {
-	color: #ffffff;
+.login a, a:hover {
+	color: black;
 	text-decoration: none;
-	margin-left: 15px;
 }
 
-.navbar .myPage a:hover {
-	text-decoration: underline;
+.myPage {
+	color: black;
+	font-size: 14px;
+}
+
+.myPage p {
+	color: black;
+}
+
+.myPage a {
+	text-decoration: none;
+	text-align: center;
 }
 
 .button {
@@ -112,41 +115,55 @@ textarea[readonly] {
     resize: none;
 }
 
-#memberForm{
-	box-sizing: border-box;
-	border-radius: 8px;
-	left:20px;
-	top:20px;
-	border: 1px solid #ccc;
-	width: 180px;
-	height: 180px;
-	text-align:center;
-	font-size: 20px;
-	line-height: 2.1;
-}
-
 #front_img{
+	width: 100%;
+	height: 100%;
 	font-size:26px;
 	color: #ffffff;
-	text-decoration: none;
-	
 	display:flex;
-	align-items: center;
 	justify-content: center;
 }
 
+#front_img a {
+	
+	color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
+    text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
+    transform: none !important; 
+    position: static !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+#memberForm{
+	box-sizing: border-box;
+	width: 150px;
+	height: 150px;
+	border-radius: 8px;
+ 	margin-right: 100px;
+	margin-left: 100px;
+	border: 1px solid #ccc;
+	text-align:center;
+	line-height: 2.1;
+	font-size: 14px;
+	color: #ffffff;
+}
+
+#memberForm a {
+	text-decoration: none;
+}
+
 #boardArea {
+ 	box-sizing: border-box;
 	width: 150px;
     height: 100vh;
     font-size: 20px;
     font-family: "나눔고딕";
     line-height: 2.1;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid #dcdcdc;
     text-decoration: none;
  	float: left;
- 	box-sizing: border-box;
  	margin-right: 100px;
 	margin-left: 100px;
 }
@@ -157,7 +174,7 @@ textarea[readonly] {
 }
 
 #list a:hover{
-	font-size:20px;
+	font-size:16px;
 	font-weight:bold;
 }
 
@@ -171,10 +188,16 @@ textarea[readonly] {
     <!-- 네비게이션 바 -->
     <div class="navbar">
     
-        <div id="memberForm">
+        <div id="front_img">
+        <a href="/searcher/home">Home</a>
+        </div>
+    
+    </div>
+    
+    <div id="memberForm">
     	<sec:authorize access="isAuthenticated()">
         	<div class="myPage">
-			<a><sec:authentication property="name" />님 환영합니다.</a>
+			<p><sec:authentication property="name" />님 환영합니다.</p>
 			<br>
         	<a href="/searcher/auth/login">로그아웃</a>
         	<a href="/searcher/access/memberPage">마이페이지</a>
@@ -189,12 +212,7 @@ textarea[readonly] {
         	</div>
     	</sec:authorize>
     	</div>
-        
-        <div id="front_img">
-        <a href="/searcher/home">Home</a>
-        </div>
     
-    </div>
     <div id="boardArea">
 	<div id="list">
         <ul>

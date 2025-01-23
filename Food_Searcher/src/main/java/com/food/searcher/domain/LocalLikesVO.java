@@ -1,10 +1,12 @@
 package com.food.searcher.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -12,12 +14,13 @@ import lombok.ToString;
 public class LocalLikesVO {
 	
 	private int likesId;
-	private int boardId;
+	private int localId;
 	private String memberId;
-	private int memberAge;
-	private String memberGender;
-	private String memberMBTI;
-	private String memberConstellation;
 	private int memberLike;
+	
+	// 좋아요, 싫어요 갯수
+	
+	private int likeCount;
+	private int dislikeCount;
 
 }

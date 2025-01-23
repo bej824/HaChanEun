@@ -57,6 +57,9 @@
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
 	</sec:authorize>
 	
+	<br> <br>
+	<%@ include file ="likes.jsp" %>
+	
 	<%@ include file ="reply.jsp" %>
 	
 	<script type="text/javascript">
