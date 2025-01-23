@@ -38,15 +38,21 @@ public class MarketController {
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
 		log.info("list");
-		log.info("pagination = " + pagination);
+		log.info(pagination);
 		List<MarketVO> marketList = marketService.getPagingMarkets(pagination);
+		if(!marketList.isEmpty()) {
+			model.addAttribute("marketList", marketList);
+			log.info("marketList : " + marketList);
+		} else {
+			log.info("엥");
+		}
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(marketService.getTotalCount());
 		
+		log.info(pageMaker);
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("marketList", marketList);
 		
 	}
 	
@@ -58,9 +64,10 @@ public class MarketController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
-	public String marketPOST (MarketVO marketVO) {
+	public String marketPOST (MarketVO marketVO, RedirectAttributes reAttr) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
+		log.info("reAttr :  " + reAttr);
 		
 		int result = marketService.createMarket(marketVO);
 		log.info(result + "행 등록");
@@ -73,7 +80,10 @@ public class MarketController {
 		log.info("detail()");
 		log.info("marketId = " + marketId);
 		log.info("pagination = " + pagination);
+		
 		MarketVO marketVO = marketService.getMarketById(marketId);
+		log.info("MarketVO : " + marketVO);
+		
 		model.addAttribute("marketVO", marketVO);
 	}
 	
@@ -89,11 +99,16 @@ public class MarketController {
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modifyPOST(MarketVO marketVO) {
+	public String modifyPOST(MarketVO marketVO, Pagination pagination, RedirectAttributes reAttr) {
 		log.info("modifyPOST()");
 		int result = marketService.updateMarket(marketVO);
 		log.info(marketVO);
 		log.info(result + "행 수정");
+		
+		reAttr.addAttribute("pageNum", pagination.getPageNum());
+		reAttr.addAttribute("pageSize", pagination.getPageSize());
+		reAttr.addAttribute("type", pagination.getType());
+		reAttr.addAttribute("keyword", pagination.getKeyword());
 		
 		
 		return "redirect:/market/list";

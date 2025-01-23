@@ -1,6 +1,7 @@
 package com.food.searcher.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,13 +41,18 @@ public class MarketServiceImple implements MarketService {
 	@Override
 	public List<MarketVO> getAllMarket() {
 		log.info("getAllMarket()");
-		return marketMapper.selectList();
+		List<MarketVO> list = marketMapper.selectList();
+		log.info(list);
+		
+		return list.stream().collect(Collectors.toList());
 	}
 
 	@Override
 	public MarketVO getMarketById(int marketId) {
 		log.info("getMarketById()");
-		return marketMapper.selectOne(marketId);
+		log.info("marketId : " + marketId);
+		MarketVO marketVO = marketMapper.selectOne(marketId);
+		return marketVO;
 	}
 
 	@Override
@@ -88,7 +94,9 @@ public class MarketServiceImple implements MarketService {
 	@Override
 	public List<MarketVO> getPagingMarkets(Pagination pagination) {
 		log.info("getPagingMarkets()");
-		return marketMapper.selectListByPagination(pagination);
+		List<MarketVO> list = marketMapper.selectListByPagination(pagination);
+		
+		return list.stream().collect(Collectors.toList());
 	}
 
 	@Override
