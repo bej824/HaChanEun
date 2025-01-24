@@ -60,24 +60,20 @@ pageEncoding="UTF-8"%>
 	
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
-    	<input type="hidden" name="pageSize" >
     	<input type="hidden" name="type" >
     	<input type="hidden" name="keyword" >	
 	</form>
 	<form id="modifyForm" action="modify" method="GET">
 		<input type="hidden" name="boardId">
 		<input type="hidden" name="pageNum" >
-    	<input type="hidden" name="pageSize" >
     	<input type="hidden" name="type" >
     	<input type="hidden" name="keyword" >
 	</form>
 	<form id="deleteForm" action="delete" method="POST">
 		<input type="hidden" name="boardId">
 		<input type="hidden" name="pageNum" >
-    	<input type="hidden" name="pageSize" >
     	<input type="hidden" name="type" >
     	<input type="hidden" name="keyword" >
-    	<input type="hidden" name="memberId" value="${boardDTO.memberId}">
     	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 
@@ -177,14 +173,11 @@ pageEncoding="UTF-8"%>
 				
 				// c:out을 이용한 현재 페이지 번호값 저장
 				var pageNum = "<c:out value='${pagination.pageNum }' />";
-				var pageSize = "<c:out value='${pagination.pageSize }' />"; 
 				var type = "<c:out value='${pagination.type }' />";
 				var keyword = "<c:out value='${pagination.keyword }' />";
 				
 				// 페이지 번호를 input name='pageNum' 값으로 적용
 				listForm.find("input[name='pageNum']").val(pageNum);
-				// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-				listForm.find("input[name='pageSize']").val(pageSize);
 				// type 값을 적용
 				listForm.find("input[name='type']").val(type);
 				// keyword 값을 적용

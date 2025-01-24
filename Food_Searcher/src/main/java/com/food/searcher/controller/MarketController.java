@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.MarketVO;
@@ -36,7 +37,7 @@ public class MarketController {
 	private MarketService marketService;
 	
 	@GetMapping("/list")
-	public void list(Model model, Pagination pagination) {
+	public String list(Model model, Pagination pagination) {
 		log.info("list");
 		log.info(pagination);
 		List<MarketVO> marketList = marketService.getPagingMarkets(pagination);
@@ -44,7 +45,8 @@ public class MarketController {
 			model.addAttribute("marketList", marketList);
 			log.info("marketList : " + marketList);
 		} else {
-			log.info("엥");
+			log.info("검색 결과 없음");
+			return "returnPage";
 		}
 		
 		PageMaker pageMaker = new PageMaker();
@@ -53,8 +55,8 @@ public class MarketController {
 		
 		log.info(pageMaker);
 		model.addAttribute("pageMaker", pageMaker);
-		
-	}
+		return "/market/list";
+	} 
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")

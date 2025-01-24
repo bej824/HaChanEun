@@ -85,10 +85,15 @@
 		<br>
 		<div>
 			<p>내용 :</p>
-			<div class="addImage" id="imageShow">
-				<!-- 이미지 띄울 공간 -->
+			<div class="image-upload">
+				<h2>이미지 파일 업로드</h2>
+				<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
+				<p>* 최대 용량은 10MB 입니다.</p>
+				<div class="image-drop"></div>
+				<h2>선택한 이미지 파일 :</h2>
+				<div class="image-list"></div>
 			</div>
-			<input type="file" accept="image/*" onchange="loadFile(this)">
+
 
 			<br>
 			<textarea rows="20" cols="120" name="marketContent"
