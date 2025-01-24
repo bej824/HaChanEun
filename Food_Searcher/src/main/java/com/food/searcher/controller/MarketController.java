@@ -49,7 +49,7 @@ public class MarketController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(marketService.getTotalCount());
+		pageMaker.setTotalCount(marketService.getTotalCount(pagination));
 		
 		log.info(pageMaker);
 		model.addAttribute("pageMaker", pageMaker);

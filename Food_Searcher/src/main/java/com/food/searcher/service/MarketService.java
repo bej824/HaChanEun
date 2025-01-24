@@ -12,6 +12,6 @@ public interface MarketService {
 	int updateMarket(MarketVO marketVO);
 	int deleteMarket(int marketId);
 	List<MarketVO> getPagingMarkets(Pagination pagination);
-	int getTotalCount();
+	int getTotalCount(Pagination pagination);
 	
 }
