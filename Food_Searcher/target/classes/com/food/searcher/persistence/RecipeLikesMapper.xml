@@ -15,18 +15,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="recipeLikesId" column="RECIPE_LIKES_ID" />
 		<result property="recipeBoardId" column="RECIPE_BOARD_ID" />
 		<result property="memberId" column="MEMBER_ID" />
-		<result property="memberAge" column="MEMBER_AGE" />
-		<result property="memberGender" column="MEMBER_GENDER" />
-		<result property="memberMBTI" column="MEMBER_MBTI" />
-		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
 		<result property="memberLike" column="MEMBER_LIKE" />
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_BOARD_ID, MEMBER_ID, 
-		MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_LIKE)
-		VALUES (RECIPE_LIKES_SEQ.NEXTVAL,
-		#{recipeBoardId}, #{memberId}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, #{memberLike})
+		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_BOARD_ID, MEMBER_ID, MEMBER_LIKE)
+		VALUES (RECIPE_LIKES_SEQ.NEXTVAL, #{recipeBoardId}, #{memberId}, #{memberLike})
 	</insert>
 	
 	<update id="update">
