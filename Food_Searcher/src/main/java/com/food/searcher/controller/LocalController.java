@@ -1,6 +1,7 @@
 package com.food.searcher.controller;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,13 +101,19 @@ public class LocalController {
 		
 		String memberId = null;
 		try {
-			memberId = principal.getName();			
+			memberId = principal.getName();
 		} catch (Exception e) {
 		}
 		
-		localSpecialityVO = localService.getSpecialityByLocalId(localId, memberId);
+		Map<String, Object> result = localService.getSpecialityByLocalId(localId, memberId);
+		localSpecialityVO = (LocalSpecialityVO) result.get("localSpecialityVO");
+		
+		if(memberId != null) {
+			Integer memberLike = (Integer) result.get("memberLike");
+			log.info(memberLike);
+		}
 
-		model.addAttribute("LocalSpecialityVO", localSpecialityVO);
+		model.addAttribute("localSpecialityVO", localSpecialityVO);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 	}

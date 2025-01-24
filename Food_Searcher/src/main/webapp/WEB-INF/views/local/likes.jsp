@@ -19,23 +19,25 @@
 		let localId = '${LocalSpecialityVO.localId }';
 		let like = document.getElementById("like");
 		let dislike = document.getElementById("dislike");
-		likeDislike();
 		
-		function likeDislike() {
+		let likeCount = document.getElementById("likeCount");
+		let dislikeCount = document.getElementById("dislikeCount");
+		
+		let likeDislike = 0;
+		
+		$('#like').change(function(){
 			
-			 $.ajax({
-			        type: 'GET',
-			        url: 'likeCount',
-			        data: {
-			            localId: localId,
-			        },
-			        success: function(result) {
-			            console.log("like : " + result.likeCount);
-			            console.log("dislike : " + result.disLikeCount);
-			        }
+		})
 		
-			})
+		$('#dislike').change(function(){
+			
+		})
+		
+		function updateCount() {
+			
+			
 		}
+		
 	})
 	
 	</script>

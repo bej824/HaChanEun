@@ -11,7 +11,7 @@ public interface LocalLikesService {
 	int createLikes(int localId, String memberId);
 	
 	// 회원이 게시물에 들어갈 때의 db 확인
-	int countLikes(int localId, String memberId);
+	int memberLikeByMemberId(int localId, String memberId);
 	
 	// 게시물에 존재하는 좋아요, 싫어요의 갯수 확인
 	Map<String, Object> selectLikesByLocalId(int localId);

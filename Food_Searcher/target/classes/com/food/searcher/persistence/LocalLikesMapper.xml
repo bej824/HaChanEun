@@ -21,8 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, 0)
 	</insert>
 	
-	<select id="countLikesByMemberId" resultType="Integer">
-		SELECT COUNT(*)
+	<select id="memberLikeByMemberId" resultType="Integer">
+		SELECT COALESCE(MEMBER_LIKE, 0)
 		FROM LOCAL_LIKES
 		WHERE LOCAL_ID = #{localId}
 		AND MEMBER_ID = #{memberId}
@@ -30,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectLikesBylocalId" resultType="Map">
    	 	SELECT 
-        COUNT(CASE WHEN MEMBER_LIKE = '1' THEN 1 END) AS likeCount,
-        COUNT(CASE WHEN MEMBER_LIKE = '2' THEN 1 END) AS disLikeCount
+        COUNT(CASE WHEN MEMBER_LIKE = 1 THEN 1 END) AS LIKECOUNT,
+        COUNT(CASE WHEN MEMBER_LIKE = 2 THEN 1 END) AS DISLIKECOUNT
     	FROM LOCAL_LIKES
     	WHERE LOCAL_ID = #{localId}
 	</select>

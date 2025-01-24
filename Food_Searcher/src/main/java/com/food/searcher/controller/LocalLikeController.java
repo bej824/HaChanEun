@@ -28,14 +28,14 @@ public class LocalLikeController {
 	
 	@ResponseBody
 	@GetMapping("/likeCount")
-	public Map<String, Integer> likeCountGET(@RequestParam("localId") int localId) {
+	public Map<String, Object> likeCountGET(@RequestParam("localId") int localId) {
 		log.info("likeCountGET()");
 		
 		Map<String, Object> likesCount = localLikesService.selectLikesByLocalId(localId);
 		
-		Map<String, Integer> result = new HashMap<>();
-		result.put("likeCount", ((Integer) likesCount.getOrDefault("likeCount", 0)));
-		result.put("disLikeCount", ((Integer) likesCount.getOrDefault("disLikeCount", 0)));
+		Map<String, Object> result = new HashMap<>();
+		result.put("likeCount", (likesCount.getOrDefault("LIKECOUNT", 0)));
+		result.put("dislikeCount", (likesCount.getOrDefault("DISLIKECOUNT", 0)));
 
 		
 		return result;
