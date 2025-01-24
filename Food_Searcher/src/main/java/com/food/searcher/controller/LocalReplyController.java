@@ -44,7 +44,6 @@ public class LocalReplyController {
 			Principal principal)
 			throws ServletException, IOException {
 		log.info("replyAddPOST()");
-		log.info(headerReplyVO);
 		String memberId = principal.getName();
 		int localId = headerReplyVO.getLocalId();
 		String replyContent = headerReplyVO.getHeaderReplyContent();

@@ -21,7 +21,7 @@
 
 </style>
 <meta charset="UTF-8">
-<title>${LocalSpecialityVO.localTitle }</title>
+<title>${localSpecialityVO.localTitle }</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
@@ -29,22 +29,22 @@
 	<form id="updateForm" action="update" method="post">
 	<div>
 		<input type="hidden" id="Id" name="Id"
-			value="${LocalSpecialityVO.localId }">
+			value="${localSpecialityVO.localId }">
 		<input type="hidden" id="localId" name="localId"
-			value="${LocalSpecialityVO.localId }">
+			value="${localSpecialityVO.localId }">
 	</div>
 	<div>
-		<p>지역 : ${LocalSpecialityVO.localLocal } / ${LocalSpecialityVO.localDistrict }</p>
+		<p>지역 : ${localSpecialityVO.localLocal } / ${localSpecialityVO.localDistrict }</p>
 	</div>
 	<div>
-		<p>특산품 : ${LocalSpecialityVO.localTitle }</p>
+		<p>특산품 : ${localSpecialityVO.localTitle }</p>
 	</div>
 	<div>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <textarea rows="20" cols="120" name="localContent">${LocalSpecialityVO.localContent }</textarea>
+        <textarea rows="20" cols="120" name="localContent">${localSpecialityVO.localContent }</textarea>
     </sec:authorize>
     <sec:authorize access="!hasRole('ROLE_ADMIN')">
-        <textarea rows="20" cols="120" readonly>${LocalSpecialityVO.localContent }</textarea>
+        <textarea rows="20" cols="120" readonly>${localSpecialityVO.localContent }</textarea>
     </sec:authorize>
 	</div>
 	<!-- CSRF 토큰 -->
@@ -56,6 +56,9 @@
 	<button id="btn_update" class="button">글 수정</button>
 	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
 	</sec:authorize>
+	
+	<br> <br>
+	<%@ include file ="likes.jsp" %>
 	
 	<%@ include file ="reply.jsp" %>
 	
@@ -78,11 +81,11 @@
 		let localLocal = '${localLocal }';
 		let localDistrict = '${localDistrict }';
 		
-		if(localLocal != "" && localLocal != '${LocalSpecialityVO.localLocal }'){
+		if(localLocal != "" && localLocal != '${localSpecialityVO.localLocal }'){
 			localLocal = "";
 			localDistrict = "";
 		}
-		if(localDistrict != "" && localDistrict != '${LocalSpecialityVO.localDistrict }'){
+		if(localDistrict != "" && localDistrict != '${localSpecialityVO.localDistrict }'){
 			localDistrict = "";
 		}
 		

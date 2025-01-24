@@ -75,7 +75,7 @@ li {
 		<thead>
 			<tr>
 				<th style="width: 60px">번호</th>
-				<th style="width: 600px">제목</th>
+				<th style="width: 500px">제목</th>
 				<th style="width: 100px">음식</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
@@ -127,23 +127,32 @@ li {
 			<input type="hidden" name="keyword">
 	    </form>
 <ul>
-    <!-- 이전 버튼 생성을 위한 조건문 -->
-    <c:if test="${pageMaker.isPrev() }">
-        <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
-    </c:if>
+<!-- 이전 버튼 생성을 위한 조건문 -->
+<c:if test="${pageMaker.isPrev() }">
+    <li class="pagination_button">
+        <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
+    </li>
+</c:if>
 
-    <!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
-    <c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
-        <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
-        	<c:if test="${num > 0 }"></c:if>
-            <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a></li>
-        </c:forEach>
-    </c:if>
+<c:set var="pageNum" value="${param.pageNum != null && param.pageNum > 0 ? param.pageNum : 1}" />
+<!-- 페이지 번호 생성 (시작 번호부터 끝 번호까지) -->
+<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
+    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
+        <li class="pagination_button">
+            <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" 
+               class="button ${param.pageNum == num ? 'selected' : ''}"
+               onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a>
+        </li>
+    </c:forEach>
+</c:if>
 
-    <!-- 다음 버튼 생성을 위한 조건문 -->
-    <c:if test="${pageMaker.isNext() }">
-        <li class="pagination_button"><a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
-    </c:if>
+<!-- 다음 버튼 생성을 위한 조건문 -->
+<c:if test="${pageMaker.isNext() }">
+    <li class="pagination_button">
+        <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
+    </li>
+</c:if>
+
 </ul>
 
 <script>
@@ -200,7 +209,7 @@ function isNumber(value) {
 				e.preventDefault(); // a 태그 이벤트 방지
 				
 				var keywordVal = searchForm.find("input[name='keyword']").val();
-				console.log(keywordVal);
+				console.log("keywordVal" + keywordVal);
 				if(keywordVal == '') {
 					alert('검색 내용을 입력하세요.');
 					return;

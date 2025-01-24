@@ -1,6 +1,11 @@
 package com.food.searcher.service;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,13 +32,15 @@ public class LocalServiceImple implements LocalService {
 	@Autowired
 	private LocalCommentMapper localCommentMapper;
 	
+	@Autowired
+	private LocalLikesService localLikesService;
+	
 	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
 		log.info("createSpeciality()");
 		
 		return localMapper.insertSepeciality(localSpecialityVO);
 	}
 	
-	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {
 		log.info("getAllSpeciality()");
@@ -46,6 +53,7 @@ public class LocalServiceImple implements LocalService {
 	@Override
 	public List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle) {
 		log.info("getSpecialityByLocalTitle()");
+		
 		return localMapper.selectByLocalTitle(localTitle);
 	}
 	
@@ -55,11 +63,21 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.selectDistrict(localLocal);
 	}
 	
-	@Transactional
 	@Override
-	public LocalSpecialityVO getSpecialityByLocalId(String localId) {
+	public Map<String, Object> getSpecialityByLocalId(int localId, String memberId) {
 		log.info("getSpecialityByLocalId()");
-		return localMapper.selectByLocalId(localId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
+		result.put("localSpecialityVO", localSpecialityVO);
+		
+		if(memberId != null) {
+			int memberLike = localLikesService.memberLikeByMemberId(localId, memberId);
+			result.put("memberLike", memberLike);
+		}
+		
+		return result;
 	}
 	
 	@Transactional

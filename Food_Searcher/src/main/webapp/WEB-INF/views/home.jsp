@@ -28,7 +28,7 @@ li {
 .button {
  background-color: #04AA6D;
   border: none;
-  color: white;
+  text-color: white;
   padding: 6px 12px;
   text-align: center;
   text-decoration: none;

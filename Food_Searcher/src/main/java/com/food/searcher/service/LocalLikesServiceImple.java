@@ -1,5 +1,9 @@
 package com.food.searcher.service;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +19,32 @@ public class LocalLikesServiceImple implements LocalLikesService {
 	@Autowired
 	LocalLikesMapper localLikesMapper;
 	
-	
 	@Override
-	public int createLikes(LocalLikesVO localLikesVO) {
+	public int createLikes(int localId, String memberId) {
 		log.info("createLikes()");
 		
-		return localLikesMapper.insertLocalLikes(localLikesVO);
+		return localLikesMapper.insertLocalLikes(localId, memberId);
 	}
 	
 	@Override
-	public LocalLikesVO selectLikes(int boardId, int memberId) {
-		log.info("selectLikes()");
+	public int memberLikeByMemberId(int localId, String memberId) {
+		log.info("memberLikeByMemberId()");
 		
-		return selectLikes(boardId, memberId);
+		return localLikesMapper.memberLikeByMemberId(localId, memberId);
 	}
 	
 	@Override
-	public int updateLikes(int boardId, int memberId, int memberLike) {
+	public Map<String, Object> selectLikesByLocalId(int localId) {
+		log.info("selectLikesByLocalId()");
+		
+		return localLikesMapper.selectLikesBylocalId(localId);
+	}
+	
+	@Override
+	public int updateLikes(int localId, String memberId, int memberLike) {
 		log.info("updateLikes()");
 		
-		return updateLikes(boardId, memberId, memberLike);
+		return localLikesMapper.updateLikesByMemberId(localId, memberId, memberLike);
 	}
 
 }
