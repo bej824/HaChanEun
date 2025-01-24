@@ -59,9 +59,6 @@ li {
 	margin-left: 335px;
 }
 
-.selected {
-
-}
 
 </style>
 <link rel="stylesheet"
@@ -115,11 +112,10 @@ li {
 	
 	<form id="searchForm" method="get" action="list">
 		<input type="hidden" name="pageNum">
-	    <input type="hidden" name="pageSize">
 		<select name="type">
-			<option value="제목">제목</option>
-			<option value="내용">내용</option>
-			<option value="지역">지역</option>
+			<option value="MARKET_TITLE">제목</option>
+			<option value="MARKET_CONTENT">내용</option>
+			<option value="MARKET_LOCAL">지역</option>
 		</select>
 		<input type="text" name="keyword">
 		<button> 검색 </button>
@@ -130,13 +126,10 @@ li {
 	    <form id="detailForm" action="detail" method="get">
 			<input type="hidden" name="marketId" >
 			<input type="hidden" name="pageNum" >
-	    	<input type="hidden" name="pageSize" >
 	    	<input type="hidden" name="type" >
 			<input type="hidden" name="keyword" >
 		</form>
 		
-					
-
 
 	<ul>
 		<!-- 이전 버튼 생성을 위한 조건문 -->
@@ -148,7 +141,7 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li><a href="list?pageNum=${num }" class="button ${param.pageNum == num ? 'selected' : ''}" onclick="changeColor(this, ${num})">${num}</a></li>
+			<li class="pagination_button"><a href="${num }" class="button">${num }</a></li>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
@@ -162,8 +155,7 @@ li {
 		<!-- 페이지 번호와 페이지 사이즈를 전송하는 form -->
 		<form id="listForm" action="list" method="get">
 	    	<input type="hidden" name="pageNum" >
-	    	<input type="hidden" name="pageSize" >
-	    	<input type="hidden" name="type">
+	    	<input type="hidden" name="type" >
 			<input type="hidden" name="keyword">
 	    </form>
 	    
@@ -189,14 +181,11 @@ li {
 		
 			var pageNum = $(this).attr("href"); // a태그의 href 값 저장
 			// 현재 페이지 사이즈값 저장
-			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
 			var type = "<c:out value='${pageMaker.pagination.type }' />";
 			var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
 			 
 			// 페이지 번호를 input name='pageNum' 값으로 적용
 			listForm.find("input[name='pageNum']").val(pageNum);
-			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-			listForm.find("input[name='pageSize']").val(pageSize);
 			// type 값을 적용
 			listForm.find("input[name='type']").val(type);
 			// keyword 값을 적용
@@ -209,20 +198,16 @@ li {
 			var detailForm = $("#detailForm");
 			e.preventDefault(); // a 태그 이벤트 방지
 		
-			var boardId = $(this).attr("href"); // a태그의 href 값 저장
+			var marketId = $(this).attr("href"); // a태그의 href 값 저장
 
 			var type = "<c:out value='${pageMaker.pagination.type }' />";
 			var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
 			var pageNum = "<c:out value='${pageMaker.pagination.pageNum }' />";
-			// 현재 페이지 사이즈값 저장
-			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
-			 
-			// 클릭된 게시글 번호를 input name='boardId' 값으로 적용
-			detailForm.find("input[name='marketId']").val(boardId);
+			
+			// 클릭된 게시글 번호를 input name='marketId' 값으로 적용
+			detailForm.find("input[name='marketId']").val(marketId);
 			// 페이지 번호를 input name='pageNum' 값으로 적용
 			detailForm.find("input[name='pageNum']").val(pageNum);
-			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-			detailForm.find("input[name='pageSize']").val(pageSize);
 			// type 값을 적용
 			detailForm.find("input[name='type']").val(type);
 			// keyword 값을 적용
@@ -234,7 +219,7 @@ li {
 			var searchForm = $("#searchForm");
 			e.preventDefault(); // a 태그 이벤트 방지
 			
-			var keywordVal = searchForm.find("input[name='keyword']").val();
+			var keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
 			console.log(keywordVal);
 			if(keywordVal == '') {
 				alert('검색 내용을 입력하세요.');
@@ -243,12 +228,9 @@ li {
 			
 			var pageNum = 1; // 검색 후 1페이지로 고정
 			// 현재 페이지 사이즈값 저장
-			var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
 			 
 			// 페이지 번호를 input name='pageNum' 값으로 적용
 			searchForm.find("input[name='pageNum']").val(pageNum);
-			// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-			searchForm.find("input[name='pageSize']").val(pageSize);
 			searchForm.submit(); // form 전송
 		}); // end on()
 		

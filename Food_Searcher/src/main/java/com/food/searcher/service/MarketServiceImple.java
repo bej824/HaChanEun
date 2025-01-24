@@ -100,9 +100,9 @@ public class MarketServiceImple implements MarketService {
 	}
 
 	@Override
-	public int getTotalCount() {
+	public int getTotalCount(Pagination pagination) {
 		log.info("getTotalCount()");
-		return marketMapper.selectTotalCount();
+		return marketMapper.selectTotalCount(pagination);
 	}
 	
 

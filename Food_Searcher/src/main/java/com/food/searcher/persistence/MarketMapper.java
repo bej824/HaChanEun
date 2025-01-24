@@ -17,7 +17,7 @@ public interface MarketMapper {
 	int update (MarketVO marketVO); 	 // 관리자
 	int delete (int marketId);           // 관리자
 	List<MarketVO> selectListByPagination(Pagination pagination); 
-	int selectTotalCount();
+	int selectTotalCount(Pagination pagination);
 	int updateReplyCount(@Param("marketId") int marketId, @Param("amount") int amount); // 댓글 수 변경
 		
 }

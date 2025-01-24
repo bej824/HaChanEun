@@ -27,10 +27,10 @@ public class LocalLikesServiceImple implements LocalLikesService {
 	}
 	
 	@Override
-	public int countLikes(int localId, String memberId) {
-		log.info("countLikes()");
+	public int memberLikeByMemberId(int localId, String memberId) {
+		log.info("memberLikeByMemberId()");
 		
-		return localLikesMapper.countLikesByMemberId(localId, memberId);
+		return localLikesMapper.memberLikeByMemberId(localId, memberId);
 	}
 	
 	@Override
