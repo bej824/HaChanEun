@@ -21,4 +21,6 @@ public class MarketVO {
 	private String marketLocal;   // MARKET_LOCAL
 	private String marketDistrict;
 	private String marketReplyCount;
+	private String marketName;
+	private String marketFood;
 }

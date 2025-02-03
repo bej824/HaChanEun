@@ -28,10 +28,12 @@ pageEncoding="UTF-8"%>
 	<h2>글 보기</h2>
 	<div>
 		<p>제목 : ${marketVO.marketTitle }</p>
-	</div>
-	<div>
+		<p>음식 : <span id="marketFood">${marketVO.marketFood } <button class="searchFood"> 레시피 검색 </button></span>
+		<p>가게 : ${marketVO.marketName }</p>    
 		<p>지역 : ${marketVO.marketLocal }</p>
 	</div>
+	
+	
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId }">
 	
@@ -76,6 +78,14 @@ pageEncoding="UTF-8"%>
     	<input type="hidden" name="keyword" >
     	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
+	
+	<form id="searchForm" action="list" method="get">
+			<input type="hidden" name="marketFood" >
+			<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="type" >
+			<input type="hidden" name="keyword" >
+		</form>
+		
 
 	
 	<sec:authorize access="isAnonymous()">
@@ -184,10 +194,19 @@ pageEncoding="UTF-8"%>
 				listForm.find("input[name='keyword']").val(keyword);
 				listForm.submit(); // form 전송
 			}); // end click()
-		}); // end document
 			
-		
-
+			$(document).ready(function() {
+		        $(".searchFood").click(function() {
+		            var marketFood = "${marketVO.marketFood}".trim(); // marketFood 값 가져오기
+		            var pageNum = 1; // pageNum 기본값, 변경 가능
+		            
+		            var searchUrl = "http://localhost:8080/searcher/recipe/list?recipeTitle=" + encodeURIComponent(marketFood) + "&filterBy=RECIPE_TITLE&pageNum=" + pageNum;
+		            
+		            window.location.href = searchUrl; // 해당 URL로 이동
+		        });
+		    });
+			
+		}); // end document
 	</script>
 	
 	<input type="hidden" id="marketId" value="${marketVO.marketId}">

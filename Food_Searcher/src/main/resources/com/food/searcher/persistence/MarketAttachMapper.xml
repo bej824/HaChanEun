@@ -5,9 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.food.searcher.persistence.MarketAttachMapper">
 		
-		<resultMap type="com.food.searcher.domain.MarketAttachVO" id="attachResultMap">
+	<resultMap type="com.food.searcher.domain.MarketAttachVO" id="attachResultMap">
 		<id property="attachId" column="ATTACH_ID" /> 
-		<result property="boardId" column="BOARD_ID" />
+		<result property="marketId" column="MARKET_ID" />
 		<result property="attachPath" column="ATTACH_PATH" />
 		<result property="attachRealName" column="ATTACH_REAL_NAME" />
 		<result property="attachChgName" column="ATTACH_CHG_NAME" />
@@ -17,14 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insert">
 		INSERT INTO MARKET_ATTACH
-		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
-		VALUES (ATTACH_SEQ.NEXTVAL, BOARD_SEQ.CURRVAL, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
+		(ATTACH_ID, MARKET_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
+		VALUES (ATTACH_SEQ.NEXTVAL, ${marketId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
 	</insert>
 
 	
 	<select id="selectByBoardId" resultMap="attachResultMap">
 		SELECT * FROM ATTACH
-		WHERE BOARD_ID = #{boardId}
+		WHERE MARKET_ID = #{marketId}
 	</select>
 	
 	<select id="selectByAttachId" resultMap="attachResultMap">
@@ -35,12 +35,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertModify">
 		INSERT INTO ATTACH 
 		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
-		VALUES (ATTACH_SEQ.NEXTVAL, #{boardId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
+		VALUES (ATTACH_SEQ.NEXTVAL, #{marketId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
 	</insert>
 
 	<delete id="delete">
 		DELETE FROM ATTACH
-		WHERE BOARD_ID = #{boardId}
+		WHERE MARKET_ID = #{marketId}
 	</delete>
 	
 	<select id="selectOldList" resultMap="attachResultMap">

@@ -116,6 +116,8 @@ li {
 			<option value="MARKET_TITLE">제목</option>
 			<option value="MARKET_CONTENT">내용</option>
 			<option value="MARKET_LOCAL">지역</option>
+			<option value="MARKET_FOOD">음식</option>
+			<option value="MARKET_NAME">가게명</option>
 		</select>
 		<input type="text" name="keyword">
 		<button> 검색 </button>
@@ -134,7 +136,7 @@ li {
 	<ul>
 		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
-			<li><a href="list?pageNum=${pageMaker.startNum - 1}"
+			<li class="pagination_button"><a href="${pageMaker.startNum - 1}"
 				class="button">이전</a></li>
 		</c:if>
 
@@ -146,7 +148,7 @@ li {
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isNext() }">
-			<li><a href="list?pageNum=${pageMaker.endNum + 1}"
+			<li class="pagination_button"><a href="${pageMaker.endNum + 1}"
 				class="button">다음</a></li>
 		</c:if>
 
