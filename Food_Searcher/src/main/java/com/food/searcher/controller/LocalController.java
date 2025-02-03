@@ -28,15 +28,13 @@ public class LocalController {
 
 	@GetMapping("/map")
 	public void mapGET(Model model, @RequestParam(value = "localLocal", required = false) String localLocal,
-			@RequestParam(value = "localDistrict", required = false) String localDistrict) {
+			@RequestParam(value = "localDistrict", required = false) String localDistrict,
+			@RequestParam(value = "localTitle", required = false) String localTitle) {
 		log.info("mapGET()");
 		
-		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
-		List<LocalSpecialityVO> specialityList = localService.getAllSpeciality(localLocal, localDistrict);
-		
-		model.addAttribute("specialityList", specialityList);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
+		model.addAttribute("localTitle", localTitle);
 	}
 	
 	@GetMapping("register")
@@ -59,12 +57,10 @@ public class LocalController {
 	@ResponseBody
 	@GetMapping("localUpdate")
 	public List<LocalSpecialityVO> localUpdateGET(@RequestParam("localLocal") String localLocal,
-			@RequestParam("localDistrict") String localDistrict) {
+			@RequestParam("localDistrict") String localDistrict, @RequestParam("localTitle") String localTitle) {
 		log.info("localUpdateGET()");
 		
-		log.info(localLocal + " " + localDistrict);
-		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict);
-
+		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict, localTitle);
 		return SpecialityList;
 	}
 	
@@ -95,6 +91,7 @@ public class LocalController {
 	public void localDetailGET(@RequestParam("localId") int localId,
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
+			@RequestParam(value = "localTitle", required = false) String localTitle,
 			Principal principal, Model model, LocalSpecialityVO localSpecialityVO) {
 		log.info("localDetailGET()");
 		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
@@ -108,14 +105,15 @@ public class LocalController {
 		Map<String, Object> result = localService.getSpecialityByLocalId(localId, memberId);
 		localSpecialityVO = (LocalSpecialityVO) result.get("localSpecialityVO");
 		
-		if(memberId != null) {
-			Integer memberLike = (Integer) result.get("memberLike");
-			log.info(memberLike);
-		}
+//		if(memberId != null) {
+//			Integer memberLike = (Integer) result.get("memberLike");
+//			log.info(memberLike);
+//		}
 
 		model.addAttribute("localSpecialityVO", localSpecialityVO);
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
+		model.addAttribute("localTitle", localTitle);
 	}
 
 }

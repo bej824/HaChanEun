@@ -10,7 +10,7 @@ public interface LocalLikesMapper {
 	
 	int insertLocalLikes(@Param("localId") int localId, @Param("memberId") String memberId);
 	
-	int memberLikeByMemberId(@Param("localId") int localId, @Param("memberId") String memberId);
+	Integer memberLikeByMemberId(@Param("localId") int localId, @Param("memberId") String memberId);
 	
 	Map<String, Object> selectLikesBylocalId(@Param("localId") int localId);
 	

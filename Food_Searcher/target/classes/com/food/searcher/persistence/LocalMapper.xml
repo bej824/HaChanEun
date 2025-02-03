@@ -25,14 +25,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectList" resultMap="localResultMap">
 		<!-- 특산품 조회 검색어가 null이거나 ''이면 무시됨 -->
-		SELECT * FROM LOCAL_SPECIALITY WHERE 1 = 1
+		SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT
+		FROM LOCAL_SPECIALITY WHERE 1 = 1
 		<if test="localLocal != null and localLocal != ''">
 			AND LOCAL_LOCAL = #{localLocal}
 		</if>
 		<if test="localDistrict != null and localDistrict != ''">
 			AND LOCAL_DISTRICT = #{localDistrict}
 		</if>
-
+		<if test="localTitle != null and localTitle != ''">
+        AND LOCAL_TITLE LIKE '%' || #{localTitle} || '%'
+    	</if>
+		ORDER BY LOCAL_ID ASC
 	</select>
 	
 	<select id="selectDistrict" resultType="String">
@@ -40,12 +44,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT DISTINCT LOCAL_DISTRICT
 		FROM LOCAL_SPECIALITY
 		WHERE LOCAL_LOCAL = #{localLocal}
-	</select>
-	
-	<select id="selectByLocalTitle" resultMap="localResultMap">
-		<!-- 검색어를 통한 특산품 조회 -->
-		SELECT * FROM LOCAL_SPECIALITY
-		WHERE LOCAL_TITLE = #{localTitle}
 	</select>
 	
 	<select id="selectByLocalId" resultMap="localResultMap">

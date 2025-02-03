@@ -1,8 +1,5 @@
 package com.food.searcher.service;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,19 +39,10 @@ public class LocalServiceImple implements LocalService {
 	}
 	
 	@Override
-	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict) {
+	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict, String localTitle) {
 		log.info("getAllSpeciality()");
-		log.info("localLocal : " + localLocal);
-		log.info("localDistrict : " + localDistrict);
 		
-		return localMapper.selectList(localLocal, localDistrict);
-	}
-	
-	@Override
-	public List<LocalSpecialityVO> getSpecialityByLocalTitle(String localTitle) {
-		log.info("getSpecialityByLocalTitle()");
-		
-		return localMapper.selectByLocalTitle(localTitle);
+		return localMapper.selectList(localLocal, localDistrict, localTitle);
 	}
 	
 	@Override
@@ -72,10 +60,10 @@ public class LocalServiceImple implements LocalService {
 		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
 		result.put("localSpecialityVO", localSpecialityVO);
 		
-		if(memberId != null) {
-			int memberLike = localLikesService.memberLikeByMemberId(localId, memberId);
-			result.put("memberLike", memberLike);
-		}
+//		if(memberId != null) {
+//			int memberLike = localLikesService.memberLikeByMemberId(localId, memberId);
+//			result.put("memberLike", memberLike);
+//		}
 		
 		return result;
 	}

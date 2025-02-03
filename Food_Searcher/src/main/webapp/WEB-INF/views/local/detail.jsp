@@ -7,6 +7,8 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Detail.css">
+		<link rel="stylesheet"
+	href="../resources/css/Base.css">
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 	
@@ -25,6 +27,7 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
@@ -51,21 +54,24 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
-	<button id="btn_index" class="button">글 목록</button>
+	<button id="btn_index" class="button">글 목록</button> <br>
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<button id="btn_update" class="button">글 수정</button>
-	<button id="deleteBoard" class="button" disabled>글 삭제</button>	
+	<button id="btn_update" class="button">글 수정</button> <br>
+	<button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
 	</sec:authorize>
 	
-	<br> <br>
-	<%@ include file ="likes.jsp" %>
-	
+	<button class="button">레시피 확인하기</button> <br>
+	<button class="button">맛집 확인하기</button> <br>
 	<%@ include file ="reply.jsp" %>
 	
+	</div>
+	
 	<script type="text/javascript">
-	let likes = 0;
 	
 	$(document).ready(function(){
+		
+		console.log('${localLocal}', '${localDistrict}', '${localTitle}');
+		console.log('${localSpecialityVO.localLocal }', '${localSpecialityVO.localDistrict }', '${localSpecialityVO.localTitle }');
 			
 	$('#btn_update').click(function(){
 		let result = confirm("수정하시겠습니까?");
@@ -80,6 +86,7 @@
 	$('#btn_index').click(function(){
 		let localLocal = '${localLocal }';
 		let localDistrict = '${localDistrict }';
+		let localTitle = '${localTitle}';
 		
 		if(localLocal != "" && localLocal != '${localSpecialityVO.localLocal }'){
 			localLocal = "";
@@ -88,8 +95,11 @@
 		if(localDistrict != "" && localDistrict != '${localSpecialityVO.localDistrict }'){
 			localDistrict = "";
 		}
+		if(localTitle != "" && localTitle != '${localSpecialityVO.localTitle }'){
+			localTitle = "";
+		}
 		
-		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict;
+		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;
 	})
 	
 	})

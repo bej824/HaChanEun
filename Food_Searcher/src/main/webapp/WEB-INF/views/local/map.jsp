@@ -112,12 +112,12 @@ a:link, a:visited, a:hover, a:active {
 	<option value="">전체</option>
 	</select>
 	
-	<% 
-	//&nbsp;&nbsp;&nbsp;
-	//특산품 명 : <input type="text" name="localTitle" id="localTitle">
-	//&nbsp;&nbsp;
-	//<button class="button" onclick="titleSearch()">검색</button>
-	%>
+	&nbsp;&nbsp;&nbsp;
+	특산품 명 : <input type="text" name="localTitle" id="localTitle">
+	&nbsp;&nbsp;
+	<button id="titleSearch" class="button">검색</button>
+	<button id="searchClear" class="button">초기화</button>
+
 	</div>
 	
 	<div class="table-container">
@@ -132,16 +132,7 @@ a:link, a:visited, a:hover, a:active {
 			</tr>
 		</thead>
 		<tbody>
-  		<c:forEach var="specialityList" items="${specialityList}">
-    	<tr onclick="window.location.href='detail?localId=${specialityList.localId}&localLocal=${localLocal}&localDistrict=${localDistrict}'">
-    		<td>${specialityList.localId}</td>
-    		<td>${specialityList.localLocal}</td>
-    		<td>${specialityList.localDistrict}</td>
-    		<td>${specialityList.localTitle}</td>
-    		<td>${specialityList.replyCount}</td>
-		</tr>
-  		</c:forEach>
-	</tbody>
+		</tbody>
 	</table>
 	</div>
 	
@@ -154,27 +145,49 @@ a:link, a:visited, a:hover, a:active {
 		$(document).ready(function(){
 			let indexLocalLocal = "${localLocal }";
 			let indexLocalDistrict = "${localDistrict }";
+			let indexLocalTitle = "${localTitle }";
+			let localLocal = $('#localLocal').val();
+			let localDistrict = $('#localDistrict').val();
+			let localTitle = $('#localTitle').val();
 			
-			if(indexLocalLocal != ''){
-			listUpdate(indexLocalLocal, '');
+			if(indexLocalLocal == ''){
+			listUpdate(localLocal, localDistrict, localTitle);
+			} else if(indexLocalLocal != ''){
+			console.log("이름 : ", indexLocalTitle);
+			listUpdate(indexLocalLocal, '', indexLocalTitle);
 			}
 			
 			// localLocal만 선택되었을 때
 			$('#localLocal').change(function(){
 				let localLocal = $(this).val();
-			    let localDistrict = '';
-			    listUpdate(localLocal, localDistrict);
+				let localDistrict = '';
+				let localTitle = $('#localTitle').val();
+			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
 			// localDistrict까지 둘 다 선별되었을 때
 			$('#localDistrict').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $(this).val();
-			    listUpdate(localLocal, localDistrict);
+			    let localTitle = $('#localTitle').val();
+			    listUpdate(localLocal, localDistrict, localTitle);
+			});
+			
+			$('#titleSearch').click(function(){
+				let localLocal = $('#localLocal').val();
+			    let localDistrict = $('#localDistrict').val();
+				let localTitle = $('#localTitle').val();
+				listUpdate(localLocal, localDistrict, localTitle);
+			});
+			
+			$('#searchClear').click(function(){
+				$("#localLocal").val('');
+				$('#localTitle').val('');
+				listUpdate('', '', '');
 			});
 				
-			function listUpdate(localLocal, localDistrict) {
-			    console.log(localLocal, localDistrict);
+			function listUpdate(localLocal, localDistrict, localTitle) {
+			    console.log(localLocal, localDistrict, localTitle);
 			    
 			    if(!/^[가-힣]+$/.test(localLocal)) {
 			    	localLocal = "";
@@ -196,7 +209,8 @@ a:link, a:visited, a:hover, a:active {
 			        url: 'localUpdate',
 			        data: {
 			            localLocal: localLocal,
-			            localDistrict: localDistrict
+			            localDistrict: localDistrict,
+			            localTitle: localTitle
 			        },
 			        success: function(result) {
 			            let tbody = $('table tbody');
@@ -216,7 +230,8 @@ a:link, a:visited, a:hover, a:active {
 			            result.forEach(function(LocalSpecialityVO) {
 			            	
 			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
-			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect +'\'">'
+			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect + 
+			                    '&localTitle=' + localTitle + '\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localLocal + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
@@ -230,15 +245,12 @@ a:link, a:visited, a:hover, a:active {
 			            	}
 			                
 			                // 지역 중복 체크 및 옵션 추가
-			                if(localLocal != ''&& localDistrict == '' &&
-			                	localDistrict_optionVal != LocalSpecialityVO.localDistrict){
-			                	
+			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict){
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
 			                    let districtOption =
 			                        '<option value="' + localDistrict_optionVal + '">' + 
 			                        localDistrict_optionVal + '</option>';
 			                    localDistrict_selectOption.append(districtOption); // 새로운 지역 옵션 추가
-			                
 			                }
 			                
 			            });
@@ -254,7 +266,6 @@ a:link, a:visited, a:hover, a:active {
 			    }); // end ajax
 			    
 			} // end listUpdate
-			
 			
 			}) // end ready
 			
