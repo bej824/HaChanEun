@@ -163,6 +163,11 @@
 				var replyId = $(this).closest('.reply_item').find('#replyId').val();   // 댓글 Id 가져오기
 				var replyContent = $(this).closest('.reply_item').find('#replyContent').val(); // 원본 댓글 내용 가져오기
 				
+				let text = ' (수정됨)'
+				if(replyContent.includes(text)) {
+					replyContent = replyContent.replace(text, "");
+				}
+				
 				console.log("replyId : " + replyId, "replyContent : " + replyContent);
 				
 				 $("#modal_repCon").val(replyContent); // 모달에 원본 댓글 내용 넣기
@@ -177,7 +182,7 @@
 			
 				var replyId = $("#recipeReplyId").val();
 				var replyContent = $("#modal_repCon").val();
-						
+				
 				console.log("선택된 댓글 번호 : " + replyId + ", 수정된 댓글 내용 : " + replyContent);
 			
 				// ajax 요청
@@ -231,6 +236,11 @@
 				
 				var commentId =  $(this).closest('.comment_item').find("#recipeCommentId").val();
 				var commentContent =  $(this).closest('.comment_item').find("#commentContent").val(); // 원본 댓글 내용 가져오기
+				
+				let text = ' (수정됨)'
+					if(commentContent.includes(text)) {
+						commentContent = commentContent.replace(text, "");
+					}
 				
 				console.log("commentId : " + commentId, "commentContent : " + commentContent);
 				
@@ -358,8 +368,8 @@
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp;&nbsp;'
 									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>&nbsp;'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
-									+ '</div>'
-									+ '<div class="commentContent" id="commentContent" value="'+ this.commentContent +'">' + this.commentContent + '</div>'
+									+ '<div class="commentContent">' + this.commentContent + '</div>'
+									+ '<input type="hidden" id="commentContent" value="'+ this.commentContent +'">'
 									+ '<br>'
 									+ '</div>'
 									

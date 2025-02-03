@@ -202,35 +202,6 @@ function isNumber(value) {
   }
 </script>
 
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$("#searchForm button").on("click", function(e){
-				var searchForm = $("#searchForm");
-				e.preventDefault(); // a 태그 이벤트 방지
-				
-				var keywordVal = searchForm.find("input[name='keyword']").val();
-				console.log("keywordVal" + keywordVal);
-				if(keywordVal == '') {
-					alert('검색 내용을 입력하세요.');
-					return;
-				}
-				
-				var pageNum = 1; // 검색 후 1페이지로 고정
-				// 현재 페이지 사이즈값 저장
-				var pageSize = "<c:out value='${pageMaker.pagination.pageSize }' />";
-				 
-				// 페이지 번호를 input name='pageNum' 값으로 적용
-				searchForm.find("input[name='pageNum']").val(pageNum);
-				// 선택된 옵션 값을 input name='pageSize' 값으로 적용
-				searchForm.find("input[name='pageSize']").val(pageSize);
-				searchForm.submit(); // form 전송
-			}); // end on()
-			
-		}); // end document()
-		
-		
-		
-	</script>
 
 </body>
 </html>

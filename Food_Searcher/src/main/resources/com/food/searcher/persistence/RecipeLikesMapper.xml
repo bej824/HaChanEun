@@ -28,6 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET MEMBER_LIKE = #{memberLike} WHERE RECIPE_BOARD_ID = #{recipeBoardId} AND MEMBER_ID = #{memberId}
 	</update>
 	
+	<select id="selectAll" resultMap="recipeLikesResultMap">
+		SELECT recipe_board_id, COUNT(*) AS like_count
+		FROM RECIPE_LIKES 
+		group by recipe_board_id, member_like 
+		having member_like=1
+		ORDER BY LIKE_COUNT DESC
+	</select>
+	
 	<select id="selectMemberLikes" resultMap="recipeLikesResultMap">
 		SELECT *
 		FROM RECIPE_LIKES
