@@ -91,7 +91,6 @@
 				console.log("boardID : " + boardId);
 				let memberId = $('#memberId').val();
 				console.log("작성자 : " + memberId);
-				console.log(this.memberId);
 				
 				let url = '../recipe/all/' + boardId;
 				console.log("address : " + url);
@@ -145,10 +144,8 @@
 								+ replyDated + '&nbsp;&nbsp;'
 								+ '<button class="btn_update " '+ disabled +' >수정</button>' + '&nbsp'
 								+ '<button class="btn_delete" '+ disabled +' >삭제</button>'
-								
-								+ '<div class="replyContent" id="replyContent">' + this.replyContent + '</div>'
-								+ '<br>'
-								
+								+ '<div class="replyContent">' + this.replyContent + '</div>'
+								+ '<input type="hidden" id="replyContent" value="'+ this.replyContent +'">'
 								+ commentcount
 								+ '<div class="comment"></div>'
 					            list += '</div>'; // 댓글 닫기
@@ -190,7 +187,7 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : replyContent, 
+					data : replyContent + ' (수정됨)', 
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -238,7 +235,7 @@
 				console.log("commentId : " + commentId, "commentContent : " + commentContent);
 				
 				 $("#modal_comCon").val(commentContent);
-				 $("#localCommentId").val(commentId);
+				 $("#recipeReplyId").val(commentId);
 				 
 				}); // end modal
 			
@@ -248,7 +245,7 @@
 				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
-				let recipeCommentId = $('#recipeCommentId').val();
+				let recipeCommentId = $('#recipeReplyId').val();
 				let commentContent = $('#modal_comCon').val();
 				console.log("수정된 댓글 번호 : " + recipeCommentId + ", 수정된 댓글 내용 : " + commentContent);
 				
@@ -259,7 +256,7 @@
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : commentContent,
+					data : commentContent + ' (수정됨)',
 					success : function(result) {
 						console.log(result);
 						if(result == 1) {
@@ -358,12 +355,11 @@
 								comment += '<div class="comment_item">'
 									+ '<input type="hidden" id="recipeCommentId" value="'+ this.recipeCommentId +'">'
 									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '</span>'
-									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated
-									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
+									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp;&nbsp;'
+									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>&nbsp;'
 									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
-									
-									+ '<br>' + '</div>'
-									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
+									+ '</div>'
+									+ '<div class="commentContent" id="commentContent" value="'+ this.commentContent +'">' + this.commentContent + '</div>'
 									+ '<br>'
 									+ '</div>'
 									
