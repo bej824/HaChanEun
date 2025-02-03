@@ -10,14 +10,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="marketTitle" column="MARKET_TITLE" />
 	<result property="marketContent" column="MARKET_CONTENT" />
 	<result property="marketLocal" column="MARKET_LOCAL" />	
-	<result property="marketDistrict" column="MARKET_DISTRICT" />
 	<result property="marketReplyCount" column="REPLY_COUNT" />
+	<result property="marketName" column="MARKET_NAME" />
+	<result property="marketFood" column="MARKET_FOOD" />
 	</resultMap>
 	
 	<insert id="insert">
 	<!-- 게시글 등록-->
 		INSERT INTO MARKET VALUES
-		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, #{marketDistrict, jdbcType=VARCHAR}, 0)
+		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, 0, #{marketFood}, #{marketName})
 	</insert>
 	
 	<update id="updateReplyCount">
@@ -42,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 게시글 수정 -->
 	UPDATE MARKET SET
 	MARKET_TITLE = #{marketTitle}, MARKET_CONTENT = #{marketContent},
-	MARKET_LOCAL = #{marketLocal} WHERE MARKET_ID = #{marketId}
+	MARKET_LOCAL = #{marketLocal}, MARKET_FOOD = #{marketFood}, MARKET_NAME = #{marketName} WHERE MARKET_ID = #{marketId}
 	</update>
 	
 	<delete id="delete">
@@ -67,6 +68,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == 'MARKET_LOCAL'.toString()">
 					WHERE MARKET_LOCAL LIKE '%'||#{keyword}||'%'
 				</when>
+				<when test="type == 'MARKET_FOOD'.toString()">
+					WHERE MARKET_FOOD LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'MARKET_NAME'.toString()">
+					WHERE MARKET_NAME LIKE '%'||#{keyword}||'%'
+				</when>
 			</choose>	   
 			) 
 			WHERE RN BETWEEN #{start} AND #{end}
@@ -85,6 +92,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == 'MARKET_LOCAL'.toString()">
 					WHERE MARKET_LOCAL LIKE '%'||#{keyword}||'%'
 				</when>
+				<when test="type == 'MARKET_FOOD'.toString()">
+					WHERE MARKET_FOOD LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'MARKET_NAME'.toString()">
+					WHERE MARKET_NAME LIKE '%'||#{keyword}||'%'
+				</when>				
 			</choose>	
 	</select>
 	
