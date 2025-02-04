@@ -5,18 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>랭킹</title>
 </head>
 <body>
 	<%@ include file ="header.jsp" %>
 	
-	<form id="searchForm" method="GET" action="rank" class="search">
-	    <select name="subject">
+	<form id="searchForm" method="GET" action="ranking" class="search">
+	    <select name="type"  id="type" onchange="updateFilters()">
+	    	<option value="">전체</option>
 	        <option value="MEMBER_AGE">나이</option>
 	        <option value="MEMBER_GENDER">성별</option>
 	        <option value="MEMBER_MBTI">MBTI</option>
 	        <option value="MEMBER_CONSTELLATION">별자리</option>
 	    </select>
+	    
+	    <select name="keyword" id="keyword" style="display:none;">
+        <!-- 추가적인 옵션들이 동적으로 들어갈 부분 -->
+    	</select>
 	    <button type="submit" class="button">검색</button>
 	</form>
 	
@@ -25,19 +30,80 @@
 	<thead>
 		<tr>
 				<th style="width: 100px">게시글 번호</th>
-				<th style="width: 600px">좋아요 수</th>
-				<th style="width: 100px">검색항목</th>
+				<th style="width: 500px">제목</th>
+				<th style="width: 100px">작성자</th>
+				<th style="width: 100px">댓글 수</th>
+				<th style="width: 100px">좋아요 수</th>
+				<th style="width: 20px">${type }</th>
 		</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="RecipeLikesVO" items="${likeList }">
+			<c:forEach var="RecipeLikesVO" items="${likeList }" varStatus="status">
 				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeLikesVO.recipeBoardId }'">
 					<td>${RecipeLikesVO.recipeBoardId }</td>
-					<td></td>
-					<td></td>
+					<td>${recipeList[status.index].recipeTitle }</td>
+					<td>${recipeList[status.index].memberId }</td>
+					<td>${recipeList[status.index].replyCount }</td>
+					<td>${RecipeLikesVO.likeCount }</td>
+					<td>${keyword }</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<script>
+    function updateFilters() {
+        var type = document.getElementById("type").value;
+        var keyword = document.getElementById("keyword");
+
+        // 추가 필터 초기화 (기존 옵션 제거)
+        keyword.innerHTML = '';
+
+        // 필터를 선택한 type 값에 따라 다르게 처리
+        if (type === "MEMBER_AGE") {
+            // '나이'에 대한 추가 필터
+            var options = [10, 20, 30, 40, 50];
+            keyword.style.display = "inline";  // 추가 필터 보이기
+            options.forEach(function(optionText) {
+                var option = document.createElement("option");
+                option.value = optionText;
+                option.text = optionText;
+                keyword.appendChild(option);
+            });
+        } else if (type === "MEMBER_GENDER") {
+            // '성별'에 대한 추가 필터
+            var options = ['male', 'female'];
+            keyword.style.display = "inline";  // 추가 필터 보이기
+            options.forEach(function(optionText) {
+                var option = document.createElement("option");
+                option.value = optionText;
+                option.text = optionText;
+                keyword.appendChild(option);
+            });
+        } else if (type === "MEMBER_MBTI") {
+            // 'MBTI'에 대한 추가 필터
+            var options = ['ISFJ', 'ISTJ', 'ISTP', 'ISFP', 'INFJ', 'INTJ', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ESTJ', 'ESFJ', 'ENFP', 'ENTP', 'ENFJ', 'ENTJ'];
+            keyword.style.display = "inline";  // 추가 필터 보이기
+            options.forEach(function(optionText) {
+                var option = document.createElement("option");
+                option.value = optionText;
+                option.text = optionText;
+                keyword.appendChild(option);
+            });
+        } else if (type === "MEMBER_CONSTELLATION") {
+            // '별자리'에 대한 추가 필터
+            var options = ['물병자리', '물고기자리', '양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '궁수자리', '염소자리'];
+            keyword.style.display = "inline";  // 추가 필터 보이기
+            options.forEach(function(optionText) {
+                var option = document.createElement("option");
+                option.value = optionText;
+                option.text = optionText;
+                keyword.appendChild(option);
+            });
+        } else {
+        	keyword.style.display = "none";  // 필터 숨기기
+        }
+    }
+</script>
 </body>
 </html>
