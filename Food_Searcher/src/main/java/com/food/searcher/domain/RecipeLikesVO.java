@@ -17,4 +17,6 @@ public class RecipeLikesVO {
 	private String memberId;
 	private int memberLike;
 	private int previousMemberLike;
+	private int likeCount;
+	private MemberVO member;
 }

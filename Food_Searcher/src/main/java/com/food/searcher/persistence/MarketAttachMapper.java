@@ -9,7 +9,7 @@ import com.food.searcher.domain.MarketAttachVO;
 @Mapper
 public interface MarketAttachMapper {
     int insert(MarketAttachVO attach);
-    List<MarketAttachVO> selectByBoardId(int boardId);
+    List<MarketAttachVO> selectByMarketId(int marketId);
     MarketAttachVO selectByAttachId(int attachId);
     int insertModify(MarketAttachVO attach);
     int delete(int boardId);

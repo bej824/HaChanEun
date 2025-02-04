@@ -86,7 +86,29 @@ pageEncoding="UTF-8"%>
 			<input type="hidden" name="keyword" >
 		</form>
 		
-
+	<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${marketVO.marketAttachList}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif'}">
+				        <div class="image_item">
+				        	<a href="../images/get?attachId=${marketAttachVO.attachId }" target="_blank">
+					        <img width="100px" height="100px" 
+					        src="../images/get?attachId=${marketAttachVO.attachId }&attachExtension=${marketAttachVO.attachExtension}"/></a>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
+	
+	<br><br>
 	
 	<sec:authorize access="isAnonymous()">
  	   * 댓글은 로그인이 필요한 서비스입니다.

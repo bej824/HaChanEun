@@ -46,13 +46,14 @@ li {
 	color: white; /* 글자색 */
 }
 
- .button.selected {
+.button.selected {
         background-color: red;
         color: white;
     }
-
-.button:active {
-	background-color: darkgreen;
+    
+.pagination_button.selected a {
+ 		background-color: red;
+        color: white;
 }
 
 #search {
@@ -143,7 +144,7 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li class="pagination_button"><a href="${num }" class="button">${num }</a></li>
+			<li class="pagination_button ${num == pageNum ? 'selected' : ''}"><a href="${num }" class="button">${num }</a></li>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
@@ -172,8 +173,9 @@ li {
 		var header = $("meta[name='_csrf_header']").attr("content");
 
 		xhr.setRequestHeader(header, token);
-	});	  
-	
+	});
+
+    
 	$(document).ready(function(){
 		
 		// pagination_button을 클릭하면 페이지 이동
@@ -192,6 +194,18 @@ li {
 			listForm.find("input[name='type']").val(type);
 			// keyword 값을 적용
 			listForm.find("input[name='keyword']").val(keyword);
+			
+			// ⭐ 모든 버튼에서 'selected' 클래스를 제거 후 현재 버튼에 추가
+	        $(".pagination_button").removeClass("selected");
+	        $(this).parent().addClass("selected");
+
+	        // URL을 새로 업데이트
+	        const url = new URL(window.location.href);
+	        url.searchParams.set("pageNum", pageNum);
+	        url.searchParams.set("type", type);
+	        url.searchParams.set("keyword", keyword);
+	        window.history.pushState({}, '', url); 
+			
 			listForm.submit(); // form 전송
 		}); // end on()
 		

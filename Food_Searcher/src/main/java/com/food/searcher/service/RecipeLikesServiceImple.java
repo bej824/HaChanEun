@@ -1,5 +1,8 @@
 package com.food.searcher.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.persistence.RecipeLikesMapper;
 import com.food.searcher.persistence.RecipeMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -79,6 +83,21 @@ public class RecipeLikesServiceImple implements RecipeLikesService{
 			log.info(updateResult + "행 싫어요 카운트 증가");
 		}
 		return result;
+	}
+
+	@Override
+	public List<RecipeLikesVO> getSelectAll() {
+		log.info("getSelectAll()");
+		List<RecipeLikesVO> likeList = likesMapper.selectAll();
+		return likeList;
+	}
+
+	@Override
+	public List<RecipeLikesVO> getPagingBoards(Pagination pagination) {
+		log.info("getPagingBoards()");
+		log.info(pagination);
+		List<RecipeLikesVO> list = likesMapper.selectListByPagination(pagination);
+		return list.stream().collect(Collectors.toList());
 	}
 
 }

@@ -55,6 +55,7 @@
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
+
 		<sec:authorize access="hasRole('ROLE_MEMBER')">
 			<script type="text/javascript">
 				alert('관리자만 접근이 가능합니다.');
@@ -122,17 +123,19 @@
 
 			</select>
 		</div>
+		
 
 		<!-- https://news.seoul.go.kr/economy/archives/66052 -->
 
 		<br>
 		<div>
-			<p>내용 :</p>
 			<div class="image-upload">
 				<h2>이미지 파일 업로드</h2>
 				<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 				<p>* 최대 용량은 10MB 입니다.</p>
 				<div class="image-drop"></div>
+				<input type="file" id="attachInput" name="files" multiple="multiple"><br>
+				
 				<h2>선택한 이미지 파일 :</h2>
 				<div class="image-list"></div>
 			</div>
@@ -140,8 +143,8 @@
 			<div class="attachVOImg-list">
 			</div>
 
-
 			<br>
+			<p>내용 :</p>
 			<textarea rows="20" cols="120" name="marketContent"
 				placeholder="내용 입력" maxlength="300" required></textarea>
 			<br> <button id="registerMarket"> 등록 </button>
@@ -149,6 +152,15 @@
 	</form>
 	
 	<script>
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});
 	
 	$(document).ready(function(){
 		// 파일 객체를 배열로 전달받아 검증하는 함수
@@ -252,7 +264,7 @@
 					    	+ '<input type="hidden" id="attachChgName" value="'+ attachVO.attachChgName +'">'
 					    	+ '<input type="hidden" id="attachExtension" value="'+ attachVO.attachExtension +'">'
 					        + '<a href="../images/display?attachPath=' + attachPath + '&attachChgName='
-					        + attachVO.attachChgName + "&attachExtension=" + attachDTO.attachExtension
+					        + attachVO.attachChgName + "&attachExtension=" + attachVO.attachExtension
 					        + '" target="_blank">'
 					        + '<img width="100px" height="100px" src="../images/display?attachPath=' 
 					        + attachPath + '&attachChgName='
@@ -272,6 +284,8 @@
 			}); // end $.ajax()
 			
 		}); // end image-drop()
+		
+	});
 	
 	$(document).ready(function() {
 		// regsiterForm 데이터 전송
@@ -317,45 +331,10 @@
 				
 				i++;
 			});
-      	    
-			// attachDTOFile-list의 각 input 태그 접근
-			$('.attachVOFile-list input[name="attachVO"]').each(function(){
-				console.log(this);
-				// JSON attachDTO 데이터를 object 변경
-				var attachDTO = JSON.parse($(this).val());
-				// attachPath input 생성
-				var inputPath = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachPath');
-				inputPath.val(attachVO.attachPath);
-				
-				// attachRealName input 생성
-				var inputRealName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachRealName');
-				inputRealName.val(attachVO.attachRealName);
-				
-				// attachChgName input 생성
-				var inputChgName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachChgName');
-				inputChgName.val(attachVO.attachChgName);
-				
-				// attachExtension input 생성
-				var inputExtension = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachExtension');
-				inputExtension.val(attachVO.attachExtension);
-				
-				// form에 태그 추가
-				registerForm.append(inputPath);
-				registerForm.append(inputRealName);
-				registerForm.append(inputChgName);
-				registerForm.append(inputExtension);
-				
-				i++;
-			});
-			registerForm.submit();
-		});
-
+			
+		 });
+	    
 	});
-	
       	    
 	</script>
 	
