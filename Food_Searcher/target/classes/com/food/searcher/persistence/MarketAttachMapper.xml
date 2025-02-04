@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	
-	<select id="selectByBoardId" resultMap="attachResultMap">
+	<select id="selectByMarketId" resultMap="attachResultMap">
 		SELECT * FROM ATTACH
 		WHERE MARKET_ID = #{marketId}
 	</select>
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectOldList" resultMap="attachResultMap">
 		SELECT * FROM ATTACH
-		WHERE ATTACH_PATH = TO_CHAR(SYSDATE -1, 'yyyy\mm\dd')
+		WHERE ATTACH_PATH = TO_CHAR(SYSDATE -1, 'yyyy/mm/dd')
 	</select>
 	
 

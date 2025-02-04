@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.MarketAttachVO;
 import com.food.searcher.domain.MarketCommentVO;
 import com.food.searcher.domain.MarketReplyVO;
 import com.food.searcher.domain.MarketVO;
+import com.food.searcher.persistence.MarketAttachMapper;
 import com.food.searcher.persistence.MarketMapper;
 import com.food.searcher.util.Pagination;
 
@@ -31,11 +33,25 @@ public class MarketServiceImple implements MarketService {
 	@Autowired
 	MarketCommentService marketCommentService;
 
+	@Autowired
+	private MarketAttachMapper attachMapper;
+	
 	@Override
 	public int createMarket(MarketVO marketVO) {
 		log.info("createMarket()");
-		int result = marketMapper.insert(marketVO);
-		return result;
+		log.info("marketVO : " + marketVO);
+		int marketResult = marketMapper.insert(marketVO);
+		log.info(marketResult + " 행 게시글 등록");
+		
+		List<MarketAttachVO> attachList = marketVO.getAttachList();
+		
+		int insertAttachResult = 0;
+		for(MarketAttachVO attachVO : attachList) {
+			insertAttachResult += attachMapper.insert(attachVO);
+		}
+		log.info(insertAttachResult + "행 파일 정보 등록");
+		
+		return 1;
 	}
 
 	@Override
