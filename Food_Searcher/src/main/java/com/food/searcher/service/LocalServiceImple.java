@@ -32,8 +32,11 @@ public class LocalServiceImple implements LocalService {
 	@Autowired
 	private LocalLikesService localLikesService;
 	
+	@Transactional
+	@Override
 	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
 		log.info("createSpeciality()");
+		log.info(localSpecialityVO);
 		
 		return localMapper.insertSepeciality(localSpecialityVO);
 	}

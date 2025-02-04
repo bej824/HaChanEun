@@ -27,6 +27,25 @@ public class LocalLikeController {
 	LocalLikesService localLikesService;
 	
 	@ResponseBody
+	@PostMapping("/likecreate")
+	public int likeCreatePOST(@RequestParam("localId") int localId, 
+			@RequestParam("memberLike") int memberLike, Principal principal) {
+		log.info("likeCreatePOST()");
+		String memberId = principal.getName();
+		
+		return localLikesService.createLikes(localId, memberId, memberLike);
+	}
+	
+	@ResponseBody
+	@PostMapping("/memberLike")
+	public int memberLikePOST(@RequestParam("localId") int localId, Principal principal) {
+		log.info("memberLikePOST()");
+		String memberId = principal.getName();
+		
+		return localLikesService.memberLikeByMemberId(localId, memberId);
+	}
+	
+	@ResponseBody
 	@GetMapping("/likeCount")
 	public Map<String, Object> likeCountGET(@RequestParam("localId") int localId) {
 		log.info("likeCountGET()");
@@ -37,10 +56,10 @@ public class LocalLikeController {
 		result.put("likeCount", (likesCount.getOrDefault("LIKECOUNT", 0)));
 		result.put("dislikeCount", (likesCount.getOrDefault("DISLIKECOUNT", 0)));
 
-		
 		return result;
 	}
 	
+	@ResponseBody
 	@PostMapping("likeUpdate")
 	public int likeUpdatePOST(int localId, int memberLike, Principal principal) {
 		log.info("likeUpdatePOST()");

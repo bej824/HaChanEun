@@ -20,10 +20,10 @@ public class LocalLikesServiceImple implements LocalLikesService {
 	LocalLikesMapper localLikesMapper;
 	
 	@Override
-	public int createLikes(int localId, String memberId) {
+	public int createLikes(int localId, String memberId, int memberLike) {
 		log.info("createLikes()");
 		
-		return localLikesMapper.insertLocalLikes(localId, memberId);
+		return localLikesMapper.insertLocalLikes(localId, memberId, memberLike);
 	}
 	
 	@Override

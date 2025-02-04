@@ -86,9 +86,6 @@
 	<button id="btn_inactive" class="button">회원탈퇴</button>
 	<br>
 	<button id="btn_pwUpdate" class="button">비밀번호 변경</button>
-	
-	<br>
-	<a href="/searcher/access/admin">운영자</a>
 
 	<script type="text/javascript">
 		$(document).ajaxSend(function(e, xhr, opt){

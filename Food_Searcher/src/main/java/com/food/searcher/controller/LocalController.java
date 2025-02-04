@@ -40,20 +40,18 @@ public class LocalController {
 	@GetMapping("register")
 	public void registerSpecialityGET(){
 		log.info("registerSpecialityGET()");
-		
 	}
 	
-	@Transactional
 	@ResponseBody
-	@PostMapping("createSpeciality")
-	public int createSpecialityPOST(LocalSpecialityVO localSpecialityVO) {
-		log.info("createSpecialityPOST()");
+	@PostMapping("register")
+	public int registerSpecialityPOST(LocalSpecialityVO localSpecialityVO) {
+		log.info("registerSpecialityPOST()");
 		log.info("등록할 특산품 : " + localSpecialityVO);
 		int result = localService.createSpeciality(localSpecialityVO);
 		
 		return result;
 	}
-
+	
 	@ResponseBody
 	@GetMapping("localUpdate")
 	public List<LocalSpecialityVO> localUpdateGET(@RequestParam("localLocal") String localLocal,
@@ -74,17 +72,12 @@ public class LocalController {
 		return districtList;
 	}
 	
-	@Transactional
+	@ResponseBody
 	@PostMapping("update")
-	public String localUpdatePOST(@RequestParam("Id") String localId, @RequestParam("localContent") String localContent,
-			LocalSpecialityVO localSpecialityVO) {
+	public int localUpdatePOST(LocalSpecialityVO localSpecialityVO) {
 		log.info("localUpdatePOST()");
-		String location = "redirect:detail?localId=" + localId;
-		localSpecialityVO = new LocalSpecialityVO(localId, null, null, null, localContent, 0);
-		int result = localService.updateSpeciality(localSpecialityVO);
-		log.info(result + "행 수정");
 
-		return location;
+		return localService.updateSpeciality(localSpecialityVO);
 	}
 	
 	@GetMapping("/detail")
@@ -114,6 +107,16 @@ public class LocalController {
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 		model.addAttribute("localTitle", localTitle);
+	}
+	
+	@GetMapping("modify")
+	public void modifyGET(@RequestParam("localId") int localId,
+			Map<String, Object> result, LocalSpecialityVO localSpecialityVO, Model model) {
+		log.info("modifyGET()");
+		
+		result = localService.getSpecialityByLocalId(localId, null);
+		localSpecialityVO = (LocalSpecialityVO) result.get("localSpecialityVO");
+		model.addAttribute("localSpecialityVO", localSpecialityVO);
 	}
 
 }

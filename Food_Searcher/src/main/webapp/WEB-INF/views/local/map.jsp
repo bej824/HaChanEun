@@ -92,7 +92,7 @@ a:link, a:visited, a:hover, a:active {
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area">
-	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
+	<h1><a href='map?localLocal=&localDistrict=&localTitle='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal">
@@ -113,7 +113,7 @@ a:link, a:visited, a:hover, a:active {
 	</select>
 	
 	&nbsp;&nbsp;&nbsp;
-	특산품 명 : <input type="text" name="localTitle" id="localTitle">
+	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }">
 	&nbsp;&nbsp;
 	<button id="titleSearch" class="button">검색</button>
 	<button id="searchClear" class="button">초기화</button>
@@ -165,7 +165,7 @@ a:link, a:visited, a:hover, a:active {
 			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
-			// localDistrict까지 둘 다 선별되었을 때
+			// localDistrict까지 둘 다 선택되었을 때
 			$('#localDistrict').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $(this).val();
@@ -267,7 +267,24 @@ a:link, a:visited, a:hover, a:active {
 			    
 			} // end listUpdate
 			
+			
 			}) // end ready
+			
+			window.onload = function() {
+			    // 새로고침이 감지된 경우
+			    if (sessionStorage.getItem("reloaded")) {
+
+			        // URL에서 검색어 제거
+			        window.history.replaceState({}, document.title, window.location.pathname);
+
+			        // 새로고침 플래그 삭제
+			        sessionStorage.removeItem("reloaded");
+			    }
+			};
+
+			window.addEventListener("beforeunload", function() {
+			    sessionStorage.setItem("reloaded", "true");
+			});
 			
 			function insertSpeciality(){
 				console.log("insertSpeciality()");

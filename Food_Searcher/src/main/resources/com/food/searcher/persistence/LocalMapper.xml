@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id ="insertSepeciality">
-		INSERT INTO MEMBER 
+		INSERT INTO LOCAL_SPECIALITY
 		(LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, LOCAL_CONTENT, REPLY_COUNT)
 		VALUES (LOCALSPECIALITY_SEQ.NEXTVAL, #{localLocal}, #{localDistrict}, #{localTitle}, #{localContent}, 0)
 	</insert>

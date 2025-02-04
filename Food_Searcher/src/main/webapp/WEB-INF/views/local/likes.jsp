@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,10 +11,13 @@
 </head>
 <body>
 	
-	<p id="likeCount"></p>
-	<button id="like">좋아요</button>
-	<button id="dislike">싫어요</button>
-	<p id="dislikeCount"><p>
+	<div>
+	<p id="likeCount"></p> <button id="btn_like">좋아요</button> <button id="btn_dislike">싫어요</button> <p id="dislikeCount"><p>
+	</div>
+	
+	<sec:authorize access="isAuthenticated()">
+	<script> selectMemberLike(); </script>
+	</sec:authorize>
 	
 	<script type="text/javascript">
 	
@@ -23,18 +29,63 @@
 		let likeCount = document.getElementById("likeCount");
 		let dislikeCount = document.getElementById("dislikeCount");
 		
-		let likeDislike = 0;
+		let memberLike = 0;
 		
-		$('#like').change(function(){
-			
+		$('#btn_like').click(function(){
+			if('${principal.name}' == '') {
+				alert("로그인 후 이용 가능합니다.");
+			} else {
+			memberLike = 1;
+			console.log(memberLike);				
+			}
 		})
 		
-		$('#dislike').change(function(){
-			
+		$('#btn_dislike').click(function(){
+			if('${principal.name}' == '') {
+				alert("로그인 후 이용 가능합니다.");
+			} else {
+			memberLike = 2;
+			console.log(memberLike);				
+			}
 		})
 		
-		function updateCount() {
+		function selectMemberLike() {
+			$.ajax({
+				type : 'POST',
+				url : 'memberLike',
+				data : {localId : localId},
+				success : function(result) {
+					memberLike = result;
+				}
+			})
+		}
+		
+		function createCount(memberLike) {
+			let localId = "${localSpecialityVO.localId }";
 			
+			$.ajax({
+				type : 'POST',
+				url : 'likeUpdate',
+				data : {localId : localId,
+					memberLike : memberLike},
+				success : function(result) {
+					
+				}
+			})
+		}
+		
+		function updateCount(memberLike) {
+			let localId = "${localSpecialityVO.localId }";
+			
+			$.ajax({
+				type : 'POST',
+				url : 'likeUpdate',
+				data : {localId : localId,
+					memberLike : memberLike},
+				success : function(result) {
+					
+				}
+			})
 			
 		}
 		
