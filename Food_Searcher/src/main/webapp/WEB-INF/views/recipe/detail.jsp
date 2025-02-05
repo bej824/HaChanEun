@@ -25,6 +25,29 @@
     .image_item {
         margin: 5px; /* 이미지 간 간격 */
     }
+    
+    .clickable-word {	
+	left : 30px;
+	width: 100%;
+	max-width: 600px; /* 댓글 창의 최대 너비 */
+	margin: 20px auto; /* 화면 중앙에 배치 */
+	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+}
+
+	.content {
+	width: 700px;
+	height: 280px;
+	padding: 12px 20px;
+    background-color: #f2f2f2;
+    resize: none;
+    border: 1px solid gray;  /* 2px 두께의 검은색 실선 테두리 추가 */
+    
+    }
+    
+        .new-line {
+            display: block;  /* 새로운 줄로 나누기 */
+            margin-top: 10px;  /* 위쪽에 여백 추가 (선택 사항) */
+        }    
 
 </style>
 <meta charset="UTF-8">
@@ -56,10 +79,10 @@
 		<fmt:formatDate value="${recipeVO.recipeDateCreated }"
 					pattern="yyyy-MM-dd" var="recipeDateCreated"/>
 		<p>작성일 : ${recipeDateCreated }</p>
-		<p>음식 : ${recipeVO.recipeFood }</p>
+		<p>음식 : <span>${recipeVO.recipeFood }</span></p>
 	</div>
-	<div>
-		<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
+	<div class="content">
+		<span class="clickable-word">${recipeVO.recipeContent } </span>
 	</div>
 	 
 
@@ -138,6 +161,59 @@
     });
 	}
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let spanElement = document.querySelector('.clickable-word');
+    let textContent = spanElement.innerText;
+
+    // 시작 단어와 끝 단어 정의
+    let startWord = "재료 :";
+    let endWord = "레시피 :";
+
+    // 시작 단어와 끝 단어의 인덱스 찾기
+    let startIndex = textContent.indexOf(startWord) + startWord.length;
+    let endIndex = textContent.indexOf(endWord);
+
+    // 클릭 가능한 단어만 선택할 수 있도록 처리
+    if (startIndex >= 0 && endIndex > startIndex) {
+        let selectedText = textContent.slice(startIndex, endIndex).trim();  // 시작과 끝 단어 제외하고 중간 텍스트 가져오기
+        let words = selectedText.split(' ');
+
+        // 기존 span 태그에서 시작 단어 이전까지 텍스트 출력
+        spanElement.innerHTML = textContent.slice(0, startIndex);  // "시작" 단어 이전 텍스트
+
+        // 중간 단어를 클릭 가능한 span 태그로 감싸기
+        words.forEach(function (word) {
+            let wordSpan = document.createElement('span');
+            wordSpan.classList.add('clickable-word');  // 클릭 가능한 클래스 추가
+            wordSpan.innerText = word;
+
+            // 클릭 이벤트 추가 (단어 클릭시 URL로 이동)
+            wordSpan.addEventListener('click', function () {
+                console.log('클릭된 단어:', word);
+                var url = 'list?recipeTitle=' + encodeURIComponent(word) + '&filterBy=RECIPE_CONTENT';
+                window.location.href = url;
+            });
+
+            // 새로 생성된 단어 span 추가
+            spanElement.appendChild(wordSpan);  
+            spanElement.appendChild(document.createTextNode(' '));  // 단어들 사이에 공백 추가
+        });
+
+        // 끝 단어 이후 텍스트 추가
+        let endText = textContent.slice(endIndex);
+        let endTextNode = document.createElement('div');  // 새로운 줄로 분리하기 위한 div
+        endTextNode.classList.add('new-line');
+        endTextNode.innerText = endText;  // 끝 텍스트 추가
+        spanElement.appendChild(endTextNode);
+    } else {
+        console.log('시작 단어와 끝 단어 사이에 유효한 텍스트가 없습니다.');
+    }
+});
+
+</script>
+
 
 	
 	<%@ include file="likes.jsp"%>

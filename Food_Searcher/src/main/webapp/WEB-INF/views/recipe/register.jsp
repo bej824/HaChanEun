@@ -194,9 +194,6 @@ textarea {
 			});
 		});
 	</script>
-	<script>
-	document.getElementById("memberId").readOnly = true;
-	</script>
 	
 	<script type="text/javascript">
 		function goBack() {

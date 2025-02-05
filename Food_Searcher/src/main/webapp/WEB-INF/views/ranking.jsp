@@ -13,10 +13,10 @@
 	<form id="searchForm" method="GET" action="ranking" class="search">
 	    <select name="type"  id="type" onchange="updateFilters()">
 	    	<option value="">전체</option>
-	        <option value="MEMBER_AGE">나이</option>
-	        <option value="MEMBER_GENDER">성별</option>
-	        <option value="MEMBER_MBTI">MBTI</option>
-	        <option value="MEMBER_CONSTELLATION">별자리</option>
+	        <option value="나이">나이</option>
+	        <option value="성별">성별</option>
+	        <option value="MBTI">MBTI</option>
+	        <option value="별자리">별자리</option>
 	    </select>
 	    
 	    <select name="keyword" id="keyword" style="display:none;">
@@ -25,28 +25,34 @@
 	    <button type="submit" class="button">검색</button>
 	</form>
 	
-	
+	<h3>레시피</h3>
 	<table border="1">
 	<thead>
 		<tr>
-				<th style="width: 100px">게시글 번호</th>
+				<th style="width: 80px">번호</th>
 				<th style="width: 500px">제목</th>
 				<th style="width: 100px">작성자</th>
-				<th style="width: 100px">댓글 수</th>
-				<th style="width: 100px">좋아요 수</th>
-				<th style="width: 20px">${type }</th>
+				<th style="width: 80px">댓글 수</th>
+				<th style="width: 80px">좋아요 수</th>
+				<c:if test="${not empty type}">
+				<th style="width: 100px">${type }</th>
+				</c:if>
 		</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeLikesVO" items="${likeList }" varStatus="status">
+			<c:if test="${status.index < 5}">
 				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeLikesVO.recipeBoardId }'">
 					<td>${RecipeLikesVO.recipeBoardId }</td>
 					<td>${recipeList[status.index].recipeTitle }</td>
 					<td>${recipeList[status.index].memberId }</td>
 					<td>${recipeList[status.index].replyCount }</td>
 					<td>${RecipeLikesVO.likeCount }</td>
+					<c:if test="${not empty keyword }">
 					<td>${keyword }</td>
+					</c:if>
 				</tr>
+			</c:if>
 			</c:forEach>
 		</tbody>
 	</table>
@@ -60,17 +66,18 @@
         keyword.innerHTML = '';
 
         // 필터를 선택한 type 값에 따라 다르게 처리
-        if (type === "MEMBER_AGE") {
+        if (type === "나이") {
             // '나이'에 대한 추가 필터
-            var options = [10, 20, 30, 40, 50];
+            var options = [0, 10, 20, 30, 40, 50];
+            var ageRanges = ["10대 이하", "10대", "20대", "30대", "40대", "50대 이상"];
             keyword.style.display = "inline";  // 추가 필터 보이기
-            options.forEach(function(optionText) {
+            options.forEach(function(optionText, index) {
                 var option = document.createElement("option");
                 option.value = optionText;
-                option.text = optionText;
+                option.text = ageRanges[index];
                 keyword.appendChild(option);
             });
-        } else if (type === "MEMBER_GENDER") {
+        } else if (type === "성별") {
             // '성별'에 대한 추가 필터
             var options = ['male', 'female'];
             keyword.style.display = "inline";  // 추가 필터 보이기
@@ -80,7 +87,7 @@
                 option.text = optionText;
                 keyword.appendChild(option);
             });
-        } else if (type === "MEMBER_MBTI") {
+        } else if (type === "MBTI") {
             // 'MBTI'에 대한 추가 필터
             var options = ['ISFJ', 'ISTJ', 'ISTP', 'ISFP', 'INFJ', 'INTJ', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ESTJ', 'ESFJ', 'ENFP', 'ENTP', 'ENFJ', 'ENTJ'];
             keyword.style.display = "inline";  // 추가 필터 보이기
@@ -90,7 +97,7 @@
                 option.text = optionText;
                 keyword.appendChild(option);
             });
-        } else if (type === "MEMBER_CONSTELLATION") {
+        } else if (type === "별자리") {
             // '별자리'에 대한 추가 필터
             var options = ['물병자리', '물고기자리', '양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '궁수자리', '염소자리'];
             keyword.style.display = "inline";  // 추가 필터 보이기

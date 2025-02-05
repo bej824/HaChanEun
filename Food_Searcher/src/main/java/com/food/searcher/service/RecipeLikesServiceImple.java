@@ -95,8 +95,9 @@ public class RecipeLikesServiceImple implements RecipeLikesService{
 	@Override
 	public List<RecipeLikesVO> getPagingBoards(Pagination pagination) {
 		log.info("getPagingBoards()");
-		log.info(pagination);
+		log.info("페이징 : " + pagination);
 		List<RecipeLikesVO> list = likesMapper.selectListByPagination(pagination);
+		log.info("RecipeLikes list : " + list);
 		return list.stream().collect(Collectors.toList());
 	}
 

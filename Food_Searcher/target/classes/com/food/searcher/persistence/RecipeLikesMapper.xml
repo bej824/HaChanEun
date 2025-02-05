@@ -70,36 +70,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == ''">
 					GROUP BY r.RECIPE_BOARD_ID, member_like
 				</when>
-				<when test="type == 'MEMBER_AGE'.toString()">
-					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_AGE
+				<when test="type == '나이'.toString()">
 					<choose>
+						<when test="keyword == 0">
+							AND m.MEMBER_AGE between 0 and 9
+						</when>
 						<when test="keyword == 10">
-							HAVING m.MEMBER_AGE between 10 and 19
+							AND m.MEMBER_AGE between 10 and 19
 						</when>
 						<when test="keyword == 20">
-							HAVING m.MEMBER_AGE between 20 and 29
+							AND m.MEMBER_AGE between 20 and 29
 						</when>
 						<when test="keyword == 30">
-							HAVING m.MEMBER_AGE between 30 and 39
+							AND m.MEMBER_AGE between 30 and 39
 						</when>
 						<when test="keyword == 40">
-							HAVING m.MEMBER_AGE between 40 and 49
+							AND m.MEMBER_AGE between 40 and 49
 						</when>
 						<when test="keyword == 50">
-							HAVING m.MEMBER_AGE >= 50
+							AND m.MEMBER_AGE >= 50
 						</when>
 					</choose>
-					
+					GROUP BY r.RECIPE_BOARD_ID
 				</when>
-				<when test="type == 'MEMBER_GENDER'.toString()">
+				<when test="type == '성별'.toString()">
 					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_GENDER
 					HAVING m.MEMBER_GENDER = #{keyword}
 				</when>
-				<when test="type == 'MEMBER_MBTI'.toString()">
+				<when test="type == 'MBTI'.toString()">
 					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_MBTI
 					HAVING m.MEMBER_MBTI = #{keyword}
 				</when>
-				<when test="type == 'MEMBER_CONSTELLATION'.toString()">
+				<when test="type == '별자리'.toString()">
 					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_CONSTELLATION
 					HAVING m.MEMBER_CONSTELLATION = #{keyword}
 				</when>
