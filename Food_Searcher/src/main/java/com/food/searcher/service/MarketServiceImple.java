@@ -36,6 +36,7 @@ public class MarketServiceImple implements MarketService {
 	@Autowired
 	private MarketAttachMapper attachMapper;
 	
+	@Transactional(value = "transactionManager")
 	@Override
 	public int createMarket(MarketVO marketVO) {
 		log.info("createMarket()");
@@ -44,11 +45,13 @@ public class MarketServiceImple implements MarketService {
 		log.info(marketResult + " 행 게시글 등록");
 		
 		List<MarketAttachVO> attachList = marketVO.getAttachList();
+		log.info(attachList);
 		
 		int insertAttachResult = 0;
-		for(MarketAttachVO attachVO : attachList) {
-			insertAttachResult += attachMapper.insert(attachVO);
-		}
+	        for (MarketAttachVO attachVO : attachList) {
+	        	// attachlist에서 객체를 차례대로 꺼내서 VO에 넣는다
+	            insertAttachResult += attachMapper.insert(attachVO);
+	        }
 		log.info(insertAttachResult + "행 파일 정보 등록");
 		
 		return 1;

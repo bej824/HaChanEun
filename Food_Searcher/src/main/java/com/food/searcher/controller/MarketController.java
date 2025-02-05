@@ -3,21 +3,14 @@ package com.food.searcher.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.MarketVO;
@@ -66,7 +59,7 @@ public class MarketController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
-	public String marketPOST (MarketVO marketVO, RedirectAttributes reAttr) {
+	public String marketPOST (@RequestBody MarketVO marketVO, RedirectAttributes reAttr) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
 		log.info("reAttr :  " + reAttr);
@@ -108,10 +101,11 @@ public class MarketController {
 		log.info(result + "행 수정");
 		
 		reAttr.addAttribute("pageNum", pagination.getPageNum());
-		reAttr.addAttribute("pageSize", pagination.getPageSize());
 		reAttr.addAttribute("type", pagination.getType());
 		reAttr.addAttribute("keyword", pagination.getKeyword());
 		
+		
+
 		
 		return "redirect:/market/list";
 	}
@@ -123,7 +117,6 @@ public class MarketController {
 		log.info(result + "행 삭제");
 		
 		reAttr.addAttribute("pageNum", pagination.getPageNum());
-		reAttr.addAttribute("pageSize", pagination.getPageSize());
 		reAttr.addAttribute("type", pagination.getType());
 		reAttr.addAttribute("keyword", pagination.getKeyword());
 		

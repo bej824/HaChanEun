@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.food.searcher.domain.MarketAttachVO;
+import com.food.searcher.domain.MarketVO;
 import com.food.searcher.service.MarketAttachService;
+import com.food.searcher.service.MarketService;
 import com.food.searcher.util.FileUploadUtil;
 
 import lombok.extern.log4j.Log4j;
@@ -31,18 +35,23 @@ import lombok.extern.log4j.Log4j;
 
 public class MarketAttachController {
 	 @Autowired
-	    private String uploadPath;
+	 private String uploadPath;
+	   
+	 @Autowired
+	 private MarketService marketService;
+	 
+	 @Autowired
+	 private MarketAttachService attachService;
 	    
-	    @Autowired
-	    private MarketAttachService attachService;
-	    
-	    @PostMapping
-		public ResponseEntity<ArrayList<MarketAttachVO>> createImage(MultipartFile[] files) {
-			log.info("createImage()");
-
-			ArrayList<MarketAttachVO> list = new ArrayList<>();
-
-			for (MultipartFile file : files) {
+	 @PostMapping
+	 public ResponseEntity<List<MarketAttachVO>> createImage(@ModelAttribute MarketVO marketVO, MultipartFile[] files) {
+		log.info("createImage()");
+		log.info(marketVO);
+		
+		List<MarketAttachVO> list = new ArrayList<>();
+		
+		for (MultipartFile file : files) {
+				log.info(files);
 
 				// UUID 생성
 				String chgName = UUID.randomUUID().toString();
@@ -55,6 +64,7 @@ public class MarketAttachController {
 				FileUploadUtil.createThumbnail(uploadPath, path, chgName, extension);
 
 				MarketAttachVO attachVO = new MarketAttachVO();
+				log.info("attachVO : " + attachVO);
 				// 파일 경로 설정
 				attachVO.setAttachPath(path);
 				// 파일 실제 이름 설정
@@ -63,12 +73,16 @@ public class MarketAttachController {
 				attachVO.setAttachChgName(chgName);
 				// 파일 확장자 설정
 				attachVO.setAttachExtension(extension);
-
 				list.add(attachVO);
+			
+				attachService.createAttach(attachVO);
+				log.info(attachService.createAttach(attachVO) + "행 등록");
+				
+				log.info("attachVO : " + attachVO);
 			}
-
-			return new ResponseEntity<ArrayList<MarketAttachVO>>(list, HttpStatus.OK);
+			return new ResponseEntity<List<MarketAttachVO>>(list, HttpStatus.OK);
 		}
+	 
 		
 	    @GetMapping("/display")
 		public ResponseEntity<byte[]> display(String attachPath, String attachChgName, String attachExtension) {
