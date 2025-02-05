@@ -55,20 +55,10 @@ public class LocalServiceImple implements LocalService {
 	}
 	
 	@Override
-	public Map<String, Object> getSpecialityByLocalId(int localId, String memberId) {
+	public LocalSpecialityVO getSpecialityByLocalId(int localId) {
 		log.info("getSpecialityByLocalId()");
 		
-		Map<String, Object> result = new HashMap<String, Object>();
-		
-		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
-		result.put("localSpecialityVO", localSpecialityVO);
-		
-//		if(memberId != null) {
-//			int memberLike = localLikesService.memberLikeByMemberId(localId, memberId);
-//			result.put("memberLike", memberLike);
-//		}
-		
-		return result;
+		return localMapper.selectByLocalId(localId);
 	}
 	
 	@Transactional

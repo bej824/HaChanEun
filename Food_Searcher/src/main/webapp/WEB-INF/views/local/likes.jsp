@@ -15,24 +15,33 @@
 	<p id="likeCount"></p> <button id="btn_like">좋아요</button> <button id="btn_dislike">싫어요</button> <p id="dislikeCount"><p>
 	</div>
 	
-	<sec:authorize access="isAuthenticated()">
-	<script> selectMemberLike(); </script>
-	</sec:authorize>
-	
 	<script type="text/javascript">
 	
+	$(document).ajaxSend(function(e, xhr, opt){
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+		xhr.setRequestHeader(header, token);
+	});
+	
 	$(document).ready(function(){
-		let localId = '${LocalSpecialityVO.localId }';
+		let memberId = '<sec:authentication property="name" />';
+		let localId = '${localSpecialityVO.localId }';
+		console.log("게시글 번호 : ", localId);
+		
 		let like = document.getElementById("like");
 		let dislike = document.getElementById("dislike");
-		
 		let likeCount = document.getElementById("likeCount");
 		let dislikeCount = document.getElementById("dislikeCount");
 		
 		let memberLike = 0;
 		
+		if(memberId != 'anonymousUser') {
+			selectMemberLike();
+		}
+		
 		$('#btn_like').click(function(){
-			if('${principal.name}' == '') {
+			if(memberId == 'anonymousUser') {
 				alert("로그인 후 이용 가능합니다.");
 			} else {
 			memberLike = 1;
@@ -41,7 +50,7 @@
 		})
 		
 		$('#btn_dislike').click(function(){
-			if('${principal.name}' == '') {
+			if(memberId == 'anonymousUser') {
 				alert("로그인 후 이용 가능합니다.");
 			} else {
 			memberLike = 2;
@@ -55,7 +64,7 @@
 				url : 'memberLike',
 				data : {localId : localId},
 				success : function(result) {
-					memberLike = result;
+					console.log(result);
 				}
 			})
 		}

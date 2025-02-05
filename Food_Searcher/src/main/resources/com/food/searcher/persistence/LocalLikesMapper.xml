@@ -21,8 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, #{memberLike})
 	</insert>
 	
-	<select id="memberLikeByMemberId" resultType="Integer">
-		SELECT COALESCE(MEMBER_LIKE, 0)
+	<select id="memberLikeByMemberId" resultType="String">
+		SELECT MEMBER_LIKE
 		FROM LOCAL_LIKES
 		WHERE LOCAL_ID = #{localId}
 		AND MEMBER_ID = #{memberId}

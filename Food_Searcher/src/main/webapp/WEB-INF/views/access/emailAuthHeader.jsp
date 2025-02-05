@@ -170,9 +170,16 @@ body {
 				    }
 				  });
 			} else {
-				emailForm.submit();				
+				emailForm.submit();
 			}
 		}
+		
+		$('input').on('keypress', function(event) {
+		    if (event.key === 'Enter') {
+		        event.preventDefault();
+		    }
+		});
+		
 	</script>
 
 </body>

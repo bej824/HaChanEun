@@ -10,7 +10,7 @@ public interface LocalService {
 	int createSpeciality(LocalSpecialityVO localSpecialityVO);
 	List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict, String localTitle);
 	List<String> getDistrictByLocal(String localLocal);
-	Map<String, Object> getSpecialityByLocalId(int localId, String memberId);
+	LocalSpecialityVO getSpecialityByLocalId(int localId);
 	int updateSpeciality(LocalSpecialityVO localSpecialityVO);
 	int deleteSpeciality(int localId);
 

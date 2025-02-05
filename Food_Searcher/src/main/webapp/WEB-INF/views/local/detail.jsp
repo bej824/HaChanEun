@@ -61,6 +61,7 @@
 	<button id="btn_recipe" class="button">특산품을 사용한 레시피 확인하기</button> <br>
 	<button id="btn_market" class="button">특산품 맛집 확인하기</button> <br>
 	 -->
+	
 	<%@ include file ="likes.jsp" %>
 	<%@ include file ="reply.jsp" %>
 	
@@ -69,10 +70,6 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
-		
-		console.log('${localLocal}', '${localDistrict}', '${localTitle}');
-		console.log('${localSpecialityVO.localLocal }', '${localSpecialityVO.localDistrict }', '${localSpecialityVO.localTitle }');
-			
 	$('#btn_update').click(function(){
 		window.location.href='modify?localId=' + ${localSpecialityVO.localId };
 	})
@@ -89,9 +86,6 @@
 		}
 		if(localDistrict != "" && localDistrict != '${localSpecialityVO.localDistrict }'){
 			localDistrict = "";
-		}
-		if(localTitle != "" && localTitle != '${localSpecialityVO.localTitle }'){
-			localTitle = "";
 		}
 		
 		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;

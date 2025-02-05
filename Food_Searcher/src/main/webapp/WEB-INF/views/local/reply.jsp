@@ -50,14 +50,12 @@
 				let memberId = '<sec:authentication property="name" />'
 				
 				let headerReplyContent = $('#headerReplyContent').val(); // 댓글 내용
-				console.log(headerReplyContent);
 				// javascript 객체 생성
 				let obj = {
 						'localId' : localId,
 						'memberId' : memberId,
 						'headerReplyContent' : headerReplyContent
 				}
-				console.log(obj);
 				
 				// $.ajax로 송수신
 				$.ajax({
@@ -68,7 +66,6 @@
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 입력 성공');
 							document.getElementById('headerReplyContent').value = '';
@@ -81,23 +78,16 @@
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
 				const memberId = "${authentication.name}"
-				console.log("로그인한 유저 : " + memberId);
 				let localId = $('#localId').val();
 				let url = 'replyAll/' + localId;
 				
-				console.log("localID : " + localId);
-				console.log("address : " + url);
 				$.getJSON(
 					url, 		
 					function(data) {
-						console.log("댓글 목록 : ", data);
 						
 						var list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
 						
 						$(data).each(function(){
-							console.log("댓글 데이터: ", this);
-							console.log(this.localId);
-							console.log(this.replyContent);
 							
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
@@ -147,8 +137,6 @@
 				var replyId = $(this).closest('.reply_item').find('#replyId').val();   // 댓글 Id 가져오기
 				var replyContent = $(this).closest('.reply_item').find("#replyContent").val(); // 원본 댓글 내용 가져오기
 				
-				console.log("replyId : " + replyId, "replyContent : " + replyContent);
-				
 				 $(".modal_repCon").val(replyContent);
 				 $("#localReplyId").val(replyId);
 				
@@ -156,7 +144,6 @@
 				 
 				// 수정 버튼을 클릭하면 선택된 댓글 수정
 				$(".modal_modify_btn").on("click", function(){
-					console.log(this);
 					
 					const token = $("meta[name='_csrf']").attr("content");
 					const header = $("meta[name='_csrf_header']").attr("content");
@@ -165,8 +152,6 @@
 					// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 					const replyId = $("#localReplyId").val();
 					const replyContent = $(".modal_repCon").val();
-					
-					console.log("선택된 replyId : " + replyId, ", 수정된 replyContent : " + replyContent);
 					
 					// ajax 요청
 					$.ajax({
@@ -180,7 +165,6 @@
 							xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
 				            },
 						success : function(result) {
-							console.log(result);
 							if(result == 1) {
 								alert('댓글 수정 성공!');
 								getAllReply();
@@ -194,7 +178,6 @@
 				
 				let replyId = $(this).prevAll('#replyId').val();
 				let localId = $('#localId').val();
-				console.log("선택된 댓글 번호 : " + replyId);
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
@@ -204,7 +187,6 @@
 					},
 					data : replyId, 
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 삭제 성공!');
 							getAllReply();
@@ -219,9 +201,6 @@
 				
 				let url = 'commentAll/' + replyId;
 				
-				console.log("replyId : " + replyId);
-				console.log("address : " + url);
-				
 				if(commentDiv.html() == ''){
 				// ajax 요청
 				$.ajax({
@@ -232,14 +211,10 @@
 					},
 					data : replyId,
 					success : function(result) {
-						console.log(result);
 						var comment = '';
 						if(result) {
 							comment += '<br> <br>'
 							$(result).each(function(){
-								console.log("댓글 데이터: ", this);
-								console.log(this.replyId);
-								console.log(this.commentContent);
 								
 								// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 								let commentDateCreated = new Date(this.commentDateCreated);
@@ -291,16 +266,11 @@
 			
 		$('#replies').on('click', '.btn_commentAdd', function() {
         // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
-        console.log(this);
         
         let localId = $('#localId').val();
         let memberId = '<sec:authentication property="name" />';
         let replyId = $(this).val();  // 댓글 ID
         let commentContent = $(this).prevAll('#commentContentAdd').val();
-
-        console.log("replyId: " + replyId);
-        console.log("memberId: " + memberId);
-        console.log("commentContent: " + commentContent);
 
         // 빈 댓글 내용일 경우
         if (!commentContent.trim()) {
@@ -312,7 +282,6 @@
 						'memberId' : memberId,
 						'commentContent' : commentContent
 				}
-				console.log(obj);
 				
 				// $.ajax로 송수신
 				$.ajax({
@@ -323,7 +292,6 @@
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 입력 성공');
 							document.getElementById('commentContent').value = '';
@@ -341,8 +309,6 @@
 				var commentId =  $(this).closest('.comment_item').find("#commentId").val(); // 원본 댓글 내용 가져오기
 				var commentContent =  $(this).closest('.comment_item').find("#commentContent").val(); // 원본 댓글 내용 가져오기
 				
-				console.log("commentId : " + commentId, "commentContent : " + commentContent);
-				
 				 $("#modal_comCon").val(commentContent);
 				 $("#localCommentId").val(commentId);
 				 
@@ -351,7 +317,6 @@
 				
 				// 대댓글 수정 버튼 클릭 시
 				$(".comment_modify_btn").click(function(){
-				console.log(this);
 				
 				const token = $("meta[name='_csrf']").attr("content");
 				const header = $("meta[name='_csrf_header']").attr("content");
@@ -360,8 +325,6 @@
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				let commentId = $('#localCommentId').val();
 				let commentContent = $('#modal_comCon').val();
-				
-				console.log("수정된 commentId : " + commentId, "수정된 commentContent : " + commentContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -375,7 +338,6 @@
 						xhr.setRequestHeader(header, token);  // CSRF 토큰을 헤더에 설정
 			            },
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('대댓글 수정 성공!');
 							getAllReply();
@@ -387,11 +349,9 @@
 			
 			
 			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
-				console.log(this);
 				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
-				console.log("선택된 댓글 번호 : " + commentId);
 				
 				// ajax 요청
 				$.ajax({
@@ -402,7 +362,6 @@
 					},
 					data : commentId,
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('대댓글 삭제 성공!');
 							getAllReply();
@@ -417,7 +376,6 @@
 	    function getText(clickedElement) {
 	      // 클릭한 span의 텍스트를 가져옵니다.
 	      let memberId = clickedElement.textContent;
-	      console.log(memberId);
 	      
 	      $('#commentContentAdd').val(memberId +" → ");
 	    }

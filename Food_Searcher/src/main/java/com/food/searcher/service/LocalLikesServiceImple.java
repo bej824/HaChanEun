@@ -11,6 +11,7 @@ import com.food.searcher.domain.LocalLikesVO;
 import com.food.searcher.persistence.LocalLikesMapper;
 
 import lombok.extern.log4j.Log4j;
+import oracle.jdbc.driver.parser.Parseable;
 
 @Service
 @Log4j
@@ -29,8 +30,16 @@ public class LocalLikesServiceImple implements LocalLikesService {
 	@Override
 	public int memberLikeByMemberId(int localId, String memberId) {
 		log.info("memberLikeByMemberId()");
+		String result = localLikesMapper.memberLikeByMemberId(localId, memberId);
 		
-		return localLikesMapper.memberLikeByMemberId(localId, memberId);
+		int intResult;
+		if(result == "") {
+			intResult = 0;
+		} else {
+			intResult = Integer.valueOf(result);
+		}
+		
+		return intResult;
 	}
 	
 	@Override
