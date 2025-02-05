@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertLocalLikes">
 	INSERT INTO LOCAL_LIKES
     (LIKES_ID, LOCAL_ID, MEMBER_ID, MEMBER_LIKE)
-	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, 0)
+	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, #{memberLike})
 	</insert>
 	
 	<select id="memberLikeByMemberId" resultType="Integer">
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectLikesBylocalId" resultType="Map">
    	 	SELECT 
         COUNT(CASE WHEN MEMBER_LIKE = 1 THEN 1 END) AS LIKECOUNT,
-        COUNT(CASE WHEN MEMBER_LIKE = 2 THEN 1 END) AS DISLIKECOUNT
+        COUNT(CASE WHEN MEMBER_LIKE = 2 THEN 1 END) AS DISLIKECOUNT,
     	FROM LOCAL_LIKES
     	WHERE LOCAL_ID = #{localId}
 	</select>

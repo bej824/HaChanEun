@@ -7,7 +7,7 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Detail.css">
-		<link rel="stylesheet"
+<link rel="stylesheet"
 	href="../resources/css/Base.css">
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
@@ -43,25 +43,25 @@
 		<p>특산품 : ${localSpecialityVO.localTitle }</p>
 	</div>
 	<div>
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <textarea rows="20" cols="120" name="localContent">${localSpecialityVO.localContent }</textarea>
-    </sec:authorize>
-    <sec:authorize access="!hasRole('ROLE_ADMIN')">
         <textarea rows="20" cols="120" readonly>${localSpecialityVO.localContent }</textarea>
-    </sec:authorize>
 	</div>
 	<!-- CSRF 토큰 -->
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<button id="btn_index" class="button">글 목록</button> <br>
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<button id="btn_update" class="button">글 수정</button> <br>
-	<button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
-	</sec:authorize>
 	
-	<button class="button">레시피 확인하기</button> <br>
-	<button class="button">맛집 확인하기</button> <br>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<div>
+	<button id="btn_update" class="button">글 수정</button> <button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
+	</div>
+	</sec:authorize>
+	<br>
+	<!-- 
+	<button id="btn_recipe" class="button">특산품을 사용한 레시피 확인하기</button> <br>
+	<button id="btn_market" class="button">특산품 맛집 확인하기</button> <br>
+	 -->
+	<%@ include file ="likes.jsp" %>
 	<%@ include file ="reply.jsp" %>
 	
 	</div>
@@ -74,12 +74,7 @@
 		console.log('${localSpecialityVO.localLocal }', '${localSpecialityVO.localDistrict }', '${localSpecialityVO.localTitle }');
 			
 	$('#btn_update').click(function(){
-		let result = confirm("수정하시겠습니까?");
-		if (result) {
-		document.getElementById("updateForm").submit();
-		} else {
-			alert("수정이 취소되었습니다.");
-		}
+		window.location.href='modify?localId=' + ${localSpecialityVO.localId };
 	})
 	
 		
@@ -100,6 +95,14 @@
 		}
 		
 		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;
+	})
+	
+	$('#btn_recipe').click(function(){
+		
+	})
+	
+	$('#btn_market').click(function(){
+		
 	})
 	
 	})

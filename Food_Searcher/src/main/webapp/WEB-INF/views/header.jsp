@@ -227,6 +227,9 @@ li {
         	<a href="/searcher/access/registerEmail?select=register">회원가입</a>
         	</div>
     	</sec:authorize>
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<a href="/searcher/access/admin">운영자</a>
+		</sec:authorize>
     	</div>
     
 	<div id="list">

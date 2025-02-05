@@ -8,7 +8,7 @@ import com.food.searcher.domain.LocalLikesVO;
 public interface LocalLikesService {
 	
 	// 회원이 게시물에 처음 들어갈 때 db 작성
-	int createLikes(int localId, String memberId);
+	int createLikes(int localId, String memberId, int memberLike);
 	
 	// 회원이 게시물에 들어갈 때의 db 확인
 	int memberLikeByMemberId(int localId, String memberId);
