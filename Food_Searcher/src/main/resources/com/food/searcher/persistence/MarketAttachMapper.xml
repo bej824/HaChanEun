@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insert">
 		INSERT INTO MARKET_ATTACH
 		(ATTACH_ID, MARKET_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
-		VALUES (ATTACH_SEQ.NEXTVAL, ${marketId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
+		VALUES (ATTACH_SEQ.NEXTVAL, #{marketId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
 	</insert>
 
 	

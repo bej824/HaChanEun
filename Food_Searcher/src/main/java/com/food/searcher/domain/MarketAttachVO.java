@@ -15,13 +15,12 @@ import lombok.ToString;
 @ToString 
 
 public class MarketAttachVO {
-		private int attachId;
-		private int boardId;
-		private String attachPath;
-		private String attachRealName;
-		private String attachChgName;
-		private String attachExtension;
-		private Date attachDateCreated;
-		private MultipartFile file;
+	private int attachId;
+	private int marketId;
+	private String attachPath;
+	private String attachRealName;
+	private String attachChgName;
+	private String attachExtension;
+	private Date attachDateCreated;
 		
 }

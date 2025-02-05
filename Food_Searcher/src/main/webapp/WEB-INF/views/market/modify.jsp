@@ -20,15 +20,7 @@
 	<form action="modify" method="POST">
 		<!-- CSRF 토큰 -->
 	    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-	    
-	    <input type="hidden" name="pageNum" value="${pagination.pageNum}">
-		<input type="hidden" name="pageSize" value="${pagination.pageSize}">
-		<input type="hidden" name="type" value="${pagination.type}">
-		<input type="hidden" name="keyword" value="${pagination.keyword}">
 	
-	<!-- http://localhost:8080/searcher/market/modify?marketId=94 -->
-		
-
 		<sec:authorize access="!hasRole('ROLE_ADMIN')">
 			<script type="text/javascript">
 				alert('관리자만 접근이 가능합니다.');
@@ -43,6 +35,16 @@
 		</div>
 		
 		<input type="hidden" name="marketId" value="${marketVO.marketId }">
+		
+		<div>
+			<p>음식 : </p>
+			<input type="text" id="marketFood" name="marketFood" placeholder="음식 이름 입력" maxlength="100" value="${marketVO.marketFood }" required>
+		</div>
+		
+		<div>
+			<p>가게 : </p>
+			<input type="text" id="marketName" name="marketName" placeholder="가게 이름 입력" maxlength="100" value="${marketVO.marketName }" required>
+		</div>
 
 		 <div>
          <p>지역 : </p>

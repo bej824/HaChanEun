@@ -144,7 +144,7 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li class="pagination_button ${num == pageNum ? 'selected' : ''}"><a href="${num }" class="button">${num }</a></li>
+			<li class="pagination_button"><a href="${num }" class="button">${num }</a></li>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->

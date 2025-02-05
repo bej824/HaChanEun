@@ -114,16 +114,21 @@ pageEncoding="UTF-8"%>
  	   * 댓글은 로그인이 필요한 서비스입니다.
  	</sec:authorize>
 
-	<sec:authorize access="isAuthenticated()">
-  	  <input type="hidden" name="marketId" value="${marketVO.marketId }">
-	   	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-   	 <input type="text" name="marketReplyContent" id= "marketReplyContent" />
-   	 <button id="btnAdd" class="button">댓글 작성</button>
-	</sec:authorize>
 	
 	<div class="replyBox">
 		<div id="replies">
 		<div class="reply_item">
+			
+			<br>
+			<div class="replyInputBox">
+				<sec:authorize access="isAuthenticated()">
+  					<input type="hidden" name="marketId" value="${marketVO.marketId }">
+			 		<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+  	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" />
+  	 		 		<button id="btnAdd" class="button">댓글 작성</button>
+				</sec:authorize>
+			</div>
+			
 			<div class="comments"></div>
 		</div>
 		</div>
