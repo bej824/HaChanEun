@@ -34,7 +34,7 @@
 		getAllReply();
 		
 			
-		$('#btnAdd').click(function(){
+		$(document).on('click', '#btnAdd', function() {
 			var marketId = $('#marketId').val(); // 게시판 번호 데이터
 			var memberId = $('#memberId').val(); // 작성자 데이터
 			var marketReplyContent = $('#marketReplyContent').val(); // 댓글 내용 데이터
@@ -83,6 +83,12 @@
 					
 					var list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
 					
+					if (data.length === 0) {
+			            // 댓글이 하나도 없을 때
+			            list += '<div class="no_reply">작성된 댓글이 없습니다.</div>';
+			        
+					} else {
+					
 					$(data).each(function(){
 						console.log(this);
 					  
@@ -95,7 +101,6 @@
 						if(memberId != this.memberId){
 							disabled = 'disabled';
 						}
-					
 						
 						list +=
 							'<div class="reply_item" value="' + this.marketReplyId + '">'
@@ -120,7 +125,22 @@
 							list += "</div>"; // end reply_item
 					}); // end each()
 					
+					}
 					$('#replies').html(list); // 저장된 데이터를 replies div 표현
+				
+					 if ($('.replyInputBox').length === 0) {
+				            $('#replies').append(`
+				            		<br>
+				                <div class="replyInputBox">
+				                    <sec:authorize access="isAuthenticated()">
+				                        <input type="hidden" name="marketId" value="${marketVO.marketId }">
+				                        <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+				                        <input type="text" name="marketReplyContent" id="marketReplyContent" placeholder="댓글을 입력하세요" />
+				                        <button id="btnAdd" class="button">댓글 작성</button>
+				                    </sec:authorize>
+				                </div>
+				            `);
+				        }
 					
 				} // end function
 			);  // end JSON

@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="marketFood" column="MARKET_FOOD" />
 	</resultMap>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyColumn="MARKET_ID">
 	<!-- 게시글 등록-->
 		INSERT INTO MARKET VALUES
 		(MARKET_SEQ.NEXTVAL, #{marketTitle}, #{marketContent}, #{marketLocal}, 0, #{marketFood}, #{marketName})

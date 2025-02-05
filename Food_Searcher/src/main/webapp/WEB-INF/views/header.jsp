@@ -49,7 +49,6 @@ body {
 }
 
 .navbar ul {
-	list-style: none;
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -140,8 +139,6 @@ textarea[readonly] {
 	width: 150px;
 	height: 150px;
 	border-radius: 8px;
- 	margin-right: 100px;
-	margin-left: 100px;
 	border: 1px solid #ccc;
 	text-align:center;
 	line-height: 2.1;
@@ -157,7 +154,6 @@ textarea[readonly] {
  	box-sizing: border-box;
 	width: 150px;
     height: 100vh;
-    font-size: 20px;
     font-family: "나눔고딕";
     line-height: 2.1;
     border-radius: 8px;
@@ -168,15 +164,31 @@ textarea[readonly] {
 	margin-left: 100px;
 }
 
-#list a {
-	font-size:16px;
+
+#list {
+	font-size : 16px;
 	text-decoration: none;
 }
 
-#list a:hover{
+#list ul, a {
+	list-style: none;
+	margin: 5px;
+	padding:5px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+    /* user agent 초기화 */
+    
 	font-size:16px;
-	font-weight:bold;
+	text-decoration:none;
 }
+
+li {
+	text-align: none;
+	text-decoration: none;
+}
+
 
 </style>
 <meta name="_csrf" content="${_csrf.token}">
@@ -194,12 +206,16 @@ textarea[readonly] {
     
     </div>
     
-    <div id="memberForm">
+   
+    
+    <div id="boardArea">
+    
+     <div id="memberForm">
     	<sec:authorize access="isAuthenticated()">
         	<div class="myPage">
 			<p><sec:authentication property="name" />님 환영합니다.</p>
 			<br>
-        	<a href="/searcher/auth/login">로그아웃</a>
+        	<a href="/searcher/auth/login">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a>
         	</div>
         </sec:authorize>
@@ -213,12 +229,11 @@ textarea[readonly] {
     	</sec:authorize>
     	</div>
     
-    <div id="boardArea">
 	<div id="list">
         <ul>
-            <li><a href="/searcher/recipe/list"> 레시피 공유</a></li>
-            <li><a href="/searcher/market/list"> 전통시장</a></li>
-            <li><a href="/searcher/local/map"> 특산품</a></li>
+            <li><a href="/searcher/recipe/list" >레시피 공유</a></li>
+            <li><a href="/searcher/market/list" >전통시장</a></li>
+            <li><a href="/searcher/local/map" >특산품</a></li>
         </ul>
     </div>
 	</div>

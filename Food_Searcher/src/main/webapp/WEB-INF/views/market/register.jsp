@@ -74,7 +74,7 @@
 	
 	<form id="registerForm" action="register" method="POST">
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-
+	
 		<div>
 			<p>제목 :</p>
 			<input type="text" id="makretTitle" name="marketTitle" placeholder="제목 입력"
@@ -134,8 +134,6 @@
 				<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 				<p>* 최대 용량은 10MB 입니다.</p>
 				<div class="image-drop"></div>
-				<input type="file" id="attachInput" name="files" multiple="multiple"><br>
-				
 				<h2>선택한 이미지 파일 :</h2>
 				<div class="image-list"></div>
 			</div>
@@ -211,7 +209,7 @@
 		
 			// 드래그한 파일 정보를 갖고 있는 객체
 			var files = event.originalEvent.dataTransfer.files;
-			console.log(files);
+			console.log("파일 정보 : " + files);
 			
 			if(!validateImages(files)) { 
 				return;
@@ -224,7 +222,8 @@
 			for(var i = 0; i < files.length; i++) {
 				formData.append("files", files[i]); 
 			}
-					
+			
+			
 			$.ajax({
 				type : 'post', 
 				url : '../images', 
@@ -237,7 +236,7 @@
 					$(data).each(function(){
 						// this : 컬렉션의 각 인덱스 데이터를 의미
 						console.log(this);
-					  	var attachVO = this; // attachDTO 저장
+					  	var marketAttachVO = this; // attachDTO 저장
 					  	// encodeURIComponent() : 문자열에 포함된 특수 기호를 UTF-8로 
 					  	// 인코딩하여 이스케이프시퀀스로 변경하는 함수 
 						var attachPath = encodeURIComponent(this.attachPath);
@@ -247,12 +246,13 @@
 						// - name = attachDTO
 						// - data-chgName = attachtDTO.attachChgName
 						var input = $('<input>').attr('type', 'hidden')
-							.attr('name', 'attachVO')
-							.attr('data-chgName', attachVO.attachChgName);
+							.attr('name', 'marketAttachVO')
+							.attr('data-chgName', marketAttachVO.attachChgName);
 						
 						// attachDTO를 JSON 데이터로 변경
 						// - object 형태는 데이터 인식 불가능
-						input.val(JSON.stringify(attachVO));
+						input.val(JSON.stringify(marketAttachVO));
+						console.log("marketAttachVO");
 						
 			       		// div에 input 태그 추가
 			        	$('.attachVOImg-list').append(input);
@@ -261,15 +261,15 @@
 					    list += '<div class="image_item" data-chgName="'+ this.attachChgName +'">'
 					    	+ '<pre>'
 					    	+ '<input type="hidden" id="attachPath" value="'+ this.attachPath +'">'
-					    	+ '<input type="hidden" id="attachChgName" value="'+ attachVO.attachChgName +'">'
-					    	+ '<input type="hidden" id="attachExtension" value="'+ attachVO.attachExtension +'">'
+					    	+ '<input type="hidden" id="attachChgName" value="'+ marketAttachVO.attachChgName +'">'
+					    	+ '<input type="hidden" id="attachExtension" value="'+ marketAttachVO.attachExtension +'">'
 					        + '<a href="../images/display?attachPath=' + attachPath + '&attachChgName='
-					        + attachVO.attachChgName + "&attachExtension=" + attachVO.attachExtension
+					        + marketAttachVO.attachChgName + "&attachExtension=" + marketAttachVO.attachExtension
 					        + '" target="_blank">'
 					        + '<img width="100px" height="100px" src="../images/display?attachPath=' 
 					        + attachPath + '&attachChgName='
-					        + 't_' + attachVO.attachChgName 
-					        + "&attachExtension=" + attachVO.attachExtension
+					        + 't_' + marketAttachVO.attachChgName 
+					        + "&attachExtension=" + marketAttachVO.attachExtension
 					        + '" />'
 					        + '</a>'
 					        + '<button class="image_delete" >x</button>'
@@ -299,29 +299,29 @@
             
       	    // attachVOImg-list의 각 input 태그 접근
 			var i = 0;
-			$('.attachVOImg-list input[name="attachVO"]').each(function(){
+			$('.attachVOImg-list input[name="marketAttachVO"]').each(function(){
 				console.log(this);
 				// JSON attachDTO 데이터를 object 변경
-				var attachVO = JSON.parse($(this).val());
+				var marketAttachVO = JSON.parse($(this).val());
 				// attachPath input 생성
 				var inputPath = $('<input>').attr('type', 'hidden')
 						.attr('name', 'attachList[' + i + '].attachPath');
-				inputPath.val(attachVO.attachPath);
+				inputPath.val(marketAttachVO.attachPath);
 				
 				// attachRealName input 생성
 				var inputRealName = $('<input>').attr('type', 'hidden')
 						.attr('name', 'attachList[' + i + '].attachRealName');
-				inputRealName.val(attachVO.attachRealName);
+				inputRealName.val(marketAttachVO.attachRealName);
 				
 				// attachChgName input 생성
 				var inputChgName = $('<input>').attr('type', 'hidden')
 						.attr('name', 'attachList[' + i + '].attachChgName');
-				inputChgName.val(attachVO.attachChgName);
+				inputChgName.val(marketAttachVO.attachChgName);
 				
 				// attachExtension input 생성
 				var inputExtension = $('<input>').attr('type', 'hidden')
 						.attr('name', 'attachList[' + i + '].attachExtension');
-				inputExtension.val(attachVO.attachExtension);
+				inputExtension.val(marketAttachVO.attachExtension);
 				
 				// form에 태그 추가
 				registerForm.append(inputPath);

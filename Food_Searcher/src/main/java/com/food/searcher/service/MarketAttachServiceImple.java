@@ -21,6 +21,7 @@ public class MarketAttachServiceImple implements MarketAttachService {
 	@Override
 	public int createAttach(MarketAttachVO attachVO) {
 		int result = mapper.insert(attachVO);
+		log.info(attachVO + " 등록 완료 ");
 		return result;
 	}
 

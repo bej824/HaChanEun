@@ -22,7 +22,6 @@ public class MarketVO {
 	private String marketTitle;	 
 	private String marketContent; 
 	private String marketLocal;
-	private String marketDistrict;
 	private String marketReplyCount;
 	private String marketName;
 	private String marketFood;
