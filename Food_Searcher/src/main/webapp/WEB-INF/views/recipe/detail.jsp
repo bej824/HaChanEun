@@ -81,10 +81,12 @@
 		<p>작성일 : ${recipeDateCreated }</p>
 		<p>음식 : <span>${recipeVO.recipeFood }</span></p>
 	</div>
+	<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
+	<!-- 
 	<div class="content">
 		<span class="clickable-word">${recipeVO.recipeContent } </span>
 	</div>
-	 
+	  -->
 
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
@@ -162,6 +164,7 @@
 	}
 </script>
 
+<!-- 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     let spanElement = document.querySelector('.clickable-word');
@@ -213,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 </script>
-
+ -->
 
 	
 	<%@ include file="likes.jsp"%>

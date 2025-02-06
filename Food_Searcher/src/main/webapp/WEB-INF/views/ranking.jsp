@@ -68,13 +68,12 @@
         // 필터를 선택한 type 값에 따라 다르게 처리
         if (type === "나이") {
             // '나이'에 대한 추가 필터
-            var options = [0, 10, 20, 30, 40, 50];
-            var ageRanges = ["10대 이하", "10대", "20대", "30대", "40대", "50대 이상"];
+            var options = ["10대 이하", "10대", "20대", "30대", "40대", "50대 이상"];
             keyword.style.display = "inline";  // 추가 필터 보이기
-            options.forEach(function(optionText, index) {
+            options.forEach(function(optionText) {
                 var option = document.createElement("option");
                 option.value = optionText;
-                option.text = ageRanges[index];
+                option.text = optionText;
                 keyword.appendChild(option);
             });
         } else if (type === "성별") {
@@ -111,6 +110,25 @@
         	keyword.style.display = "none";  // 필터 숨기기
         }
     }
+</script>
+
+<script type="text/javascript">
+window.onload = function() {
+    // 새로고침이 감지된 경우
+    if (sessionStorage.getItem("reloaded")) {
+
+        // URL에서 검색어 제거
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // 새로고침 플래그 삭제
+        sessionStorage.removeItem("reloaded");
+    }
+};
+
+window.addEventListener("beforeunload", function() {
+    sessionStorage.setItem("reloaded", "true");
+});
+
 </script>
 </body>
 </html>
