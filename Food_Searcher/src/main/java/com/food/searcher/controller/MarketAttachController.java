@@ -55,8 +55,6 @@ public class MarketAttachController {
 		for (MultipartFile file : files) {
 				log.info(files);
 				
-				MarketAttachVO vo = new MarketAttachVO();
-
 				// UUID 생성
 				String chgName = UUID.randomUUID().toString();
 				// 파일 저장
@@ -80,7 +78,7 @@ public class MarketAttachController {
 				list.add(attachVO);
 			
 				attachService.createAttach(attachVO);
-				log.info(attachService.createAttach(attachVO) + "행 등록");
+				log.info(attachService.createAttach(attachVO) + "행 등록 (attachService)");
 				
 				log.info("attachVO : " + attachVO);
 			} // for
