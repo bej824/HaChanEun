@@ -68,7 +68,7 @@ textarea {
 		</div>
 		<div>
 			<p>내용 :</p>
-			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="300" required>
+			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="3000" required>
 재료 : 
 
 레시피 : </textarea>
@@ -80,7 +80,7 @@ textarea {
 		<h2>이미지 파일 업로드</h2>
 		<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 		<p>* 최대 용량은 10MB 입니다.</p>
-		<div class="image-drop"></div>
+		<div class="image-drop">이미지를 드래그 하세요.</div>
 		<h2>선택한 이미지 파일 :</h2>
 		<div class="image-list"></div>
 	</div>
@@ -95,7 +95,7 @@ textarea {
 	<sec:authorize access="isAuthenticated()">
 	<button id="registerBoard" class="button">등록</button>
 	</sec:authorize>
-	<button onclick="goBack()" class="button">뒤로가기</button>
+	<button onclick="window.location.href='list'" class="button">뒤로가기</button>
 	</div>
 	</div>
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
@@ -194,11 +194,6 @@ textarea {
 			});
 		});
 	</script>
-	
-	<script type="text/javascript">
-		function goBack() {
-			window.history.back();
-		}
-	</script>
+
 </body>
 </html>

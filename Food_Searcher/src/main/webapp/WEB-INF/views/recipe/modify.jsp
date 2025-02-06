@@ -69,7 +69,7 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 		<div>
 			<p>내용 : </p>
 			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" 
-maxlength="300" required>${recipeVO.recipeContent }</textarea>
+maxlength="3000" required>${recipeVO.recipeContent }</textarea>
 		</div>
 
 	<!-- 기존 첨부 파일 리스트 데이터 구성 -->
@@ -110,7 +110,7 @@ maxlength="300" required>${recipeVO.recipeContent }</textarea>
 			<h2>이미지 파일 업로드</h2>
 			<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 			<p>* 최대 용량은 10MB 입니다.</p>
-			<div class="image-drop"></div>
+			<div class="image-drop">이미지를 드래그 하세요.</div>
 			<h2>선택한 이미지 파일 :</h2>
 			<div class="image-list"></div>
 		</div>

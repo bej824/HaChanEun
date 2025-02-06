@@ -13,10 +13,17 @@ table {
 	text-align: center;
 }
 
-th, td {
+th {
 	border-style: outset;
 	border-width: 1px;
 	text-align: center;
+}
+
+td {
+	border-style: outset;
+	border-width: 1px;
+	text-align: center;
+	cursor: pointer;
 }
 
 ul {
@@ -26,19 +33,6 @@ ul {
 
 li {
 	display: inline-block;
-}
-
-.button {
-	  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
 }
 
 .button:hover {
