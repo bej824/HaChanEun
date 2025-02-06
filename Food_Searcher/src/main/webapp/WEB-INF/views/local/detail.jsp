@@ -62,7 +62,6 @@
 	<button id="btn_market" class="button">특산품 맛집 확인하기</button> <br>
 	 -->
 	
-	<%@ include file ="likes.jsp" %>
 	<%@ include file ="reply.jsp" %>
 	
 	</div>
@@ -70,12 +69,26 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+
 	$('#btn_update').click(function(){
 		window.location.href='modify?localId=' + ${localSpecialityVO.localId };
 	})
 	
 		
 	$('#btn_index').click(function(){
+		index();
+		
+	})
+	
+	$('#btn_recipe').click(function(){
+		
+	})
+	
+	$('#btn_market').click(function(){
+		
+	})
+	
+	function index() {
 		let localLocal = '${localLocal }';
 		let localDistrict = '${localDistrict }';
 		let localTitle = '${localTitle}';
@@ -89,15 +102,7 @@
 		}
 		
 		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;
-	})
-	
-	$('#btn_recipe').click(function(){
-		
-	})
-	
-	$('#btn_market').click(function(){
-		
-	})
+	}
 	
 	})
 	</script>

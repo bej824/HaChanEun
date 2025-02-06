@@ -39,6 +39,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY LOCAL_ID ASC
 	</select>
 	
+	<select id="selectListByPagination" resultMap="localResultMap">
+	<!-- 페이지네이션 -->
+	SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT FROM
+	(
+		SELECT ROW_NUMBER() OVER(ORDER BY LOCAL_ID ASC) AS RN,
+		LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT
+		FROM LOCAL_SPECIALITY
+			) 
+	WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
 	<select id="selectDistrict" resultType="String">
 		<!-- 상세 지역 조회 -->
 		SELECT DISTINCT LOCAL_DISTRICT

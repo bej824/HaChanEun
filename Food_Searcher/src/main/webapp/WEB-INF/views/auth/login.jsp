@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>로그인 페이지</title>
+<meta charset="UTF-8">
+<title>로그인 페이지</title>
 </head>
 <body>
 
@@ -13,11 +13,11 @@
     <!-- 로그인 폼 -->
     <form action="../auth/login" method="POST">
         <!-- 사용자명 입력 필드 -->
-        ID : <input type="text" name="username" ><br> <br>
+        ID : <input type="text" name="username" placeholder="아이디 입력"><br> <br>
         <!-- 비밀번호 입력 필드 -->
-        PW : <input type="password" name="password" ><br> <br>
+        PW : <input type="password" name="password" placeholder="비밀번호 입력"><br> <br>
         <!-- 로그인 버튼 -->
-        <input type="submit" class="button" value="로그인">		
+        <input type="submit" class="button" value="로그인">
 	    <!-- CSRF 토큰 -->
 	    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
     </form>

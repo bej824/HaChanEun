@@ -42,6 +42,7 @@
 				<!-- MBTI 유형 옵션 -->
 				<option value=" "></option>
 				<option value="ISFJ">ISFJ</option>
+				<option value="ISTJ">ISTJ</option>
 				<option value="INFJ">INFJ</option>
 				<option value="INTJ">INTJ</option>
 				<option value="ISTP">ISTP</option>
