@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.MarketVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.service.LocalService;
 import com.food.searcher.service.MarketService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
@@ -37,6 +39,9 @@ public class HomeController {
 	
 	@Autowired
 	private MarketService marketService;
+	
+	@Autowired
+	private LocalService localService;
 	
 	MemberVO memberVO = null;
 	
@@ -76,6 +81,11 @@ public class HomeController {
 		List<MarketVO> marketList = marketService.getPagingMarkets(pagination);
 		
 		model.addAttribute("marketList", marketList);
+		
+		List<LocalSpecialityVO> localList = localService.getPagingSpeciality(pagination);
+		log.info(localList);
+		
+		model.addAttribute("localList", localList);
 	}
 	
 }

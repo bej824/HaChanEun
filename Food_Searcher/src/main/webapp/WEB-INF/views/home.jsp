@@ -60,9 +60,7 @@ li {
 		<tr>
 				<th style="width: 60px">번호</th>
 				<th style="width: 600px">제목</th>
-				<th style="width: 100px">음식</th>
-				<th style="width: 120px">작성자</th>
-				<th style="width: 100px">작성일</th>
+				<th style="width: 120px">음식</th>
 				<th style="width: 40px">댓글수</th>
 		</tr>
 		</thead>
@@ -72,11 +70,6 @@ li {
 					<td>${RecipeVO.recipeId }</td>
 					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
-					<td>${RecipeVO.memberId }</td>
-					<!-- boardDateCreated 데이터 포멧 변경 -->
-					<fmt:formatDate value="${RecipeVO.recipeDateCreated }"
-						pattern="yyyy-MM-dd" var="recipeDateCreated" />
-					<td>${recipeDateCreated }</td>
 					<td>${RecipeVO.replyCount }</td>
 				</tr>
 			</c:forEach>
@@ -88,9 +81,9 @@ li {
 	<thead>
 		<tr>
 			<th style="width: 60px">번호</th>
-			<th style="width: 700px">제목</th>
+			<th style="width: 600px">제목</th>
 			<th style="width: 120px">지역</th>
-			<th style="width: 60px">댓글 수</th>
+			<th style="width: 40px">댓글 수</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -107,6 +100,26 @@ li {
 	<br>
 		
 	<a href="local/map" class="button">특산품</a>
+	<table border="1">
+	<thead>
+		<tr>
+			<th style="width: 60px">번호</th>
+			<th style="width: 600px">특산품</th>
+			<th style="width: 120px">지역</th>
+			<th style="width: 40px">댓글수</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="localSpecialityVO" items="${localList }">
+			<tr onclick="window.location.href='local/detail?localId=${localSpecialityVO.localId }'">
+			<td>${localSpecialityVO.localId }</td>
+			<td>${localSpecialityVO.localTitle }</td>
+			<td>${localSpecialityVO.localLocal} ${localSpecialityVO.localDistrict }</td>
+			<td>${localSpecialityVO.replyCount }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+	</table>
 	
 	</div>
 	</div>

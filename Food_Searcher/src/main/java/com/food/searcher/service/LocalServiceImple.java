@@ -13,6 +13,7 @@ import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.persistence.LocalCommentMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.LocalReplyMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -46,6 +47,13 @@ public class LocalServiceImple implements LocalService {
 		log.info("getAllSpeciality()");
 		
 		return localMapper.selectList(localLocal, localDistrict, localTitle);
+	}
+	
+	@Override
+	public List<LocalSpecialityVO> getPagingSpeciality(Pagination pagination) {
+		log.info("getPagingSpeciality()");
+		
+		return localMapper.selectListByPagination(pagination);
 	}
 	
 	@Override

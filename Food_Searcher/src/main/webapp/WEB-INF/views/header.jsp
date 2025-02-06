@@ -69,12 +69,12 @@ body {
 	color: #ff9800;
 }
 
-.login {
+{
 	color: black;
 	font-size: 14px;
 }
 
-.login a, a:hover {
+a, a:hover {
 	color: black;
 	text-decoration: none;
 }
@@ -84,7 +84,7 @@ body {
 	font-size: 14px;
 }
 
-.myPage p {
+p {
 	color: black;
 }
 
@@ -170,7 +170,7 @@ textarea[readonly] {
 	text-decoration: none;
 }
 
-#list ul, a {
+#list .headerNavi {
 	list-style: none;
 	margin: 5px;
 	padding:5px;
@@ -182,13 +182,21 @@ textarea[readonly] {
     
 	font-size:16px;
 	text-decoration:none;
+	
+	display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    text-align: center;      /* 텍스트 중앙 정렬 */
 }
 
 li {
 	text-align: none;
 	text-decoration: none;
+	
 }
 
+ul, ol {
+  list-style: none; /* 마커를 제거 */
+}
 
 </style>
 <meta name="_csrf" content="${_csrf.token}">
@@ -211,32 +219,30 @@ li {
     <div id="boardArea">
     
      <div id="memberForm">
-    	<sec:authorize access="isAuthenticated()">
-        	<div class="myPage">
+		<sec:authorize access="isAuthenticated() && hasRole('ROLE_ADMIN')">
+		<a href="/searcher/access/admin"><sec:authentication property="name" />님 환영합니다.</a>
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated() && !hasRole('ROLE_ADMIN')">
 			<p><sec:authentication property="name" />님 환영합니다.</p>
-			<br>
+		</sec:authorize>
+		<div class="myPage">
+    	<sec:authorize access="isAuthenticated()">
         	<a href="/searcher/auth/login">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a>
-        	</div>
         </sec:authorize>
         
    		<sec:authorize access="!isAuthenticated()">
-    		<div class="login">
         	<a href="/searcher/auth/login">로그인</a>
-        	<br>
         	<a href="/searcher/access/registerEmail?select=register">회원가입</a>
-        	</div>
     	</sec:authorize>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<a href="/searcher/access/admin">운영자</a>
-		</sec:authorize>
+		</div>
     	</div>
     
 	<div id="list">
         <ul>
-            <li><a href="/searcher/recipe/list" >레시피 공유</a></li>
-            <li><a href="/searcher/market/list" >전통시장</a></li>
-            <li><a href="/searcher/local/map" >특산품</a></li>
+            <li><a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a></li>
+            <li><a class="headerNavi" href="/searcher/market/list" >전통시장</a></li>
+            <li><a class="headerNavi" href="/searcher/local/map" >특산품</a></li>
         </ul>
     </div>
 	</div>

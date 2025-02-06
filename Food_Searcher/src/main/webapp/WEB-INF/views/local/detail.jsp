@@ -62,7 +62,6 @@
 	<button id="btn_market" class="button">특산품 맛집 확인하기</button> <br>
 	 -->
 	
-	<%@ include file ="likes.jsp" %>
 	<%@ include file ="reply.jsp" %>
 	
 	</div>
@@ -70,6 +69,7 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+
 	$('#btn_update').click(function(){
 		window.location.href='modify?localId=' + ${localSpecialityVO.localId };
 	})

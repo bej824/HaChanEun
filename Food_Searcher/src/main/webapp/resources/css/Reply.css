@@ -23,7 +23,19 @@
       border-width: thin;
 }
 
-#replyContent{
+.replyContentAdd {
+	font-size:16px;
+	font-family:'맑은 고딕', verdana;
+	padding:10px;
+	width:500px;
+	height:150px;
+	position: center;
+	box-sizing: border-box;
+	resize:none;
+	margin-left:20px;
+}
+
+#replyContent {
 	/* 댓글, 대댓글 내용을 보여주는 곳 */
 	max-width: 400px;
 	max-height: 100px;
@@ -63,6 +75,7 @@
 .reply {
 	width: 100px;
 	height: 50px;
+	height: auto;
 }
 
 .replyMemberId {

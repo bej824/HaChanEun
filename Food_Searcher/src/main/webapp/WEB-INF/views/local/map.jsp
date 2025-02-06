@@ -76,23 +76,13 @@ li {
     display: inline-block;
 }
 
-a:link, a:visited, a:hover, a:active {
-    color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
-    text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
-    transform: none !important; 
-    position: static !important;
-    margin: 0 !important;
-    top: auto !important;
-    left: auto !important;
-}
-
 </style>
 <title>지역 특산품 안내</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area">
-	<h1><a href='map?localLocal=&localDistrict=&localTitle='>지역 특산품 안내</a></h1>
+	<h1>지역 특산품 안내</h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal">
@@ -104,7 +94,7 @@ a:link, a:visited, a:hover, a:active {
 	</select>
 	
 	&nbsp;&nbsp;&nbsp;
-	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }">
+	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }" placeholder="검색어 입력">
 	&nbsp;&nbsp;
 	<button id="titleSearch" class="button">검색</button>
 	<button id="searchClear" class="button">초기화</button>
@@ -115,11 +105,10 @@ a:link, a:visited, a:hover, a:active {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 100px">번호</th>
-				<th style="width: 100px">지역</th>
-				<th style="width: 100px">상세</th>
-				<th style="width: 150px">특산품</th>
-				<th style="width: 100px">댓글수</th>
+			<th style="width: 60px">번호</th>
+			<th style="width: 300px">특산품</th>
+			<th style="width: 120px">지역</th>
+			<th style="width: 40px">댓글수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -216,9 +205,8 @@ a:link, a:visited, a:hover, a:active {
 			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect + 
 			                    '&localTitle=' + localTitle + '\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
-			                    + '<td>' + LocalSpecialityVO.localLocal + '</td>'
-			                    + '<td>' + LocalSpecialityVO.localDistrict + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localTitle + '</td>'
+			                    + '<td>' + LocalSpecialityVO.localLocal + " " + LocalSpecialityVO.localDistrict + '</td>'
 			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
 			                    + '</tr>';
 			                    
@@ -315,9 +303,8 @@ a:link, a:visited, a:hover, a:active {
 				                '&localLocal=' + localLocal + '&localDistrict=' + localDistrict + 
 				                '&localTitle=' + localTitle + '\'">'
 				                + '<td>' + result.localId + '</td>'
-				                + '<td>' + result.localLocal + '</td>'
-				                + '<td>' + result.localDistrict + '</td>'
 				                + '<td>' + result.localTitle + '</td>'
+				                + '<td>' + result.localLocal + " " + result.localDistrict + '</td>'
 				                + '<td>' + result.replyCount + '</td>'
 				                + '</tr>';
 

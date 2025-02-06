@@ -7,8 +7,8 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Reply.css">
-<style>
-</style>
+<link rel="stylesheet"
+	href="../resources/css/Base.css">
 
 <meta charset="UTF-8">
 <title>댓글 헤더</title>
@@ -23,7 +23,7 @@
 				<sec:authorize access="isAuthenticated()">
 				<sec:authentication property="name" /><input type="hidden"
 					id="memberId" value=<sec:authentication property="name" />>
-				<input type="text" id="headerReplyContent">
+				<input type="text" id="headerReplyContent" class="replyContentAdd">
 				<div class="timeButton">
 				<button id="btnAdd" class="button">작성</button>
 				</div>
@@ -240,8 +240,8 @@
 									+ '<input type="hidden" id="commentId" value="'+ this.commentId +'">'
 									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp'
-									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
-									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
+									+ '<button class="btn_commentUpdate" '+ disabled + '>수정</button>'
+									+ '<button class="btn_commentDelete" '+ disabled +' >삭제</button>'
 									+ '<br>' + '</div>'
 									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
 									+ '<br>'

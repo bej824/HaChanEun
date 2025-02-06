@@ -124,7 +124,7 @@ pageEncoding="UTF-8"%>
 				<sec:authorize access="isAuthenticated()">
   					<input type="hidden" name="marketId" value="${marketVO.marketId }">
 			 		<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-  	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" />
+  	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" class="replyContent" />
   	 		 		<button id="btnAdd" class="button">댓글 작성</button>
 				</sec:authorize>
 			</div>

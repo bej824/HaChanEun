@@ -7,7 +7,7 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Reply.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="../resources/css/Base.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
