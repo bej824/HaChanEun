@@ -42,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/access/admin").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/recipe/register").access("hasRole('ROLE_MEMBER')")
 				.antMatchers("/recipe/register").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/local/register").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/local/modify").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/recipe/modify").access("hasRole('ROLE_MEMBER')");
 
 		// 접근 제한 경로 설정

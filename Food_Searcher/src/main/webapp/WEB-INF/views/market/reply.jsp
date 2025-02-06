@@ -7,13 +7,37 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Reply.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="../resources/css/Base.css">
+	
+<style>
+#btn_commentAdd {
+	background-color: #04AA6D;
+	color:white;
+   font-size:14px;
+   padding:5px 10px;
+   margin:10px 0;
+   border:1px solid #ccc;
+   
+}
+
+.replyInputBox {
+	max-width: 400px;
+	max-height: 100px;
+	font-size: 16px;
+	border-radius: 5px;
+	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
+	outline: none;
+	box-sizing: border-box; /* padding 포함 */
+	text-align: left, top; /* 왼쪽 정렬 */
+}
+
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
-<title>Insert title here</title>
+<title>댓글</title>
 </head>
 <body>
 <form>
@@ -34,10 +58,10 @@
 		getAllReply();
 		
 			
-		$(document).on('click', '#btnAdd', function() {
+		$(document).on('click', '.btnAdd', function() {
 			var marketId = $('#marketId').val(); // 게시판 번호 데이터
 			var memberId = $('#memberId').val(); // 작성자 데이터
-			var marketReplyContent = $('#marketReplyContent').val(); // 댓글 내용 데이터
+			var marketReplyContent = $(this).closest('.replyInputBox').find('.marketReplyContent').val();
 			
 			var obj = {
 					'marketId' : marketId,
@@ -63,7 +87,7 @@
 					if(result == 1) {
 						alert('댓글 입력 성공');
 						getAllReply();
-						$("#marketReplyContent").val("");
+						$(".marketReplyContent").val("");
 					}
 				}
 			}); // end ajax
@@ -135,8 +159,8 @@
 				                    <sec:authorize access="isAuthenticated()">
 				                        <input type="hidden" name="marketId" value="${marketVO.marketId }">
 				                        <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-				                        <input type="text" name="marketReplyContent" id="marketReplyContent" placeholder="댓글을 입력하세요" />
-				                        <button id="btnAdd" class="button">댓글 작성</button>
+				                        <input type="text" name="marketReplyContent" class="marketReplyContent" placeholder="댓글을 입력하세요" />
+				                        <button class="btnAdd">댓글 작성</button>
 				                    </sec:authorize>
 				                </div>
 				            `);
@@ -198,7 +222,7 @@
 					
 					<sec:authorize access="isAuthenticated()">
 					 comment += '<textarea id="addCommentContent" ></textarea>' + '<br>'
-				    		+ '<button id="btn_commentAdd" class="button" value="' + marketReplyId + '"> 답글 작성</button>';
+				    		+ '<button id="btn_commentAdd" value="' + marketReplyId + '">작성</button>';
 				    </sec:authorize>
 					// 대댓글창 맨 아래에 있는 내용 입력 창
 					
@@ -216,11 +240,10 @@
 		// 수정 버튼 클릭 시 모달창 띄우기
 		$(document).on("click", ".btn_update", function(){
 			$(".replyModal").attr("style", "display:block;");
-			
 			var replyId = $(this).closest('.reply_item').find('#marketReplyId').val();   // 댓글 Id 가져오기
-			var replyContent = $(this).parent().parent().children(".marketReplyContent").text(); // 원본 댓글 내용 가져오기
+			var replyContent = $(this).closest('.reply_item').find(".marketReplyContent").text(); // 원본 댓글 내용 가져오기
 			
-			console.log("replyId : " + replyId, "replyContent : " + replyContent);
+			console.log("replyId : " + replyId, ", replyContent : " + replyContent);
 			
 			 $("#modal_repCon").val(replyContent);
 			 $("#modalReplyId").val(replyId);
@@ -433,11 +456,6 @@ function getText(clickedElement) {
   $('#addCommentContent').val(memberId +" → ");
 } // end getText
 
-
-$(".modal_modify_btn").on("click", function(){
-	console.log("modified");
-	modified.innerHTML = '(수정됨)';
-});
 	</script>
 
 <!-- 수정 모달 -->

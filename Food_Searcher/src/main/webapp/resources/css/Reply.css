@@ -23,7 +23,19 @@
       border-width: thin;
 }
 
-#replyContent{
+.replyContentAdd {
+	font-size:16px;
+	font-family:'맑은 고딕', verdana;
+	padding:10px;
+	width:500px;
+	height:150px;
+	position: center;
+	box-sizing: border-box;
+	resize:none;
+	margin-left:20px;
+}
+
+#replyContent {
 	/* 댓글, 대댓글 내용을 보여주는 곳 */
 	max-width: 400px;
 	max-height: 100px;
@@ -63,17 +75,13 @@
 .reply {
 	width: 100px;
 	height: 50px;
+	height: auto;
 }
 
 .replyMemberId {
 	font-size: 14px;
 	color: #505050;
 }
-
-.timeButton {
-	text-align: right;
-}
-
 
 #addCommentContent, #commentContentAdd {
 	/* 대댓글 입력 칸 */
@@ -95,6 +103,8 @@ button:hover {
 
 .button, .btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add, .btn_commentAdd, #button,
 .btn_commentupdate, .btn_commentdelete {
+	background-color: #04AA6D;
+	color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
@@ -102,14 +112,17 @@ button:hover {
 }
 
 .btn_commentList{
+   background-color: #04AA6D;
+   color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
-   background:#fff;
    border:1px solid #ccc; 
 }
 
 .btn_updateComment, .btn_deleteComment {
+	background-color: #04AA6D;
+	color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
@@ -121,6 +134,7 @@ button:hover {
 }
 
 .btn_comment  {
+	background-color: #04AA6D;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;

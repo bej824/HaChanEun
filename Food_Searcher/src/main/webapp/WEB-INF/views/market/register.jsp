@@ -32,7 +32,7 @@
     padding: 5px; /* 안쪽 여백 */
     margin-bottom: 20px; /* 하단 여백 */
     height: 120px; /* 높이 */
-    width: 350px; /* 너비 */
+    width: 500px; /* 너비 */
 }
 
 /* 업로드된 이미지에 대한 스타일 */
@@ -226,7 +226,7 @@
 			
 			$.ajax({
 				type : 'post', 
-				url : '../images', 
+				url : '../images/uploadImg', 
 				data : formData,
 				processData : false,
 				contentType : false,
