@@ -13,6 +13,24 @@ pageEncoding="UTF-8"%>
 	<link rel="stylesheet"
 	href="../resources/css/Base.css">
 <style>
+
+.replyInputBox {
+	max-width: 400px;
+	max-height: 100px;
+	font-size: 16px;
+	border-radius: 5px;
+	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
+	outline: none;
+	box-sizing: border-box; /* padding 포함 */
+	text-align: left, top; /* 왼쪽 정렬 */
+}
+
+textarea {
+  color: inherit; /* 1 */
+  font: inherit; /* 2 */
+  margin: 0; /* 3 */
+}
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -124,8 +142,13 @@ pageEncoding="UTF-8"%>
 				<sec:authorize access="isAuthenticated()">
   					<input type="hidden" name="marketId" value="${marketVO.marketId }">
 			 		<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+<<<<<<< HEAD
   	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" class="replyContent" />
   	 		 		<button id="btnAdd" class="button">댓글 작성</button>
+=======
+  	 				<input type="text" name="marketReplyContent" class="marketReplyContent" />
+  	 		 		<button class="btnAdd" class="button">댓글 작성</button>
+>>>>>>> 2fd39888a3c90343d0a35e746d314e7d76cd6bb4
 				</sec:authorize>
 			</div>
 			

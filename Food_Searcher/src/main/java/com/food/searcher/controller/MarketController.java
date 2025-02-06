@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.MarketVO;
@@ -30,8 +30,14 @@ public class MarketController {
 	private MarketService marketService;
 	
 	@GetMapping("/list")
-	public String list(Model model, Pagination pagination) {
+	public String list(Model model, Pagination pagination, @RequestParam(required = false) String type,
+			@RequestParam(required = false) String keyword, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Integer marketId) {
 		log.info("list");
+		log.info("marketId = " + marketId);
+		log.info("pageNum = " + pageNum);
+		log.info("keyword = " + keyword);
+		log.info("type = " + type);
+		
 		log.info(pagination);
 		List<MarketVO> marketList = marketService.getPagingMarkets(pagination);
 		if(!marketList.isEmpty()) {
@@ -59,7 +65,7 @@ public class MarketController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
-	public String marketPOST (@RequestBody MarketVO marketVO, RedirectAttributes reAttr) {
+	public String marketPOST (MarketVO marketVO, RedirectAttributes reAttr) {
 		log.info("registerPOST()");
 		log.info("marketVO = " + marketVO.toString());
 		log.info("reAttr :  " + reAttr);
