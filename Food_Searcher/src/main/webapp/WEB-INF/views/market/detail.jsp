@@ -142,13 +142,8 @@ textarea {
 				<sec:authorize access="isAuthenticated()">
   					<input type="hidden" name="marketId" value="${marketVO.marketId }">
 			 		<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-<<<<<<< HEAD
-  	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" class="replyContent" />
+  	 				<input type="text" name="marketReplyContent" id= "marketReplyContent" class="replyContentAdd">
   	 		 		<button id="btnAdd" class="button">댓글 작성</button>
-=======
-  	 				<input type="text" name="marketReplyContent" class="marketReplyContent" />
-  	 		 		<button class="btnAdd" class="button">댓글 작성</button>
->>>>>>> 2fd39888a3c90343d0a35e746d314e7d76cd6bb4
 				</sec:authorize>
 			</div>
 			

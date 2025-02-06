@@ -76,6 +76,19 @@
 	
 		
 	$('#btn_index').click(function(){
+		index();
+		
+	})
+	
+	$('#btn_recipe').click(function(){
+		
+	})
+	
+	$('#btn_market').click(function(){
+		
+	})
+	
+	function index() {
 		let localLocal = '${localLocal }';
 		let localDistrict = '${localDistrict }';
 		let localTitle = '${localTitle}';
@@ -89,15 +102,7 @@
 		}
 		
 		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;
-	})
-	
-	$('#btn_recipe').click(function(){
-		
-	})
-	
-	$('#btn_market').click(function(){
-		
-	})
+	}
 	
 	})
 	</script>

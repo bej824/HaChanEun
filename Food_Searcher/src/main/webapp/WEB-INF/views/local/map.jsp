@@ -326,15 +326,15 @@ li {
 	            localDistrict_selectOption.append('<option value="">전체</option>');
 	            
 	            if(localLocal != "") {
-	            	
 					specialityList = localSpecialityList.filter(function(result) {
 					    return result.localLocal.includes(localLocal);
 					});
 					specialityList.forEach(function(result) {
-					
-					if(localDistrict == "" && !localDistrictList.includes(result.localDistrict)){
+					if(localDistrict == "" || localDistrict == null) {
+					if(!localDistrictList.includes(result.localDistrict)){
 						localDistrictList.push(result.localDistrict);		
 						localDistrict_selectOption.append('<option value="'+ result.localDistrict +'">'+ result.localDistrict +'</option>');
+					}
 					}
 				});
 	            } // end if(localLocal != "")

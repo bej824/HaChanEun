@@ -12,11 +12,12 @@
 	
 <style>
 #btn_commentAdd {
+	background-color: #04AA6D;
+	color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
    border:1px solid #ccc;
-   background:#fff;
    
 }
 

@@ -24,11 +24,8 @@
 				<sec:authentication property="name" /><input type="hidden"
 					id="memberId" value=<sec:authentication property="name" />>
 				<input type="text" id="headerReplyContent" class="replyContentAdd">
-				<div class="timeButton">
 				<button id="btnAdd" class="button">작성</button>
-				</div>
 				</sec:authorize>
-
 		</div>
 	</div>
 

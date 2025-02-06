@@ -22,11 +22,9 @@
 	</sec:authorize>
 
 	<sec:authorize access="isAuthenticated()">
-		<div style="text-align: left;">
-			<sec:authentication property="name" /><input type="hidden" id="memberId" value="<sec:authentication property="name" />">
-			<input type="text" id="recipeReplyContent" required>
-			<button id="btnAdd" class="wbutton">작성</button>
-		</div>
+			<sec:authentication property="name" /><input type="hidden" id="memberId" value="<sec:authentication property="name" />"> <br>
+			<input type="text" id="recipeReplyContent" class="replyContentAdd" required> <br>
+			<button id="btnAdd" class="button" style="text-align: right;">작성</button>
 	</sec:authorize>
 </div>
 
