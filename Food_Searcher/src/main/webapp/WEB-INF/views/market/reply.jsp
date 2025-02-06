@@ -21,16 +21,6 @@
    
 }
 
-.replyInputBox {
-	max-width: 400px;
-	max-height: 100px;
-	font-size: 16px;
-	border-radius: 5px;
-	margin-top: 5px; /* 댓글 입력란과 제목 간의 간격을 줄임 */
-	outline: none;
-	box-sizing: border-box; /* padding 포함 */
-	text-align: left, top; /* 왼쪽 정렬 */
-}
 
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

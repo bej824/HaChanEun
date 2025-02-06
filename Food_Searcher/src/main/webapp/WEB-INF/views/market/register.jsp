@@ -56,13 +56,6 @@
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
 
-		<sec:authorize access="hasRole('ROLE_MEMBER')">
-			<script type="text/javascript">
-				alert('관리자만 접근이 가능합니다.');
-				window.history.back();
-			</script>
-		</sec:authorize>
-		
 		<sec:authorize access="isAnonymous()">
 			<script type="text/javascript">
 				alert('로그인이 필요합니다.');
@@ -128,18 +121,6 @@
 		<!-- https://news.seoul.go.kr/economy/archives/66052 -->
 
 		<br>
-		<div>
-			<div class="image-upload">
-				<h2>이미지 파일 업로드</h2>
-				<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
-				<p>* 최대 용량은 10MB 입니다.</p>
-				<div class="image-drop"></div>
-				<h2>선택한 이미지 파일 :</h2>
-				<div class="image-list"></div>
-			</div>
-			
-			<div class="attachVOImg-list">
-			</div>
 
 			<br>
 			<p>내용 :</p>

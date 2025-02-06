@@ -100,9 +100,9 @@ li {
 
 		<tbody>
 			<c:forEach var="MarketVO" items="${marketList}">
-			<tr>
+			<tr onclick="window.location.href='detail?marketId=${MarketVO.marketId}'">
 					<td>${MarketVO.marketId }</td>
-					<td class="detail_button"><a href="${MarketVO.marketId }"><span><c:out value="${MarketVO.marketTitle }" /></span></a></td>
+					<td class="detail_button"><span><c:out value="${MarketVO.marketTitle }" /></span></td>
 					<td>${MarketVO.marketLocal }</td>
 					<td>${MarketVO.marketReplyCount	}</td>
 				</tr>

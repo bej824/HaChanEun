@@ -25,11 +25,7 @@ pageEncoding="UTF-8"%>
 	text-align: left, top; /* 왼쪽 정렬 */
 }
 
-textarea {
-  color: inherit; /* 1 */
-  font: inherit; /* 2 */
-  margin: 0; /* 3 */
-}
+
 
 </style>
 
