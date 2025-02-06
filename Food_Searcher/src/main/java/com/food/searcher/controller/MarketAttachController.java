@@ -43,15 +43,19 @@ public class MarketAttachController {
 	 @Autowired
 	 private MarketAttachService attachService;
 	    
-	 @PostMapping
+	 @PostMapping(value="/uploadImg")
 	 public ResponseEntity<List<MarketAttachVO>> createImage(@ModelAttribute MarketVO marketVO, MultipartFile[] files) {
+		 // 반환 타입이 ResponseEntity인 객체이며, Http의 Body에 추가될 데이터는 List<MarketAttachVO> 이다.
+		 
 		log.info("createImage()");
-		log.info(marketVO);
-		
 		List<MarketAttachVO> list = new ArrayList<>();
+		log.info("arraylist : " + list);
+		
 		
 		for (MultipartFile file : files) {
 				log.info(files);
+				
+				MarketAttachVO vo = new MarketAttachVO();
 
 				// UUID 생성
 				String chgName = UUID.randomUUID().toString();
@@ -79,8 +83,10 @@ public class MarketAttachController {
 				log.info(attachService.createAttach(attachVO) + "행 등록");
 				
 				log.info("attachVO : " + attachVO);
-			}
-			return new ResponseEntity<List<MarketAttachVO>>(list, HttpStatus.OK);
+			} // for
+		
+		ResponseEntity<List<MarketAttachVO>> result = new ResponseEntity<List<MarketAttachVO>>(list, HttpStatus.OK);
+		return result;
 		}
 	 
 		
