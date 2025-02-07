@@ -63,10 +63,10 @@ public class MemberServiceImple implements MemberService {
 	
 	// 회원 비밀번호 변경
 	@Override
-	public int updatePassword(String memberId, String email, String password) {
+	public int updatePassword(String memberId, String email, String password, boolean login) {
 		log.info("updatePassword()");
 		
-		return memberMapper.updatePasswordByMemberId(memberId, email, password);
+		return memberMapper.updatePasswordByMemberId(memberId, email, password, login);
 	}
 	
 	@Override

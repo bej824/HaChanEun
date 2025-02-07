@@ -88,6 +88,7 @@ li {
 		});
 		
 		$(document).ready(function(){
+		let activeFlg = false;
 			
 		$('#btn_search').click(function(){
 			let memberName = document.getElementById('memberName').value;
@@ -103,16 +104,22 @@ li {
 		});
 		
 		$('#btn_idPick').click(function(){
+		let radioButton = document.querySelector('input[name="memberRadio"]:checked');
+		let memberId = radioButton.getAttribute('dataId');
+		let memberStatus = radioButton.getAttribute('dataStatus');
+		
+			if(memberStatus == 'active') {
+				activeFlg = true;
+			} else if(memberStatus == "inactive" && activeFlg == false) {
+				activeFlg = false;
+			}
 			
-			let radioButton = document.querySelector('input[name="memberRadio"]:checked');
-			let memberId = radioButton.getAttribute('dataId');
-			let memberStatus = radioButton.getAttribute('dataStatus');
 			let email = '${email }';
 			
 			console.log(memberId);
 			console.log(memberStatus);
 			
-			if(memberStatus == "active") {
+			if(activeFlg == true) {
 	    		
 		    	let pwSearch = confirm(memberId + "계정을 선택하셨습니다. \n 패스워드찾기로 이동하시겠습니까?");
 		    	if (pwSearch) {
@@ -122,12 +129,13 @@ li {
 		    		idSearchForm.submit();
 		    	}
 		    		
-		    } else if(memberStatus == "inactive") {
-		    		
+		    } else if(activeFlg == false) {
+		    	
 		    	let result = confirm(memberId + "계정을 선택하셨습니다. \n 현재 비활성화 되어있습니다. 활성화하시겠습니까?");		    			
 		    		
 		    	if (result) {
 		    		active(memberId);
+		    		activeFlg = true;
 		    	}
 		    	
 		    }

@@ -50,7 +50,6 @@ body {
 			xhr.setRequestHeader(header, token);
 		});
 	
-		
 		// 카운트 제한 변수
 		const count = 300; // 재발송 시간
 		
@@ -67,6 +66,7 @@ body {
 		const confirmMsg = $('#confirmMsg');
 	
 		function confirm() {
+			console.log(btn_confirm.innerHTML);
 			
 			if(email.value == ""){
 				emailMsg.html('이메일을 확인하여주세요.');
@@ -116,20 +116,13 @@ body {
 			
 			function countDown(){
 				let timelimit = count; // 인증 유효시간
+				let timeoverInterval;
 				
-		        btn_auth.disabled = false;
-		        btn_auth.style.display = '';
-
-		        btn_confirm.disabled = true;
-				btn_confirm.textContent = "인증번호 재발송";
-		        
-				emailCheck.textContent = '';
-				emailCheck.style.display = '';
+				if (timeoverInterval) {
+				        clearInterval(timeoverInterval);
+				    }
 				
-				 emailMsg.html('재발송은 30초 후 가능합니다.');
-				 confirmMsg.html('인증번호가 발송되었습니다. 인증번호는 5분까지 유효합니다.');
-				
-				const timeoverInterval = setInterval(function(){
+				timeoverInterval = setInterval(function(){
 					let emailCheck = document.getElementById('emailCheck');
 					timelimit--; // 인증 유효시간
 			        countdown.textContent = timelimit; // 지울 예정
@@ -151,6 +144,19 @@ body {
 					}
 					
 				}, 1000);
+				
+		        btn_auth.disabled = false;
+		        btn_auth.style.display = '';
+
+		        btn_confirm.disabled = true;
+				btn_confirm.textContent = "인증번호 재발송";
+		        
+				emailCheck.textContent = '';
+				emailCheck.style.display = '';
+				
+				 emailMsg.html('재발송은 30초 후 가능합니다.');
+				 confirmMsg.html('인증번호가 발송되었습니다. 인증번호는 5분까지 유효합니다.');
+				
 			}
 		
 		function register(){

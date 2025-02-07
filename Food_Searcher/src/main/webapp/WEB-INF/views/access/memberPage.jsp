@@ -116,7 +116,7 @@
 		$('#btn_pwUpdate').click(function(){
 			let result = confirm("비밀번호를 수정하시겠습니까?");
 			if(result){
-			window.location.href = "pwUpdate";				
+			window.location.href = "pwUpdate";
 			}
 		});
 		

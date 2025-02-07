@@ -24,7 +24,7 @@ public interface MemberMapper {
 	String searchPw(@Param("memberId") String memberId);
 	
 	// 비밀번호 초기화
-	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password);
+	int updatePasswordByMemberId(@Param("memberId") String memberId, @Param("email") String email, @Param("password") String password, @Param("login") boolean login);
 	
 	// 회원 정보 수정
 	int updateMemberByMemberId(@Param("memberId") String memberId, @Param("memberMBTI") String memberMBTI, @Param("emailAgree") String emailAgree);
