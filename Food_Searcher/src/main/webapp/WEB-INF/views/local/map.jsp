@@ -76,39 +76,58 @@ li {
     display: inline-block;
 }
 
+a:link, a:visited, a:hover, a:active {
+    color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
+    text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
+    transform: none !important; 
+    position: static !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
+}
+
 </style>
 <title>지역 특산품 안내</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area">
-	<h1>지역 특산품 안내</h1>
+	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
 	상세 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal">
 		<option value="">전체</option>
+		<option value="경기도" <c:if test="${localLocal == '경기도'}">selected</c:if>>경기도</option>
+		<option value="강원도" <c:if test="${localLocal == '강원도'}">selected</c:if>>강원도</option>
+		<option value="충청북도" <c:if test="${localLocal == '충청북도'}">selected</c:if>>충청북도</option>
+		<option value="충청남도" <c:if test="${localLocal == '충청남도'}">selected</c:if>>충청남도</option>
+		<option value="전라북도" <c:if test="${localLocal == '전라북도'}">selected</c:if>>전라북도</option>
+		<option value="전라남도" <c:if test="${localLocal == '전라남도'}">selected</c:if>>전라남도</option>
+		<option value="경상북도" <c:if test="${localLocal == '경상북도'}">selected</c:if>>경상북도</option>
+		<option value="경상남도" <c:if test="${localLocal == '경상남도'}">selected</c:if>>경상남도</option>
+		<option value="제주도" <c:if test="${localLocal == '제주도'}">selected</c:if>>제주도</option>
 	</select>
 	&nbsp;&nbsp;
 	<select name="localDistrict" id="localDistrict">
 	<option value="">전체</option>
 	</select>
 	
+	
 	&nbsp;&nbsp;&nbsp;
 	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }" placeholder="검색어 입력">
 	&nbsp;&nbsp;
 	<button id="titleSearch" class="button">검색</button>
 	<button id="searchClear" class="button">초기화</button>
-
 	</div>
 	
 	<div class="table-container">
 	<table>
 		<thead>
 			<tr>
-			<th style="width: 60px">번호</th>
-			<th style="width: 300px">특산품</th>
-			<th style="width: 120px">지역</th>
-			<th style="width: 40px">댓글수</th>
+				<th style="width: 60px">번호</th>
+				<th style="width: 300px">특산품</th>
+				<th style="width: 120px">지역</th>
+				<th style="width: 40px">댓글수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -126,37 +145,29 @@ li {
 			let indexLocalLocal = "${localLocal }";
 			let indexLocalDistrict = "${localDistrict }";
 			let indexLocalTitle = "${localTitle }";
-			
-			
-			let localDistrict_selectOption = $('#localDistrict');
-			
 			let localLocal = $('#localLocal').val();
 			let localDistrict = $('#localDistrict').val();
-			let localTitle = $('#localTitle').val().replace(/\s+/g, '');
+			let localTitle = $('#localTitle').val();
 			
-			let tbody = $('table tbody');
-			let localSpecialityList = [];
 			
-			listUpdate();
-			
+			if(indexLocalLocal == ''){
+			listUpdate(localLocal, localDistrict, localTitle);
+			} else if(indexLocalLocal != ''){
+			listUpdate(indexLocalLocal, '', indexLocalTitle);
+			}
 			
 			// localLocal만 선택되었을 때
 			$('#localLocal').change(function(){
 				let localLocal = $(this).val();
 				let localDistrict = '';
-				let localTitle = $('#localTitle').val();
-				
-			    specialityFilter(localLocal, localDistrict, localTitle);
-				localDistrictClear(localLocal);
+			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
-			// localDistrict까지 둘 다 선택되었을 때
+			// localDistrict까지 둘 다 선별되었을 때
 			$('#localDistrict').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $(this).val();
-			    let localTitle = $('#localTitle').val();
-			    
-			    specialityFilter(localLocal, localDistrict, localTitle);
+			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
 			$('#titleSearch').click(function(){
@@ -164,7 +175,7 @@ li {
 			    let localDistrict = $('#localDistrict').val();
 				let localTitle = $('#localTitle').val().replace(/\s+/g, '');
 				
-				specialityFilter(localLocal, localDistrict, localTitle);
+				listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
 			// 검색어 초기화
@@ -172,11 +183,19 @@ li {
 				$("#localLocal").val('');
 				$('#localTitle').val('');
 				
-				specialityFilter('', '', '');
-				localDistrictClear();
+				listUpdate('', '', '');
 			});
 				
-			function listUpdate() {
+			function listUpdate(localLocal, localDistrict, localTitle) {
+			    
+			    if(!/^[가-힣]+$/.test(localLocal)) {
+			    	localLocal = "";
+			    	localDistrict = "";
+			    }
+			    
+			    if(!/^[가-힣]+$/.test(localDistrict)) {
+			    	LocalDistrict = "";
+			    }
 			    
 			    // 목록으로 되돌아온 후, 다시 가면 '전체'로 이동되어 이를 방지하기 위한 코드
 			    let localDistrictSelect = localDistrict;
@@ -188,175 +207,66 @@ li {
 			        type: 'GET',
 			        url: 'localUpdate',
 			        data: {
-			            localLocal: '',
-			            localDistrict: '',
-			            localTitle: ''
+			            localLocal: localLocal,
+			            localDistrict: localDistrict,
+			            localTitle: localTitle
 			        },
 			        success: function(result) {
+			            let tbody = $('table tbody');
 			            tbody.empty(); // 기존 테이블 내용 비우기
-			            let localLocal_selectOption = $('#localLocal');
-			            let localLocal_optionVal = "";
+			            
+			            // 중복되는 localDistrict 선별을 위한 변수
 			            let localDistrict_optionVal = "";
-			            let localList = [];
+			            let localDistrict_selectOption = $("#localDistrict");
+			            
+			            if(localDistrict == ''){
+			            
+			            localDistrict_selectOption.empty();
+			            localDistrict_selectOption.append('<option value="">전체</option>');
+			            
+			            }
 			            
 			            result.forEach(function(LocalSpecialityVO) {
-			            	localSpecialityList.push(LocalSpecialityVO);
+			            	
 			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
-			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect + 
-			                    '&localTitle=' + localTitle + '\'">'
+			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect +'\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localTitle + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localLocal + " " + LocalSpecialityVO.localDistrict + '</td>'
 			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
 			                    + '</tr>';
-			                    
-			           	if(indexLocalDistrict != '' && indexLocalDistrict == LocalSpecialityVO.localDistrict){
+			            	if(indexLocalDistrict != '' && indexLocalDistrict == LocalSpecialityVO.localDistrict){
 			            	tbody.append(row); // 새로운 데이터 행 추가
-			           	} else if(indexLocalDistrict == '') {
+			            	} else if(indexLocalDistrict == '') {
 			                tbody.append(row); // 새로운 데이터 행 추가
 			            	}
-			          	
-			           	if(!localList.includes(LocalSpecialityVO.localLocal)){
-			           		
-			           		localList.push(LocalSpecialityVO.localLocal);
-			           		localLocal_optionVal = '<option value="'+ LocalSpecialityVO.localLocal +'">'+ LocalSpecialityVO.localLocal +'</option>';
-			           		localLocal_selectOption.append(localLocal_optionVal);
-			           	}
-			           	
+			                
+			                // 지역 중복 체크 및 옵션 추가
+			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict){
+			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
+			                    let districtOption =
+			                        '<option value="' + localDistrict_optionVal + '">' + 
+			                        localDistrict_optionVal + '</option>';
+			                    localDistrict_selectOption.append(districtOption); // 새로운 지역 옵션 추가
+			                
+			                }
+			                
 			            });
 			            
-			            specialityFilter(indexLocalLocal, indexLocalDistrict, indexLocalTitle);
-						localDistrictClear(indexLocalLocal);
-			            
 			         	// 선택된 값을 세팅
-			         	if(indexLocalLocal){
-			         		localLocal_selectOption.val(indexLocalLocal);
-			         	}
-			            if(indexLocalDistrict){
+			            if (localDistrict) {
+			            	localDistrict_selectOption.val(localDistrict);
+		                } else if(indexLocalDistrict){ // indexLocalDistrict가 있다면 선택하고 공백으로 초기화
 		                	localDistrict_selectOption.val(indexLocalDistrict);
+		                	indexLocalDistrict = '';
 		                }
-			         	
 			        } // end success function
 			    }); // end ajax
 			    
 			} // end listUpdate
 			
-			function specialityFilter(localLocal, localDistrict, localTitle){
-				let localDistrictList = [];
-				let specialityList;
-				tbody.empty(); // 기존 테이블 내용 비우기
-				
-				if(localLocal == "" && localTitle == ""){
-					
-				specialityList = localSpecialityList.filter(function(result) {
-					    return result.localLocal != localLocal;
-					});
-				
-				} // if(localLocal == "" && localTitle == "")
-				
-				// localLocal 1개로 검색했을 경우
-				if(localLocal != "") {
-				console.log(localLocal, "검색");
-				specialityList = localSpecialityList.filter(function(result) {
-				    return result.localLocal.includes(localLocal);
-				});
-				
-				// localLocal, localDistrict 2개로 검색했을 경우
-				if(localDistrict != "") {
-					console.log(localLocal, localDistrict, "검색");
-					specialityList = specialityList.filter(function(result) {
-					    return result.localDistrict.includes(localDistrict);
-					});
-				
-				// localLocal, localDistrict, localTitle 3개로 검색했을 경우
-				if(localTitle != "") {
-					console.log(localLocal, localDistrict, localTitle, "검색");
-						specialityList = specialityList.filter(function(result) {
-						    return result.localTitle.includes(localTitle);
-					});
-				}
-						
-				} else {
-					// localLocal, localTitle 2개로 검색했을 경우
-					if(localTitle != "") {
-						console.log(localLocal, localTitle, "검색");
-						specialityList = specialityList.filter(function(result) {
-						    return result.localTitle.includes(localTitle);
-					});
-				}
-					
-				}
-				
-				} // end if(localLocal != "")
-				// localTitle 1개로 검색했을 경우
-				if(localLocal == "" && localDistrict == "" && localTitle != "") {
-					console.log(localTitle, "검색");
-					specialityList = localSpecialityList.filter(function(result) {
-					    return result.localTitle.includes(localTitle);
-					});
-				} // end if(localTitle != "")
-				
-				if (Array.isArray(specialityList)) {
-				specialityList.forEach(function(result) {
-					
-				    let row = '<tr onclick="window.location.href=\'detail?localId=' + result.localId +
-				                '&localLocal=' + localLocal + '&localDistrict=' + localDistrict + 
-				                '&localTitle=' + localTitle + '\'">'
-				                + '<td>' + result.localId + '</td>'
-				                + '<td>' + result.localTitle + '</td>'
-				                + '<td>' + result.localLocal + " " + result.localDistrict + '</td>'
-				                + '<td>' + result.replyCount + '</td>'
-				                + '</tr>';
-
-				        tbody.append(row); // 새로운 데이터 행 추가
-				});
-				
-				} else {
-					
-				}
-				
-			} // end function specialityFilter()
-			
-			// localDistrict 'select'를 업데이트 위한 코드.
-			function localDistrictClear(localLocal) {
-				let localDistrictList = [];
-				let specialityList;
-				
-				localDistrict_selectOption.empty();
-	            localDistrict_selectOption.append('<option value="">전체</option>');
-	            
-	            if(localLocal != "") {
-					specialityList = localSpecialityList.filter(function(result) {
-					    return result.localLocal.includes(localLocal);
-					});
-					specialityList.forEach(function(result) {
-					if(localDistrict == "" || localDistrict == null) {
-					if(!localDistrictList.includes(result.localDistrict)){
-						localDistrictList.push(result.localDistrict);		
-						localDistrict_selectOption.append('<option value="'+ result.localDistrict +'">'+ result.localDistrict +'</option>');
-					}
-					}
-				});
-	            } // end if(localLocal != "")
-			} // end function localDistrictClear()
 			
 			}) // end ready
-			
-			window.onload = function() {
-			    // 새로고침이 감지된 경우
-			    if (sessionStorage.getItem("reloaded")) {
-
-			        // URL에서 검색어 제거
-			        window.history.replaceState({}, document.title, window.location.pathname);
-
-			        // 새로고침 플래그 삭제
-			        sessionStorage.removeItem("reloaded");
-			    }
-			};
-
-			window.addEventListener("beforeunload", function() {
-			    sessionStorage.setItem("reloaded", "true");
-			});
 			
 			function insertSpeciality(){
 				console.log("insertSpeciality()");

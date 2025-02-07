@@ -65,8 +65,10 @@ public class LocalServiceImple implements LocalService {
 	@Override
 	public LocalSpecialityVO getSpecialityByLocalId(int localId) {
 		log.info("getSpecialityByLocalId()");
+				
+		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
 		
-		return localMapper.selectByLocalId(localId);
+		return localSpecialityVO;
 	}
 	
 	@Transactional

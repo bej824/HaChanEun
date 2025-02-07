@@ -195,6 +195,7 @@
 			$('#replies').on('click', '.reply_item .btn_commentList', function(){
 				let replyId = $(this).prevAll('#replyId').val();
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
+				let memberId = "<sec:authentication property="name" />";
 				
 				let url = 'commentAll/' + replyId;
 				
@@ -227,8 +228,8 @@
 								
 								var disabled = '';
 								var readonly = '';
-								
-								if('<sec:authentication property="name" />'!= this.memberId){
+
+								if(memberId != this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -237,12 +238,17 @@
 									+ '<input type="hidden" id="commentId" value="'+ this.commentId +'">'
 									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp'
-									+ '<button class="btn_commentUpdate" '+ disabled + '>수정</button>'
-									+ '<button class="btn_commentDelete" '+ disabled +' >삭제</button>'
+									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
+									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
 									+ '<br>' + '</div>'
 									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
 									+ '<br>'
 									+ '</div>'
+									
+								if('<sec:authentication property="name" />'!= this.memberId){
+									disabled = 'disabled';
+									readonly = 'readonly';
+								}
 									
 							}); // end each()
 							
@@ -300,7 +306,7 @@
 		 }); // end comment_add()
 		 
 		// 대댓글 수정 모달창 띄우기
-			$(document).on("click", ".btn_commentupdate", function(){
+			$(document).on("click", ".btn_commentUpdate", function(){
 				$(".commentModifyModal").attr("style", "display:block;");
 				
 				var commentId =  $(this).closest('.comment_item').find("#commentId").val(); // 원본 댓글 내용 가져오기
@@ -345,7 +351,7 @@
 			}); // end comment_update()
 			
 			
-			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
+			$('#replies').on('click', '.reply_item .btn_commentDelete', function(){
 				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();

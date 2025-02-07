@@ -237,15 +237,16 @@ public class MemberController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/pwUpdate")
-	public int pwUpdatePOST(@RequestParam("memberId") String memberId,
-			String email, String password, String oldPassword,
-			Principal principal, Model model) {
+	public int pwUpdatePOST(@RequestParam(value="memberId", required=false) String memberId, String email, String password, String oldPassword,
+			Principal principal, Model model, boolean login) {
 		log.info("pwUpdatePOST()");
 		int result = 0;
 		
-		
+		if(memberId == null) {
+			memberId = principal.getName();			
+		}
 		password = passwordEncoder.encode(password);
-		result = memberService.updatePassword(memberId, email, password);
+		result = memberService.updatePassword(memberId, email, password, login);
 		
 		return result;
 		

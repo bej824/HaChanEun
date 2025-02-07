@@ -14,7 +14,7 @@ public interface MemberService {
 	List<MemberVO> searchId(String memberName, String email); // id찾기
 	String searchPw(String memberId);
 	
-	int updatePassword(String memberId, String email, String password); // 비밀번호 업데이트
+	int updatePassword(String memberId, String email, String password, boolean login); // 비밀번호 업데이트
 	int updateEmail(String memberId, String email); // 이메일 업데이트
 	int updateStatus(String memberId, String memberStatus); // 회원 활성/비활성
 	int updateMember(String memberId, String memberMBTI, String emailAgree); // 회원 정보 수정
