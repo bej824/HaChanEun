@@ -32,7 +32,7 @@
 			type="radio" name="memberGender" value="female">여
 
 		<p>생일</p>
-		<input type="text" name="birthday" placeholder="생년월일을 입력해주세요."
+		<input type="text" name="birthday" placeholder="생년월일 8자리를 입력해주세요."
 		onblur="birth(this.value)" required>
 		<div id="birthMsg" class="message" style="color: red;"></div>
 		<input type="hidden" name="memberAge">

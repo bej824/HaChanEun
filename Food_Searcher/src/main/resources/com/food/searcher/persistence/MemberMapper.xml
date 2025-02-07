@@ -59,7 +59,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updatePasswordByMemberId">
 		UPDATE MEMBER SET 
 		PASSWORD = #{password}
-		WHERE MEMBER_ID = #{memberId} AND EMAIL = #{email}
+		WHERE MEMBER_ID = #{memberId}
+		<if test="login == false">
+		AND EMAIL = #{email}
+		</if>
 	</update>
 	
 	<update id="updateMemberByMemberId">

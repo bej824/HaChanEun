@@ -77,7 +77,6 @@
 		
 	$('#btn_index').click(function(){
 		index();
-		
 	})
 	
 	$('#btn_recipe').click(function(){

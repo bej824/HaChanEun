@@ -228,7 +228,7 @@
 								
 								var disabled = '';
 								var readonly = '';
-								
+
 								if(memberId != this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
@@ -244,6 +244,11 @@
 									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
 									+ '<br>'
 									+ '</div>'
+									
+								if('<sec:authentication property="name" />'!= this.memberId){
+									disabled = 'disabled';
+									readonly = 'readonly';
+								}
 									
 							}); // end each()
 							
@@ -301,7 +306,7 @@
 		 }); // end comment_add()
 		 
 		// 대댓글 수정 모달창 띄우기
-			$(document).on("click", ".btn_commentupdate", function(){
+			$(document).on("click", ".btn_commentUpdate", function(){
 				$(".commentModifyModal").attr("style", "display:block;");
 				
 				var commentId =  $(this).closest('.comment_item').find("#commentId").val(); // 원본 댓글 내용 가져오기
@@ -346,7 +351,7 @@
 			}); // end comment_update()
 			
 			
-			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
+			$('#replies').on('click', '.reply_item .btn_commentDelete', function(){
 				
 				let localId = $('#localId').val();
 				let commentId = $(this).prevAll('#commentId').val();
