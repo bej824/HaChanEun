@@ -241,7 +241,7 @@ pageEncoding="UTF-8"%>
 		            var marketFood = "${marketVO.marketFood}".trim(); // marketFood 값 가져오기
 		            var pageNum = 1; // pageNum 기본값, 변경 가능
 		            
-		            var searchUrl = "http://localhost:8080/searcher/recipe/list?recipeTitle=" + encodeURIComponent(marketFood) + "&filterBy=RECIPE_TITLE&pageNum=" + pageNum;
+		            var searchUrl = "../recipe/list?recipeTitle=" + encodeURIComponent(marketFood) + "&filterBy=RECIPE_TITLE&pageNum=" + pageNum;
 		            
 		            window.location.href = searchUrl; // 해당 URL로 이동
 		        });
