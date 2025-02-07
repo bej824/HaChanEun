@@ -72,22 +72,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</when>
 				<when test="type == '나이'.toString()">
 					<choose>
-						<when test="keyword == 0">
+						<when test="keyword == '10대 이하'">
 							AND m.MEMBER_AGE between 0 and 9
 						</when>
-						<when test="keyword == 10">
+						<when test="keyword == '10대'">
 							AND m.MEMBER_AGE between 10 and 19
 						</when>
-						<when test="keyword == 20">
+						<when test="keyword == '20대'">
 							AND m.MEMBER_AGE between 20 and 29
 						</when>
-						<when test="keyword == 30">
+						<when test="keyword == '30대'">
 							AND m.MEMBER_AGE between 30 and 39
 						</when>
-						<when test="keyword == 40">
+						<when test="keyword == '40대'">
 							AND m.MEMBER_AGE between 40 and 49
 						</when>
-						<when test="keyword == 50">
+						<when test="keyword == '50대 이상'">
 							AND m.MEMBER_AGE >= 50
 						</when>
 					</choose>

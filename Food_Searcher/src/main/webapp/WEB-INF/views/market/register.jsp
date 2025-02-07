@@ -56,13 +56,6 @@
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
 
-		<sec:authorize access="hasRole('ROLE_MEMBER')">
-			<script type="text/javascript">
-				alert('관리자만 접근이 가능합니다.');
-				window.history.back();
-			</script>
-		</sec:authorize>
-		
 		<sec:authorize access="isAnonymous()">
 			<script type="text/javascript">
 				alert('로그인이 필요합니다.');
@@ -123,23 +116,11 @@
 
 			</select>
 		</div>
-		
+</form>		
 
 		<!-- https://news.seoul.go.kr/economy/archives/66052 -->
 
 		<br>
-		<div>
-			<div class="image-upload">
-				<h2>이미지 파일 업로드</h2>
-				<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
-				<p>* 최대 용량은 10MB 입니다.</p>
-				<div class="image-drop"></div>
-				<h2>선택한 이미지 파일 :</h2>
-				<div class="image-list"></div>
-			</div>
-			
-			<div class="attachVOImg-list">
-			</div>
 
 			<br>
 			<p>내용 :</p>
@@ -147,8 +128,6 @@
 				placeholder="내용 입력" maxlength="300" required></textarea>
 			<br> <button id="registerMarket"> 등록 </button>
 		</div>
-	</form>
-	
 	<script>
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -209,11 +188,14 @@
 		
 			// 드래그한 파일 정보를 갖고 있는 객체
 			var files = event.originalEvent.dataTransfer.files;
+			var attachList = $('.image-list');
 			console.log("파일 정보 : " + files);
 			
 			if(!validateImages(files)) { 
 				return;
 			}
+			
+			attachList.empty();
 			
 			// Ajax를 이용하여 서버로 파일을 업로드
 			// multipart/form-data 타입으로 파일을 업로드하는 객체
@@ -305,22 +287,22 @@
 				var marketAttachVO = JSON.parse($(this).val());
 				// attachPath input 생성
 				var inputPath = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachPath');
+						.attr('name', 'marketAttachList[' + i + '].attachPath');
 				inputPath.val(marketAttachVO.attachPath);
 				
 				// attachRealName input 생성
 				var inputRealName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachRealName');
+						.attr('name', 'marketAttachList[' + i + '].attachRealName');
 				inputRealName.val(marketAttachVO.attachRealName);
 				
 				// attachChgName input 생성
 				var inputChgName = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachChgName');
+						.attr('name', 'marketAttachList[' + i + '].attachChgName');
 				inputChgName.val(marketAttachVO.attachChgName);
 				
 				// attachExtension input 생성
 				var inputExtension = $('<input>').attr('type', 'hidden')
-						.attr('name', 'attachList[' + i + '].attachExtension');
+						.attr('name', 'marketAttachList[' + i + '].attachExtension');
 				inputExtension.val(marketAttachVO.attachExtension);
 				
 				// form에 태그 추가
@@ -331,7 +313,7 @@
 				
 				i++;
 			});
-			
+			registerForm.submit();
 		 });
 	    
 	});

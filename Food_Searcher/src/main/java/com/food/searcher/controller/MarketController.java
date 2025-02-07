@@ -39,6 +39,7 @@ public class MarketController {
 		log.info("type = " + type);
 		
 		log.info(pagination);
+		pagination.setPageSize(10);
 		List<MarketVO> marketList = marketService.getPagingMarkets(pagination);
 		if(!marketList.isEmpty()) {
 			model.addAttribute("marketList", marketList);
@@ -57,13 +58,11 @@ public class MarketController {
 		return "/market/list";
 	} 
 	
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")
 	public void register() {
 		log.info("registerGET()");
 	}
 	
-	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
 	public String marketPOST (MarketVO marketVO, RedirectAttributes reAttr) {
 		log.info("registerPOST()");

@@ -54,6 +54,7 @@ public class RecipeController {
 		log.info("pageNum : " + pageNum);
 		pagination.setKeyword(recipeTitle);
 		pagination.setType(filterBy);		
+		pagination.setPageSize(10);
 		log.info("필터 적용 pagination : " + pagination);
 
 		PageMaker pageMaker = new PageMaker();

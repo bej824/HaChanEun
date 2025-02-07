@@ -45,12 +45,13 @@ public class MarketServiceImple implements MarketService {
 		log.info(marketResult + " 행 게시글 등록");
 		
 		List<MarketAttachVO> attachList = marketVO.getAttachList();
-		log.info(attachList);
+		log.info("이미지 파일 정보 : " + attachList);
 		
 		int insertAttachResult = 0;
 	        for (MarketAttachVO attachVO : attachList) {
 	        	// attachlist에서 객체를 차례대로 꺼내서 VO에 넣는다
 	            insertAttachResult += attachMapper.insert(attachVO);
+	            
 	        }
 		log.info(insertAttachResult + "행 파일 정보 등록");
 		
