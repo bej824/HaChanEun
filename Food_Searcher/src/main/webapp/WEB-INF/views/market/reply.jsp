@@ -166,7 +166,7 @@
 		$(document).on("click", ".btn_commentList", function(){
 			var marketReplyId = $(this).closest('.reply_item').find('#marketReplyId').val();
 			var commentDiv = $(this).closest('.reply_item').find('.comment');
-			
+			let memberId = "<sec:authentication property="name" />";
 			console.log("marketReplyId : " + marketReplyId);
 			
 		     var url = '../market/commentall/' + marketReplyId;
@@ -188,7 +188,7 @@
 						var commentDateCreated = new Date(this.commentDateCreated).toLocaleString();
 						var disabled = '';
 						
-						if('<sec:authentication property="name" />'!= this.memberId){
+						if(memberId != this.memberId){
 							disabled = 'disabled';
 						}
 				
@@ -200,8 +200,8 @@
 						+ '<input type="hidden" class="marketReplyId" value="'+ this.marketReplyId +'">'
 						+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
 						+ '<span class="date">' + commentDateCreated + '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'
-						+ '<button class="btn_commentUpdate"' + disabled + '> 수정 </button>'
-						+ '<button class="btn_commentDelete"' + disabled + '> 삭제 </button>'
+						+ '<button class="btn_commentupdate"' + disabled + '> 수정 </button>'
+						+ '<button class="btn_commentdelete"' + disabled + '> 삭제 </button>'
 						+ '</div>'
 						+ '<div id="marketCommentContent">' + this.marketCommentContent + "</div>"	
 
@@ -363,7 +363,7 @@
 	
 	
 	// 대댓글 수정 모달창 띄우기
-	$(document).on("click", ".btn_commentUpdate", function(){
+	$(document).on("click", ".btn_commentupdate", function(){
 		$(".commentModifyModal").attr("style", "display:block;");
 		
 		var commentId = $(this).closest('.comment_item').find('#marketCommentId').val(); 
@@ -407,7 +407,7 @@
 	}); // end modal_modify_btn
 		
 	// 삭제 버튼을 클릭하면 선택된 대댓글 삭제
-	$(document).on('click', '.comment_item .btn_commentDelete', function(){
+	$(document).on('click', '.comment_item .btn_commentdelete', function(){
 		console.log(this);
 		
 		var marketReplyId =  $(this).closest('.comment_item').find('.marketReplyId').val();

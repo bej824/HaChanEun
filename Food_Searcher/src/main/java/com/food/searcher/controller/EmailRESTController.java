@@ -49,6 +49,7 @@ public class EmailRESTController {
 	    sb.append("이메일 인증번호");
 	    sb.append("인증번호는 다음과 같습니다 : ");
 	    sb.append(checkNum);
+	    log.info(email + "님의 인증번호 : " + checkNum);
 
 	    // 이메일 전송
 	    try {

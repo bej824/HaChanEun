@@ -121,7 +121,7 @@ li {
 			<option value="MARKET_NAME">가게명</option>
 		</select>
 		<input type="text" name="keyword">
-		<button> 검색 </button>
+		<button class="button"> 검색 </button>
 
 	</form>
 	
@@ -144,7 +144,8 @@ li {
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
-			<li class="pagination_button"><a href="${num }" class="button">${num }</a></li>
+			<li class="pagination_button ${param.pageNum == num ? 'selected' : ''}"
+               onclick="changeColor(this, ${num}); return isNumber(${num})"><a href="${num }" class="button">${num }</a></li>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
@@ -161,10 +162,10 @@ li {
 	    	<input type="hidden" name="type" >
 			<input type="hidden" name="keyword">
 	    </form>
-	    
-		
-	    		
-	<script type="text/javascript">
+
+	</div>
+	
+		<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
 		console.log("ajaxSend");
@@ -252,8 +253,29 @@ li {
 		
 	}); // end document()
 	
-	
 	</script>
-	</div>
+	
+	<script type="text/javascript">
+		window.onload = function() {
+		    // 새로고침이 감지된 경우
+		    if (sessionStorage.getItem("reloaded")) {
+		
+		        // URL에서 검색어 제거
+		        window.history.replaceState({}, document.title, window.location.pathname);
+		
+		        // 새로고침 플래그 삭제
+		        sessionStorage.removeItem("reloaded");
+		    }
+		};
+		
+		window.addEventListener("beforeunload", function() {
+		    sessionStorage.setItem("reloaded", "true");
+		});
+		
+		function insertSpeciality(){
+			console.log("insertSpeciality()");
+			window.location.href = 'register';
+		}
+	</script>
 </body>
 </html>

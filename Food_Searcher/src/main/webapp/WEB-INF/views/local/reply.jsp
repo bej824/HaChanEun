@@ -195,6 +195,7 @@
 			$('#replies').on('click', '.reply_item .btn_commentList', function(){
 				let replyId = $(this).prevAll('#replyId').val();
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
+				let memberId = "<sec:authentication property="name" />";
 				
 				let url = 'commentAll/' + replyId;
 				
@@ -228,7 +229,7 @@
 								var disabled = '';
 								var readonly = '';
 								
-								if('<sec:authentication property="name" />'!= this.memberId){
+								if(memberId != this.memberId){
 									disabled = 'disabled';
 									readonly = 'readonly';
 								}
@@ -237,8 +238,8 @@
 									+ '<input type="hidden" id="commentId" value="'+ this.commentId +'">'
 									+ '└ ' + '<span class="memberId" style="color: blue;" onclick="getText(this)">' + this.memberId + '&nbsp' + '</span>'
 									+ '&nbsp;&nbsp;&nbsp;&nbsp;' + commentDated + '&nbsp'
-									+ '<button class="btn_commentUpdate" '+ disabled + '>수정</button>'
-									+ '<button class="btn_commentDelete" '+ disabled +' >삭제</button>'
+									+ '<button class="btn_commentupdate" '+ disabled + '>수정</button>'
+									+ '<button class="btn_commentdelete" '+ disabled +' >삭제</button>'
 									+ '<br>' + '</div>'
 									+ '<div id="commentContent" class="commentContent">' + this.commentContent + '</div>'
 									+ '<br>'
