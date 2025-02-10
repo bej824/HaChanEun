@@ -18,10 +18,9 @@
 	cursor: pointer;
 }
 
-textarea {
-	width: 700px;
-	height: 280px;
-	padding: 12px 20px;
+textarea.ingredient {
+    width: 700px;
+	height: 65px;
 	box-sizing: border-box;
 	border: 2px solid #ccc;
 	border-radius: 4px;
@@ -29,7 +28,6 @@ textarea {
 	font-size: 16px;
 	resize: none;
 }
-
 .image-drop,
 .image-list {
     text-align: center;
@@ -64,14 +62,15 @@ textarea {
 		</div>
 		<div>
 			<p>음식 :</p>
-			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력">
+			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력" maxlength="10">
 		</div>
 		<div>
-			<p>내용 :</p>
-			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="3000" required>
-재료 : 
-
-레시피 : </textarea>
+			<p>재료</p>
+			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="250" required></textarea>
+		</div>
+		<div>
+			<p>레시피 :</p>
+			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="1500" required></textarea>
 		</div>
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>

@@ -78,7 +78,7 @@ li {
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
+				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
 					<td>${RecipeVO.recipeId }</td>
 					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
@@ -94,10 +94,11 @@ li {
 	</table>
 	
 	<form id="searchForm" method="GET" action="list" class="search">
-	    <input type="text" name="recipeTitle" placeholder="검색어 입력" required>
-	    <select name="filterBy">
+	    <input type="text" name="keyword" placeholder="검색어 입력" required>
+	    <select name="type">
 	        <option value="RECIPE_TITLE">제목</option>
 	        <option value="RECIPE_FOOD">음식</option>
+	        <option value="INGREDIENT">재료</option>
 	        <option value="RECIPE_CONTENT">내용</option>
 	        <option value="MEMBER_ID">작성자</option>
 	    </select>
@@ -124,7 +125,7 @@ li {
 <!-- 이전 버튼 생성을 위한 조건문 -->
 <c:if test="${pageMaker.isPrev() }">
     <li class="pagination_button">
-        <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
+        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
     </li>
 </c:if>
 
@@ -133,7 +134,7 @@ li {
 <c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
     <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
         <li class="pagination_button">
-            <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${num}" 
+            <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" 
                class="button ${param.pageNum == num ? 'selected' : ''}"
                onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a>
         </li>
@@ -143,7 +144,7 @@ li {
 <!-- 다음 버튼 생성을 위한 조건문 -->
 <c:if test="${pageMaker.isNext() }">
     <li class="pagination_button">
-        <a href="list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
+        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
     </li>
 </c:if>
 
@@ -158,20 +159,20 @@ function changeColor(button, pageNum) {
     url.searchParams.set('pageNum', pageNum);
 
     // 'recipeTitle'과 'filterBy' 파라미터는 기존 URL에서 가져옵니다.
-    let recipeTitle = new URLSearchParams(window.location.search).get('recipeTitle');
-    let filterBy = new URLSearchParams(window.location.search).get('filterBy');
+    let keyword = new URLSearchParams(window.location.search).get('keyword');
+    let type = new URLSearchParams(window.location.search).get('type');
     
     // 'recipeTitle'과 'filterBy'가 없으면 빈 값으로 설정
-    if (recipeTitle === null) {
-        recipeTitle = '';
+    if (keyword === null) {
+    	keyword = '';
     }
-    if (filterBy === null) {
-        filterBy = '';
+    if (type === null) {
+    	type = '';
     }
 
     // 'recipeTitle'과 'filterBy'를 빈 값으로 설정
-    url.searchParams.set('recipeTitle', recipeTitle);
-    url.searchParams.set('filterBy', filterBy);
+    url.searchParams.set('keyword', keyword);
+    url.searchParams.set('type', type);
 
     // URL 업데이트
     window.history.pushState({}, '', url);  // URL을 업데이트

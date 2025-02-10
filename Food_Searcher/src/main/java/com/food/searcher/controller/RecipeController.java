@@ -3,17 +3,13 @@ package com.food.searcher.controller;
 import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.MemberVO;
@@ -46,35 +42,23 @@ public class RecipeController {
 	private RecipeLikesService likesService;
 	
 	@GetMapping("/list")
-	public void list(@RequestParam(required = false) String recipeTitle, @RequestParam(required = false) String filterBy, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Model model, Pagination pagination) {
+	public void list(Model model, Pagination pagination) {
 		log.info("list()");
 		log.info("pagination : " + pagination);
-		log.info("recipeTitle : " + recipeTitle);
-		log.info("filterBy : " + filterBy);
-		log.info("pageNum : " + pageNum);
-		pagination.setKeyword(recipeTitle);
-		pagination.setType(filterBy);		
 		pagination.setPageSize(10);
-		log.info("필터 적용 pagination : " + pagination);
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		log.info(pageMaker);
 		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
-		pageMaker.adjustPageNum();
 		log.info(pageMaker);
 		log.info(pageMaker.getEndNum());
 		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		log.info("vo list : " + recipeList);
 		log.info(recipeList.size());
-		
-        model.addAttribute("recipeTitle", recipeTitle);
-        model.addAttribute("filterBy", filterBy);
-        model.addAttribute("pageNum", pageNum);
-	
+
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
-		model.addAttribute("totalPages", pageMaker.getTotalPages());
 	}
 	
 	@GetMapping("/register")
@@ -143,7 +127,7 @@ public class RecipeController {
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
 	@PostMapping("/modify")
-	public String modifyPOST(RecipeVO recipeVO, Integer recipeId, Principal principal, HttpSession session) {
+	public String modifyPOST(RecipeVO recipeVO, Principal principal) {
 	    log.info("modifyPOST()");
 	    log.info(principal);
 	    log.info("User role: " + principal.getName());
@@ -158,7 +142,6 @@ public class RecipeController {
 	}
 
 	   // detail.jsp에서 boardId를 전송받아 게시글 데이터 삭제
-	@PreAuthorize("isAuthenticated() and (principal.username == #recipeVO.memberId)")
 	@PostMapping("/delete")
 	public String delete(RecipeVO recipeVO, Integer recipeId) {
 	    log.info("delete()");
