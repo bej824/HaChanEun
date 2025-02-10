@@ -56,8 +56,8 @@ public class MemberController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		String nowDate = now.format(formatter);
 		
-		model.addAttribute("email", email);
 		model.addAttribute("nowDate", nowDate);
+		model.addAttribute("email", email);
 	} // end registerPOST()
 	
 	// 회원가입 시 아이디 중복 체크
@@ -84,7 +84,6 @@ public class MemberController {
 	}
 	
 	// 회원가입 정보 저장
-	@Transactional
 	@ResponseBody
 	@PostMapping("/registerClear")
 	public int registerPOST(@RequestBody MemberVO memberVO) {
@@ -123,8 +122,13 @@ public class MemberController {
 		log.info("memberPageGET()");
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
-		model.addAttribute("memberVO", memberVO);
 		
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		String nowDate = now.format(formatter);
+		
+		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("nowDate", nowDate);
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정

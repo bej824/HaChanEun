@@ -50,8 +50,8 @@ body {
 			xhr.setRequestHeader(header, token);
 		});
 	
-		// 카운트 제한 변수
-		const count = 300; // 재발송 시간
+		const timelimit = 300; // 재발송 시간
+		let timeoverInterval = null;
 		
 		// 버튼 변수
 		const btn_auth = document.getElementById('btn_auth');
@@ -71,7 +71,7 @@ body {
 			if(email.value == ""){
 				emailMsg.html('이메일을 확인하여주세요.');
 			} else {
-			countDown();
+				countDown();
 			$.ajax({
 			    type: 'POST',
 			    url: '../access/emailConfirm',
@@ -115,31 +115,28 @@ body {
 			} // end emailAuth()
 			
 			function countDown(){
-				let timelimit = count; // 인증 유효시간
-				let timeoverInterval;
+				let count = timelimit; // 인증 유효시간
 				
-				if (timeoverInterval) {
-				        clearInterval(timeoverInterval);
-				    }
+				clearInterval(timeoverInterval);
 				
 				timeoverInterval = setInterval(function(){
 					let emailCheck = document.getElementById('emailCheck');
-					timelimit--; // 인증 유효시간
-			        countdown.textContent = timelimit; // 지울 예정
+					count--; // 인증 유효시간
+			        countdown.textContent = count; // 지울 예정
 					
-					if (count - timelimit == 30) {
+					if (timelimit - count == 30) {
 				          btn_confirm.disabled = false;
-				          emailMsg.html('');
+				          emailMsg.html('재발송이 가능합니다.').css('color', 'green');
 				        }
 					
-					if (timelimit <= 0){
+					if (count == 0){
 						clearInterval(timeoverInterval);
 						btn_auth.disabled = true;
-						emailMsg.html('');
+						emailMsg.html('재발송이 가능합니다.').css('color', 'green');
 						confirmMsg.html('인증시간이 지났습니다. 인증번호를 재발송해주세요.').css('color', 'red');
 					}
 					
-					if (btn_auth.onclick == register && count - timelimit >= 30){
+					if (btn_auth.onclick == register && timelimit - count >= 30){
 						clearInterval(timeoverInterval);
 					}
 					

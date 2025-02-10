@@ -11,17 +11,19 @@
 	<%@ include file ="../header.jsp" %>
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"
-			required onblur="checkId(this.value)">
+			required>
 		<div id="idMsg" class="message" style="color: red;">아이디를 입력해주세요!</div>
 		<br>
 
 		<p>비밀번호</p>
 		<input type=password name="password" id="password"
 			placeholder="비밀번호 입력" required> <br>
+		<div id="pwMsg" class="message" style="color: red;">비밀번호를 입력해주세요.</div>
 
 		<p>비밀번호 재입력</p>
 		<input type=password name="password2" id="password2"
 			placeholder="비밀번호 입력" required> <br>
+		<div id="pw2Msg" class="message" style="color: red;">비밀번호 다시 입력해주세요.</div>
 
 		<p>이름</p>
 		<input type=text name="memberName" id="memberName" placeholder="이름을 입력해주세요." required>
@@ -32,11 +34,8 @@
 			type="radio" name="memberGender" value="female">여
 
 		<p>생일</p>
-		<input type="text" name="birthday" placeholder="생년월일 8자리를 입력해주세요."
-		onblur="birth(this.value)" required>
+		<input type="text" name="memberDateOfBirth" id="memberDateOfBirth" placeholder="생년월일 8자리를 입력해주세요." required>
 		<div id="birthMsg" class="message" style="color: red;"></div>
-		<input type="hidden" name="memberAge">
-		<input type="hidden" name="memberConstellation">
 		<p>
 			MBTI <select name="memberMBTI" id="mbti">
 				<!-- MBTI 유형 옵션 -->
@@ -67,11 +66,9 @@
 		<input type="radio" name="emailAgree" value="no">아니오 <br>
 		<input type=hidden name=email value="${email}" readonly="readonly"> <br>
 
-	<button class="button" name="insert" onclick="insert()">회원가입</button>
+	<button class="button" name="insert" id="insert">회원가입</button>
 
 	<script type="text/javascript">
-	let memberAge = "";
-    let memberConstellation = "";
     
     $(document).ajaxSend(function(e, xhr, opt){
 		var token = $("meta[name='_csrf']").attr("content");
@@ -79,158 +76,142 @@
 	
 		xhr.setRequestHeader(header, token);
 	});
-	
-	function birth(birthday){
-		const birthMsg = $('#birthMsg');
-		const nowDate = "${nowDate}";
-		const nowyear = parseInt(nowDate.slice(0, 4), 10);
-		const month31 = new Set([1, 3, 5, 7, 8, 10, 12]);
-	    const month30 = new Set([4, 6, 9, 11]);
-		
-		if(!/^\d+$/.test(birthday) || birthday.length > 8 || birthday.length <= 7) {
-			birthMsg.html('생년월일을 확인해주세요.');
-			birthCheck = false;
-		} else {
-			const year = parseInt(birthday.slice(0, 4), 10);
-		   	const month = parseInt(birthday.slice(4, 6), 10);
-		    const day = parseInt(birthday.slice(6, 8), 10);
-		    const monthDay = month * 100 + day;
-		   	
-			console.log("오늘 : ", nowDate);
-		   		
-		    if(year < 1901){
-			    birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else if(nowDate - birthday < 0){
-				birthMsg.html('아직 태어나지 않은 사람의 가입은 거절됩니다.').css('color', 'red');
-				birthCheck = false;
-			} else if(month < 1 || month > 12){
-				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else if(day < 1 || day > 31){
-				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else if(month30.has(month) && day == 31){
-				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else if(year % 4 != 0 && month == 2 && day > 28){
-				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else if(year % 4 == 0 && month == 2 && day > 29){
-				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
-				birthCheck = false;
-			} else {
-				let age = parseInt(nowyear) - parseInt(year);
-				let birth = year + '.' + month + '.' + day;
-				let constellation = "";
-				birthMsg.html('지구인입니다.').css('color', 'green');
-				
-				if (120 <= monthDay && monthDay <= 218) {
-					constellation = "물병자리";
-				} else if (219 <= monthDay && monthDay <= 320) {
-					constellation = "물고기자리";
-				} else if (321 <= monthDay && monthDay <= 419) {
-					constellation = "양자리";
-				} else if (420 <= monthDay && monthDay <= 520) {
-					constellation = "황소자리";
-				} else if (521 <= monthDay && monthDay <= 621) {
-					constellation = "쌍둥이자리";
-				} else if (622 <= monthDay && monthDay <= 320) {
-					constellation = "게자리";
-				} else if (723 <= monthDay && monthDay <= 822) {
-					constellation = "사자자리";
-				} else if (823 <= monthDay && monthDay <= 922) {
-					constellation = "처녀자리";
-				} else if (923 <= monthDay && monthDay <= 1022) {
-					constellation = "천칭자리";
-				} else if (1023 <= monthDay && monthDay <= 1122) {
-					constellation = "전갈자리";
-				} else if (1123 <= monthDay && monthDay <= 1221) {
-					constellation = "궁수자리";
-				} else {
-					constellation = "염소자리";
-				}
-				
-				memberAge = age;
-				memberConstellation = constellation;
-				birthCheck = true;
-				console.log("나이 : ", age, ", 별자리 : " + constellation);
-			}
-		    
-		}
-		
-	} // end birth
+    
+    $(document).ready(function(){
+    	let idCheck = false;
+    	let pwCheck = false;
+    	let pw2Check = false;
+    	let birthCheck = false;
+    	
+    	$('#memberId').change(function(){
+    		let memberId = $(this).val();
+  			idCheck = false;
+  		  
+  		  	if (/[\W_]/.test(memberId) || memberId == '') {
+  				$('#idMsg').html('아이디는 공백이나 특수문자를 사용할 수 없습니다.').css('color', 'red');
+  				return;
+  			}
+  		  
+  		  	$.ajax({
+  		    	type: 'GET',
+  		    	url: '../access/idCheck',
+  		    	data: { memberId: memberId },
+  		    	success: function(result) {
+  		      		if (result == 0) {
+  		        	$('#idMsg').html('사용 가능한 아이디입니다.').css('color', 'green');
+  		        	idCheck = true;
+  		      	} else {
+  		        	$('#idMsg').html('사용할 수 없는 아이디입니다.').css('color', 'red');
+  		        	idCheck = false;
+  		      	}
+  		    	}
+  		  	});
+  		})
+  		
+  		$('#password').change(function(){
+  			pwCheck = false;
+  			let password = $(this).val();
+  			
+  			// 하나의 정규식을 사용하여 8자리 이상 + 영소문자 + 숫자 + 특수기호 포함 여부 체크
+  		    let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/;
 
-	function checkId(memberId) {
-		  console.log("memberId :", memberId);
-		  idCheck = false;
-		  
-		  if (/[\W_]/.test(memberId)) {
-			  $('#idMsg').html('아이디는 공백이나 특수문자를 사용할 수 없습니다.').css('color', 'red');
-				return;
-			}
-		  
-		  $.ajax({
-		    type: 'GET',
-		    url: '../access/idCheck',
-		    data: { memberId: memberId },
-		    success: function(result) {
-		      if (result == 0) {
-		        $('#idMsg').html('사용 가능한 아이디입니다.').css('color', 'green');
-		        idCheck = true;
-		      } else {
-		        $('#idMsg').html('사용할 수 없는 아이디입니다.').css('color', 'red');
-		        idCheck = false;
-		      }
-		    }
-		  });
-		}
-		
-		function insert() {
-			const token = $("meta[name='_csrf']").attr("content");
-			const header = $("meta[name='_csrf_header']").attr("content");
-			
+  		    if (!passwordRegex.test(password)) {  
+  		        $('#pwMsg').html('비밀번호는 8자리 이상, 영대소문자, 숫자, 특수기호를 모두 포함해야 합니다.').css('color', 'red');
+  		        return;
+  		    } else {
+  				$('#pwMsg').html('사용 가능한 비밀번호입니다.').css('color', 'green');
+  				pwCheck = true;
+  			}
+  		})
+  		
+  		$('#password2').change(function(){
+  			pw2Check = false;
+  			let password = $('#password').val();
+  			let password2 = $(this).val();
+  			
+  			if(pwCheck == false) {
+  				return;
+  			}
+  			else if (password !== password2) {
+  		    	$('#pw2Msg').html('비밀번호와 비밀번호 확인이 일치하지 않습니다.').css('color', 'red');
+  		    } else {
+  		    	$('#pw2Msg').html('비밀번호가 일치합니다.').css('color', 'green');
+  		    	pw2Check = true;
+  		    }
+  		})
+  		
+  		$('#memberDateOfBirth').change(function(){
+  			birthCheck = false;
+  			let memberDateOfBirth = $(this).val();
+  			const birthMsg = $('#birthMsg');
+  			const nowDate = "${nowDate}";
+  			const month31 = new Set([1, 3, 5, 7, 8, 10, 12]);
+  		    const month30 = new Set([4, 6, 9, 11]);
+  			
+  			if(!/^\d+$/.test(memberDateOfBirth) || memberDateOfBirth.length > 8 || memberDateOfBirth.length <= 7) {
+  				birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  			} else {
+  				const year = parseInt(memberDateOfBirth.slice(0, 4), 10);
+  			   	const month = parseInt(memberDateOfBirth.slice(4, 6), 10);
+  			    const day = parseInt(memberDateOfBirth.slice(6, 8), 10);
+  			   		
+  			    if(year < 1901){
+  				    birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else if(nowDate - memberDateOfBirth < 0){
+  					birthMsg.html('아직 태어나지 않은 사람의 가입은 거절됩니다.').css('color', 'red');
+  				} else if(month < 1 || month > 12){
+  					birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else if(day < 1 || day > 31){
+  					birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else if(month30.has(month) && day == 31){
+  					birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else if(year % 4 != 0 && month == 2 && day > 28){
+  					birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else if(year % 4 == 0 && month == 2 && day > 29){
+  					birthMsg.html('생년월일을 확인해주세요.').css('color', 'red');
+  				} else {
+  					birthMsg.html('지구인입니다.').css('color', 'green');
+  					birthCheck = true;
+  				}
+  			    
+  			}
+  		})
+  		
+  		$('#insert').click(function(){
 			let memberId = document.getElementById('memberId').value;
 			let password = document.getElementById('password').value;
 			let password2 = document.getElementById('password2').value;
 			let memberName = document.getElementById('memberName').value;
+			let memberDateOfBirth = document.getElementById('memberDateOfBirth').value;
 		    let memberGender = document.querySelector('input[name="memberGender"]:checked').value;
 		    let memberMBTI = document.getElementById('mbti').value;
 		    let email = '${email }';
 		    let emailAgree = document.querySelector('input[name="emailAgree"]:checked').value;
-		    
-		    console.log(memberId);
-		    console.log(password);
-		    console.log(memberName);
-		    console.log(memberGender);
-		    console.log(memberMBTI);
-		    console.log(memberAge);
-		    console.log(memberConstellation);
-		    console.log(email);
-		    console.log(emailAgree);
 
 		    if (memberId === "" || password === "" || password2 === "" || memberName === "" || 
-		    		!memberGender || memberAge === "" || memberConstellation ==="" || email === "") {
+		    		memberDateOfBirth == "" || !memberGender || email === "") {
 		      alert("모든 필드를 올바르게 입력해주세요.");
 		      return;
 		    }
-
-		    // 비밀번호와 비밀번호 재입력이 일치하는지 확인
+		    
+		 // 비밀번호와 비밀번호 재입력이 일치하는지 확인
 		    if (password !== password2) {
 		      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
 		      return;
 		    }
+		    else if (idCheck === true && pwCheck === true && pw2Check === true && birthCheck === true){
+		    	insert();
+		    }
+  			
+		function insert() {
 			
-			if (idCheck === true && birthCheck === true){
-				
 				let obj = {
 						'memberId' : memberId,
 						'password' : password,
 						'memberName' : memberName,
+						'memberDateOfBirth' : memberDateOfBirth,
 						'memberGender' : memberGender,
 						'memberMBTI' : memberMBTI,
-						'memberAge' : memberAge,
-						'memberConstellation' : memberConstellation,
 						'email' : email,
 						'emailAgree' : emailAgree
 				}
@@ -250,11 +231,11 @@
 					}
 				}
 			});
-			
-			} else {
-				return;
-			}
 		}
+  		})
+  		
+    })
+		
 		</script>
 
 </body>

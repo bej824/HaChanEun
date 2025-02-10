@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="memberId" column="MEMBER_ID" /> 
 		<result property="password" column="PASSWORD" />
 		<result property="memberName" column="MEMBER_NAME" />
+		<result property="memberDateOfBirth" column="MEMBER_DATE_OF_BIRTH" />
 		<result property="email" column="EMAIL" />
 		<result property="emailAgree" column="EMAIL_AGREE" />
 		<result property="memberAge" column="MEMBER_AGE" />
@@ -29,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
-		(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL, EMAIL_AGREE, MEMBER_AGE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_CONSTELLATION, MEMBER_STATUS)
-		VALUES (#{memberId}, #{password}, #{memberName}, #{email}, #{emailAgree}, #{memberAge}, #{memberGender}, #{memberMBTI}, #{memberConstellation}, 'active')
+		(MEMBER_ID, PASSWORD, MEMBER_NAME, MEMBER_DATE_OF_BIRTH, EMAIL, EMAIL_AGREE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_STATUS)
+		VALUES (#{memberId}, #{password}, #{memberName}, #{memberDateOfBirth}, #{email}, #{emailAgree}, #{memberGender}, #{memberMBTI}, 'active')
 
 	</insert>
 	

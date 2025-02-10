@@ -24,9 +24,12 @@
 		여성 
 		</c:if>
 		</p>
-		<p>나이 : ${memberVO.memberAge }</p>
+		
+		<p>나이 : <span id="age"></span></p>
 
-		<p>별자리 : ${memberVO.memberConstellation }</p>
+		<p>별자리 : <span id=constellation></span></p>
+		
+		<%@ include file ="ageConstellation.jsp" %>
 
 		<p>
 			MBTI : <select name="memberMBTI" id="memberMBTI">

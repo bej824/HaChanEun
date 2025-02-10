@@ -22,6 +22,7 @@ public class MemberServiceImple implements MemberService {
 	private MemberMapper memberMapper;
 	
 	// 회원가입
+	@Transactional
 	@Override
 	public int createMember(MemberVO memberVO) {
 		log.info("createMember()");
