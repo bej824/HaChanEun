@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Mapper XML 설정 태그 -->
+
+<!-- namespace : 연결할 Mapper 인터페이스 경로 및 이름 -->
+<mapper namespace="com.food.searcher.persistence.ItemMapper">
+
+	<resultMap type="com.food.searcher.domain.ItemVO"
+		id="itemResultMap">
+		
+		<id property="itemId" column="ITEM_ID" />
+		<result property="storeId" column="STORE_ID" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="itemContent" column="ITEM_CONTENT" />
+		<result property="itemTag" column="ITEM_TAG" />
+		<result property="itemAmount" column="ITEM_AMOUNT" />
+		<result property="itemDate" column="ITEM_DATE" jdbcType="DATE" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO ITEM (ITEM_ID, ITEM_NAME, 
+		ITEM_PRICE, ITEM_CONTENT, ITEM_TAG, ITEM_AMOUNT)
+		VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice}, #{itemContent}, #{itemTag}, #{itemAmount})		
+	</insert>
+	
+	<select id="selectList" resultMap="itemResultMap">
+		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
+	</select>
+	
+	<select id="selectOne" resultMap="itemResultMap">
+		SELECT * FROM ITEM WHERE ITEM_ID = #{itemId}
+	</select>
+
+	<update id="update">
+		UPDATE ITEM SET ITEM_NAME = #{itemName}, ITEM_PRICE = #{itemPrice},
+		ITEM_CONTENT = #{itemContent}, ITEM_TAG = #{itemTag}, ITEM_AMOUNT = #{itemAmount}
+		WHERE ITEM_ID = #{itemId}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM ITEM WHERE ITEM_ID = #{itemId}
+	</delete>
+	
+	<select id="selectListByPagination" resultMap="itemResultMap">
+	<!-- 페이지네이션 -->
+	SELECT * FROM
+	(
+		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
+		FROM ITEM
+	
+		<choose>
+				<when test="type == 'ITEM_NAME.toString()">
+					WHERE ITEM_NAME LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'ITEM_TAG'.toString()">
+					WHERE ITEM_TAG LIKE '%'||#{keyword}||'%'
+				</when>
+
+			</choose>	   
+			) 
+			WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+</mapper>

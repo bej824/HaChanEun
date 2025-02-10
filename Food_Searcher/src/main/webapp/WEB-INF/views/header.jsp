@@ -48,31 +48,6 @@ body {
 	
 }
 
-.navbar ul {
-	margin: 0;
-	padding: 0;
-	display: flex;
-}
-
-.navbar ul li {
-	margin: 0 15px;
-}
-
-.navbar ul li a {
-	text-decoration: none;
-	color: white;
-	font-size: 16px;
-	transition: color 0.3s;
-}
-
-.navbar ul li a:hover {
-	color: #ff9800;
-}
-
-{
-	color: black;
-	font-size: 14px;
-}
 
 a, a:hover {
 	color: black;
@@ -171,8 +146,8 @@ textarea[readonly] {
 }
 
 #list .headerNavi {
+	width : 100px; /* header 버튼에 할당된 길이 */
 	list-style: none;
-	margin: 5px;
 	padding:5px;
 	border: 0;
 	font-size: 100%;
@@ -186,16 +161,21 @@ textarea[readonly] {
 	display: flex;
     justify-content: center; /* 수평 중앙 정렬 */
     text-align: center;      /* 텍스트 중앙 정렬 */
+    
+    
 }
 
 li {
 	text-align: none;
 	text-decoration: none;
+	display:inline-block;
 	
 }
 
 ul, ol {
   list-style: none; /* 마커를 제거 */
+  padding : 1px;
+  margin: 1px;
 }
 
 </style>
@@ -243,6 +223,7 @@ ul, ol {
             <li><a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a></li>
             <li><a class="headerNavi" href="/searcher/market/list" >전통시장</a></li>
             <li><a class="headerNavi" href="/searcher/local/map" >특산품</a></li>
+            <li><a class="headerNavi" href="/searcher/item/list">상품</a></li>
         </ul>
     </div>
 	</div>
