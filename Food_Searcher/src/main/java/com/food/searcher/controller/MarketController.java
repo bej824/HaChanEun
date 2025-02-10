@@ -87,7 +87,6 @@ public class MarketController {
 		model.addAttribute("marketVO", marketVO);
 	}
 	
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
 	public void modifyGET(Model model, Integer marketId) {
 		log.info("modifyGET()");	
@@ -97,7 +96,6 @@ public class MarketController {
 	}
 	
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
-	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
 	public String modifyPOST(MarketVO marketVO, Pagination pagination, RedirectAttributes reAttr) {
 		log.info("modifyPOST()");

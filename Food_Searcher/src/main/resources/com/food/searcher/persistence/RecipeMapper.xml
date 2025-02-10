@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="likesCount" column="LIKES_COUNT" />
 		<result property="dislikesCount" column="DISLIKES_COUNT" />
+		<result property="ingredient" column="INGREDIENT" />
 	</resultMap>
 
 	<!-- <select>, <insert>, <update>, <delete> : SQL 쿼리 정의 태그 - 속성 : id : Mapper 
@@ -30,9 +31,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		: 쿼리 결과를 클래스에 매핑. -->
 	<insert id="insert">
 		INSERT INTO RECIPE (RECIPE_ID, RECIPE_TITLE,
-		RECIPE_FOOD, RECIPE_CONTENT, MEMBER_ID)
+		RECIPE_FOOD, RECIPE_CONTENT, MEMBER_ID, INGREDIENT)
 		VALUES (RECIPE_SEQ.NEXTVAL,
-		#{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId})
+		#{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId}, #{ingredient})
 	</insert>
 	<!-- #{변수명} : Mapper 인터페이스 메소드 매개변수와 매핑되어 전송된 데이터를 적용 -->
 
@@ -49,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update">
 		<!-- 상세 게시글 수정 -->
 		UPDATE RECIPE SET RECIPE_TITLE = #{recipeTitle}, RECIPE_FOOD =
-		#{recipeFood}, RECIPE_CONTENT = #{recipeContent} WHERE RECIPE_ID =
+		#{recipeFood}, RECIPE_CONTENT = #{recipeContent}, INGREDIENT = #{ingredient} WHERE RECIPE_ID =
 		#{recipeId}
 	</update>
 
@@ -76,6 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == 'MEMBER_ID'.toString()">
 					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
 				</when>
+				<when test="type == 'INGREDIENT'.toString()">
+					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
+				</when>
 			</choose>
 		)
 		WHERE RN BETWEEN #{start} AND #{end}
@@ -98,6 +102,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</when>
 				<when test="type == 'MEMBER_ID'.toString()">
 					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'INGREDIENT'.toString()">
+					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
 				</when>
 			</choose>	
 	</select>

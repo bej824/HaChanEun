@@ -12,7 +12,7 @@
 	<link rel="stylesheet"
 	href="../resources/css/Base.css">
 
-<style>a
+<style>
 .image-drop {
     width: 200px;
     height: 200px;

@@ -35,14 +35,28 @@
 }
 
 	.content {
+		width: 700px;
+		height: 80px;
+		box-sizing: border-box;
+		border: 2px solid #ccc;
+		border-radius: 4px;
+		background-color: #f8f8f8;
+		font-size: 16px;
+		resize: none;
+    	
+    }
+
+textarea {
 	width: 700px;
 	height: 280px;
 	padding: 12px 20px;
-    background-color: #f2f2f2;
-    resize: none;
-    border: 1px solid gray;  /* 2px 두께의 검은색 실선 테두리 추가 */
-    
-    }
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	background-color: #f8f8f8;
+	font-size: 16px;
+	resize: none;
+}
     
         .new-line {
             display: block;  /* 새로운 줄로 나누기 */
@@ -81,12 +95,14 @@
 		<p>작성일 : ${recipeDateCreated }</p>
 		<p>음식 : <span>${recipeVO.recipeFood }</span></p>
 	</div>
-	<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
-	<!-- 
+	<div>
+	<p>재료 : </p>
 	<div class="content">
-		<span class="clickable-word">${recipeVO.recipeContent } </span>
+		<span class="clickable-word">${recipeVO.ingredient } </span>
 	</div>
-	  -->
+	<p>레시피 : </p>
+	<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
+	  </div>
 
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
@@ -133,7 +149,7 @@
 		</div>
 	</div>
 
-    <a href="/searcher/recipe/list?recipeTitle=${param.recipeTitle}&filterBy=${param.filterBy}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
+    <a href="/searcher/recipe/list?keyword=${param.keyword}&type=${param.type}&pageNum=${pagination.pageNum}" class="button">글 목록</a>
     <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
     <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
 
@@ -147,79 +163,80 @@
    
 </form>
 
+	<script>
+		let deleteButton = document.getElementById("deleteBoard");
+	
+		if (deleteButton) {
+			deleteButton.addEventListener("click", function(event) {
+	        // 삭제 확인 팝업
+	        if (confirm("삭제하시겠습니까?")) {
+	            // 폼을 제출하여 서버로 delete 요청을 보냄
+	            document.getElementById("deleteForm").submit();
+	        } else {
+	            // 취소 시 동작하지 않도록
+	            event.preventDefault();
+	        }
+	    });
+		}
+	</script>
+
 <script>
-	let deleteButton = document.getElementById("deleteBoard");
+    document.addEventListener('DOMContentLoaded', function () {
+        // .clickable-word 클래스를 가진 요소를 선택합니다.
+        let spanElement = document.querySelector('.clickable-word');
+        let textContent = spanElement.innerText;  // ingredient 내용 가져오기
+        
+        // ingredient 값을 공백으로 구분하여 배열로 만듭니다.
+        let words = textContent.split(', ');  // 공백 기준으로 단어 분리
 
-	if (deleteButton) {
-		deleteButton.addEventListener("click", function(event) {
-        // 삭제 확인 팝업
-        if (confirm("삭제하시겠습니까?")) {
-            // 폼을 제출하여 서버로 delete 요청을 보냄
-            document.getElementById("deleteForm").submit();
-        } else {
-            // 취소 시 동작하지 않도록
-            event.preventDefault();
-        }
-    });
-	}
-</script>
+        // 기존 텍스트를 지우고 다시 처리하기 위해 span의 내용을 초기화
+        spanElement.innerHTML = '';
 
-<!-- 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    let spanElement = document.querySelector('.clickable-word');
-    let textContent = spanElement.innerText;
-
-    // 시작 단어와 끝 단어 정의
-    let startWord = "재료 :";
-    let endWord = "레시피 :";
-
-    // 시작 단어와 끝 단어의 인덱스 찾기
-    let startIndex = textContent.indexOf(startWord) + startWord.length;
-    let endIndex = textContent.indexOf(endWord);
-
-    // 클릭 가능한 단어만 선택할 수 있도록 처리
-    if (startIndex >= 0 && endIndex > startIndex) {
-        let selectedText = textContent.slice(startIndex, endIndex).trim();  // 시작과 끝 단어 제외하고 중간 텍스트 가져오기
-        let words = selectedText.split(' ');
-
-        // 기존 span 태그에서 시작 단어 이전까지 텍스트 출력
-        spanElement.innerHTML = textContent.slice(0, startIndex);  // "시작" 단어 이전 텍스트
-
-        // 중간 단어를 클릭 가능한 span 태그로 감싸기
+        // 각 단어를 span 태그로 감싸고 클릭 이벤트 추가
         words.forEach(function (word) {
             let wordSpan = document.createElement('span');
             wordSpan.classList.add('clickable-word');  // 클릭 가능한 클래스 추가
             wordSpan.innerText = word;
 
-            // 클릭 이벤트 추가 (단어 클릭시 URL로 이동)
-            wordSpan.addEventListener('click', function () {
-                console.log('클릭된 단어:', word);
-                var url = 'list?recipeTitle=' + encodeURIComponent(word) + '&filterBy=RECIPE_CONTENT';
-                window.location.href = url;
+            if(word != ''){
+            // 버튼 생성
+            let button = document.createElement('button');
+            button.innerText = '구매';  // 버튼에 표시될 텍스트
+            button.classList.add('word-button');  // 버튼 스타일을 위한 클래스 추가
+
+            // 배열은 나중에 데이터 받아와서 처리
+            let local = ["토마토", "김치", "양파", "배", "무", "한우", "참기름", "버섯", "장뇌삼", "쭈꾸미", "대하", "애호박", "포도", "사과", "밤", "복숭아", "고추", "감자", "마늘"];
+            // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
+            button.addEventListener('click', function (event) {
+            	console.log('클릭된 단어:', word);
+            	if(local.includes(word)) {
+                var url = 'http://localhost:8080/searcher/local/map?localLocal=&localDistrict=&localTitle=' + encodeURIComponent(word);
+                console.log('local/map?localTitle='+ word);
+                console.log('https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query='+word);
+                window.open(url, '_blank');
+            	} else {
+            		var url = 'https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + encodeURIComponent(word);
+            		window.open(url, '_blank');
+            	}
             });
 
             // 새로 생성된 단어 span 추가
-            spanElement.appendChild(wordSpan);  
-            spanElement.appendChild(document.createTextNode(' '));  // 단어들 사이에 공백 추가
+            spanElement.appendChild(wordSpan);
+            spanElement.appendChild(document.createTextNode(' '));
+            // 새로 생성된 버튼 추가
+            spanElement.appendChild(button);
+            // 단어들 사이에 공백 추가
+            spanElement.appendChild(document.createTextNode(' / '));
+            
+            } else {
+            	spanElement.textContent += " 재료가 선택되지 않았습니다.";
+            }
         });
-
-        // 끝 단어 이후 텍스트 추가
-        let endText = textContent.slice(endIndex);
-        let endTextNode = document.createElement('div');  // 새로운 줄로 분리하기 위한 div
-        endTextNode.classList.add('new-line');
-        endTextNode.innerText = endText;  // 끝 텍스트 추가
-        spanElement.appendChild(endTextNode);
-    } else {
-        console.log('시작 단어와 끝 단어 사이에 유효한 텍스트가 없습니다.');
-    }
-});
-
+    });
 </script>
- -->
-
-	
+	<%--
 	<%@ include file="likes.jsp"%>
+	 --%>
 	</div>
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
