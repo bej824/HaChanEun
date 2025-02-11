@@ -26,6 +26,7 @@ public class RecipeVO {
 	private int likesCount;
 	private int dislikesCount;
 	private String ingredient;
+	private String category;
 	
 	private List<AttachVO> attachList;
 	

@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.util.Pagination;
 
@@ -13,4 +14,5 @@ public interface RecipeService {
 	int deleteBoard(int recipeId); // 특정 게시글 삭제
 	List<RecipeVO> getPagingBoards(Pagination pagination); // 게시글 페이징 처리 조회
 	int getTotalCount(Pagination pagination);  // 게시글 수 조회
+	List<LocalSpecialityVO> getAllMap();
 }

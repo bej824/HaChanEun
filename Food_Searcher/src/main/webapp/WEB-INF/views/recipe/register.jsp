@@ -65,6 +65,19 @@ textarea.ingredient {
 			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력" maxlength="10">
 		</div>
 		<div>
+			<p>카테고리 : </p>
+			<select name="category">
+		        <option>한식</option>
+		        <option>중식</option>
+		        <option>일식</option>
+		        <option>양식</option>
+		        <option>음료</option>
+		        <option>디저트</option>
+		        <option>간편식</option>
+		        <option>아시아 음식</option>
+		    </select>
+		</div>
+		<div>
 			<p>재료</p>
 			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="250" required></textarea>
 		</div>
