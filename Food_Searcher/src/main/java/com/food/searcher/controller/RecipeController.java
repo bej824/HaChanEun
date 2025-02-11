@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.food.searcher.domain.AttachVO;
+import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.domain.RecipeVO;
@@ -91,6 +92,14 @@ public class RecipeController {
 		log.info("pagination : " + pagination);
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
 		log.info("RecipeVO : " + recipeVO);
+		List<LocalSpecialityVO> localList = recipeService.getAllMap();
+		String str = "";
+		for(LocalSpecialityVO vo : localList) {
+			str += vo.getLocalTitle() + " ";
+		}
+		log.info("toString : " + localList.toString());
+		log.info("localList size : " + localList.size());
+		model.addAttribute("localList", str);
 		
 		if(principal != null) {
 		MemberVO memberVO = memberService.getMemberById(principal.getName());

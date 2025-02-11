@@ -15,6 +15,7 @@ public interface LocalMapper {
 	List<LocalSpecialityVO> selectList(@Param("localLocal") String localLocal,
 			@Param("localDistrict") String localDistrict,
 			@Param("localTitle") String localTitle); // 특산품 조회
+	List<LocalSpecialityVO> selectAll();
 	List<LocalSpecialityVO> selectListByPagination(Pagination pagination);
 	List<String> selectDistrict(@Param("localLocal") String localLocal); // 지역 조회
 	LocalSpecialityVO selectByLocalId(@Param("localId") int localId);// 특산품 상세 정보

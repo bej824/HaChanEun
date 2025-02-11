@@ -39,6 +39,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY LOCAL_ID ASC
 	</select>
 	
+	<select id="selectAll" resultMap="localResultMap">
+		SELECT LOCAL_TITLE FROM LOCAL_SPECIALITY
+	</select>
+	
 	<select id="selectListByPagination" resultMap="localResultMap">
 	<!-- 페이지네이션 -->
 	SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT FROM

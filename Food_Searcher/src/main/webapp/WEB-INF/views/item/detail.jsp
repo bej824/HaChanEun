@@ -13,6 +13,15 @@ pageEncoding="UTF-8"%>
 	<link rel="stylesheet"
 	href="../resources/css/Base.css">
 <style>
+.buy {
+	background-color: #f9f9f9; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+}
+
+.button {
+	margin : 3px;
+}
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -28,7 +37,7 @@ pageEncoding="UTF-8"%>
 	<h2>글 보기</h2>
 	<div>
 		<p>음식 이름 : ${itemVO.itemName }</p>
-		<p>가격 : ${itemVO.itemPrice }</p>
+		<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</p>
 		<p>현재 수량 : ${itemVO.itemAmount }</p>
 		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" /></p>
 	</div>
@@ -52,10 +61,30 @@ pageEncoding="UTF-8"%>
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
         <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
-    </form>
+    </form><br>
 	
-	<br><br>
 	
+	<div class="buy"> 선택된 수량 : <input type="hidden" name="itemPrice" value="${itemVO.itemPrice}">
+		<button class="minusBtn">-</button>
+		<input type="text" name="itemAmount" class="amount_input" value="1">
+		<button class="plusBtn">+</button>
+		<br><br>
+	<button id="btnCart" class="button">장바구니 담기</button><br>
+    <button type="button" id="btnBuy" class="button">바로 구매</button>
+	
+    <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+    <input type="hidden" id="itemIdInput" name="itemId" value="${itemVO.itemId}">
+    
+    
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	<br><br>	
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -68,6 +97,7 @@ pageEncoding="UTF-8"%>
 	});	 
 	
 	$(document).ready(function() {
+		
 		$('#deleteItem').click(function() {
 			// 게시글 삭제 클릭 시
 			var itemId = ${itemVO.itemId}
@@ -80,8 +110,56 @@ pageEncoding="UTF-8"%>
 			 }
 		});
 	}); // end deleteItem
+	
+		let quantity = $(".amount_input").val();
+	
+		$(".plusBtn").on("click", function(){
+			$(".amount_input").val(++quantity);
+		}); // end plus_btn
+	
+	
+		$(".minusBtn").on("click", function(){
+				if(quantity > 1){
+					$(".amount_input").val(--quantity);
+			} 
+		}); // end minus_btn
 		
+		const form = {
+				memberId : $('#memberId').val(),
+				itemId : ${itemVO.itemId},
+				itemAmount : '',
+		}
+		
+		console.log(form);
+		
+		$('#btnCart').on("click", function (e){
+			form.itemAmount = $(".amount_input").val();
+			
+			$.ajax({
+				url: '../cart/add',
+				type: 'POST',
+				data: form,
+				success: function(result){
+				if (result == '1') {
+					alert("장바구니 추가 성공")	
+				} else {
+					alert("장바구니 추가 성공")
+				}
+				}
+			});
+			
+		}); // end btnCart
+	
+		
+		document.getElementById("btnBuy").addEventListener("click", function() {
+		    let amount = document.querySelector(".amount_input").value;
+		    document.getElementById("amountInput").value = amount;
 
+		    document.getElementById("orderForm").submit();
+		});
+
+		
+		
 	</script>
 	<!-- 댓글 -->
 	
