@@ -40,7 +40,10 @@ li {
 <div id="area">
 
 <h1>상품 리스트</h1>
+
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 <a href="/searcher/item/register" class="button">상품 등록</a>
+</sec:authorize>
 
 <hr>
 
