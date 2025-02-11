@@ -14,6 +14,10 @@
 </form>
 <button class="button" onclick="update()">등급 업</button>
 
+<button class="button" onclick="couponCreate()">쿠폰 발급</button>
+
+<button class="button" onclick="couponList()">쿠폰 목록</button>
+
 	<script type="text/javascript">
 		function update() {
 			let memberId = document.getElementById("memberId").value;
@@ -24,6 +28,16 @@
 				alert("취소되었습니다.");
 			}
 		}
+		
+		function couponCreate() {
+			window.open("../coupon/register", "_blank", "width=800,height=600");
+			
+		}
+		
+		function couponList() {
+			window.open("../coupon/couponList", "_blank");
+		}
+		
 	</script>
 
 </body>
