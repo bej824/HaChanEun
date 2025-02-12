@@ -64,20 +64,26 @@ pageEncoding="UTF-8"%>
     </form><br>
 	
 	
-	<div class="buy"> 선택된 수량 : <input type="hidden" name="itemPrice" value="${itemVO.itemPrice}">
-		<button class="minusBtn">-</button>
-		<input type="text" name="itemAmount" class="amount_input" value="1">
+	<div class="buy">
+		<sec:authorize access="isAnonymous()">
+			<p>로그인이 필요한 기능입니다</p>
+		</sec:authorize>
+		
+	<sec:authorize access="hasRole('ROLE_MEMBER')">
+		 선택된 수량 : <button class="minusBtn">-</button>
+		<input type="text" name="itemAmount" class="itemAmount" value="1">
 		<button class="plusBtn">+</button>
 		<br><br>
-	<button id="btnCart" class="button">장바구니 담기</button><br>
-    <button type="button" id="btnBuy" class="button">바로 구매</button>
+		
+		<button id="btnCart" class="button">장바구니 담기</button><br>
+    	<button type="button" id="btnBuy" class="button">바로 구매</button>
+	</sec:authorize>
 	
     <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
     <input type="hidden" id="itemIdInput" name="itemId" value="${itemVO.itemId}">
+    <input type="hidden" name="itemPrice" value="${itemVO.itemPrice}">
     
-    
-	
-	</div>
+	</div>	
 	
 	
 	
@@ -111,45 +117,50 @@ pageEncoding="UTF-8"%>
 		});
 	}); // end deleteItem
 	
-		let quantity = $(".amount_input").val();
+		let quantity = $(".itemAmount").val();
 	
 		$(".plusBtn").on("click", function(){
-			$(".amount_input").val(++quantity);
+			$(".itemAmount").val(quantity++);
+			console.log("수량 증가");
 		}); // end plus_btn
-	
+		
 	
 		$(".minusBtn").on("click", function(){
 				if(quantity > 1){
-					$(".amount_input").val(--quantity);
+					$(".itemAmount").val(quantity--);
 			} 
+				console.log("수량 감소");
 		}); // end minus_btn
 		
-		const form = {
+		const data = {
 				memberId : $('#memberId').val(),
 				itemId : ${itemVO.itemId},
-				itemAmount : '',
+				cartAmount : $(".itemAmount").val(),
 		}
-		
-		console.log(form);
+		console.log(data);
 		
 		$('#btnCart').on("click", function (e){
-			form.itemAmount = $(".amount_input").val();
+			data.cartAmount = $(".itemAmount").val()
+			
 			
 			$.ajax({
-				url: '../cart/add',
+				url: '../cart/list',
 				type: 'POST',
-				data: form,
+				data: data,
 				success: function(result){
 				if (result == '1') {
 					alert("장바구니 추가 성공")	
 				} else {
-					alert("장바구니 추가 성공")
-				}
+					alert("장바구니 추가 실패")
+				  }
 				}
 			});
 			
 		}); // end btnCart
 	
+		$('.btnBuy').on('click', function (e){
+			
+		}); // end btnBuy
 		
 		document.getElementById("btnBuy").addEventListener("click", function() {
 		    let amount = document.querySelector(".amount_input").value;

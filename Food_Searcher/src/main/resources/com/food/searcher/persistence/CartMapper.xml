@@ -12,6 +12,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="itemId" column="ITEM_ID" />
 		<result property="cartAmount" column="CART_AMOUNT" />
+		<result property="itemName" column="ITEM_NAME" />
+   		<result property="itemPrice" column="ITEM_PRICE" />
 		
 	</resultMap>
 	
@@ -20,8 +22,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(CART_SEQ.NEXTVAL, #{itemId}, #{cartAmount}, #{memberId})
 	</insert>
 	
+	
 	<select id="selectOne" resultMap="cartResultMap">
-		SELECT * FROM CART WHERE CART_ID = #{cartId}
+	  SELECT
+            a.CART_ID,
+            a.MEMBER_ID,
+            a.ITEM_ID,
+            a.CART_AMOUNT,
+            b.ITEM_NAME,
+            b.ITEM_PRICE
+        FROM CART a
+        LEFT OUTER JOIN ITEM b
+        ON a.ITEM_ID = b.ITEM_ID
+        WHERE a.MEMBER_ID = #{memberId}
 	</select>
 	
 	<delete id="delete">

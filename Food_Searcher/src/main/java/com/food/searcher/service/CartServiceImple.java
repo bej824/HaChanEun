@@ -1,5 +1,7 @@
 package com.food.searcher.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,15 @@ public class CartServiceImple implements CartService {
 	}
 
 	@Override
-	public CartVO getCartById(int cartId) {
+	public List<CartVO> getCartById(String memberId) {
 		log.info("getCartById()");
-		log.info("cartId : " + cartId);
-		CartVO cartVO = cartMapper.selectOne(cartId);
+		log.info("memberId : " + memberId);
+		List<CartVO> cartVO = cartMapper.selectOne(memberId);
+		for(CartVO vo : cartVO) {
+			vo.initTotal();
+		}
+		
+		log.info(cartVO);
 		return cartVO;
 	}
 

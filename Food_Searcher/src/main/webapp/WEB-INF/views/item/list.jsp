@@ -59,8 +59,11 @@ li {
 			</div>
 			</c:forEach>
 	
+	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	
-
+	<sec:authorize access="hasRole('ROLE_MEMBER')">
+	<a id="cartLink" href="#">장바구니로 이동</a>
+	</sec:authorize>
 
 <script type="text/javascript">
 	
@@ -72,6 +75,16 @@ li {
 
 		xhr.setRequestHeader(header, token);
 	});
+	
+	  document.addEventListener("DOMContentLoaded", function () {
+	        let memberId = document.getElementById("memberId").value;  // 숨겨진 input에서 memberId 가져오기
+	        let cartLink = document.getElementById("cartLink");  // <a> 태그 선택
+	        if (memberId) {
+	            cartLink.href = "../cart/list/" + encodeURIComponent(memberId); // href 속성 설정
+	        } else {
+	            console.warn("memberId가 존재하지 않습니다.");
+	        }
+	    });
 	
 	
 </script>	
