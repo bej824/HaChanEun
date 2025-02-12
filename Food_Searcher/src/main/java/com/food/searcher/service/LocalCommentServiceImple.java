@@ -12,7 +12,6 @@ import com.food.searcher.persistence.LocalMapper;
 
 import lombok.extern.log4j.Log4j;
 
-@Transactional
 @Service
 @Log4j
 public class LocalCommentServiceImple implements LocalCommentService {

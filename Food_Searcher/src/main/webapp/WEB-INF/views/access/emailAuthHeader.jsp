@@ -99,10 +99,7 @@ body {
 			    success: function(result) {
 			      if (result == '1') {
 			    	confirmMsg.html('인증되었습니다.').css('color', 'green');
-			        btn_auth.textContent = "확인";
-			        btn_auth.onclick = register;
-			        email.readOnly = true;
-			        emailMsg.html('');
+			        register();
 			      } else {
 			    	confirmMsg.html('인증번호를 다시 확인해주세요.').css('color', 'red');
 			      }

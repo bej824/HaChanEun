@@ -71,6 +71,7 @@ li {
 				<th style="width: 60px">번호</th>
 				<th style="width: 500px">제목</th>
 				<th style="width: 100px">음식</th>
+				<th style="width: 100px">카테고리</th>
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
 				<th style="width: 50px">댓글수</th>
@@ -82,6 +83,7 @@ li {
 					<td>${RecipeVO.recipeId }</td>
 					<td>${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
+					<td>${RecipeVO.category }</td>
 					<td>${RecipeVO.memberId }</td>
 					<!-- boardDateCreated 데이터 포멧 변경 -->
 					<fmt:formatDate value="${RecipeVO.recipeDateCreated }"
@@ -98,6 +100,7 @@ li {
 	    <select name="type">
 	        <option value="RECIPE_TITLE">제목</option>
 	        <option value="RECIPE_FOOD">음식</option>
+	        <option value="CATEGORY">카테고리</option>
 	        <option value="INGREDIENT">재료</option>
 	        <option value="RECIPE_CONTENT">내용</option>
 	        <option value="MEMBER_ID">작성자</option>

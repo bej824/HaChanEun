@@ -96,6 +96,9 @@ textarea {
 		<p>음식 : <span>${recipeVO.recipeFood }</span></p>
 	</div>
 	<div>
+		<p>카테고리 : ${recipeVO.category }</p>
+	</div>
+	<div>
 	<p>재료 : </p>
 	<div class="content">
 		<span class="clickable-word">${recipeVO.ingredient } </span>
@@ -180,11 +183,18 @@ textarea {
 		}
 	</script>
 
-<script>
+<script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         // .clickable-word 클래스를 가진 요소를 선택합니다.
         let spanElement = document.querySelector('.clickable-word');
         let textContent = spanElement.innerText;  // ingredient 내용 가져오기
+        
+        let localList = `${localList}`;
+        let localsplit = localList.split(' ');
+        
+        let local = [...new Set(localsplit)];
+        console.log(local);
+
         
         // ingredient 값을 공백으로 구분하여 배열로 만듭니다.
         let words = textContent.split(', ');  // 공백 기준으로 단어 분리
@@ -204,8 +214,7 @@ textarea {
             button.innerText = '구매';  // 버튼에 표시될 텍스트
             button.classList.add('word-button');  // 버튼 스타일을 위한 클래스 추가
 
-            // 배열은 나중에 데이터 받아와서 처리
-            let local = ["토마토", "김치", "양파", "배", "무", "한우", "참기름", "버섯", "장뇌삼", "쭈꾸미", "대하", "애호박", "포도", "사과", "밤", "복숭아", "고추", "감자", "마늘"];
+            
             // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
             button.addEventListener('click', function (event) {
             	console.log('클릭된 단어:', word);

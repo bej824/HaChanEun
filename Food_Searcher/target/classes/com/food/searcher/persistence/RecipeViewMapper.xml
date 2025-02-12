@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.RecipeViewMapper">
+	<resultMap type="com.food.searcher.domain.RecipeViewListVO" id="recipeResultMap">
+		<id property="viewsNo" column="VIEWS_NO" />
+		<result property="recipeId" column="RECIPE_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO RECIPE_VIEW_LIST (VIEWS_NO, RECIPE_ID, MEMBER_ID)
+		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId)
+	</insert>
+	
+	<select id="selectAll">
+		SELECT * FROM RECIPE_VIEW_LIST
+	</select>
+
+</mapper>

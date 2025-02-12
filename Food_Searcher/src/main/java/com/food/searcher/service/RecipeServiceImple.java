@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.AttachVO;
+import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.persistence.AttachMapper;
+import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.util.Pagination;
 
@@ -28,6 +30,9 @@ public class RecipeServiceImple implements RecipeService{
 	
 	@Autowired
 	private AttachMapper attachMapper;
+	
+	@Autowired
+	private LocalMapper localMapper;
 	
 	@Transactional(value = "transactionManager") 
 	@Override
@@ -124,6 +129,12 @@ public class RecipeServiceImple implements RecipeService{
 		log.info("getPagingBoards()");
 		List<RecipeVO> list = recipeMapper.selectListByPagination(pagination);
 		
+		return list.stream().collect(Collectors.toList());
+	}
+
+	@Override
+	public List<LocalSpecialityVO> getAllMap() {
+		List<LocalSpecialityVO> list = localMapper.selectAll();
 		return list.stream().collect(Collectors.toList());
 	}
 

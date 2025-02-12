@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.CouponHistoryMapper">
+
+	<resultMap type="com.food.searcher.domain.CouponHistoryVO"
+		id="couponHistoryMap">
+
+		<id property="couponHistoryId" column="COUPON_HISTORY_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="couponId" column="COUPON_ID" />
+		<result property="couponName" column="COUPON_NAME" />
+		<result property="couponIssuedDate" column="COUPON_ISSUEDDATE" />
+		<result property="couponUsed" column="COUPON_USED" />
+
+	</resultMap>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.DiscountCouponMapper">
+
+	<resultMap type="com.food.searcher.domain.DiscountCouponVO"
+		id="discountCouponMap">
+
+		<id property="couponId" column="COUPON_ID" />
+		<result property="couponName" column="COUPON_NAME" />
+		<result property="couponIssuer" column="COUPON_ISSUER" />
+		<result property="couponContent" column="COUPON_CONTENT" />
+		<result property="couponPrice" column="COUPON_PRICE" />
+		<result property="couponUseCondition" column="COUPON_USE_CONDITION" />
+		<result property="couponEvent" column="COUPON_EVENT" />
+
+	</resultMap>
+	
+	<insert id="insertCoupon">
+		INSERT INTO DISCOUNT_COUPON
+		(COUPON_ID, COUPON_NAME, COUPON_ISSUER, COUPON_CONTENT, COUPON_PRICE, COUPON_USE_CONDITION, COUPON_EVENT)
+		VALUES (DISCOUNT_COUPON_SEQ.NEXTVAL, #{couponName}, #{couponIssuer}, #{couponContent}, #{couponPrice}, #{couponUseCondition}, #{couponEvent})
+		
+	</insert>
+	
+	<select id="selectAllCoupon" resultMap="discountCouponMap">
+		SELECT COUPON_ID, COUPON_NAME, COUPON_ISSUER, COUPON_PRICE, COUPON_USE_CONDITION, COUPON_EVENT
+		FROM DISCOUNT_COUPON
+	</select>
+	
+</mapper>
