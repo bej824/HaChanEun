@@ -50,14 +50,6 @@
 			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
 			console.log("memberId : " + memberId);
-			let memberAge = ${memberVO.memberAge};
-			console.log("memberAge : " + memberAge);
-			let memberGender = "${memberVO.memberGender}";
-			console.log("memberGender : " + memberGender);
-			let memberMBTI = "${memberVO.memberMBTI}";
-			console.log("memberMBTI : " + memberMBTI);
-			let memberConstellation = "${memberVO.memberConstellation}";
-			console.log("memberConstellation : " + memberConstellation);
 			
 			if("${likesVO.memberLike}" == ""){			
 			let memberLike = 1;
@@ -65,10 +57,6 @@
 			let obj = {
 					'recipeBoardId' : boardId,
 					'memberId' : memberId,
-					'memberAge' : memberAge,
-					'memberGender' : memberGender,
-					'memberMBTI' : memberMBTI,
-					'memberConstellation' : memberConstellation,
 					'memberLike' : memberLike
 			}
 			console.log(obj);
@@ -95,10 +83,6 @@
 				let obj = {
 						'recipeBoardId' : boardId,
 						'memberId' : memberId,
-						'memberAge' : memberAge,
-						'memberGender' : memberGender,
-						'memberMBTI' : memberMBTI,
-						'memberConstellation' : memberConstellation,
 						'memberLike' : memberLike
 				}
 				
@@ -123,10 +107,6 @@
 				let obj = {
 						'recipeBoardId' : boardId,
 						'memberId' : memberId,
-						'memberAge' : memberAge,
-						'memberGender' : memberGender,
-						'memberMBTI' : memberMBTI,
-						'memberConstellation' : memberConstellation,
 						'memberLike' : memberLike,
 						'previousMemberLike' : previousMemberLike
 				}
@@ -153,14 +133,6 @@
 			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
 			console.log("memberId : " + memberId);
-			let memberAge = ${memberVO.memberAge};
-			console.log("memberAge : " + memberAge);
-			let memberGender = "${memberVO.memberGender}";
-			console.log("memberGender : " + memberGender);
-			let memberMBTI = "${memberVO.memberMBTI}";
-			console.log("memberMBTI : " + memberMBTI);
-			let memberConstellation = "${memberVO.memberConstellation}";
-			console.log("memberConstellation : " + memberConstellation);
 			
 			 if("${likesVO.memberLike}" == "1") {
 					let memberLike = 0;
@@ -168,10 +140,6 @@
 					let obj = {
 							'recipeBoardId' : boardId,
 							'memberId' : memberId,
-							'memberAge' : memberAge,
-							'memberGender' : memberGender,
-							'memberMBTI' : memberMBTI,
-							'memberConstellation' : memberConstellation,
 							'memberLike' : memberLike,
 							'previousMemberLike' : previousMemberLike
 					}
@@ -200,14 +168,6 @@
 			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
 			console.log("memberId : " + memberId);
-			let memberAge = ${memberVO.memberAge};
-			console.log("memberAge : " + memberAge);
-			let memberGender = "${memberVO.memberGender}";
-			console.log("memberGender : " + memberGender);
-			let memberMBTI = "${memberVO.memberMBTI}";
-			console.log("memberMBTI : " + memberMBTI);
-			let memberConstellation = "${memberVO.memberConstellation}";
-			console.log("memberConstellation : " + memberConstellation);
 			
 			if("${likesVO.memberLike}" == ""){
 				
@@ -217,10 +177,6 @@
 				let obj = {
 						'recipeBoardId' : boardId,
 						'memberId' : memberId,
-						'memberAge' : memberAge,
-						'memberGender' : memberGender,
-						'memberMBTI' : memberMBTI,
-						'memberConstellation' : memberConstellation,
 						'memberLike' : memberLike
 				}
 				console.log(obj);
@@ -249,10 +205,6 @@
 				let obj = {
 						'recipeBoardId' : boardId,
 						'memberId' : memberId,
-						'memberAge' : memberAge,
-						'memberGender' : memberGender,
-						'memberMBTI' : memberMBTI,
-						'memberConstellation' : memberConstellation,
 						'memberLike' : memberLike
 				}
 				
@@ -277,10 +229,6 @@
 				let obj = {
 						'recipeBoardId' : boardId,
 						'memberId' : memberId,
-						'memberAge' : memberAge,
-						'memberGender' : memberGender,
-						'memberMBTI' : memberMBTI,
-						'memberConstellation' : memberConstellation,
 						'memberLike' : memberLike,
 						'previousMemberLike' : previousMemberLike
 				}
@@ -307,14 +255,6 @@
 			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
 			console.log("memberId : " + memberId);
-			let memberAge = ${memberVO.memberAge};
-			console.log("memberAge : " + memberAge);
-			let memberGender = "${memberVO.memberGender}";
-			console.log("memberGender : " + memberGender);
-			let memberMBTI = "${memberVO.memberMBTI}";
-			console.log("memberMBTI : " + memberMBTI);
-			let memberConstellation = "${memberVO.memberConstellation}";
-			console.log("memberConstellation : " + memberConstellation);
 			 if("${likesVO.memberLike}" == "2") {
 					let memberLike = 0;
 					let previousMemberLike = 2;
@@ -322,10 +262,6 @@
 					let obj = {
 							'recipeBoardId' : boardId,
 							'memberId' : memberId,
-							'memberAge' : memberAge,
-							'memberGender' : memberGender,
-							'memberMBTI' : memberMBTI,
-							'memberConstellation' : memberConstellation,
 							'memberLike' : memberLike,
 							'previousMemberLike' : previousMemberLike
 					}

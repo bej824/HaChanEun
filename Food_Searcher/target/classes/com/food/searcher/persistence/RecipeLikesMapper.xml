@@ -73,22 +73,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == '나이'.toString()">
 					<choose>
 						<when test="keyword == '10대 이하'">
-							AND m.MEMBER_AGE between 0 and 9
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) between 0 and 9
 						</when>
 						<when test="keyword == '10대'">
-							AND m.MEMBER_AGE between 10 and 19
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) between 10 and 19
 						</when>
 						<when test="keyword == '20대'">
-							AND m.MEMBER_AGE between 20 and 29
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) between 20 and 29
 						</when>
 						<when test="keyword == '30대'">
-							AND m.MEMBER_AGE between 30 and 39
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) between 30 and 39
 						</when>
 						<when test="keyword == '40대'">
-							AND m.MEMBER_AGE between 40 and 49
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) between 40 and 49
 						</when>
 						<when test="keyword == '50대 이상'">
-							AND m.MEMBER_AGE >= 50
+							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) >= 50
 						</when>
 					</choose>
 					GROUP BY r.RECIPE_BOARD_ID
@@ -101,11 +101,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_MBTI
 					HAVING m.MEMBER_MBTI = #{keyword}
 				</when>
-				<when test="type == '별자리'.toString()">
-					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_CONSTELLATION
-					HAVING m.MEMBER_CONSTELLATION = #{keyword}
-				</when>
-			</choose>
+        <when test="type == '별자리'.toString()">
+            <choose>
+                <when test="keyword == '양자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('03-21'), 'MM-DD') AND TO_DATE(TO_CHAR('04-19'), 'MM-DD'))
+                </when>
+                <when test="keyword == '황소자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('04-20'), 'MM-DD') AND TO_DATE(TO_CHAR('05-20'), 'MM-DD'))
+                </when>
+                <when test="keyword == '쌍둥이자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('05-21'), 'MM-DD') AND TO_DATE(TO_CHAR('06-20'), 'MM-DD'))
+                </when>
+                <when test="keyword == '게자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('06-21'), 'MM-DD') AND TO_DATE(TO_CHAR('07-22'), 'MM-DD'))
+                </when>
+                <when test="keyword == '사자자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('07-23'), 'MM-DD') AND TO_DATE(TO_CHAR('08-22'), 'MM-DD'))
+                </when>
+                <when test="keyword == '처녀자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('08-23'), 'MM-DD') AND TO_DATE(TO_CHAR('09-22'), 'MM-DD'))
+                </when>
+                <when test="keyword == '천칭자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('09-23'), 'MM-DD') AND TO_DATE(TO_CHAR('10-22'), 'MM-DD'))
+                </when>
+                <when test="keyword == '전갈자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('10-23'), 'MM-DD') AND TO_DATE(TO_CHAR('11-21'), 'MM-DD'))
+                </when>
+                <when test="keyword == '사수자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('11-22'), 'MM-DD') AND TO_DATE(TO_CHAR('12-21'), 'MM-DD'))
+                </when>
+                <when test="keyword == '염소자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('12-22'), 'MM-DD') AND TO_DATE(TO_CHAR('01-19'), 'MM-DD'))
+                </when>
+                <when test="keyword == '물병자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('01-20'), 'MM-DD') AND TO_DATE(TO_CHAR('02-18'), 'MM-DD'))
+                </when>
+                <when test="keyword == '물고기자리'">
+                    AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('02-19'), 'MM-DD') AND TO_DATE(TO_CHAR('03-20'), 'MM-DD'))
+                </when>
+            </choose>
+            GROUP BY r.RECIPE_BOARD_ID
+        </when>
+    </choose>
 		ORDER BY LIKE_COUNT DESC
 	</select>
 	

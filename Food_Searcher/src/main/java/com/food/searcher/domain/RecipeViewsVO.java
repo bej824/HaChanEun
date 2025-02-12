@@ -13,5 +13,5 @@ import lombok.ToString;
 @ToString
 public class RecipeViewsVO {
 	private int recipeId;
-	private String memberId;
+	private int views;
 }
