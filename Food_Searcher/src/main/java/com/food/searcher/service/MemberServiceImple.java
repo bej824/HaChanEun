@@ -98,7 +98,15 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public int createRole(String memberId, String roleName) {
 		log.info("createRole()");
-		return memberMapper.insertRole(memberId, roleName);
+		int result = 0;
+		
+		try {
+			result = memberMapper.insertRole(memberId, roleName);
+		} catch (Exception e) {
+			
+		}
+		
+		return result;
 	}
 	
 	// 권한 확인

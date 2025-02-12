@@ -27,9 +27,33 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	}
 	
 	@Override
-	public List<DiscountCouponVO> selectAllCoupon() {
+	public List<DiscountCouponVO> selectCoupon(String searchBy, String searchText) {
+		log.info("selectAllCoupon()");
+		log.info(searchBy + "검색할 텍스트" + searchText);
 		
-		return discountCouponMapper.selectAllCoupon();
+		return discountCouponMapper.selectCoupon(searchBy, searchText);
+	}
+	
+	@Override
+	public DiscountCouponVO selectOneCoupon(int couponId) {
+		log.info("selectOneCoupon()");
+		
+		return discountCouponMapper.selectOneCoupon(couponId);
+	}
+	
+	@Override
+	public int updateCoupon(DiscountCouponVO discountCouponVO) {
+		log.info("updateCoupon()");
+		log.info(discountCouponVO);
+		
+		return discountCouponMapper.updateCoupon(discountCouponVO);
+	}
+	
+	@Override
+	public int deleteCoupon(int couponId) {
+		log.info("deleteCoupon()");
+		
+		return discountCouponMapper.deleteCoupon(couponId);
 	}
 
 }

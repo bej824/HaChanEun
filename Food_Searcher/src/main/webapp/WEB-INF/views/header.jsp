@@ -200,7 +200,7 @@ ul, ol {
     
      <div id="memberForm">
 		<sec:authorize access="isAuthenticated() && hasRole('ROLE_ADMIN')">
-		<a href="/searcher/access/admin"><sec:authentication property="name" />님 환영합니다.</a>
+		<a href="/searcher/admin/adminPage"><sec:authentication property="name" />님 환영합니다.</a>
 		</sec:authorize>
 		<sec:authorize access="isAuthenticated() && !hasRole('ROLE_ADMIN')">
 			<p><sec:authentication property="name" />님 환영합니다.</p>

@@ -255,22 +255,5 @@ public class MemberController {
 		return result;
 		
 	}
-	
-	@GetMapping("/admin")
-	public void adminGET(Model model) {
-		log.info("adminGET()");
-
-	} // end adminGET()
-	
-	@Transactional
-	@PostMapping("/roleUpdate")
-	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
-		log.info("roleUpdate");
-		String roleName = "ROLE_ADMIN";
-		int result = memberService.createRole(memberId, roleName);
-		log.info(result + "행 수정");
-		
-		return "../home";
-	} // end roleUpdatePOST
 
 }

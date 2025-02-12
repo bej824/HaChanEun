@@ -20,5 +20,6 @@ public class DiscountCouponVO {
 	private int couponPrice; // 쿠폰 할인 가격
 	private int couponUseCondition; // 쿠폰 사용 조건
 	private String couponEvent; // 쿠폰 발급 조건
+	private int couponExpirationDate; // 쿠폰 발급 후 사용 기한 
 
 }

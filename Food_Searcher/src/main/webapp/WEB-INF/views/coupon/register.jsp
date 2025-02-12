@@ -21,6 +21,13 @@
 		<input type="text" id="couponName" name="couponName" placeholder="쿠폰 이름 입력">
 		<div id="nameMsg" class="message" style="color: red;">쿠폰 이름을 입력해주세요!</div>
 		<br>
+		
+		<p>발급 주체</p>
+		<select id="couponIssuer" name="couponIssuer">
+			<option value="">발급 제한 없음</option>
+			<option value="ROLE_ADMIN">사이트</option>
+			<option value="ROLE_SELLER">판매자</option>
+		</select>
 
 		<p>할인 가격</p>
 		<input type="text" id="couponPrice" name="couponPrice" placeholder="할인가격을 입력해주세요.">원
@@ -37,12 +44,17 @@
 		<p>쿠폰 가격 제한</p>
 		<input type="text" id="couponUseCondition" name="couponUseCondition" placeholder="가격 제한을 걸어주세요.">원
 		<div id="conditionMsg" class="message" style="color: red;">가격 제한을 걸어주세요!</div>
+		
+		<p>쿠폰 사용 기한</p>
+		<input type="text" id="couponExpirationDate" name="couponExpirationDate" placeholder="날짜 제한을 걸어주세요.">일
+		<div id="expirationMsg" class="message" style="color: red;">날짜 제한을 걸어주세요!</div>
 
 		<p>쿠폰 정보</p>
 		<textarea id="couponContent" name="couponContent"></textarea> <br>
 		
 
-		<button class="button" name="insert" id="insert">쿠폰 등록</button>
+		<button class="button" name="btn_insert" id="btn_insert">쿠폰 등록</button>
+		<button class="button" name="btn_cancel" id="btn_cancel">취소</button>
 		
 		<script type="text/javascript">
 		
@@ -57,6 +69,7 @@
 			let nameCheck = false;
 			let priceCheck = false;
 			let conditionCheck = false;
+			let expirationCheck = false;
 			
 			$('#couponName').change(function(){
 				let couponName = $(this).val();
@@ -73,6 +86,12 @@
 					
 			})
 			
+			$('#couponIssuer').change(function(){
+				let couponIssuer = $(this).val();
+				console.log(couponIssuer);
+				
+			})
+			
 			$('#couponPrice').change(function(){
 				let couponPrice = $(this).val();
 				let priceMsg = $('#priceMsg');
@@ -82,6 +101,9 @@
 				} else if(couponPrice == "") {
 					priceCheck = false;
 					priceMsg.html('할인 가격을 입력해주세요!');
+				} else if(couponPrice < 100) {
+					priceCheck = false;
+					priceMsg.html('할인 가격은 100원 이상만 가능합니다!');
 				} else {
 					priceCheck = true;
 					priceMsg.html('');
@@ -101,9 +123,11 @@
 				let conditionMsg = $('#conditionMsg');
 				
 				if(!/^\d+$/.test(couponUseCondition)) {
-					conditionMsg.html('가격제한은 숫자로만 입력 가능합니다!');
+					conditionMsg.html('가격 제한은 숫자로만 입력 가능합니다!');
+					conditionCheck = false;
 				} else if(couponUseCondition == "") {
 					conditionMsg.html('가격 제한을 걸어주세요!');
+					conditionCheck = false;
 				} else {
 					conditionCheck = true;
 					conditionMsg.html('');
@@ -111,16 +135,32 @@
 				
 			})
 			
-			$('#insert').click(function(){
+			$('#couponExpirationDate').change(function(){
+				let couponExpirationDate = $(this).val();
+				let expirationMsg = $('#expirationMsg');
+				
+				if(!/^\d+$/.test(couponExpirationDate)) {
+					expirationMsg.html('날짜 제한은 숫자로만 입력 가능합니다!');
+					expirationCheck = false;
+				} else if(couponExpirationDate == "") {
+					expirationMsg.html('날짜 제한을 걸어주세요!');
+					expirationCheck = false;
+				} else {
+					expirationCheck = true;
+					expirationMsg.html('');
+				}
+			})
+			
+			$('#btn_insert').click(function(){
 				let couponName = $('#couponName').val();
+				let couponIssuer = $('#couponIssuer').val();
 				let couponPrice = $('#couponPrice').val();
 				let couponEvent = $('#couponEvent').val();
 				let couponContent = $('#couponContent').val();
+				let couponExpirationDate = $('#couponExpirationDate').val();
 				let couponUseCondition = $('#couponUseCondition').val();
 				
-				console.log(couponEvent);
-				
-				if(nameCheck == true && priceCheck == true && conditionCheck == true) {
+				if(nameCheck == true && priceCheck == true && conditionCheck == true && expirationCheck == true) {
 					
 					if(couponUseCondition == 0) {
 						let result = confirm("가격제한을 0원으로 설정하시겠습니까?");
@@ -134,20 +174,30 @@
 					    type: 'POST',
 					    url: 'register',
 					    data: { couponName: couponName,
+					    	couponIssuer: couponIssuer,
 					    	couponPrice: couponPrice,
 					    	couponEvent: couponEvent,
-					    	couponUseCondition, couponUseCondition,
+					    	couponUseCondition: couponUseCondition,
+					    	couponUseCondition: couponUseCondition,
 					    	couponContent: couponContent},
 					    success: function(result) {
 					      if (result == '1') {
 					    	alert("쿠폰이 생성되었습니다.");
-					    	window.close();
+					    	window.location.href = "couponList";
 					      } else {
 					    	  alert("다시 시도해주세요.");
 					      }
 					    }
 					  });
 				}
+			})
+			
+			$('#btn_cancel').click(function() {
+				let result = confirm("쿠폰 생성을 취소하시겠습니까?");
+				if(result) {
+			    	window.location.href = "couponList";
+				}
+				
 			})
 			
 		})
