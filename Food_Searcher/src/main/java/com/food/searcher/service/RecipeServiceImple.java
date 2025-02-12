@@ -1,6 +1,8 @@
 package com.food.searcher.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,12 @@ import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.domain.RecipeViewListVO;
+import com.food.searcher.domain.RecipeViewsVO;
 import com.food.searcher.persistence.AttachMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.RecipeMapper;
+import com.food.searcher.persistence.RecipeViewMapper;
 import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
@@ -33,6 +38,9 @@ public class RecipeServiceImple implements RecipeService{
 	
 	@Autowired
 	private LocalMapper localMapper;
+	
+	@Autowired
+	private RecipeViewMapper recipeViewMapper;
 	
 	@Transactional(value = "transactionManager") 
 	@Override
@@ -63,7 +71,7 @@ public class RecipeServiceImple implements RecipeService{
 	}
 
 	@Override
-	public RecipeVO getBoardById(int recipeId) {
+	public RecipeVO getBoardById(int recipeId, String memberId) {
 		log.info("getBoardById()");
 		log.info("recipeId : " + recipeId);
 		RecipeVO recipeVO = recipeMapper.selectOne(recipeId);
@@ -75,6 +83,43 @@ public class RecipeServiceImple implements RecipeService{
 		log.info("attachList : " + attachList);
 		recipeVO.setAttachList(attachList);
 		log.info("attachList 추가 recipeVO : " + recipeVO);
+		
+		// memberId가 있을 경우, 조회 기록 삽입
+		if (memberId != null && memberId != "nouser") {
+		    // 조회 기록 리스트를 가져옵니다.
+		    List<RecipeViewListVO> viewList = recipeViewMapper.selectAll();
+		    
+		    // 삽입할 파라미터를 Map에 저장합니다.
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("recipeId", recipeId);
+		    params.put("memberId", memberId);
+
+		    // 데이터가 없으면 바로 insert를 진행
+		    if (viewList == null || viewList.isEmpty()) {
+		        // 데이터가 없으면 바로 insert
+		        int recipeView = recipeViewMapper.insert(params);
+		        log.info(recipeView + "행 추가");
+		    } else {
+		        // 데이터가 있으면 memberId와 recipeId를 비교하여 삽입 여부 결정
+		        boolean shouldInsert = true;  // 기본적으로 insert 해야한다고 가정
+
+		        for (RecipeViewListVO vo : viewList) {
+		            // memberId와 recipeId가 모두 일치하면 삽입하지 않음
+		            if (vo.getMemberId().equals(memberId) && vo.getRecipeId() == recipeId) {
+		                shouldInsert = false;
+		                break;  // 일치하는 데이터가 있으면 반복문 종료
+		            }
+		        }
+
+		        // 일치하는 데이터가 없으면 insert 실행
+		        if (shouldInsert) {
+		            int recipeView = recipeViewMapper.insert(params);
+		            log.info(recipeView + "행 추가");
+		        }
+		    }
+		}
+
+
 		return recipeVO;
 	}
 
@@ -128,6 +173,12 @@ public class RecipeServiceImple implements RecipeService{
 	public List<RecipeVO> getPagingBoards(Pagination pagination) {
 		log.info("getPagingBoards()");
 		List<RecipeVO> list = recipeMapper.selectListByPagination(pagination);
+		for(RecipeVO vo : list) {
+			RecipeViewsVO viewsVO = recipeViewMapper.selectOne(vo.getRecipeId());
+			if(viewsVO != null) {
+				vo.setViewCount(viewsVO.getViews());
+			}
+		}
 		
 		return list.stream().collect(Collectors.toList());
 	}

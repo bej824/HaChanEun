@@ -75,6 +75,7 @@ li {
 				<th style="width: 120px">작성자</th>
 				<th style="width: 100px">작성일</th>
 				<th style="width: 50px">댓글수</th>
+				<th style="width: 50px">조회수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -90,6 +91,7 @@ li {
 						pattern="yyyy-MM-dd" var="recipeDateCreated" />
 					<td>${recipeDateCreated }</td>
 					<td>${RecipeVO.replyCount }</td>
+					<td>${RecipeVO.viewCount }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -243,9 +243,8 @@ textarea {
         });
     });
 </script>
-	<%--
 	<%@ include file="likes.jsp"%>
-	 --%>
+
 	</div>
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">

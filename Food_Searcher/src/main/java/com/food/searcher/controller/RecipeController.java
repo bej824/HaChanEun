@@ -90,8 +90,10 @@ public class RecipeController {
 		log.info("레시피 ID : " + recipeId);
 		log.info("memberId : " + principal);	
 		log.info("pagination : " + pagination);
-		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
+		String username = (principal != null && principal.getName() != null) ? principal.getName() : "nouser";
+		RecipeVO recipeVO = recipeService.getBoardById(recipeId, username);
 		log.info("RecipeVO : " + recipeVO);
+		
 		List<LocalSpecialityVO> localList = recipeService.getAllMap();
 		String str = "";
 		for(LocalSpecialityVO vo : localList) {
@@ -119,10 +121,10 @@ public class RecipeController {
 	// 게시글 번호를 전송받아 상세 게시글 조회
 	// 조회된 게시글 데이터를 modify.jsp로 전송
 	@GetMapping("/modify")
-	public void modifyGET(Model model, Integer recipeId) {
+	public void modifyGET(Model model, Integer recipeId, Principal principal) {
 		log.info("modifyGET()");
 		log.info("recipeId : " + recipeId);
-		RecipeVO recipeVO = recipeService.getBoardById(recipeId);
+		RecipeVO recipeVO = recipeService.getBoardById(recipeId, principal.getName());
 		log.info("recipeVO : " + recipeVO);
 		if(recipeId.equals(recipeVO.getRecipeId())) {
 		model.addAttribute("recipeVO", recipeVO);

@@ -8,15 +8,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="viewsNo" column="VIEWS_NO" />
 		<result property="recipeId" column="RECIPE_ID" />
 		<result property="memberId" column="MEMBER_ID" />
+		
+	<association property="views" javaType="com.food.searcher.domain.RecipeViewsVO">
+		<id property="recipeId" column="RECIPE_ID_2" />
+		<result property="views" column="VIEWS" />
+	</association>
+	</resultMap>
+	<resultMap type="com.food.searcher.domain.RecipeViewsVO" id="viewsMap">
+		<id property="recipeId" column="RECIPE_ID" />
+		<result property="views" column="VIEWS" />
 	</resultMap>
 	
 	<insert id="insert">
 		INSERT INTO RECIPE_VIEW_LIST (VIEWS_NO, RECIPE_ID, MEMBER_ID)
-		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId)
+		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId})
 	</insert>
 	
-	<select id="selectAll">
+	<insert id="insertViews">
+		INSERT INTO RECIPE_VIEWS (RECIPE_ID, VIEWS) 
+		SELECT RECIPE_ID, COUNT(*) AS VIEWS
+		FROM RECIPE_VIEW_LIST
+		GROUP BY RECIPE_ID
+		HAVING NOT EXISTS (
+			SELECT 1 
+			FROM RECIPE_VIEWS rv 
+			WHERE rv.RECIPE_ID = RECIPE_VIEW_LIST.RECIPE_ID
+		)
+	</insert>
+	
+	<select id="selectAll" resultMap="recipeResultMap">
 		SELECT * FROM RECIPE_VIEW_LIST
 	</select>
+	
+	<select id="selectOne" resultMap="viewsMap">
+		SELECT * FROM RECIPE_VIEWS WHERE RECIPE_ID = #{recipeId}
+	</select>
+	
+	<update id="updateViews">
+		UPDATE RECIPE_VIEWS
+		SET RECIPE_VIEWS.VIEWS = COALESCE(RECIPE_VIEWS.VIEWS, 0) + (
+			SELECT COUNT(*)
+			FROM RECIPE_VIEW_LIST
+			WHERE RECIPE_VIEW_LIST.RECIPE_ID= RECIPE_VIEWS.RECIPE_ID
+		)
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM RECIPE_VIEW_LIST
+	</delete>
 
 </mapper>
