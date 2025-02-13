@@ -43,14 +43,18 @@ public class MemberController {
 	
 	// 이메일 인증 호출
 	@GetMapping("/registerEmail")
-	public void rigisterEmailGET(@RequestParam(value="select") String select, Model model) {
+	public void rigisterEmailGET(
+			@RequestParam(value="select") String select,
+			Model model) {
 		log.info("registerEmailGET()");
 		model.addAttribute("select", select);
 	}
 
 	// 회원가입 페이지 호출
 	@PostMapping("/register")
-	public void registerPOST(@RequestParam("email") String email, Model model) {
+	public void registerPOST(
+			@RequestParam("email") String email,
+			Model model) {
 		log.info("registerPOST()");
 		LocalDate now = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -63,7 +67,9 @@ public class MemberController {
 	// 회원가입 시 아이디 중복 체크
 	@ResponseBody
 	@GetMapping("/idCheck")
-	public int idCheckGET(@RequestParam("memberId") String memberId, MemberVO memberVO) {
+	public int idCheckGET(
+			@RequestParam("memberId") String memberId,
+			MemberVO memberVO) {
 		log.info("idCheckGET");
 		
 		int result = memberService.memberIdCheck(memberId);
@@ -73,7 +79,9 @@ public class MemberController {
 	
 	@ResponseBody
 	@PostMapping("/pwCheck")
-	public boolean pwCheckPOST(@RequestParam("password") String password, Principal principal) {
+	public boolean pwCheckPOST(
+			@RequestParam("password") String password,
+			Principal principal) {
 		log.info("pwCheckPOST()");
 		
 		String memberId = principal.getName();
@@ -118,27 +126,27 @@ public class MemberController {
 	
 	// 로그인 후 자신의 정보 확인 가능한 페이지
 	@GetMapping("/memberPage")
-	public void memberPageGET(Model model, MemberVO memberVO, Principal principal) {
+	public void memberPageGET(
+			Model model,
+			MemberVO memberVO,
+			Principal principal) {
 		log.info("memberPageGET()");
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
 		
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-		String nowDate = now.format(formatter);
-		
 		model.addAttribute("memberVO", memberVO);
-		model.addAttribute("nowDate", nowDate);
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정
 	@Transactional
 	@ResponseBody
 	@PostMapping("/update")
-	public int updatePOST(@RequestParam("memberId") String memberId,
+	public int updatePOST(
+			@RequestParam("memberId") String memberId,
 			@RequestParam(value = "memberMBTI", required = false) String memberMBTI,
 			@RequestParam(value = "emailAgree", required = false) String emailAgree,
-			MemberVO memberVO, Model model) {
+			MemberVO memberVO,
+			Model model) {
 		log.info("updatePOST()");
 
 		int result = memberService.updateMember(memberId, memberMBTI, emailAgree);
@@ -152,7 +160,9 @@ public class MemberController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/emailUpdate")
-	public int emailUpdatePOST(@RequestParam("email") String email, Principal principal) {
+	public int emailUpdatePOST(
+			@RequestParam("email") String email,
+			Principal principal) {
 		log.info("emailUpdatePOST()");
 		
 		String memberId = principal.getName();
@@ -168,7 +178,8 @@ public class MemberController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/statusUpdate")
-	public int statusUpdatePOST(@RequestParam("memberId") String memberId, 
+	public int statusUpdatePOST(
+			@RequestParam("memberId") String memberId, 
 			@RequestParam("memberStatus") String memberStatus) {
 		log.info("statusUpdatePOST()");
 		log.info(memberId + " : " + memberStatus);
@@ -190,7 +201,9 @@ public class MemberController {
 	
 	// ID 찾기 정규 루트
 	@PostMapping("/idSearch")
-	public void idSearchPOST(@Param("email") String email, Model model) {
+	public void idSearchPOST(
+			@Param("email") String email,
+			Model model) {
 		log.info("idSearchPOST()");
 		
 		model.addAttribute("email", email);
@@ -199,13 +212,15 @@ public class MemberController {
 	// ID 찾기 확인
 	@ResponseBody
 	@PostMapping("/idSearchAjax") // 아이디 찾기
-	public List<MemberVO> idSearchAjaxPOST(@RequestParam("memberName") String memberName,
-			@Param("email") String email, MemberVO memberVO) {
+	public List<MemberVO> idSearchAjaxPOST(
+			@RequestParam("memberName") String memberName,
+			@Param("email") String email,
+			@RequestParam("memberDateOfBirth") int memberDateOfBirth,
+			@RequestParam("memberMBTI") String memberMBTI,
+			MemberVO memberVO) {
 		log.info("idSearchAjaxPOST()");
-		log.info(memberName);
-		log.info(email);
 		
-		List<MemberVO> result = memberService.searchId(memberName, email);
+		List<MemberVO> result = memberService.searchId(memberName, email, memberDateOfBirth, memberMBTI);
 
 		return result;
 	}
@@ -219,8 +234,10 @@ public class MemberController {
 	
 	// 비밀번호 찾기 정규 루트
 	@PostMapping("/pwSearch")
-	public void pwSearchPOST(@RequestParam(value="memberId", required=false) String memberId,
-			@RequestParam("email") String email, Model model) {
+	public void pwSearchPOST(
+			@RequestParam(value="memberId", required=false) String memberId,
+			@RequestParam("email") String email,
+			Model model) {
 		log.info("pwSearchPOST()");
 		
 		if(memberId == null) {
@@ -241,8 +258,14 @@ public class MemberController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/pwUpdate")
-	public int pwUpdatePOST(@RequestParam(value="memberId", required=false) String memberId, String email, String password, String oldPassword,
-			Principal principal, Model model, boolean login) {
+	public int pwUpdatePOST(
+			@RequestParam(value="memberId", required=false) String memberId,
+			@RequestParam(value="email")String email,
+			@RequestParam(value="password")String password,
+			@RequestParam(value="oldPassword")String oldPassword,
+			Principal principal,
+			Model model,
+			boolean login) {
 		log.info("pwUpdatePOST()");
 		int result = 0;
 		
@@ -255,22 +278,5 @@ public class MemberController {
 		return result;
 		
 	}
-	
-	@GetMapping("/admin")
-	public void adminGET(Model model) {
-		log.info("adminGET()");
-
-	} // end adminGET()
-	
-	@Transactional
-	@PostMapping("/roleUpdate")
-	public String roleUpdatePOST(@RequestParam("memberId") String memberId) {
-		log.info("roleUpdate");
-		String roleName = "ROLE_ADMIN";
-		int result = memberService.createRole(memberId, roleName);
-		log.info(result + "행 수정");
-		
-		return "../home";
-	} // end roleUpdatePOST
 
 }

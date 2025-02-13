@@ -16,9 +16,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insertLocalLikes">
-	INSERT INTO LOCAL_LIKES
-    (LIKES_ID, LOCAL_ID, MEMBER_ID, MEMBER_LIKE)
-	VALUES (LOCAL_LIKES_SEQ.NEXTVAL, #{localId}, #{memberId}, #{memberLike})
+	INSERT INTO LOCAL_LIKES(
+	 LIKES_ID
+	,LOCAL_ID
+	,MEMBER_ID
+	,MEMBER_LIKE
+	)VALUES (
+	 LOCAL_LIKES_SEQ.NEXTVAL
+	,#{localId}
+	,#{memberId}
+	,#{memberLike}
+	)
 	</insert>
 	
 	<select id="memberLikeByMemberId" resultType="String">

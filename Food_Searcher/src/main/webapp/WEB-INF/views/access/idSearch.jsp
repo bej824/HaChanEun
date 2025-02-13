@@ -149,7 +149,10 @@ li {
 			    type: 'POST',
 			    url: 'idSearchAjax',
 			    data: { memberName: memberName,
-			    	email: email},
+			    	email: email,
+			    	memberDateOfBirth: 0,
+			    	memberMBTI: ''
+			    	},
 			    success: function(result) {
 			    		console.log("검색된 계정 : ", result.length);
 			    		if(result.length == 0){

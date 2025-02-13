@@ -49,10 +49,11 @@ public class MemberServiceImple implements MemberService {
 	
 	// 아이디 찾기
 	@Override
-	public List<MemberVO> searchId(String memberName, String email) {
+	public List<MemberVO> searchId(String memberName, String email, int memberDateOfBirth, String memberMBTI) {
 		log.info("searchId()");
+		log.info("mbti : " + memberMBTI);
 		
-		return memberMapper.searchId(memberName, email);
+		return memberMapper.searchId(memberName, email, memberDateOfBirth, memberMBTI);
 	}
 	
 	@Override
@@ -98,7 +99,15 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public int createRole(String memberId, String roleName) {
 		log.info("createRole()");
-		return memberMapper.insertRole(memberId, roleName);
+		int result = 0;
+		
+		try {
+			result = memberMapper.insertRole(memberId, roleName);
+		} catch (Exception e) {
+			
+		}
+		
+		return result;
 	}
 	
 	// 권한 확인

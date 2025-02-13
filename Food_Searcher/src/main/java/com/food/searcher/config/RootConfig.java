@@ -14,6 +14,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -21,6 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 // root-context.xml과 동일
 @Configuration
+@EnableScheduling
 @ComponentScan(basePackages = {"com.food.searcher.service"})
 @MapperScan(basePackages = {"com.food.searcher.persistence"})
 @ComponentScan(basePackages = {"com.food.searcher.aspect"})
@@ -78,6 +81,16 @@ public class RootConfig {
 	        mailSender.setJavaMailProperties(javaMailProperties);
 	        
 	        return mailSender;
+	    }
+	 
+	    // ThreadPoolTaskScheduler를 사용하여 스케줄러 빈 설정
+	    @Bean
+	    public ThreadPoolTaskScheduler taskScheduler() {
+	        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+	        scheduler.setPoolSize(10); // 스레드 풀의 크기 설정
+	        scheduler.setThreadNamePrefix("scheduled-task-"); // 스레드 이름 접두어 설정
+	        scheduler.initialize();
+	        return scheduler;
 	    }
 	
 } // end RootConfig

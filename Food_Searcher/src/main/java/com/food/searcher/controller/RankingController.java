@@ -33,7 +33,7 @@ public class RankingController {
 		log.info(likeList);
 		List<RecipeVO> recipeList = new ArrayList<RecipeVO>();
 		for(RecipeLikesVO like : likeList) {
-			RecipeVO recipeVO = recipeService.getBoardById(like.getRecipeBoardId());
+			RecipeVO recipeVO = recipeService.getBoardById(like.getRecipeBoardId(), like.getMemberId());
 			log.info(recipeVO);
 			recipeList.add(recipeVO);
 		}

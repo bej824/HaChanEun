@@ -116,7 +116,6 @@ a:link, a:visited, a:hover, a:active {
 	&nbsp;&nbsp;&nbsp;
 	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }" placeholder="검색어 입력">
 	&nbsp;&nbsp;
-	<button id="titleSearch" class="button">검색</button>
 	<button id="searchClear" class="button">초기화</button>
 	</div>
 	
@@ -170,7 +169,7 @@ a:link, a:visited, a:hover, a:active {
 			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
-			$('#titleSearch').click(function(){
+			$('#localTitle').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $('#localDistrict').val();
 				let localTitle = $('#localTitle').val().replace(/\s+/g, '');
@@ -267,6 +266,22 @@ a:link, a:visited, a:hover, a:active {
 			
 			
 			}) // end ready
+			
+			window.onload = function() {
+			    // 새로고침이 감지된 경우
+			    if (sessionStorage.getItem("reloaded")) {
+
+			        // URL에서 검색어 제거
+			        window.history.replaceState({}, document.title, window.location.pathname);
+
+			        // 새로고침 플래그 삭제
+			        sessionStorage.removeItem("reloaded");
+			    }
+			};
+
+			window.addEventListener("beforeunload", function() {
+			    sessionStorage.setItem("reloaded", "true");
+			});
 			
 			function insertSpeciality(){
 				console.log("insertSpeciality()");

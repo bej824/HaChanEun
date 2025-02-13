@@ -18,9 +18,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id ="insertSepeciality">
-		INSERT INTO LOCAL_SPECIALITY
-		(LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, LOCAL_CONTENT, REPLY_COUNT)
-		VALUES (LOCALSPECIALITY_SEQ.NEXTVAL, #{localLocal}, #{localDistrict}, #{localTitle}, #{localContent}, 0)
+		INSERT INTO LOCAL_SPECIALITY(
+		  LOCAL_ID
+		 ,LOCAL_LOCAL
+		 ,LOCAL_DISTRICT
+		 ,LOCAL_TITLE
+		 ,LOCAL_CONTENT
+		 ,REPLY_COUNT
+		 ) VALUES (
+		  LOCALSPECIALITY_SEQ.NEXTVAL
+		 ,#{localLocal}
+		 ,#{localDistrict}
+		 ,#{localTitle}
+		 ,#{localContent}
+		 ,0
+		 )
 	</insert>
 
 	<select id="selectList" resultMap="localResultMap">
@@ -34,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND LOCAL_DISTRICT = #{localDistrict}
 		</if>
 		<if test="localTitle != null and localTitle != ''">
-        AND LOCAL_TITLE LIKE '%' || #{localTitle} || '%'
+        	AND LOCAL_TITLE LIKE #{localTitle}
     	</if>
 		ORDER BY LOCAL_ID ASC
 	</select>
@@ -63,15 +75,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectByLocalId" resultMap="localResultMap">
 		<!-- 테이블을 통한 특산품 조회 -->
-		SELECT * FROM LOCAL_SPECIALITY
+		SELECT * 
+		FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
 	</select>
 	
 	<update id="update">
 		<!-- 상세 게시글 수정 -->
-		UPDATE LOCAL_SPECIALITY SET LOCAL_CONTENT = #{localContent}
-		WHERE
-		LOCAL_ID = #{localId}
+		UPDATE LOCAL_SPECIALITY
+		SET LOCAL_CONTENT = #{localContent}
+		WHERE LOCAL_ID = #{localId}
 	</update>
 	
 	<delete id="delete">

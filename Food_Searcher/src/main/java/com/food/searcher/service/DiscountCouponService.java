@@ -8,6 +8,12 @@ public interface DiscountCouponService {
 	
 	int createCoupon(DiscountCouponVO couponListVO);
 	
-	List<DiscountCouponVO> selectAllCoupon();
+	List<DiscountCouponVO> selectCoupon(String searchBy, String searchText);
+	
+	DiscountCouponVO selectOneCoupon(int couponId);
+	
+	int updateCoupon(DiscountCouponVO discountCouponVO);
+
+	int deleteCoupon(int couponId);
 
 }

@@ -8,9 +8,9 @@ import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.util.Pagination;
 
 public interface RecipeLikesMapper {
-	int insert(RecipeLikesVO recipeLikesVO);
 	List<RecipeLikesVO> selectAll();
 	List<RecipeLikesVO> selectListByPagination(Pagination pagination);
 	RecipeLikesVO selectMemberLikes(@Param("recipeBoardId") int recipeId, @Param("memberId") String memberId);
+	int insert(RecipeLikesVO recipeLikesVO);
 	int update(RecipeLikesVO recipeLikesVO);
 }

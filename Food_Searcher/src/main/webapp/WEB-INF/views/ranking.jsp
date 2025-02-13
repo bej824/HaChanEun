@@ -98,7 +98,7 @@
             });
         } else if (type === "별자리") {
             // '별자리'에 대한 추가 필터
-            var options = ['물병자리', '물고기자리', '양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '궁수자리', '염소자리'];
+            var options = ['양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '사수자리', '염소자리', '물병자리', '물고기자리'];
             keyword.style.display = "inline";  // 추가 필터 보이기
             options.forEach(function(optionText) {
                 var option = document.createElement("option");

@@ -76,7 +76,9 @@ public class LocalReplyController {
 	
 	@Transactional
 	@PutMapping("/deleteReply/{localId}/{replyId}")
-		public ResponseEntity<Integer> deleteReply(@PathVariable("localId") int localId, @PathVariable("replyId") int replyId){
+		public ResponseEntity<Integer> deleteReply(
+				@PathVariable("localId") int localId,
+				@PathVariable("replyId") int replyId){
 		 log.info("updateReply()");
 
 	     int result = localReplyService.deleteReply(localId, replyId);
