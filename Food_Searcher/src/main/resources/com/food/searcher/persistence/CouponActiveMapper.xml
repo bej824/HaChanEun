@@ -15,14 +15,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="couponIssuedDate" column="COUPON_ISSUEDDATE" />
 		<result property="couponExpireDate" column="COUPON_EXPIREDATE" />
 		<result property="couponUseDate" column="COUPON_USE_DATE" />
-		<result property="couponUseItem" column="COUPON_USE_ITEM" />
+		<result property="couponUseItemId" column="COUPON_USE_ITEM_ID" />
+		<result property="couponUseItemName" column="COUPON_USE_ITEM_NAME" />
 
 	</resultMap>
 	
 	<insert id="insertCouponActive">
-		INSERT INTO COUPON_ACTIVE
-		(COUPON_ACTIVE_ID, MEMBER_ID, COUPON_ID, COUPON_NAME, COUPON_ISSUEDDATE, COUPON_EXPIREDATE, COUPON_USE_DATE, COUPON_USE_ITEM)
-		VALUES (COUPON_ACTIVE_SEQ.NEXTVAL, #{memberId}, #{couponId}, #{couponName}, #{couponIssuedDate}, #{couponExpireDate}, null, null)
+		INSERT INTO COUPON_ACTIVE(
+		 COUPON_ACTIVE_ID
+		,MEMBER_ID
+		,COUPON_ID
+		,COUPON_NAME
+		,COUPON_ISSUEDDATE
+		,COUPON_EXPIREDATE
+		,COUPON_USE_DATE
+		,COUPON_USE_ITEM_ID
+		,COUPON_USE_ITEM_NAME
+		) VALUES (
+		 COUPON_ACTIVE_SEQ.NEXTVAL
+		,#{memberId}
+		,#{couponId}
+		,#{couponName}
+		,#{couponIssuedDate}
+		,#{couponExpireDate}
+		,null
+		,#{couponUseItemId }
+		,#{couponUseItemName }
+		)
 		
 	</insert>
 	

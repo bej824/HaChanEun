@@ -49,10 +49,11 @@ public class MemberServiceImple implements MemberService {
 	
 	// 아이디 찾기
 	@Override
-	public List<MemberVO> searchId(String memberName, String email) {
+	public List<MemberVO> searchId(String memberName, String email, int memberDateOfBirth, String memberMBTI) {
 		log.info("searchId()");
+		log.info("mbti : " + memberMBTI);
 		
-		return memberMapper.searchId(memberName, email);
+		return memberMapper.searchId(memberName, email, memberDateOfBirth, memberMBTI);
 	}
 	
 	@Override

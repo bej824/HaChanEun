@@ -116,7 +116,6 @@ a:link, a:visited, a:hover, a:active {
 	&nbsp;&nbsp;&nbsp;
 	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }" placeholder="검색어 입력">
 	&nbsp;&nbsp;
-	<button id="titleSearch" class="button">검색</button>
 	<button id="searchClear" class="button">초기화</button>
 	</div>
 	
@@ -170,7 +169,7 @@ a:link, a:visited, a:hover, a:active {
 			    listUpdate(localLocal, localDistrict, localTitle);
 			});
 			
-			$('#titleSearch').click(function(){
+			$('#localTitle').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $('#localDistrict').val();
 				let localTitle = $('#localTitle').val().replace(/\s+/g, '');

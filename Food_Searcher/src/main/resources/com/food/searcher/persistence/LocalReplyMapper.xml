@@ -18,14 +18,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insertLocalReply">
-		INSERT INTO LOCAL_REPLY (LOCAL_REPLY_ID, LOCAL_ID, MEMBER_ID,
-		REPLY_CONTENT, REPLY_DATE_CREATED)
-		VALUES (LOCAL_REPLY_SEQ.NEXTVAL, #{localId}, #{memberId},
-		#{replyContent}, SYSDATE)
+		INSERT INTO LOCAL_REPLY (
+		 LOCAL_REPLY_ID
+		,LOCAL_ID
+		,MEMBER_ID
+		,REPLY_CONTENT
+		,REPLY_DATE_CREATED
+		) VALUES (
+		 LOCAL_REPLY_SEQ.NEXTVAL
+		,#{localId}
+		,#{memberId}
+		,#{replyContent}
+		,SYSDATE
+		)
 	</insert>
 
 	<select id="selectListByLocalId" resultMap="replyResultMap">
-		SELECT * FROM LOCAL_REPLY
+		SELECT *
+		FROM LOCAL_REPLY
 		WHERE LOCAL_ID = #{localId}
 		ORDER BY LOCAL_REPLY_ID
 	</select>

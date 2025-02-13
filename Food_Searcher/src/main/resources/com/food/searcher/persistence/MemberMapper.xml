@@ -47,8 +47,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="searchId" resultMap="memberResultMap">
-		SELECT * FROM MEMBER
-		WHERE MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+		SELECT MEMBER_ID, MEMBER_STATUS
+		FROM MEMBER
+		WHERE 1=1
+		<if test="memberName != null and memberName != '' and email != null and email != ''">
+			AND MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+		</if>
+		<if test="memberDateOfBirth != 0 and memberDateOfBirth != ''">
+			AND MEMBER_DATE_OF_BIRTH = #{memberDateOfBirth}
+		</if>
+		<if test="memberMBTI != null and memberMBTI != ''">
+			AND MEMBER_MBTI = #{memberMBTI}
+		</if>
 	</select>
 	
 	<select id="searchPw" resultType="String">

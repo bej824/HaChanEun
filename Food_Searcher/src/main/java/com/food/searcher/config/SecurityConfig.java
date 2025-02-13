@@ -39,13 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests()
-				.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/recipe/register").access("hasRole('ROLE_MEMBER')")
-				.antMatchers("/recipe/modify").access("hasRole('ROLE_MEMBER')")
-				.antMatchers("/local/register").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/local/modify").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/market/register").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/market/modify").access("hasRole('ROLE_ADMIN')")
+				.antMatchers(	 "/admin/**"
+								,"/local/register"
+								,"/local/modify"
+								,"/market/register"
+								,"/market/modify").access("hasRole('ROLE_ADMIN')")
+				
+				.antMatchers(	 "/recipe/register"
+								,"/recipe/modify").access("hasRole('ROLE_MEMBER')")
 				;
 
 		// 접근 제한 경로 설정
@@ -61,11 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		httpSecurity
         .authorizeRequests()
-        .antMatchers("/access/emailCheck").permitAll()  // 해당 URL에 대한 POST 요청을 허용
-        .antMatchers("/access/emailConfirm").permitAll()
-		.antMatchers("/access/idSearch").permitAll()
-		.antMatchers("/access/pwSearch").permitAll()
-		.antMatchers("/home").permitAll();
+        .antMatchers(	 "/access/emailCheck"
+        				,"/access/emailConfirm"
+        				,"/access/idSearch"
+        				,"/access/pwSearch"
+        				,"/home").permitAll();
+		// 해당 URL에 대한 POST 요청을 허용
         
         //.anyRequest().authenticated(); // 나머지 URL은 인증 없이 접근 불가
 

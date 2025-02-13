@@ -11,7 +11,7 @@ public interface MemberService {
 	int memberIdCheck(String memberId); // 아이디 중복 확인
 	MemberVO getMemberById(String memberId); // 멤버페이지 자기정보 확인
 	
-	List<MemberVO> searchId(String memberName, String email); // id찾기
+	List<MemberVO> searchId(String memberName, String email, int memberDateOfBirth, String memberMBTI); // id찾기
 	String searchPw(String memberId);
 	
 	int updatePassword(String memberId, String email, String password, boolean login); // 비밀번호 업데이트

@@ -26,11 +26,12 @@ public class LocalController {
 	@Autowired
 	private LocalService localService;
 
-	@GetMapping("/map")
-	public void mapGET(Model model, @RequestParam(value = "localLocal", required = false) String localLocal,
+	@GetMapping("/list")
+	public void listGET(Model model, 
+			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
 			@RequestParam(value = "localTitle", required = false) String localTitle) {
-		log.info("mapGET()");
+		log.info("listGET()");
 		
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
@@ -54,8 +55,10 @@ public class LocalController {
 	
 	@ResponseBody
 	@GetMapping("localUpdate")
-	public List<LocalSpecialityVO> localUpdateGET(@RequestParam("localLocal") String localLocal,
-			@RequestParam("localDistrict") String localDistrict, @RequestParam("localTitle") String localTitle) {
+	public List<LocalSpecialityVO> localUpdateGET(
+			@RequestParam("localLocal") String localLocal,
+			@RequestParam("localDistrict") String localDistrict,
+			@RequestParam("localTitle") String localTitle) {
 		log.info("localUpdateGET()");
 		
 		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict, localTitle);
@@ -81,7 +84,8 @@ public class LocalController {
 	}
 	
 	@GetMapping("/detail")
-	public void localDetailGET(@RequestParam("localId") int localId,
+	public void localDetailGET(
+			@RequestParam("localId") int localId,
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
 			@RequestParam(value = "localTitle", required = false) String localTitle,

@@ -20,14 +20,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insertCoupon">
-		INSERT INTO DISCOUNT_COUPON
-		(COUPON_ID, COUPON_NAME, COUPON_ISSUER, COUPON_CONTENT, COUPON_PRICE, COUPON_USE_CONDITION, COUPON_EVENT, COUPON_EXPIRATION_DATE)
-		VALUES (DISCOUNT_COUPON_SEQ.NEXTVAL, #{couponName}, #{couponIssuer}, #{couponContent}, #{couponPrice}, #{couponUseCondition}, #{couponEvent}, #{couponExpirationDate})
+		INSERT INTO DISCOUNT_COUPON(
+		 COUPON_ID
+		,COUPON_NAME
+		,COUPON_ISSUER
+		,COUPON_CONTENT
+		,COUPON_PRICE
+		,COUPON_USE_CONDITION
+		,COUPON_EVENT
+		,COUPON_EXPIRATION_DATE
+		) VALUES (
+		 DISCOUNT_COUPON_SEQ.NEXTVAL
+		,#{couponName}
+		,#{couponIssuer}
+		,#{couponContent}
+		,#{couponPrice}
+		,#{couponUseCondition}
+		,#{couponEvent}
+		,#{couponExpirationDate})
 		
 	</insert>
 	
 	<select id="selectCoupon" resultMap="discountCouponMap">
-		SELECT COUPON_ID, COUPON_NAME, COUPON_ISSUER, COUPON_PRICE, COUPON_USE_CONDITION, COUPON_EVENT, COUPON_EXPIRATION_DATE
+		 SELECT COUPON_ID
+		,COUPON_NAME
+		,COUPON_ISSUER
+		,COUPON_PRICE
+		,COUPON_USE_CONDITION
+		,COUPON_EVENT
+		,COUPON_EXPIRATION_DATE
 		FROM DISCOUNT_COUPON WHERE 1 = 1
 		<if test="searchText != '' and searchText != null">
 		AND ${searchBy} LIKE '${searchText}'
@@ -42,7 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateCoupon">
 		UPDATE DISCOUNT_COUPON
-		SET COUPON_CONTENT = #{couponContent},
+		SET
+		COUPON_CONTENT = #{couponContent},
 		COUPON_PRICE = #{couponPrice},
 		COUPON_USE_CONDITION = #{couponUseCondition},
 		COUPON_EVENT = #{couponEvent}

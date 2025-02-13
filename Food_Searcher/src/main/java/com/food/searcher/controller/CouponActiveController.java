@@ -1,7 +1,11 @@
 package com.food.searcher.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +24,17 @@ public class CouponActiveController {
 	@Autowired
 	CouponActiveService couponActiveService;
 	
-	@GetMapping("active")
-	public void activeGET(CouponActiveVO couponActiveVO) {
-		log.info("activeGET()");
+	@GetMapping("activeRegister")
+	public void activeRegisterGet(
+			CouponActiveVO couponActiveVO,
+			Model model) {
+		log.info("activeRegisterGet()");
+		
+		
 	}
 	
 	@ResponseBody
-	@PostMapping("active")
+	@PostMapping("activeCreate")
 	public int activePOST(CouponActiveVO couponActiveVO) {
 		log.info("couponActivePOST()");
 		
