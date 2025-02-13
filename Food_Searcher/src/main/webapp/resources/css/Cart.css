@@ -1,0 +1,83 @@
+.buy {
+	background-color: #f9f9f9; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+    width:500px;
+    display:flex;
+    position: relative; /* 절대 위치 요소의 기준점 설정 */
+}
+	
+.img {
+	margin-right : 10px;
+	text-align: center;
+	width:70px;
+}
+
+.divOrder {
+	background-color: #f9f9f9; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+}
+
+.itemAmount {
+	width:50px;
+}
+
+#delBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0px 1px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 10%;
+    width:25px;
+    height:25px;
+}
+
+.delBtn:hover {
+    background-color: darkred;
+}
+
+.selectBtn {
+	position: absoulute;
+    left: 5px;
+    top:5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+table {
+	display:inline;
+    width: 80%;
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: 20px;
+    border-style: solid;
+	border-radius: 4px;
+	border-width: 1px;
+	text-align: center;
+}
+
+th, td {
+    border: 1px solid #ddd !important; /* 테두리 추가 */
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.checkBtn {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.checkBtn.selected {
+    color: green;
+    font-weight: bold;
+}

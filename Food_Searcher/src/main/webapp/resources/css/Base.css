@@ -1,20 +1,7 @@
-#container{
-	margin: auto;
-	overflow:hidden;
-}
-
-#homeArea {
-    font-size: 16px;
-    width: 1300px;
-    height:auto;
-    box-sizing: border-box;
-    float:right;
-    margin-right: 100px;
-}
 
 #area {
 	display:flex;
 	flex-direction: column;
-	margin-right: 100px;
+	margin-right: 5%;
 	align-items:flex-start;
 }

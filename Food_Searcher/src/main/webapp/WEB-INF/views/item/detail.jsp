@@ -6,11 +6,8 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
+
 <link rel="stylesheet"
-	href="../resources/css/Detail.css">
-<link rel="stylesheet"
-	href="../resources/css/Reply.css">
-	<link rel="stylesheet"
 	href="../resources/css/Base.css">
 <style>
 .buy {
@@ -21,6 +18,19 @@ pageEncoding="UTF-8"%>
 
 .button {
 	margin : 3px;
+}
+
+#itemContent{
+	width:400px;
+	height:100px;
+}
+
+#img {
+	width:200px;
+	height:200px;
+	background-color: #f9f9f9; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
 }
 </style>
 
@@ -34,22 +44,22 @@ pageEncoding="UTF-8"%>
 		<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<!-- 게시글 -->
 	<div id="area">
-	<h2>글 보기</h2>
 	<div>
-		<p>음식 이름 : ${itemVO.itemName }</p>
+		<h2>${itemVO.itemName }</h2>
+		<div id="img">(썸네일)</div><br>
+		<div>
+		<textarea id="itemContent" class="content" readonly>${itemVO.itemContent }</textarea>
+		</div>
+		
+		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</p>
 		<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</p>
-		<p>현재 수량 : ${itemVO.itemAmount }</p>
-		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" /></p>
 	</div>
 	
 	
 	
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-	<div>
-		<textarea class="content" rows="20" cols="120" readonly>${itemVO.itemContent }</textarea>
-		
-	</div>
+
 	
 	<button onclick="location.href='list'" class="button" id="listBoard">글 목록</button>
 	<br><br>

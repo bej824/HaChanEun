@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.io.*, java.util.*"%>
+<%@ page import="javax.servlet.http.*, javax.servlet.*"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="com.food.searcher.domain.MarketVO" %>
+<%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
+<%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
+<%@page import="com.food.searcher.domain.RecipeVO"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -179,6 +187,19 @@ ul, ol {
 }
 
 </style>
+
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Base.css">
+
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Detail.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Reply.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/image.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/attach.css">
+
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <meta name="authenticatedUser" content="${authentication.name}">
@@ -187,7 +208,8 @@ ul, ol {
 <body>
     <!-- 네비게이션 바 -->
     <div class="navbar">
-    
+    	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+    	
         <div id="front_img">
         <a href="/searcher/home">Home</a>
         </div>
@@ -222,11 +244,24 @@ ul, ol {
         <ul>
             <li><a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a></li>
             <li><a class="headerNavi" href="/searcher/market/list" >전통시장</a></li>
-            <li><a class="headerNavi" href="/searcher/local/map" >특산품</a></li>
+            <li><a class="headerNavi" href="/searcher/local/list" >특산품</a></li>
             <li><a class="headerNavi" href="/searcher/item/list">상품</a></li>
         </ul>
     </div>
 	</div>
+	
+	<script type="text/javascript">
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});	 
+	
+</script>
 
 </body>
 </html>

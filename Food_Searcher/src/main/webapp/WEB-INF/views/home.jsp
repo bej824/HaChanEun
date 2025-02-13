@@ -3,13 +3,6 @@
 <html>
 <head>
 <style type="text/css">
-table {
-	border-style: solid;
-	border-radius: 4px;
-	border-width: 1px;
-	text-align: center;
-}
-
 th, td {
 	border-style: outset;
 	border-width: 1px;

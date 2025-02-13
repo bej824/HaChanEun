@@ -6,22 +6,13 @@ pageEncoding="UTF-8"%>
 <html>
 <head>
 <style>
-.buy {
-	background-color: #f9f9f9; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-    width:500px;
-}
 
-.button {
-	margin : 3px;
-}
 </style>
 
 <link rel="stylesheet" type="text/css"
-href="${pageContext.request.contextPath}/resources/css/Detail.css">
-<link rel="stylesheet" type="text/css"
 href="${pageContext.request.contextPath}/resources/css/Base.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Cart.css">
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
@@ -35,24 +26,58 @@ href="${pageContext.request.contextPath}/resources/css/Base.css">
 <div id="area">
 <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 
-<h2>장바구니</h2>
-<p>주문자 : <sec:authentication property="name" /></p>
+<h2><sec:authentication property="name" />님의 장바구니</h2>
 
-<c:forEach var="CartVO" items="${cartVO }"> 
-	<div class="buy">
-		<div>(썸네일)</div>
-		<p>상품명 : ${CartVO.itemName }</p>
-		<p>상품 가격 : <fmt:formatNumber value="${CartVO.itemPrice }" /></p>
-		<p>상품 수량 : ${CartVO.cartAmount }</p>
-		<p>상품 번호 : ${CartVO.itemId }</p><br>
-		<p>가격 : <fmt:formatNumber value="${CartVO.totalPrice }" /></p>
-	</div><br>
-	</c:forEach>
+
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 60px">선택</th>
+            <th style="width: 100px">썸네일</th>
+            <th style="width: 120px">상품명</th>
+            <th style="width: 200px">수량 조정</th>
+            <th style="width: 160px">금액</th>
+            <th style="width: 60px">삭제</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="CartVO" items="${cartVO }"> 
+            <tr>
+                <td id="checkBtn" onclick="btnCheck">□</td> <!-- 선택 버튼 -->
+                <td>(썸네일)</td>
+                <td>${CartVO.itemName }</td>
+                <td>
+                    <button class="minusBtn">-</button>
+                    <input type="text" style="width: 50px; text-align: center;" name="itemAmount" class="itemAmount" value="${CartVO.cartAmount }">
+                    <button class="plusBtn">+</button>
+                </td>
+                <td>가격</td>
+                <td class="cartInfo">
+                <input type="hidden" class="cartId" value="${CartVO.cartId }">
+                <input type="hidden" class="memberId" value="${CartVO.memberId }">
+                <input type="hidden" class="itemId" value="${CartVO.itemId }">
+                <input type="hidden" class="itemName" value="${CartVO.itemName }">
+                <input type="hidden" class="itemPrice" value="${CartVO.itemPrice }">
+                <input type="hidden" class="cartDate" value="${CartVO.cartDate }">
+                
+                </td>
+                <td><button class="delBtn" data-cartid="${CartVO.cartId }">×</button></td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+	
+	<form action="/cart/delete" method="post" class="deleteForm">
+				<input type="hidden" name="cartId" class="deleteCartId">
+				<input type="hidden" name="memberId" value="${CartVO.memberId}">
+	</form>
 	
 	
 	<p>합계 : ?</p>
+	<div class="divOrder">
 	<a id="btnOrder" href="#">주문하기</a>
-	
+	</div>
 
 
 <script type="text/javascript">
@@ -68,13 +93,23 @@ href="${pageContext.request.contextPath}/resources/css/Base.css">
 	
 	 document.addEventListener("DOMContentLoaded", function () {
 	        let memberId = document.getElementById("memberId").value;  // 숨겨진 input에서 memberId 가져오기
-	        let btnOrder = document.getElementById("cartLink");  // <a> 태그 선택
+	        let btnOrder = document.getElementById("btnOrder");  // <a> 태그 선택
 	        if (memberId) {
-	            cartLink.href = "../cart/order/" + encodeURIComponent(memberId); // href 속성 설정
+	            btnOrder.href = "../cart/order/" + encodeURIComponent(memberId); // href 속성 설정
 	        } else {
 	            console.warn("memberId가 존재하지 않습니다.");
 	        }
 	    });
+	 
+	 $('#delBtn').on('click', function(e){
+		 e.preventDefault();
+		 const cartId = $(this).data("cartId");
+		 // del 버튼에 data속성으로 심어진 cartId 데이터 가져오기
+		 $(".deleteCartId").val(cartId);
+		 $(".deleteForm").submit();
+		 // delete 실행, Form 제출
+		 
+	 });
 	 
 	
 </script>

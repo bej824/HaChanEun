@@ -6,60 +6,6 @@
 <html>
 <head>
 <style type="text/css">
-table {
-	border-style: solid;
-	border-radius: 4px;
-	border-width: 1px;
-	text-align: center;
-}
-
-th, td {
-	border-style: outset;
-	border-width: 1px;
-	text-align: center;
-}
-
-ul {
-	list-style-type: none;
-	text-align: center;
-}
-
-li {
-	display: inline-block;
-}
-
-.button {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
-}
-
-.button:hover {
-	background-color: #45a049; /* 마우스를 올렸을 때의 배경색 */
-	color: white; /* 글자색 */
-}
-
-.button.selected {
-        background-color: red;
-        color: white;
-    }
-    
-.pagination_button.selected a {
- 		background-color: red;
-        color: white;
-}
-
-#search {
-	margin-left: 335px;
-}
-
 
 </style>
 <link rel="stylesheet"

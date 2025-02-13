@@ -6,14 +6,7 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet"
-	href="../resources/css/Detail.css">
-<link rel="stylesheet"
-	href="../resources/css/Reply.css">
-	<link rel="stylesheet"
-	href="../resources/css/Base.css">
 <style>
-
 .replyInputBox {
 	max-width: 400px;
 	max-height: 100px;
@@ -24,9 +17,6 @@ pageEncoding="UTF-8"%>
 	box-sizing: border-box; /* padding 포함 */
 	text-align: left, top; /* 왼쪽 정렬 */
 }
-
-
-
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -149,18 +139,7 @@ pageEncoding="UTF-8"%>
 	</div>
 	
 	<script type="text/javascript">
-	
-	$(document).ajaxSend(function(e, xhr, opt){
-		console.log("ajaxSend");
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-
-		xhr.setRequestHeader(header, token);
-	});	  
-
 		// 댓글 삭제 관련
-		
 		$(document).ready(function() {
 			$('#deleteMarket').click(function() {
 				// 게시글 삭제 클릭 시

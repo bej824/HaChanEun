@@ -73,7 +73,6 @@
 	<h2>글 작성 페이지</h2>
 	
 	<form id="registerForm" action="register" method="POST">
-	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	
 		<div>
 			<p>제목 :</p>

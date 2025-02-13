@@ -50,7 +50,6 @@ public class ItemController {
 	
 	@GetMapping("/detail")
 	public void detail(Model model, Integer itemId) {
-		log.info("detail()");
 		log.info("itemId = " + itemId);
 		
 		ItemVO itemVO = itemService.getItemById(itemId);
