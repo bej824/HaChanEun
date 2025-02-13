@@ -31,8 +31,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		인터페이스 메서드 매핑 역할. resultMap : 쿼리 결과를 resultMap에 매핑. <resultMa>태그에 id를 적용 resultType 
 		: 쿼리 결과를 클래스에 매핑. -->
 	<insert id="insert">
-		INSERT INTO RECIPE (RECIPE_ID, RECIPE_TITLE,
-		RECIPE_FOOD, RECIPE_CONTENT, MEMBER_ID, INGREDIENT, CATEGORY)
+		INSERT INTO RECIPE (
+		RECIPE_ID, 
+		RECIPE_TITLE,
+		RECIPE_FOOD, 
+		RECIPE_CONTENT, 
+		MEMBER_ID, 
+		INGREDIENT, 
+		CATEGORY)
 		VALUES (RECIPE_SEQ.NEXTVAL,
 		#{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId}, #{ingredient}, #{category})
 	</insert>

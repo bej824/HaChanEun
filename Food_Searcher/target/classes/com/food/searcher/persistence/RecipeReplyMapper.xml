@@ -4,39 +4,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.food.searcher.persistence.RecipeReplyMapper">
-   
-   <resultMap type="com.food.searcher.domain.RecipeReplyVO" id="replyResultMap">
-      <id property="replyId" column="RECIPE_REPLY_ID" /> 
-      <result property="boardId" column="RECIPE_ID" /> 
-      <result property="memberId" column="MEMBER_ID" />
-      <result property="replyContent" column="REPLY_CONTENT" />
-      <result property="replyDateCreated" column="REPLY_DATE_CREATED" />
-   </resultMap>
-   
-   <insert id="insert">
-      INSERT INTO RECIPE_REPLY (RECIPE_REPLY_ID, RECIPE_ID, MEMBER_ID, REPLY_CONTENT)
-      VALUES (RECIPE_REPLY_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{replyContent})
-   </insert>
-   
-   <select id="selectListByBoardId" resultMap="replyResultMap">
-      SELECT * FROM RECIPE_REPLY
-      WHERE RECIPE_ID = #{boardId}
-      ORDER BY RECIPE_REPLY_ID
-   </select>
-   
-   	 <select id="selectOne" resultMap="replyResultMap">
-	 	SELECT * FROM RECIPE_REPLY WHERE RECIPE_REPLY_ID = #{replyId}
-	 </select>
-   
-   <update id="update">
-      UPDATE RECIPE_REPLY
-      SET REPLY_CONTENT = #{replyContent}
-      WHERE RECIPE_REPLY_ID = #{replyId}
-   </update>
-   
-   <delete id="delete">
-      DELETE FROM RECIPE_REPLY
-      WHERE RECIPE_REPLY_ID = #{replyId}
-   </delete>
-   
+
+	<resultMap type="com.food.searcher.domain.RecipeReplyVO"
+		id="replyResultMap">
+		<id property="replyId" column="RECIPE_REPLY_ID" />
+		<result property="boardId" column="RECIPE_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="replyContent" column="REPLY_CONTENT" />
+		<result property="replyDateCreated" column="REPLY_DATE_CREATED" />
+	</resultMap>
+
+	<insert id="insert">
+		INSERT INTO RECIPE_REPLY (RECIPE_REPLY_ID, RECIPE_ID, MEMBER_ID, REPLY_CONTENT)
+		VALUES (RECIPE_REPLY_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{replyContent})
+	</insert>
+
+	<select id="selectListByBoardId" resultMap="replyResultMap">
+		SELECT * FROM RECIPE_REPLY
+		WHERE RECIPE_ID = #{boardId}
+		ORDER BY RECIPE_REPLY_ID
+	</select>
+
+	<select id="selectOne" resultMap="replyResultMap">
+		SELECT * FROM RECIPE_REPLY WHERE RECIPE_REPLY_ID = #{replyId}
+	</select>
+
+	<update id="update">
+		UPDATE RECIPE_REPLY
+		SET REPLY_CONTENT = #{replyContent}
+		WHERE RECIPE_REPLY_ID = #{replyId}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM RECIPE_REPLY
+		WHERE RECIPE_REPLY_ID = #{replyId}
+	</delete>
+
 </mapper>

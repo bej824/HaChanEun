@@ -68,14 +68,14 @@ li {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 60px">번호</th>
-				<th style="width: 500px">제목</th>
-				<th style="width: 100px">음식</th>
-				<th style="width: 100px">카테고리</th>
-				<th style="width: 120px">작성자</th>
-				<th style="width: 100px">작성일</th>
-				<th style="width: 50px">댓글수</th>
-				<th style="width: 50px">조회수</th>
+				<th style="width: 5%px">번호</th>
+				<th style="width: 40%">제목</th>
+				<th style="width: 10%">음식</th>
+				<th style="width: 10%">카테고리</th>
+				<th style="width: 12%">작성자</th>
+				<th style="width: 10%">작성일</th>
+				<th style="width: 5%">댓글수</th>
+				<th style="width: 5%">조회수</th>
 			</tr>
 		</thead>
 		<tbody>

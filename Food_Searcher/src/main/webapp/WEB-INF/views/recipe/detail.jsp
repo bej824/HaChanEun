@@ -160,11 +160,11 @@ textarea {
         <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
         <button id="deleteBoard" class="button">글 삭제</button>
     </sec:authorize>
-<form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
-    <!-- 레시피 ID hidden 필드 -->
-    <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
-   
-</form>
+	<form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
+	    <!-- 레시피 ID hidden 필드 -->
+	    <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
+	   
+	</form>
 
 	<script>
 		let deleteButton = document.getElementById("deleteBoard");
@@ -183,66 +183,63 @@ textarea {
 		}
 	</script>
 
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        // .clickable-word 클래스를 가진 요소를 선택합니다.
-        let spanElement = document.querySelector('.clickable-word');
-        let textContent = spanElement.innerText;  // ingredient 내용 가져오기
-        
-        let localList = `${localList}`;
-        let localsplit = localList.split(' ');
-        
-        let local = [...new Set(localsplit)];
-        console.log(local);
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        // .clickable-word 클래스를 가진 요소를 선택합니다.
+	        let $spanElement = $('.clickable-word');
+	        let textContent = $spanElement.text();  // ingredient 내용 가져오기
+	
+	        let localList = `${localList}`;
+	        let localsplit = localList.split(' ');
+	
+	        let local = [...new Set(localsplit)];
+	        console.log(local);
+	
+	        // ingredient 값을 공백으로 구분하여 배열로 만듭니다.
+	        let words = textContent.split(', ');  // 공백 기준으로 단어 분리
+	
+	        // 기존 텍스트를 지우고 다시 처리하기 위해 span의 내용을 초기화
+	        $spanElement.empty();
+	
+	        // 각 단어를 span 태그로 감싸고 클릭 이벤트 추가
+	        words.forEach(function (word) {
+	            let $wordSpan = $('<span></span>');  // 새로운 span 태그 생성
+	            $wordSpan.addClass('clickable-word');  // 클릭 가능한 클래스 추가
+	            $wordSpan.text(word);
+	
+	            if (word != '') {
+	                // 버튼 생성
+	                let $button = $('<button></button>');  
+	                $button.text('구매');  // 버튼에 표시될 텍스트
+	                $button.addClass('word-button');  // 버튼 스타일을 위한 클래스 추가
+	
+	                // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
+	                $button.on('click', function () {
+	                    console.log('클릭된 단어:', word);
+	                    if (local.includes(word)) {
+	                        let url = 'http://localhost:8080/searcher/local/map?localLocal=&localDistrict=&localTitle=' + encodeURIComponent(word);
+	                        console.log('local/map?localTitle=' + word);
+	                        console.log('https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + word);
+	                        window.open(url, '_blank');
+	                    } else {
+	                        let url = 'https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + encodeURIComponent(word);
+	                        window.open(url, '_blank');
+	                    }
+	                });
+	
+	                // 새로 생성된 단어 span 추가
+	                $spanElement.append($wordSpan);
+	                $spanElement.append(' ');  // 단어 사이에 공백 추가
+	                // 새로 생성된 버튼 추가
+	                $spanElement.append($button);
+	                $spanElement.append(' / ');  // 단어들 사이에 구분자 추가
+	            } else {
+	                $spanElement.text("재료가 선택되지 않았습니다.");
+	            }
+	        });
+	    });
+	</script>
 
-        
-        // ingredient 값을 공백으로 구분하여 배열로 만듭니다.
-        let words = textContent.split(', ');  // 공백 기준으로 단어 분리
-
-        // 기존 텍스트를 지우고 다시 처리하기 위해 span의 내용을 초기화
-        spanElement.innerHTML = '';
-
-        // 각 단어를 span 태그로 감싸고 클릭 이벤트 추가
-        words.forEach(function (word) {
-            let wordSpan = document.createElement('span');
-            wordSpan.classList.add('clickable-word');  // 클릭 가능한 클래스 추가
-            wordSpan.innerText = word;
-
-            if(word != ''){
-            // 버튼 생성
-            let button = document.createElement('button');
-            button.innerText = '구매';  // 버튼에 표시될 텍스트
-            button.classList.add('word-button');  // 버튼 스타일을 위한 클래스 추가
-
-            
-            // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
-            button.addEventListener('click', function (event) {
-            	console.log('클릭된 단어:', word);
-            	if(local.includes(word)) {
-                var url = 'http://localhost:8080/searcher/local/map?localLocal=&localDistrict=&localTitle=' + encodeURIComponent(word);
-                console.log('local/map?localTitle='+ word);
-                console.log('https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query='+word);
-                window.open(url, '_blank');
-            	} else {
-            		var url = 'https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + encodeURIComponent(word);
-            		window.open(url, '_blank');
-            	}
-            });
-
-            // 새로 생성된 단어 span 추가
-            spanElement.appendChild(wordSpan);
-            spanElement.appendChild(document.createTextNode(' '));
-            // 새로 생성된 버튼 추가
-            spanElement.appendChild(button);
-            // 단어들 사이에 공백 추가
-            spanElement.appendChild(document.createTextNode(' / '));
-            
-            } else {
-            	spanElement.textContent += " 재료가 선택되지 않았습니다.";
-            }
-        });
-    });
-</script>
 	<%@ include file="likes.jsp"%>
 
 	</div>

@@ -16,11 +16,11 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class RecipeLikesServiceImple implements RecipeLikesService{
-	
+public class RecipeLikesServiceImple implements RecipeLikesService {
+
 	@Autowired
 	private RecipeLikesMapper likesMapper;
-	
+
 	@Autowired
 	private RecipeMapper recipeMapper;
 
@@ -31,10 +31,10 @@ public class RecipeLikesServiceImple implements RecipeLikesService{
 		log.info("recipeLikesVO : " + recipeLikesVO);
 		int result = likesMapper.insert(recipeLikesVO);
 		log.info(result + "행 추가");
-		if(recipeLikesVO.getMemberLike() == 1) {
-		int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), 1);
-		log.info(updateResult + "행 좋아요 카운트 증가");
-		} else if(recipeLikesVO.getMemberLike() == 2) {
+		if (recipeLikesVO.getMemberLike() == 1) {
+			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), 1);
+			log.info(updateResult + "행 좋아요 카운트 증가");
+		} else if (recipeLikesVO.getMemberLike() == 2) {
 			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), 1);
 			log.info(updateResult + "행 싫어요 카운트 증가");
 		}
@@ -51,31 +51,31 @@ public class RecipeLikesServiceImple implements RecipeLikesService{
 	public int updateLike(RecipeLikesVO recipeLikesVO) {
 		log.info("updateLike()");
 		log.info("impleLikes : " + recipeLikesVO);
-		
+
 		int previousLikeStatus = recipeLikesVO.getPreviousMemberLike();
 		log.info("previousLikeStatus : " + previousLikeStatus);
 		int result = likesMapper.update(recipeLikesVO);
 		log.info(result + "행 업데이트 완료");
-		if(recipeLikesVO.getMemberLike() == 0) {
-		log.info("0 : " + recipeLikesVO.getMemberLike());
-		if(previousLikeStatus == 1) {
-		int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), -1);
-		log.info(updateResult + "행 좋아요 카운트 감소");
-		} else if(previousLikeStatus == 2) {
-			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), -1);
-			log.info(updateResult + "행 싫어요 카운트 감소");
-		}
-		} else if(recipeLikesVO.getMemberLike() == 1) {
+		if (recipeLikesVO.getMemberLike() == 0) {
+			log.info("0 : " + recipeLikesVO.getMemberLike());
+			if (previousLikeStatus == 1) {
+				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				log.info(updateResult + "행 좋아요 카운트 감소");
+			} else if (previousLikeStatus == 2) {
+				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				log.info(updateResult + "행 싫어요 카운트 감소");
+			}
+		} else if (recipeLikesVO.getMemberLike() == 1) {
 			log.info("1 : " + recipeLikesVO.getMemberLike());
-			if(previousLikeStatus == 2) {
+			if (previousLikeStatus == 2) {
 				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), -1);
 				log.info(updateResult + "행 싫어요 카운트 감소");
 			}
 			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), 1);
 			log.info(updateResult + "행 좋아요 카운트 증가");
-		} else if(recipeLikesVO.getMemberLike() == 2) {
+		} else if (recipeLikesVO.getMemberLike() == 2) {
 			log.info("2 : " + recipeLikesVO.getMemberLike());
-			if(previousLikeStatus == 1) {
+			if (previousLikeStatus == 1) {
 				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), -1);
 				log.info(updateResult + "행 좋아요 카운트 감소");
 			}
@@ -88,17 +88,13 @@ public class RecipeLikesServiceImple implements RecipeLikesService{
 	@Override
 	public List<RecipeLikesVO> getSelectAll() {
 		log.info("getSelectAll()");
-		List<RecipeLikesVO> likeList = likesMapper.selectAll();
-		return likeList;
+		return likesMapper.selectAll();
 	}
 
 	@Override
 	public List<RecipeLikesVO> getPagingBoards(Pagination pagination) {
 		log.info("getPagingBoards()");
-		log.info("페이징 : " + pagination);
-		List<RecipeLikesVO> list = likesMapper.selectListByPagination(pagination);
-		log.info("RecipeLikes list : " + list);
-		return list.stream().collect(Collectors.toList());
+		return likesMapper.selectListByPagination(pagination).stream().collect(Collectors.toList());
 	}
 
 }

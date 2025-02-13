@@ -10,10 +10,10 @@ import com.food.searcher.domain.RecipeViewsVO;
 
 @Mapper
 public interface RecipeViewMapper {
-	int insert(Map<String, Object> params);
-	int insertViews();
 	List<RecipeViewListVO> selectAll();
 	RecipeViewsVO selectOne(int recipeId);
+	int insert(Map<String, Object> params);
+	int insertViews();
 	int updateViews();
 	int delete();
 }

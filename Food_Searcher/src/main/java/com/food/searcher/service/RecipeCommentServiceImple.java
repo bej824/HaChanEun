@@ -15,25 +15,24 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class RecipeCommentServiceImple implements RecipeCommentService{
-	
+public class RecipeCommentServiceImple implements RecipeCommentService {
+
 	@Autowired
 	private RecipeCommentMapper recipeCommentMapper;
-	
+
 	@Autowired
 	private RecipeMapper recipeMapper;
-	
+
 	@Autowired
 	private RecipeReplyMapper replyMapper;
-	
+
 	@Override
 	public int createComment(RecipeCommentVO recipeCommentVO) {
 		log.info("createReply()");
 		int insertResult = recipeCommentMapper.insert(recipeCommentVO);
 		log.info(insertResult + "행 대댓글 추가");
 		RecipeReplyVO replyVO = replyMapper.selectOne(recipeCommentVO.getRecipeReplyId());
-		int updateResult = recipeMapper
-				.updateReplyCount(replyVO.getBoardId(), 1);
+		int updateResult = recipeMapper.updateReplyCount(replyVO.getBoardId(), 1);
 		log.info(updateResult + "행 댓글 카운트 증가");
 		return insertResult;
 	}
@@ -56,9 +55,7 @@ public class RecipeCommentServiceImple implements RecipeCommentService{
 	@Override
 	public int deleteComment(int recipeCommentId, int replyId) {
 		log.info("deleteReply()");
-		int deleteResult = recipeCommentMapper.delete(recipeCommentId);
-		log.info(deleteResult + "행 대댓글 삭제");
-		return deleteResult;
+		return recipeCommentMapper.delete(recipeCommentId);
 	}
 
 }
