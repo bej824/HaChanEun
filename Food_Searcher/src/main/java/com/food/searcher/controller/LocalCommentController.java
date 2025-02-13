@@ -35,10 +35,11 @@ public class LocalCommentController {
 	@Autowired
 	LocalCommentService localCommentService;
 	
-	@Transactional
 	@ResponseBody
 	@PostMapping("/commentAdd/{localId}")
-	public int commentAddPOST(@PathVariable("localId") int localId, @RequestBody LocalCommentVO localCommentVO,
+	public int commentAddPOST(
+			@PathVariable("localId") int localId,
+			@RequestBody LocalCommentVO localCommentVO,
 			Principal prrincipal)
 			throws ServletException, IOException {
 		log.info("replyAddPOST()");
@@ -60,7 +61,6 @@ public class LocalCommentController {
 	    return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@Transactional
 	@PutMapping("/updateComment/{commentId}") // PUT : 댓글 수정
 	   public ResponseEntity<Integer> updateComment(
 	         @PathVariable("commentId") int commentId,
@@ -71,7 +71,6 @@ public class LocalCommentController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   }
 	
-	@Transactional
 	@PutMapping("/deleteComment/{localId}/{commentId}")
 		public ResponseEntity<Integer> deleteComment(@PathVariable("localId") int localId,
 				@PathVariable("commentId") int commentId){

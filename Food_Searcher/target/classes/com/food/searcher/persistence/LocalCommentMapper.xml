@@ -18,10 +18,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insertLocalComment">
-		INSERT INTO LOCAL_COMMENT (LOCAL_COMMENT_ID, LOCAL_REPLY_ID, MEMBER_ID,
-		COMMENT_CONTENT, COMMENT_DATE_CREATED)
-		VALUES (LOCAL_COMMENT_SEQ.NEXTVAL, #{replyId}, #{memberId},
-		#{commentContent}, SYSDATE)
+		INSERT INTO LOCAL_COMMENT (
+		 LOCAL_COMMENT_ID
+		,LOCAL_REPLY_ID
+		,MEMBER_ID
+		,COMMENT_CONTENT
+		,COMMENT_DATE_CREATED
+		) VALUES (
+		 LOCAL_COMMENT_SEQ.NEXTVAL
+		,#{replyId}
+		,#{memberId}
+		,#{commentContent}
+		,SYSDATE)
 	</insert>
 	
 	<select id = "selectCountByReplyId" resultType="java.lang.Integer">

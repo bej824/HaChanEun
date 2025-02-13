@@ -25,6 +25,8 @@
 	
 	
 	<p>사용조건 : ${discountCouponVO.couponUseCondition }원 이상 구매 시 사용 가능</p>
+	
+	<p>쿠폰 사용 기한 : ${discountCouponVO.couponExpirationDate }일 </p>
 
 	<p>쿠폰 발급 주기 : ${discountCouponVO.couponEvent }</p>
 	
@@ -34,6 +36,7 @@
 	<button id="btn_update" class="button">수정</button>
 	<button id="btn_delete" class="button">삭제</button>
 	<button id="btn_index" class="button">목록</button>
+	<button id="btn_issue" class="button">쿠폰 발급</button>
 	
 	<script type="text/javascript">
 	
@@ -48,6 +51,22 @@
 		
 		$('#btn_index').click(function(){
 			window.location.href = "couponList";
+		})
+		
+		$('#btn_issue').click(function(){
+			let couponId = '${discountCouponVO.couponId }';
+			let couponName = '${discountCouponVO.couponName }';
+			let couponIuuser = '${discountCouponVO.couponIssuer }';
+			let couponExpirationDate = '${discountCouponVO.couponExpirationDate }';
+			let couponEvent = '${discountCouponVO.couponEvent }';
+				
+			console.log("쿠폰 아이디 : " + couponId);
+			
+			let result = confirm(couponName + "를 발급하시겠습니까?");
+			if(result) {
+				
+			}
+				
 		})
 		
 		$('#btn_update').click(function(){

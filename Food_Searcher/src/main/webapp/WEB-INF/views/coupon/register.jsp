@@ -178,7 +178,7 @@
 					    	couponPrice: couponPrice,
 					    	couponEvent: couponEvent,
 					    	couponUseCondition: couponUseCondition,
-					    	couponUseCondition: couponUseCondition,
+					    	couponExpirationDate: couponExpirationDate,
 					    	couponContent: couponContent},
 					    success: function(result) {
 					      if (result == '1') {

@@ -28,8 +28,10 @@ public class LocalLikeController {
 	
 	@ResponseBody
 	@PostMapping("/likecreate")
-	public int likeCreatePOST(@RequestParam("localId") int localId, 
-			@RequestParam("memberLike") int memberLike, Principal principal) {
+	public int likeCreatePOST(
+			@RequestParam("localId") int localId, 
+			@RequestParam("memberLike") int memberLike,
+			Principal principal) {
 		log.info("likeCreatePOST()");
 		String memberId = principal.getName();
 		
@@ -38,7 +40,9 @@ public class LocalLikeController {
 	
 	@ResponseBody
 	@PostMapping("/memberLike")
-	public int memberLikePOST(@RequestParam("localId") int localId, Principal principal) {
+	public int memberLikePOST(
+			@RequestParam("localId") int localId,
+			Principal principal) {
 		log.info("memberLikePOST()");
 		String memberId = principal.getName();
 		
@@ -47,7 +51,8 @@ public class LocalLikeController {
 	
 	@ResponseBody
 	@GetMapping("/likeCount")
-	public Map<String, Object> likeCountGET(@RequestParam("localId") int localId) {
+	public Map<String, Object> likeCountGET(
+			@RequestParam("localId") int localId) {
 		log.info("likeCountGET()");
 		
 		Map<String, Object> likesCount = localLikesService.selectLikesByLocalId(localId);
@@ -61,7 +66,10 @@ public class LocalLikeController {
 	
 	@ResponseBody
 	@PostMapping("likeUpdate")
-	public int likeUpdatePOST(int localId, int memberLike, Principal principal) {
+	public int likeUpdatePOST(
+			int localId,
+			int memberLike,
+			Principal principal) {
 		log.info("likeUpdatePOST()");
 		String memberId = principal.getName();
 		

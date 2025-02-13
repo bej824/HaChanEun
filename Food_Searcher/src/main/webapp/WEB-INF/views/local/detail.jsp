@@ -53,16 +53,11 @@
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<div>
-	<button id="btn_update" class="button">글 수정</button> <button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
+	<button id="btn_update" class="button">글 수정</button>
+	<button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
 	</div>
 	</sec:authorize>
 	<br>
-	<!-- 
-	<button id="btn_recipe" class="button">특산품을 사용한 레시피 확인하기</button> <br>
-	<button id="btn_market" class="button">특산품 맛집 확인하기</button> <br>
-	 -->
-	
-	<%@ include file ="reply.jsp" %>
 	
 	</div>
 	
@@ -71,20 +66,13 @@
 	$(document).ready(function(){
 
 	$('#btn_update').click(function(){
-		window.location.href='modify?localId=' + ${localSpecialityVO.localId };
+		window.location.href=
+			'modify?localId=' + ${localSpecialityVO.localId };
 	})
 	
 		
 	$('#btn_index').click(function(){
 		index();
-	})
-	
-	$('#btn_recipe').click(function(){
-		
-	})
-	
-	$('#btn_market').click(function(){
-		
 	})
 	
 	function index() {
@@ -100,7 +88,10 @@
 			localDistrict = "";
 		}
 		
-		window.location.href='map?localLocal='+ localLocal +'&localDistrict=' + localDistrict + '&localTitle=' + localTitle;
+		window.location.href=
+			'list?localLocal='+ localLocal +
+			'&localDistrict=' + localDistrict +
+			'&localTitle=' + localTitle;
 	}
 	
 	})

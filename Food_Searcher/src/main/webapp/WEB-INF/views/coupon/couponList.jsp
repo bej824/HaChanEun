@@ -70,11 +70,11 @@ li {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 40px"></th>
 				<th style="width: 100px">쿠폰 이름</th>
-				<th style="width: 100px">발급자</th>
+				<th style="width: 100px">발급 권한</th>
 				<th style="width: 120px">쿠폰 가격</th>
 				<th style="width: 120px">쿠폰 제한</th>
+				<th style="width: 120px">쿠폰 사용 기한</th>
 				<th style="width: 100px">쿠폰 발급조건</th>
 			</tr>
 		</thead>
@@ -83,37 +83,12 @@ li {
 	</table>
 	<button id="btn_create" class="button">쿠폰 생성</button>
 	
-	<button id="btn_issue" class="button">쿠폰 발급</button>
-	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
 		let inputCheck = false;
 		
 		couponManagement('', '');
-		
-		$(document).on('click', 'input[name="couponRadio"]', function() {
-			inputCheck = true;	
-			
-		});
-		
-		$('#btn_issue').click(function(){
-			if(inputCheck == false){
-				alert("발급할 쿠폰을 선택해주세요");
-				return;
-			}
-			let radioButton = document.querySelector('input[name="couponRadio"]:checked');
-			let couponId = radioButton.getAttribute('dataId');
-			let couponName = radioButton.getAttribute('dataName');
-				
-			console.log("쿠폰 아이디 : " + couponId);
-			
-			let result = confirm(couponName + "를 발급하시겠습니까?");
-			if(result) {
-				window.location.href="active";
-			}
-				
-		})
 		
 		$('#btn_create').click(function(){
 			window.location.href = "register";
@@ -154,6 +129,7 @@ li {
 		
 		function couponManagement(searchBy, searchText){
 			let event = "";
+			let issuer = "";
 			
 			$.ajax({
 			    type: 'GET',
@@ -173,21 +149,22 @@ li {
 			    		  } else {
 			    			  event = DiscountCouponVO.couponEvent;
 			    		  }
+			    		  
+			    		  if(DiscountCouponVO.couponIssuer == 'ROLE_ADMIN') {
+			    			  issuer = "운영자";
+			    		  } else if(DiscountCouponVO.couponIssuer == 'ROLE_SELLER') {
+			    			  issuer = "판매자";
+			    		  }
 			            	
 			                let row = 
-			                	'<tr>'
-			                	+ '<td><input type="radio" id="couponRadio" name="couponRadio" dataId="'
-			                	+ DiscountCouponVO.couponId + '" dataName="' + DiscountCouponVO.couponName + '"></td>'
-			                    + '<td onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">' + DiscountCouponVO.couponName + '</td>'
-			                    + '<td onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">' + DiscountCouponVO.couponIssuer + '</td>'
-			                    + '<td onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">' + DiscountCouponVO.couponPrice + "원" + '</td>'
-			                    + '<td onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">' + DiscountCouponVO.couponUseCondition + "원" + '</td>'
-			                    + '<td onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">' + event + '</td>'
+			                	'<tr onclick="window.location.href=\'detail?couponId='
+		                		+ DiscountCouponVO.couponId + '\'">'
+			                    + '<td>' + DiscountCouponVO.couponName + '</td>'
+			                    + '<td>' + issuer + '</td>'
+			                    + '<td>' + DiscountCouponVO.couponPrice + "원" + '</td>'
+			                    + '<td>' + DiscountCouponVO.couponUseCondition + "원" + '</td>'
+		                		+ '<td>' + DiscountCouponVO.couponExpirationDate + "일" + '</td>'
+			                    + '<td>' + event + '</td>'
 			                    + '</tr>';
 			                    
 			          		tbody.append(row); // 새로운 데이터 행 추가

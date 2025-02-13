@@ -1,6 +1,8 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +62,25 @@ public class CouponController {
 	}
 	
 	@GetMapping("detail")
-	public void detailGET(int couponId, Model model) {
+	public void detailGET(
+			int couponId,
+			Model model) {
 		log.info("detailGET()");
 		
 		DiscountCouponVO discountCouponVO = discountCouponService.selectOneCoupon(couponId);
 		
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		String nowDate = now.format(formatter);
+		
 		model.addAttribute("discountCouponVO", discountCouponVO);
+		model.addAttribute("nowDate", nowDate);
 	}
 	
 	@GetMapping("modify")
-	public void modifyGET(int couponId, Model model) {
+	public void modifyGET(
+			int couponId,
+			Model model) {
 		log.info("modifyGET()");
 		
 		DiscountCouponVO discountCouponVO = discountCouponService.selectOneCoupon(couponId);
