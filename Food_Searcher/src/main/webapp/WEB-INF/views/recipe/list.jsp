@@ -68,7 +68,7 @@ li {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 5%px">번호</th>
+				<th style="width: 5%">번호</th>
 				<th style="width: 40%">제목</th>
 				<th style="width: 10%">음식</th>
 				<th style="width: 10%">카테고리</th>
@@ -82,7 +82,7 @@ li {
 			<c:forEach var="RecipeVO" items="${recipeList }">
 				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
 					<td>${RecipeVO.recipeId }</td>
-					<td>${RecipeVO.recipeTitle }</td>
+					<td style="text-align: left;">${RecipeVO.recipeTitle }</td>
 					<td>${RecipeVO.recipeFood }</td>
 					<td>${RecipeVO.category }</td>
 					<td>${RecipeVO.memberId }</td>
@@ -90,8 +90,8 @@ li {
 					<fmt:formatDate value="${RecipeVO.recipeDateCreated }"
 						pattern="yyyy-MM-dd" var="recipeDateCreated" />
 					<td>${recipeDateCreated }</td>
-					<td>${RecipeVO.replyCount }</td>
-					<td>${RecipeVO.viewCount }</td>
+					<td style="text-align: right;">${RecipeVO.replyCount }</td>
+					<td style="text-align: right;">${RecipeVO.viewCount }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

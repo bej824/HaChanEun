@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.DirectOrderMapper">
+	<resultMap type="com.food.searcher.domain.DirectOrderVO" id="orderResultMap">
+		<id property="orderId" column="ORDER_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="totalPrice" column="TOTAL_PRICE" />
+		<result property="deliveryAddress" column="DELIVERY_ADDRESS" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO DIRECT_ORDER(
+		ORDER_ID
+		, MEMBER_ID
+		, TOTAL_PRICE
+		, DELIVERY_ADDRESS
+		) VALUES (
+			ORDER_SEQ.NEXTVAL
+			,#{member_id}
+			,#{total_price}
+			,#{delivery_address}
+		)
+	</insert>
+	
+	<select id="selectAll" resultMap="orderResultMap">
+		SELECT * FROM DIRECT_ORDER ORDER BY ORDER_ID DESC
+	</select>
+	
+	<select id="selectOne" resultMap="orderResultMap">
+		SELECT * FROM DIRECT_ORDER WHERE MEMBER_STATUS = #{delivery_status}
+	</select>
+	
+	<update id="changeStatus">
+		UPDATE DIRECT_ORDER SET MEMBER_STATUS = #{delivery_status}
+	</update>
+
+</mapper>

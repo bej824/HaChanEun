@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
+import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemService;
 
 import lombok.extern.log4j.Log4j;
@@ -24,6 +26,9 @@ public class ItemController {
 	
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
 	public void list(Model model, Integer itemId) {
@@ -86,8 +91,18 @@ public class ItemController {
 	}
 	
 	@GetMapping("/order")
-	public void orderGet (Model model) {
+	public void orderGet (Model model, Integer itemId) {
 		log.info("orderGET()");
+		ItemVO itemVO = itemService.getItemById(itemId);
+		model.addAttribute("itemVO", itemVO);
+	}
+	
+	@PostMapping("/order")
+	public String order (DirectOrderVO directOrderVO) {
+		log.info(directOrderVO);
+		int result = directOrderService.orderPurchase(directOrderVO);
+		log.info(result);
+		return "redirect:/home"; // 나중에 마이페이지의 구매내역으로 넘김
 	}
 	
 } // end ItemController
