@@ -39,20 +39,22 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
             <th style="width: 200px">수량 조정</th>
             <th style="width: 160px">금액</th>
             <th style="width: 60px">삭제</th>
+            <th style="width: 0%"></th>
         </tr>
     </thead>
     <tbody>
         <c:forEach var="CartVO" items="${cartVO }"> 
             <tr>
-                <td id="checkBtn" onclick="btnCheck">□</td> <!-- 선택 버튼 -->
+                <td id="btnCheck" onclick="btnCheck()">□</td> <!-- 선택 버튼 -->
                 <td>(썸네일)</td>
-                <td>${CartVO.itemName }</td>
+                <td>${CartVO.itemName } </td>
                 <td>
                     <button class="minusBtn">-</button>
                     <input type="text" style="width: 50px; text-align: center;" name="itemAmount" class="itemAmount" value="${CartVO.cartAmount }">
                     <button class="plusBtn">+</button>
                 </td>
                 <td>가격</td>
+                <td><button class="delBtn" >×</button></td>
                 <td class="cartInfo">
                 <input type="hidden" class="cartId" value="${CartVO.cartId }">
                 <input type="hidden" class="memberId" value="${CartVO.memberId }">
@@ -60,23 +62,16 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                 <input type="hidden" class="itemName" value="${CartVO.itemName }">
                 <input type="hidden" class="itemPrice" value="${CartVO.itemPrice }">
                 <input type="hidden" class="cartDate" value="${CartVO.cartDate }">
-                
                 </td>
-                <td><button class="delBtn" data-cartid="${CartVO.cartId }">×</button></td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
 	
-	<form action="/cart/delete" method="post" class="deleteForm">
-				<input type="hidden" name="cartId" class="deleteCartId">
-				<input type="hidden" name="memberId" value="${CartVO.memberId}">
-	</form>
-	
 	
 	<p>합계 : ?</p>
 	<div class="divOrder">
-	<a id="btnOrder" href="#">주문하기</a>
+	<a id="btnOrder" href="">주문하기</a>
 	</div>
 
 
@@ -95,21 +90,59 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	        let memberId = document.getElementById("memberId").value;  // 숨겨진 input에서 memberId 가져오기
 	        let btnOrder = document.getElementById("btnOrder");  // <a> 태그 선택
 	        if (memberId) {
-	            btnOrder.href = "../cart/order/" + encodeURIComponent(memberId); // href 속성 설정
+	            btnOrder.href = "../order/" + encodeURIComponent(memberId); // href 속성 설정
 	        } else {
 	            console.warn("memberId가 존재하지 않습니다.");
 	        }
 	    });
 	 
-	 $('#delBtn').on('click', function(e){
-		 e.preventDefault();
-		 const cartId = $(this).data("cartId");
-		 // del 버튼에 data속성으로 심어진 cartId 데이터 가져오기
-		 $(".deleteCartId").val(cartId);
-		 $(".deleteForm").submit();
-		 // delete 실행, Form 제출
+		$(".plusBtn").on("click", function(){
+			 var $itemAmount = $(this).closest('tr').find(".itemAmount");
+			    var quantity = parseInt($itemAmount.val(), 10);
+			    quantity++;
+			    $itemAmount.val(quantity); 
+		}); // end plus_btn
+		
+	
+		$(".minusBtn").on("click", function(){
+				var $itemAmount = $(this).closest('tr').find(".itemAmount");
+			    var quantity = parseInt($itemAmount.val(), 10);
+			    
+			    if(quantity > 1) {
+			    quantity--;
+			    $itemAmount.val(quantity);
+			}
+		}); // end minus_btn
+		
+	 $('.delBtn').on('click', function(){
+		 var cartId =  $(this).closest('tr').find('.cartId').val();
+		 var memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
+		 var deleteConfirm = confirm('정말로 삭제하시겠습니까?');
+		 console.log("cartId : " + cartId, "memberId : " + memberId);
 		 
+		 if(deleteConfirm) {
+			 $.ajax({
+				 type : 'DELETE',
+				 url : '../delete/' + cartId,
+				 headers : {
+						'Content-Type' : 'application/json'
+					}, 
+				 success : function(result){
+					 console.log(result);
+					 if(result == 1) {
+						 alert('삭제 완료');
+						 location.reload(true);
+					 } else {
+						alert('삭제 실패');
+						location.reload(true);
+					 }
+				 }
+				 
+			 });
+		 }
 	 });
+		
+	
 	 
 	
 </script>
