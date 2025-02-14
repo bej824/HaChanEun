@@ -27,12 +27,6 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 	
-	@PostMapping("/list")
-	@ResponseBody
-	public String addCartPOST(CartVO cartVO) {
-		int result = cartService.createCart(cartVO);
-		return result + "";
-	}
 	
 	@GetMapping("/list/{memberId}")
 	public String cartList (@PathVariable("memberId") String memberId, Model model) {
@@ -44,12 +38,18 @@ public class CartController {
 		return "cart/list";
 	}
 	
-	@PostMapping("/delete")
-	public String deleteCart(CartVO cartVO) {
-		      log.info("deleteCart()");
-		      cartService.deleteCart(cartVO.getCartId());
-		      return "redirect:/list/" + cartVO.getMemberId();
+	@PostMapping("/add")
+	@ResponseBody
+	public String addCartPOST(CartVO cartVO) {
+		int result = cartService.createCart(cartVO);
+		return result + "";
+	}
 	
+	@DeleteMapping("/delete/{cartId}")
+	public ResponseEntity<Integer> deleteCart(@PathVariable("cartId") int cartId, CartVO cartVO) {
+		      log.info("deleteCart()");
+		      cartService.deleteCart(cartId);
+		      return new ResponseEntity<Integer>(cartService.deleteCart(cartId), HttpStatus.OK);
 	}
 	
 } //end CartController

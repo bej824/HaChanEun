@@ -154,7 +154,7 @@ pageEncoding="UTF-8"%>
 			
 			
 			$.ajax({
-				url: '../cart/list',
+				url: '../cart/add',
 				type: 'POST',
 				data: data,
 				success: function(result){

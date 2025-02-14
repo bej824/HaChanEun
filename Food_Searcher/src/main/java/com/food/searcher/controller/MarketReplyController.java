@@ -66,7 +66,6 @@ public class MarketReplyController {
 		return new ResponseEntity<List<MarketReplyVO>>(list, HttpStatus.OK);
 	} // 댓글 출력
 	
-	 @PreAuthorize("isAuthenticated()")
 	 @PutMapping("/{marketReplyId}") 
 	   public ResponseEntity<Integer> updateReply(
 	         @PathVariable("marketReplyId") int marketReplyId,
@@ -79,7 +78,6 @@ public class MarketReplyController {
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 수정
 	
-	 @PreAuthorize("isAuthenticated()")
 	 @DeleteMapping("/{marketReplyId}/{marketId}") 
 	   public ResponseEntity<Integer> deleteReply(
 	         @PathVariable("marketReplyId") int marketReplyId, 

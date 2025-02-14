@@ -23,8 +23,7 @@
 	width:50px;
 }
 
-#delBtn {
-    position: absolute;
+.delBtn {
     top: 5px;
     right: 5px;
     background-color: red;
