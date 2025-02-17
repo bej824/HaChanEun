@@ -12,18 +12,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		<id property="itemId" column="ITEM_ID" />
 		<result property="storeId" column="STORE_ID" />
-		<result property="itemName" column="ITEM_NAME" />
 		<result property="itemPrice" column="ITEM_PRICE" />
 		<result property="itemContent" column="ITEM_CONTENT" />
 		<result property="itemTag" column="ITEM_TAG" />
 		<result property="itemAmount" column="ITEM_AMOUNT" />
 		<result property="itemDate" column="ITEM_DATE" jdbcType="DATE" />
+		<result property="itemLike" column="ITEM_LIKE" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="memberId" column="MEMBER_ID" />
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO ITEM (ITEM_ID, ITEM_NAME, 
-		ITEM_PRICE, ITEM_CONTENT, ITEM_TAG, ITEM_AMOUNT)
-		VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice}, #{itemContent}, #{itemTag}, #{itemAmount})		
+		INSERT INTO ITEM (
+		ITEM_ID,
+		ITEM_NAME, 
+		ITEM_PRICE,
+		ITEM_CONTENT, 
+		ITEM_TAG, 
+		ITEM_AMOUNT, 
+		MEMBER_ID)
+		VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice}, #{itemContent}, #{itemTag}, #{itemAmount}, #{memberId})		
 	</insert>
 	
 	<select id="selectList" resultMap="itemResultMap">

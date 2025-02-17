@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -17,11 +16,13 @@ import lombok.ToString;
 public class ItemVO {
 	private int itemId;
 	private int storeId;
-	private String itemName;
 	private int itemPrice;
 	private String itemContent;
 	private String itemTag;
 	private int itemAmount;
 	private Date itemDate;
+	private int itemLike;
+	private String itemName;
+	private String memberId;
 	
 }

@@ -8,4 +8,5 @@ public interface CartService {
 	int createCart(CartVO cartVO);
 	List<CartVO> getCartById(String memberId);
 	int deleteCart(int cartId);
+	int updateAmount(int cartAmount, int cartId);
 }

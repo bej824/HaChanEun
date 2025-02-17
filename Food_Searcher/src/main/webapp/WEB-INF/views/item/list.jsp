@@ -42,7 +42,11 @@ li {
 <h1>상품 리스트</h1>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-<a href="/searcher/item/register" class="button">상품 등록</a>
+<a href="/searcher/item/register" class="button">상품 등록</a>  
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_MEMBER')">
+<a id="cartLink" href="#">장바구니로 이동</a>
 </sec:authorize>
 
 <hr>
@@ -60,10 +64,6 @@ li {
 			</c:forEach>
 	
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-	
-	<sec:authorize access="hasRole('ROLE_MEMBER')">
-	<a id="cartLink" href="#">장바구니로 이동</a>
-	</sec:authorize>
 
 <script type="text/javascript">
 	

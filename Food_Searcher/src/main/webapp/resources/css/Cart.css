@@ -50,7 +50,7 @@
 }
 
 table {
-	display:inline;
+	display:table;
     width: 80%;
     border-collapse: collapse; /* 테두리 겹침 제거 */
     margin-top: 20px;

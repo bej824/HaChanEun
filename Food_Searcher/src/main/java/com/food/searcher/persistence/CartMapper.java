@@ -11,4 +11,5 @@ public interface CartMapper {
 	int insert(CartVO cartVO);
 	List<CartVO> selectOne(String memberId);
 	int delete(int cartId);
+	int updateAmount(int cartAmount, int cartId);
 }
