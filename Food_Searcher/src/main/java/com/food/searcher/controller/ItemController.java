@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,12 +44,15 @@ public class ItemController {
 		log.info("registerGET()");
 	}
 	
-	@PostMapping("/register")
-	public String itemPOST (ItemVO itemVO) {
+	@PostMapping("/register")	
+	public String itemPOST (ItemVO itemVO, Principal principal) {
 		log.info("registerPost()");
 		log.info("itemVO = " + itemVO.toString());
+		log.info("principal = " + principal.getName());
 		
+		itemVO.setMemberId(principal.getName());
 		int result = itemService.createItem(itemVO);
+		
 		log.info(result + "행 등록");
 		return "redirect:/item/list";		
 	}
@@ -91,6 +93,9 @@ public class ItemController {
 		
 		return "redirect:/item/list";
 	}
+<<<<<<< HEAD
+
+=======
 	
 	@GetMapping("/order")
 	public void orderGet (Model model, Integer itemId) {
@@ -125,5 +130,6 @@ public class ItemController {
 		model.addAttribute("itemVO", itemVO);
 		model.addAttribute("directOrderVO", directOrderVO);
 	}
+>>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 	
 } // end ItemController

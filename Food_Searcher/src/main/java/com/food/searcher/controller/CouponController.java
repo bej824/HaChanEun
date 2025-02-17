@@ -42,10 +42,14 @@ public class CouponController {
 		return discountCouponService.createCoupon(discountCouponVO);
 	}
 	
-	@GetMapping("couponList")
-	public void couponListGET() {
+	@GetMapping("list")
+	public void couponListGET(
+			@RequestParam(value = "itemId", required = false, defaultValue = "0") int itemId,
+			Model model
+			) {
 		log.info("couponListGET()");
 		
+		model.addAttribute("itemId", itemId);
 	}
 	
 	@ResponseBody
@@ -63,18 +67,15 @@ public class CouponController {
 	
 	@GetMapping("detail")
 	public void detailGET(
-			int couponId,
+			@RequestParam(value = "itemId", required = false, defaultValue = "0") int itemId,
+			@RequestParam(value = "couponId")int couponId,
 			Model model) {
 		log.info("detailGET()");
 		
 		DiscountCouponVO discountCouponVO = discountCouponService.selectOneCoupon(couponId);
 		
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-		String nowDate = now.format(formatter);
-		
 		model.addAttribute("discountCouponVO", discountCouponVO);
-		model.addAttribute("nowDate", nowDate);
+		model.addAttribute("itemId", itemId);
 	}
 	
 	@GetMapping("modify")

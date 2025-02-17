@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -27,9 +28,14 @@ public class CouponActiveController {
 	@GetMapping("activeRegister")
 	public void activeRegisterGet(
 			CouponActiveVO couponActiveVO,
-			Model model) {
+			Model model,
+			Principal principal) {
 		log.info("activeRegisterGet()");
 		
+		couponActiveVO = couponActiveService.selectOneCoupon(couponActiveVO);
+		log.info(couponActiveVO);
+		
+		model.addAttribute("couponActiveVO", couponActiveService.selectOneCoupon(couponActiveVO));
 		
 	}
 	
@@ -38,9 +44,7 @@ public class CouponActiveController {
 	public int activePOST(CouponActiveVO couponActiveVO) {
 		log.info("couponActivePOST()");
 		
-		int result = couponActiveService.createCouponActive(couponActiveVO);
-		
-		return result;
+		return couponActiveService.createCouponActive(couponActiveVO);
 		
 	}
 }

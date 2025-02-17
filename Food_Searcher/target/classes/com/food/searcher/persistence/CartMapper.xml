@@ -42,4 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM CART WHERE CART_ID = #{cartId}
 	</delete>
 	
+	<update id="updateAmount">
+		UPDATE CART
+		SET CART_AMOUNT = #{cartAmount} WHERE CART_ID = #{cartId}
+	</update>
+	
 </mapper>

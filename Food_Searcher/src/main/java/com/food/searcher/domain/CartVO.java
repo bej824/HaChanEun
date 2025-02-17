@@ -29,6 +29,9 @@ public class CartVO {
 		this.totalPrice = this.cartAmount * this.itemPrice;
 	}
 	
+	public void updateAmount(int cartAmount) {
+		this.cartAmount = cartAmount;
+	}
 	
 	public void setCartId(int cartId) {
 		this.cartId = cartId;

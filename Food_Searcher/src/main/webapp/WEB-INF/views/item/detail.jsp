@@ -53,6 +53,7 @@ pageEncoding="UTF-8"%>
 		
 		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</p>
 		<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</p>
+		<p>판매자 : ${itemVO.memberId } </p>
 	</div>
 	
 	
@@ -125,6 +126,24 @@ pageEncoding="UTF-8"%>
 				 $('#deleteForm').submit();
 			 }
 		});
+<<<<<<< HEAD
+	});
+	
+		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
+	
+		$(".plusBtn").on("click", function(){
+			$(".itemAmount").val(quantity++);
+			console.log("수량 증가");
+		});
+		
+	
+		$(".minusBtn").on("click", function(){
+				if(quantity > 1){
+					$(".itemAmount").val(quantity--);
+			} 
+				console.log("수량 감소");
+		});
+=======
 	 // end deleteItem
 	
 		let quantity = $(".itemAmount").val();
@@ -150,6 +169,7 @@ pageEncoding="UTF-8"%>
 		        console.log(quantity);
 		    }
 		}); // end minus_btn
+>>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 		
 		const data = {
 				memberId : $('#memberId').val(),
@@ -157,15 +177,16 @@ pageEncoding="UTF-8"%>
 				cartAmount : $(".itemAmount").val(),
 		}
 		console.log(data);
+		// 3개 값을 data로 묶음
 		
 		$('#btnCart').on("click", function (e){
 			data.cartAmount = $(".itemAmount").val()
-			
 			
 			$.ajax({
 				url: '../cart/add',
 				type: 'POST',
 				data: data,
+				// data 장바구니로 전달 (cart Insert 실행)
 				success: function(result){
 				if (result == '1') {
 					alert("장바구니 추가 성공")	

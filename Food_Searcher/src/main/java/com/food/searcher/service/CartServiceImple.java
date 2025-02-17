@@ -48,4 +48,10 @@ public class CartServiceImple implements CartService {
 		return cartMapper.delete(cartId);
 	}
 
+	@Override
+	public int updateAmount(int cartAmount, int cartId) {
+		log.info("updateAmount()");
+		return cartMapper.updateAmount(cartAmount, cartId);
+	}
+
 }

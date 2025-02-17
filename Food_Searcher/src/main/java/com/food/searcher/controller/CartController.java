@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -50,6 +51,11 @@ public class CartController {
 		      log.info("deleteCart()");
 		      cartService.deleteCart(cartId);
 		      return new ResponseEntity<Integer>(cartService.deleteCart(cartId), HttpStatus.OK);
+	}
+	
+	@PutMapping("/{cartId}/{cartAmount}")
+	public int updateAmount(int cartAmount, int cartId) {
+		return cartService.updateAmount(cartAmount, cartId);
 	}
 	
 } //end CartController
