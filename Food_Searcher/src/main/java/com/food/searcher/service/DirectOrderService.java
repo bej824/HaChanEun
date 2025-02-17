@@ -6,7 +6,8 @@ import com.food.searcher.domain.DirectOrderVO;
 
 public interface DirectOrderService {
 	List<DirectOrderVO> getAllOrder();
-	DirectOrderVO getOrder(String deliveryStatus);
+	List<DirectOrderVO> getOrder(String memberId);
+	DirectOrderVO getselectOne(int orderId);
 	int orderPurchase(DirectOrderVO directOrderVO);
 	int changeStatus(String deliveryStatus);
 }

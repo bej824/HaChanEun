@@ -6,6 +6,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.food.searcher.config.RootConfig;
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.RecipeVO;
 
 import lombok.extern.log4j.Log4j;
@@ -17,9 +18,12 @@ public class RecipeMapperTest {
 	
 	@Autowired RecipeMapper recipeMapper;
 	
+	@Autowired DirectOrderMapper directOrderMapper;
+	
 	@org.junit.Test
 	public void Test() {
-		insertRecipe();
+//		insertRecipe();
+		insertOrder();
 	}
 
 	private void insertRecipe() {
@@ -32,6 +36,16 @@ public class RecipeMapperTest {
 		int result = recipeMapper.insert(recipeVO);
 		log.info(result);
 		
+	}
+	
+	private void insertOrder() {
+		DirectOrderVO directOrderVO = new DirectOrderVO();
+		directOrderVO.setMemberId("future");
+		directOrderVO.setTotalPrice(4000);
+		directOrderVO.setDeliveryAddress("주소");
+		log.info(directOrderVO);
+		int result = directOrderMapper.insert(directOrderVO);
+		log.info(result);
 	}
 
 }

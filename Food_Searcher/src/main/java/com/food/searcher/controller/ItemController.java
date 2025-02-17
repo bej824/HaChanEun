@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.food.searcher.domain.DirectOrderVO;
@@ -98,11 +100,30 @@ public class ItemController {
 	}
 	
 	@PostMapping("/order")
-	public String order (DirectOrderVO directOrderVO) {
+	public String order (@RequestBody DirectOrderVO directOrderVO) {
 		log.info(directOrderVO);
 		int result = directOrderService.orderPurchase(directOrderVO);
 		log.info(result);
-		return "redirect:/home"; // 나중에 마이페이지의 구매내역으로 넘김
+		return "redirect:/item/purchaseHistory";
+	}
+	
+	@GetMapping("/purchaseHistory")
+	public void purchaseHistory(Model model, Principal principal) {
+		log.info("purchaseHistory()");
+		List<DirectOrderVO> directOrderVO = directOrderService.getOrder(principal.getName());
+		log.info("directOrderVO" + directOrderVO);
+		List<DirectOrderVO> allList = directOrderService.getAllOrder();
+		model.addAttribute("directOrderVO", directOrderVO);
+		model.addAttribute("allList", allList);
+	}
+	
+	@GetMapping("/purchaseInfo")
+	public void purchaseInfo(Model model, Integer orderId) {
+		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
+		log.info("info : " + directOrderVO);
+		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+		model.addAttribute("itemVO", itemVO);
+		model.addAttribute("directOrderVO", directOrderVO);
 	}
 	
 } // end ItemController

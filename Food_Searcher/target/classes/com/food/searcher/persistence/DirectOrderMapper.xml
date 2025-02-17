@@ -10,20 +10,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="totalPrice" column="TOTAL_PRICE" />
 		<result property="deliveryAddress" column="DELIVERY_ADDRESS" />
 		<result property="deliveryStatus" column="DELIVERY_STATUS" />
+		<result property="deliveryDate" column="DELIVERY_DATE" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="totalCount" column="TOTAL_COUNT" />
+		<result property="deliveryCompletedDate" column="DELIVERY_COMPLETED_DATE" />
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO DIRECT_ORDER(
-		ORDER_ID
-		, MEMBER_ID
-		, TOTAL_PRICE
-		, DELIVERY_ADDRESS
-		) VALUES (
-			ORDER_SEQ.NEXTVAL
-			,#{member_id}
-			,#{total_price}
-			,#{delivery_address}
-		)
+	    INSERT INTO DIRECT_ORDER(
+	        ORDER_ID,
+	        MEMBER_ID,
+	        ITEM_ID,
+	        TOTAL_COUNT,
+	        TOTAL_PRICE,
+	        DELIVERY_ADDRESS
+	    ) VALUES (
+	        ORDER_SEQ.NEXTVAL, 
+	        #{memberId}, 
+	        #{itemId},
+	        #{totalCount},
+	        #{totalPrice}, 
+	        #{deliveryAddress}
+	    )
 	</insert>
 	
 	<select id="selectAll" resultMap="orderResultMap">
@@ -31,11 +39,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectOne" resultMap="orderResultMap">
-		SELECT * FROM DIRECT_ORDER WHERE MEMBER_STATUS = #{delivery_status}
+		SELECT * FROM DIRECT_ORDER d
+		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		WHERE ORDER_ID = #{orderId}
+	</select>
+	
+	<select id="selectMember" resultMap="orderResultMap">
+		SELECT * FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId}
 	</select>
 	
 	<update id="changeStatus">
-		UPDATE DIRECT_ORDER SET MEMBER_STATUS = #{delivery_status}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}
 	</update>
 
 </mapper>

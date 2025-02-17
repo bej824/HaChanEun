@@ -81,7 +81,7 @@ pageEncoding="UTF-8"%>
 		
 	<sec:authorize access="hasRole('ROLE_MEMBER')">
 		 선택된 수량 : <button class="minusBtn">-</button>
-		<input type="text" name="itemAmount" class="itemAmount" value="1">
+		<input type="text" name="itemAmount" class="itemAmount" value="1" readonly>
 		<button class="plusBtn">+</button>
 		<br><br>
 		

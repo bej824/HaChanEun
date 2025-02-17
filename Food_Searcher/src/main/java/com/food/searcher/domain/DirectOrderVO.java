@@ -1,5 +1,7 @@
 package com.food.searcher.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,8 @@ public class DirectOrderVO {
 	private int totalPrice;
 	private String deliveryAddress;
 	private String deliveryStatus;
+	private Date deliveryDate;
+	private int itemId;
+	private int totalCount;
+	private Date deliveryCompletedDate;
 }

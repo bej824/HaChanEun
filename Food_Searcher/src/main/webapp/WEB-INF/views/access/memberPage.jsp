@@ -85,7 +85,7 @@
 	
 	<br>
 	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
-	<button>구매 내역</button>
+	<a href="../item/purchaseHistory" class="button">구매 내역</a>
 	<br>
 
 	<button id="btn_update" class="button">수정하기</button>
