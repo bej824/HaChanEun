@@ -84,6 +84,9 @@
 	</c:if>
 	
 	<br>
+	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
+	<button>구매 내역</button>
+	<br>
 
 	<button id="btn_update" class="button">수정하기</button>
 	<button id="btn_inactive" class="button">회원탈퇴</button>

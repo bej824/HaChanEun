@@ -87,7 +87,7 @@ pageEncoding="UTF-8"%>
 		<br><br>
 		
 		<button id="btnCart" class="button">장바구니 담기</button><br>
-    	<button type="button" id="btnBuy" class="button">바로 구매</button>
+    	<button type="button" onclick="window.location.href='order?itemId=${itemVO.itemId}&count=' + $('.itemAmount').val()" id="btnBuy" class="button">바로 구매</button>
 	</sec:authorize>
 	
     <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
@@ -126,6 +126,7 @@ pageEncoding="UTF-8"%>
 				 $('#deleteForm').submit();
 			 }
 		});
+<<<<<<< HEAD
 	});
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
@@ -142,6 +143,33 @@ pageEncoding="UTF-8"%>
 			} 
 				console.log("수량 감소");
 		});
+=======
+	 // end deleteItem
+	
+		let quantity = $(".itemAmount").val();
+		console.log(quantity);
+		let amount = '${itemVO.itemAmount}'
+		console.log(amount);
+	
+		$(".plusBtn").on("click", function() {
+		    if (quantity < amount) { 
+		        quantity++;
+		        $(".itemAmount").val(quantity);  
+		        console.log("수량 증가");
+		        console.log(quantity);
+		    }
+		});// end plus_btn
+		
+	
+		$(".minusBtn").on("click", function() {
+		    if (quantity > 1) {  
+		        quantity--; 
+		        $(".itemAmount").val(quantity);
+		        console.log("수량 감소");
+		        console.log(quantity);
+		    }
+		}); // end minus_btn
+>>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 		
 		const data = {
 				memberId : $('#memberId').val(),
@@ -170,21 +198,17 @@ pageEncoding="UTF-8"%>
 			
 		}); // end btnCart
 	
-		$('.btnBuy').on('click', function (e){
-			
+		$('#btnBuy').on('click', function() {
+			data.amount = $(".itemAmount").val();
+		    let amount = $('.amount_input').val();
+		    $('#amountInput').val(amount);
+
+		    $('#orderForm').submit();
 		}); // end btnBuy
-		
-		document.getElementById("btnBuy").addEventListener("click", function() {
-		    let amount = document.querySelector(".amount_input").value;
-		    document.getElementById("amountInput").value = amount;
-
-		    document.getElementById("orderForm").submit();
-		});
-
-		
+	});
 		
 	</script>
-	<!-- 댓글 -->
+	<!-- 리뷰 -->
 	
 	</div> <!-- area -->
 </body>
