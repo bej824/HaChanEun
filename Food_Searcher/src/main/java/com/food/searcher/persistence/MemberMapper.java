@@ -18,7 +18,12 @@ public interface MemberMapper {
 	MemberVO selectMemberByMemberId(String memberId);
 	
 	// 아이디 찾기
-	List<MemberVO> searchId(@Param("memberName") String memberName, @Param("email") String email, @Param("memberDateOfBirth") int memberDateOfBirth, @Param("memberMBTI") String memberMBTI);
+	List<MemberVO> searchId
+			(@Param("memberId") String memberId
+			,@Param("memberName") String memberName
+			,@Param("email") String email
+			,@Param("memberDateOfBirth") int memberDateOfBirth
+			,@Param("memberMBTI") String memberMBTI);
 	
 	// 비밀번호 확인
 	String searchPw(@Param("memberId") String memberId);

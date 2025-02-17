@@ -72,7 +72,7 @@
 	
 		
 		function couponList() {
-			window.open("../coupon/couponList", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
+			window.open("../coupon/list", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
 		}
 		
 	</script>

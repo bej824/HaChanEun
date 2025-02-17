@@ -50,7 +50,7 @@
 	$(document).ready(function(){
 		
 		$('#btn_index').click(function(){
-			window.location.href = "couponList";
+			window.location.href = "list?itemId=" + ${itemId };
 		})
 		
 		$('#btn_issue').click(function(){
@@ -64,7 +64,7 @@
 			
 			let result = confirm(couponName + "를 발급하시겠습니까?");
 			if(result) {
-				
+				window.location.href = "activeRegister?itemId= " + ${itemId} + "&couponId=" + ${discountCouponVO.couponId };
 			}
 				
 		})
@@ -86,7 +86,7 @@
 				    success: function(result) {
 				      if (result == '1') {
 				    	alert("쿠폰이 삭제되었습니다.");
-				    	window.location.href = "couponList";
+				    	window.location.href = "list?itemId=" + ${itemId };
 				      } else {
 				    	  alert("다시 시도해주세요.");
 				      }

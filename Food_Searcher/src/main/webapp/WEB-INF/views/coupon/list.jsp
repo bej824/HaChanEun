@@ -157,8 +157,9 @@ li {
 			    		  }
 			            	
 			                let row = 
-			                	'<tr onclick="window.location.href=\'detail?couponId='
-		                		+ DiscountCouponVO.couponId + '\'">'
+			                	'<tr onclick="window.location.href=\'detail?itemId='
+			                	+ ${itemId }
+			                	+ '&couponId=' + DiscountCouponVO.couponId + '\'">'
 			                    + '<td>' + DiscountCouponVO.couponName + '</td>'
 			                    + '<td>' + issuer + '</td>'
 			                    + '<td>' + DiscountCouponVO.couponPrice + "원" + '</td>'
