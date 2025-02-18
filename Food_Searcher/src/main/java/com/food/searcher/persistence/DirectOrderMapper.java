@@ -9,7 +9,8 @@ import com.food.searcher.domain.DirectOrderVO;
 @Mapper
 public interface DirectOrderMapper {
 	List<DirectOrderVO> selectAll();
-	DirectOrderVO selectOne(String deliveryStatus);
+	List<DirectOrderVO> selectMember(String memberId);
+	DirectOrderVO selectOne(int orderId);
 	int insert(DirectOrderVO directOrderVO);
 	int changeStatus(String deliveryStatus);
 }

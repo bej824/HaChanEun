@@ -12,37 +12,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="couponId" column="COUPON_ID" />
 		<result property="couponName" column="COUPON_NAME" />
-		<result property="couponIssuedDate" column="COUPON_ISSUEDDATE" />
-		<result property="couponExpireDate" column="COUPON_EXPIREDATE" />
+		<result property="couponIssuedDate" column="COUPON_ISSUED_DATE" />
+		<result property="couponExpireDate" column="COUPON_EXPIRE_DATE" />
 		<result property="couponUseDate" column="COUPON_USE_DATE" />
-		<result property="couponUseItemId" column="COUPON_USE_ITEM_ID" />
-		<result property="couponUseItemName" column="COUPON_USE_ITEM_NAME" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="itemName" column="ITEM_NAME" />
 
 	</resultMap>
 	
 	<insert id="insertCouponActive">
-		INSERT INTO COUPON_ACTIVE(
-		 COUPON_ACTIVE_ID
+		INSERT INTO COUPON_ACTIVE
+		(COUPON_ACTIVE_ID
 		,MEMBER_ID
 		,COUPON_ID
 		,COUPON_NAME
-		,COUPON_ISSUEDDATE
-		,COUPON_EXPIREDATE
+		,COUPON_ISSUED_DATE
+		,COUPON_EXPIRE_DATE
 		,COUPON_USE_DATE
-		,COUPON_USE_ITEM_ID
-		,COUPON_USE_ITEM_NAME
-		) VALUES (
-		 COUPON_ACTIVE_SEQ.NEXTVAL
+		,ITEM_ID
+		,ITEM_NAME
+		) VALUES
+		(COUPON_ACTIVE_SEQ.NEXTVAL
 		,#{memberId}
 		,#{couponId}
 		,#{couponName}
 		,#{couponIssuedDate}
 		,#{couponExpireDate}
 		,null
-		,#{couponUseItemId }
-		,#{couponUseItemName }
+		,#{itemId }
+		,#{itemName }
 		)
 		
 	</insert>
+	
+	<select id="selectCouponActive" resultMap="couponActiveMap">
+		SELECT *
+		FROM COUPON_ACTIVE
+		WHERE 1=1
+		<if test="memberId != null and memberId != ''">
+			AND MEMBER_ID = #{memberId}
+		</if>
+	</select>
+	
+	<update id="updateCouponActiveByCouponActiveId">
+		UPDATE COUPON_ACTIVE
+		SET COUPON_USE_DATE = #{couponUseDate}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
 	
 </mapper>

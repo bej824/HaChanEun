@@ -72,21 +72,26 @@
     <script>
 	  	$(document).ready(function() {
 	    // input 필드들에 대해 이벤트 리스너를 설정
-	    $("#postcode, #address, #detailaddress").on("input", updateOutput);
-	
-	    function updateOutput() {
-	      // 각 input 필드의 값을 가져오기
-	      const value1 = $("#postcode").val();
-	      const value2 = $("#address").val();
-	      const value3 = $("#detailaddress").val();
-	
-	      // 결과를 하나의 필드에 합치기
-	      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
-	    }
-  	});
-</script>
+		    $("#postcode, #address, #detailaddress").on("input", updateOutput);
+		
+		    function updateOutput() {
+		      // 각 input 필드의 값을 가져오기
+		      const value1 = $("#postcode").val();
+		      const value2 = $("#address").val();
+		      const value3 = $("#detailaddress").val();
+		
+		      // 결과를 하나의 필드에 합치기
+		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
+		    }
+  		});
+	</script>
     
     <input type="hidden" id="deleveryAddress">
+    
+    <form action="order" method="POST">
+    
+    </form>
+    
     <script type="text/javascript">
     	$(document).ready(function() {
     		$('#order').click(function(e){
@@ -100,26 +105,29 @@
     			console.log("memberId : " + memberId);
     			let totalPrice = count * itemPrice;
     			console.log("총 금액 : " + totalPrice);
-    			let deleveryAddress = $("#deleveryAddress").val();
+    			let deliveryAddress = $("#deleveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
     			
     			
     			$.ajax({
-    				url : 'order?itemId='+itemId+'&count='+count,
-    				type : 'POST',
-    				headers : { // 헤더 정보
-						'Content-Type' : 'application/json' // json content-type 설정
-					}, 
-					data : {
-						memberId : memberId,
-						totalPrice : totalPrice,
-						deleveryAddress : deleveryAddress
-				},
-					success : function(result) {
-						if(result == 1) {
-							alert('결제 성공');
-						}
-					}
+    			    url : 'order?itemId=' + itemId + '&count=' + count,
+    			    type : 'POST',
+    			    headers : {
+    			        'Content-Type' : 'application/json' // json content-type 설정
+    			    }, 
+    			    data : JSON.stringify({
+    			        memberId : memberId,
+    			        itemId : itemId,
+    			        totalCount : count,
+    			        totalPrice : totalPrice,
+    			        deliveryAddress : deliveryAddress
+    			    }),
+    			    success : function(result) {
+    			        if(result == 1) {
+    			            alert('결제 성공');
+    			            window.location.href = '/item/purchaseHistory';
+    			        }
+    			    }
     			});
     		});
     	});

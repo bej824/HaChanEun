@@ -15,7 +15,7 @@ public class RecipeViewsTask {
 	@Autowired
 	private RecipeViewMapper recipeViewMapper;
 	
-	@Scheduled(cron = "0 0 0 * * *") // 자정에 실행
+	@Scheduled(cron = "0 0 12 * * *") // 자정에 실행
 	public void viewsCount() {
 		log.info("조회수 확인");
 		

@@ -30,8 +30,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
-		(MEMBER_ID, PASSWORD, MEMBER_NAME, MEMBER_DATE_OF_BIRTH, EMAIL, EMAIL_AGREE, MEMBER_GENDER, MEMBER_MBTI, MEMBER_STATUS)
-		VALUES (#{memberId}, #{password}, #{memberName}, #{memberDateOfBirth}, #{email}, #{emailAgree}, #{memberGender}, #{memberMBTI}, 'active')
+		(MEMBER_ID
+		,PASSWORD
+		,MEMBER_NAME
+		,MEMBER_DATE_OF_BIRTH
+		,EMAIL
+		,EMAIL_AGREE
+		,MEMBER_GENDER
+		,MEMBER_MBTI
+		,MEMBER_STATUS)
+		VALUES 
+		(#{memberId}
+		,#{password}
+		,#{memberName}
+		,#{memberDateOfBirth}
+		,#{email}
+		,#{emailAgree}
+		,#{memberGender}
+		,#{memberMBTI}
+		,'active')
 
 	</insert>
 	
@@ -51,13 +68,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM MEMBER
 		WHERE 1=1
 		<if test="memberName != null and memberName != '' and email != null and email != ''">
-			AND MEMBER_NAME = #{memberName} AND EMAIL = #{email}
+			AND MEMBER_NAME = #{memberName} 
+			AND EMAIL = #{email}
 		</if>
 		<if test="memberDateOfBirth != 0 and memberDateOfBirth != ''">
 			AND MEMBER_DATE_OF_BIRTH = #{memberDateOfBirth}
 		</if>
 		<if test="memberMBTI != null and memberMBTI != ''">
 			AND MEMBER_MBTI = #{memberMBTI}
+		</if>
+		<if test="memberId != null and memberId != ''">
+			AND MEMBER_ID = #{memberId}
 		</if>
 	</select>
 	

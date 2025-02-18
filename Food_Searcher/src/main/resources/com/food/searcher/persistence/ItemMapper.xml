@@ -48,6 +48,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ITEM_ID = #{itemId}
 	</update>
 	
+	<update id="itemAmount">
+		UPDATE ITEM SET ITEM_AMOUNT = #{itemAmount}
+		WHERE ITEM_ID = #{itemId}
+	</update>
+	
 	<delete id="delete">
 		DELETE FROM ITEM WHERE ITEM_ID = #{itemId}
 	</delete>

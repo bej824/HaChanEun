@@ -213,14 +213,16 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/idSearchAjax") // 아이디 찾기
 	public List<MemberVO> idSearchAjaxPOST(
-			@RequestParam("memberName") String memberName,
-			@Param("email") String email,
-			@RequestParam("memberDateOfBirth") int memberDateOfBirth,
-			@RequestParam("memberMBTI") String memberMBTI,
+			@RequestParam(value = "memberId", required=false) String memberId,
+			@RequestParam(value = "memberName", required=false) String memberName,
+			@RequestParam(value = "email", required=false) String email,
+			@RequestParam(value = "memberDateOfBirth", required=false, defaultValue = "0") int memberDateOfBirth,
+			@RequestParam(value = "memberMBTI", required=false) String memberMBTI,
 			MemberVO memberVO) {
 		log.info("idSearchAjaxPOST()");
 		
-		List<MemberVO> result = memberService.searchId(memberName, email, memberDateOfBirth, memberMBTI);
+		List<MemberVO> result = memberService.searchId
+				(memberId, memberName, email, memberDateOfBirth, memberMBTI);
 
 		return result;
 	}
