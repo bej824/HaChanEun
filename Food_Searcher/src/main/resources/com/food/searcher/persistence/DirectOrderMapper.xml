@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemId" column="ITEM_ID" />
 		<result property="totalCount" column="TOTAL_COUNT" />
 		<result property="deliveryCompletedDate" column="DELIVERY_COMPLETED_DATE" />
+		<result property="deliveryRefund" column="DELIVERY_REFUND" />
 	</resultMap>
 	
 	<insert id="insert">
@@ -38,6 +39,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM DIRECT_ORDER ORDER BY ORDER_ID DESC
 	</select>
 	
+	<select id="selectListByPagination" resultMap="orderResultMap">
+		SELECT * FROM
+		(
+		SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC)
+		AS RN, DIRECT_ORDER.* FROM DIRECT_ORDER
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
 	<select id="selectOne" resultMap="orderResultMap">
 		SELECT * FROM DIRECT_ORDER d
 		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
@@ -45,11 +55,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectMember" resultMap="orderResultMap">
-		SELECT * FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId}
+		SELECT * FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId} ORDER BY ORDER_ID DESC
 	</select>
 	
-	<update id="changeStatus">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}
+	<update id="cancel">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="refund">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="refundOK">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="deliveryReady">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="deliveryCompleted">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, DELIVERY_COMPLETED_DATE = SYSDATE, DELIVERY_REFUND = SYSDATE + 7  WHERE ORDER_ID = #{orderId}
 	</update>
 
 </mapper>

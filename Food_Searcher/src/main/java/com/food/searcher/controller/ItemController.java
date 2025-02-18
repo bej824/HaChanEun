@@ -15,6 +15,8 @@ import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemService;
+import com.food.searcher.util.PageMaker;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -93,9 +95,6 @@ public class ItemController {
 		
 		return "redirect:/item/list";
 	}
-<<<<<<< HEAD
-
-=======
 	
 	@GetMapping("/order")
 	public void orderGet (Model model, Integer itemId) {
@@ -113,11 +112,17 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseHistory")
-	public void purchaseHistory(Model model, Principal principal) {
+	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
 		log.info("purchaseHistory()");
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(directOrderService.getAllOrder().size());
 		List<DirectOrderVO> directOrderVO = directOrderService.getOrder(principal.getName());
 		log.info("directOrderVO" + directOrderVO);
-		List<DirectOrderVO> allList = directOrderService.getAllOrder();
+		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
+		
+		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("directOrderVO", directOrderVO);
 		model.addAttribute("allList", allList);
 	}
@@ -130,6 +135,5 @@ public class ItemController {
 		model.addAttribute("itemVO", itemVO);
 		model.addAttribute("directOrderVO", directOrderVO);
 	}
->>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 	
 } // end ItemController

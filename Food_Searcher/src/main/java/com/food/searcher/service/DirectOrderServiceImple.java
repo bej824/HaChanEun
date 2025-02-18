@@ -10,6 +10,7 @@ import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ItemMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -52,9 +53,43 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		return result;
 	}
 
+	@Transactional(value = "transactionManager")
 	@Override
-	public int changeStatus(String deliveryStatus) {
-		return directOrderMapper.changeStatus(deliveryStatus);
+	public int cancel(String deliveryStatus, int orderId) {
+		log.info("cancel()");
+		int result = directOrderMapper.cancel(deliveryStatus, orderId);
+		log.info(result + "행 업데이트 완료");
+		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
+		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
+		int itemAmount = itemVO.getItemAmount() + directOrderVO.getTotalCount();
+		int item = itemMapper.itemAmount(itemAmount, directOrderVO.getItemId());
+		log.info(item + "행 업데이트 완료");
+		return result;
+	}
+	
+	@Override
+	public int refund(String deliveryStatus, int orderId) {
+		return directOrderMapper.refund(deliveryStatus, orderId);
+	}
+	
+	@Override
+	public int refundOK(String deliveryStatus, int orderId) {
+		return directOrderMapper.refundOK(deliveryStatus, orderId);
+	}
+	
+	@Override
+	public int deliveryReady(String deliveryStatus, int orderId) {
+		return directOrderMapper.deliveryReady(deliveryStatus, orderId);
+	}
+	
+	@Override
+	public int deliveryCompleted(String deliveryStatus, int orderId) {
+		return directOrderMapper.deliveryCompleted(deliveryStatus, orderId);
+	}
+
+	@Override
+	public List<DirectOrderVO> getPagingBoards(Pagination pagination) {
+		return directOrderMapper.selectListByPagination(pagination);
 	}
 
 }

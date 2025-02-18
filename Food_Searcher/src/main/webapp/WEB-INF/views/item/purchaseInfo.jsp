@@ -29,41 +29,172 @@
 	<div>
 		<p>배송 현황 : ${directOrderVO.deliveryStatus }</p>
 	</div>
+	<c:if test="${not empty directOrderVO.deliveryCompletedDate && directOrderVO.deliveryStatus eq '배송 완료'}">
+	<div>
+		<p>배송 완료일 : <fmt:formatDate value="${directOrderVO.deliveryCompletedDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
+	</div>
+	</c:if>
 	
 	<c:if test="${directOrderVO.deliveryStatus eq '결제 완료'}">
-		<button id="cancel">결제 취소</button>
+		<button id="cancel" class="button">결제 취소</button>
 	</c:if>
-	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료'}">
-		<button id="refund">환불 신청</button>
+	<c:set var="now" value="<%=new java.util.Date() %>" />
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now}">
+		<button id="refund" class="button">환불 신청</button>
 	</c:if>
 
 	<script type="text/javascript">
 		console.log('<sec:authentication property="name" />');
 		console.log('${directOrderVO.memberId }');
+		if('<sec:authentication property="name" />' == '${directOrderVO.memberId }') {
 		$(document).ready(function() {
-			$('#cancel').click(function(e){
-				
+			$('#cancel').click(function(){
+				console.log("결제 취소");
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '결제 취소';
+				$.ajax({
+					url : 'cancel/' + orderId,
+					type : 'PUT',
+					headers : {
+    			        'Content-Type' : 'application/json' // json content-type 설정
+    			    }, 
+    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
+    			    success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+
+				});
+			});
+		});
+		
+		$(document).ready(function() {
+			$('#refund').click(function(){
+				console.log("환불 신청");
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '환불 신청';
+				$.ajax({
+					url : 'refund/' + orderId,
+					type : 'PUT',
+					headers : {
+    			        'Content-Type' : 'application/json' // json content-type 설정
+    			    }, 
+    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
+    			    success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+
+				});
+			});
+		});
+		} else {
+			const cancelElement = document.getElementById("cancel");
+			const refundElement = document.getElementById("refund");
+
+			if (cancelElement !== null) {
+			    cancelElement.style.display = "none";
+			}
+
+			if (refundElement !== null) {
+			    refundElement.style.display = "none";
+			}
+		}
+	</script>
+	
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<c:if test="${directOrderVO.deliveryStatus eq '결제 완료'}">
+		<button id="ready" class="button">배송 준비중</button>
+	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 준비중'}">
+		<button id="completed" class="button">배송 완료</button>
+	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '환불 신청'}">
+		<button id="refundOK" class="button">환불 승인</button>
+	</c:if>
+	</sec:authorize>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#ready').click(function(){
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '배송 준비중';
+				$.ajax({
+					url : 'ready/' + orderId,
+					type : 'PUT',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify({ deliveryStatus : deliveryStatus }),
+					success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+				});
+			});
+			
+			$('#completed').click(function(){
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '배송 완료';
+				$.ajax({
+					url : 'completed/' + orderId,
+					type : 'PUT',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify({ deliveryStatus : deliveryStatus }),
+					success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+				});
+			});
+			
+			$('#refundOK').click(function(){
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '환불 완료';
+				$.ajax({
+					url : 'refundOK/' + orderId,
+					type : 'PUT',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify({ deliveryStatus : deliveryStatus }),
+					success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+				});
 			});
 		});
 	</script>
 	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<button>배송 준비중</button>
-		<button>배송 완료</button>
-	</sec:authorize>
+	<button onclick="window.location.href='purchaseHistory'" class="button">뒤로가기</button>
 	
-	<button onclick="goBack()" class="button">뒤로가기</button>
-	
-	
-	<script>
-		function goBack() {
-		  const referrer = document.referrer;
-		  if (referrer) {
-		    window.location.href = referrer;  // 이전 페이지로 이동
-		  } else {
-		    alert("이전 페이지가 없습니다.");
-		  }
-		}
-	</script>
 </body>
 </html>
