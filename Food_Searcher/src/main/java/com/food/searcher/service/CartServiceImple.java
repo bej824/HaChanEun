@@ -49,9 +49,13 @@ public class CartServiceImple implements CartService {
 	}
 
 	@Override
-	public int updateAmount(int cartAmount, int cartId) {
+	public int updateAmount(int cartId, int cartAmount) {
 		log.info("updateAmount()");
-		return cartMapper.updateAmount(cartAmount, cartId);
-	}
+		CartVO cartVO = new CartVO();
+		cartVO.setCartId(cartId);
+		cartVO.setCartAmount(cartAmount);
+		
+		return cartMapper.updateAmount(cartVO);
+	}	
 
 }

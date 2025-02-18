@@ -34,11 +34,18 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Model model, Integer itemId) {
+	public void list(Model model, Integer itemId, Pagination pagination) {
 		log.info("list");
-		List<ItemVO> itemList = itemService.getAllItem();
+		log.info("pagination : " + pagination);
+		pagination.setPageSize(10);
 		
-		model.addAttribute("itemList", itemList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
+		List<ItemVO> list = itemService.getPagingItems(pagination);
+		
+		log.info(list.size());
+		model.addAttribute("itemList", list);
 	}
 	
 	@GetMapping("/register")
@@ -95,7 +102,7 @@ public class ItemController {
 		
 		return "redirect:/item/list";
 	}
-	
+
 	@GetMapping("/order")
 	public void orderGet (Model model, Integer itemId) {
 		log.info("orderGET()");

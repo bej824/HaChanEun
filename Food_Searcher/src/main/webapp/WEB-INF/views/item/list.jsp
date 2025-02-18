@@ -46,8 +46,10 @@ li {
 </sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_MEMBER')">
-<a id="cartLink" href="#">장바구니로 이동</a>
+<a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
+<br><br>
+<a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
 <hr>
 
@@ -64,7 +66,23 @@ li {
 			</c:forEach>
 	
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-
+	
+	<ul>
+			<!-- 이전 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isPrev() }">
+				<li class="pagination_button"><a href="${pageMaker.startNum - 1}">이전</a></li>
+			</c:if>
+			<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
+			<c:forEach begin="${pageMaker.startNum }"
+				end="${pageMaker.endNum }" var="num">
+				<li class="pagination_button"><a href="${num }">${num }</a></li>
+			</c:forEach>
+			<!-- 다음 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isNext() }">
+				<li class="pagination_button"><a href="${pageMaker.endNum + 1}">다음</a></li>
+			</c:if>
+		</ul>
+	
 <script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -75,19 +93,6 @@ li {
 
 		xhr.setRequestHeader(header, token);
 	});
-	
-	  document.addEventListener("DOMContentLoaded", function () {
-	        let memberId = document.getElementById("memberId").value;  // 숨겨진 input에서 memberId 가져오기
-	        let cartLink = document.getElementById("cartLink");  // <a> 태그 선택
-	        if (memberId) {
-	            cartLink.href = "../cart/list/" + encodeURIComponent(memberId); // href 속성 설정
-	        } else {
-	            console.warn("memberId가 존재하지 않습니다.");
-	        }
-	    });
-	
-		  
-	  
 	
 </script>	
 </div> <!-- area -->

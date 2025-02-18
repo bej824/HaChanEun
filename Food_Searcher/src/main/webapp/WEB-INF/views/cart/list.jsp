@@ -44,7 +44,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     <tbody>
         <c:forEach var="CartVO" items="${cartVO }"> 
             <tr>
-                <td id="btnCheck" onclick="btnCheck()">□</td> <!-- 선택 버튼 -->
+                <td id="btnCheck" onclick="btnCheck()"></td> <!-- 선택 버튼 -->
                 <td>(썸네일)</td>	
                 <td>${CartVO.itemName } </td>
                 <td>
@@ -53,21 +53,23 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 						   name="itemAmount" class="itemAmount" value="${CartVO.cartAmount }">
                     <button class="plusBtn">+</button>
                 </td>
-                <td>각 ${CartVO.itemPrice} | 총 ${CartVO.itemPrice * CartVO.cartAmount }</td>
+                <td> <div class="itemTotalPrice" data-total-price ="${CartVO.itemPrice * CartVO.cartAmount }">
+                각 ${CartVO.itemPrice} | 총 ? </div></td>
                 <td><button class="delBtn" >×</button></td>
             <td>
+            <div style="display: none;">
            	<input type="hidden" class="cartId" value="${CartVO.cartId }">
         	<input type="hidden" class="memberId" value="${CartVO.memberId }">
         	<input type="hidden" class="itemId" value="${CartVO.itemId }">
         	<input type="hidden" class="itemName" value="${CartVO.itemName }">
         	<input type="hidden" class="itemPrice" value="${CartVO.itemPrice }">
-        	<input type="hidden" class="cartDate" value="${CartVO.cartDate }"></td>
+        	<input type="hidden" class="cartDate" value="${CartVO.cartDate }"></div>
+        	</td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
-	
-	
+
 	<p>합계 : ?</p>
 	<div class="divOrder">
 	<a id="btnOrder" href="">주문하기</a>
@@ -82,54 +84,66 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 		xhr.setRequestHeader(header, token);
 	});	 
 	
-	 document.addEventListener("DOMContentLoaded", function () {
-	        let memberId = document.getElementById("memberId").value;  // 숨겨진 input에서 memberId 가져오기
-	        let btnOrder = document.getElementById("btnOrder");  // <a> 태그 선택
-	        if (memberId) {
-	            btnOrder.href = "../order/" + encodeURIComponent(memberId); // href 속성 설정
-	        } else {
-	            console.warn("memberId가 존재하지 않습니다.");
-	        }
-	    });
 	 
 		$(".plusBtn").on("click", function(){
-			 var cartAmount = $(this).closest('tr').find(".itemAmount").val(); // tr에 있는 itemAmount 찾기
-			 var cartId = $(this).closest('tr').find(".cartId").val();
+			var quantity = parseInt($(this).closest('tr').find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
+			var cartId = $(this).closest('tr').find(".cartId").val();
 			 
-			 var obj = {
-					 'cartAmount' : cartAmount,
-					 'cartId' : cartId
-			 };
-			 console.log(obj);
+			 
+			 // 수량 증가
+			 quantity += 1;
+			 parseInt($(this).closest('tr').find(".itemAmount").val(quantity));
+			 console.log("quantity : " + quantity, "cartId : " + cartId);
+			 var cartAmount = quantity.toString();		 
+			 
 			 
 			 $.ajax({
 					type : 'PUT',
-					url : '../' + cartId + '/' + cartAmount,
+					url : '../update/' + cartId,
 					headers : {
 						'Content-Type' : 'application/json'
 					}, 
-					data : JSON.stringify(obj),							
+					data : cartAmount,
 					success : function(result) {
 						console.log(result);
-						if(result == 1) {
-							 cartAmount++;
-							alert("수량 갱신") // 테스트 후 빼기
+							if(result == 1) {
+								alert("수량 증가됨");
+							} else {
+								alert("증가 실패");
+							}
 						}
-					}
 				}); // end ajax
-
 		}); // end plus_btn
 		
 	
 		$(".minusBtn").on("click", function(){
-				var $itemAmount = $(this).closest('tr').find(".itemAmount");
-			    var quantity = parseInt($itemAmount.val(), 10);
-			    
-			    if(quantity > 1) {
-			    quantity--;
-			    $itemAmount.val(quantity);
-			}
-		}); // end minus_btn
+			var quantity = parseInt($(this).closest('tr').find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
+			var cartId = $(this).closest('tr').find(".cartId").val();
+		 
+		 // 수량 증가
+		 quantity -= 1;
+		 parseInt($(this).closest('tr').find(".itemAmount").val(quantity));
+		 console.log("quantity : " + quantity, "cartId : " + cartId);
+		 var cartAmount = quantity.toString();		 
+		 
+		 
+		 $.ajax({
+				type : 'PUT',
+				url : '../update/' + cartId,
+				headers : {
+					'Content-Type' : 'application/json'
+				}, 
+				data : cartAmount,
+				success : function(result) {
+					console.log(result);
+						if(result == 1) {
+							alert("수량 감소됨");
+							} else {
+								alert("감소 실패");
+							}
+						}
+				}); // end ajax
+			}); 
 		
 		
 	 $('.delBtn').on('click', function(){

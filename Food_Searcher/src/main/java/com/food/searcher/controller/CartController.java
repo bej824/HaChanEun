@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,7 +31,7 @@ public class CartController {
 	
 	
 	@GetMapping("/list/{memberId}")
-	public String cartList (@PathVariable("memberId") String memberId, Model model) {
+	public String cartList (Model model, @PathVariable("memberId") String memberId) {
 		log.info("cartList()");
 		List<CartVO> cartVO = cartService.getCartById(memberId);
 		log.info(cartVO);
@@ -47,15 +48,19 @@ public class CartController {
 	}
 	
 	@DeleteMapping("/delete/{cartId}")
-	public ResponseEntity<Integer> deleteCart(@PathVariable("cartId") int cartId, CartVO cartVO) {
+	public ResponseEntity<Integer> deleteCart(CartVO cartVO, @PathVariable("cartId") int cartId) {
 		      log.info("deleteCart()");
 		      cartService.deleteCart(cartId);
 		      return new ResponseEntity<Integer>(cartService.deleteCart(cartId), HttpStatus.OK);
 	}
 	
-	@PutMapping("/{cartId}/{cartAmount}")
-	public int updateAmount(int cartAmount, int cartId) {
-		return cartService.updateAmount(cartAmount, cartId);
+	@PutMapping("/update/{cartId}")
+	public ResponseEntity<Integer> updateAmount(@PathVariable("cartId") int cartId, @RequestBody int cartAmount) {
+		log.info("cartId : " + cartId);
+		log.info("cartAmount : " + cartAmount);
+		
+		int result = cartService.updateAmount(cartId, cartAmount);
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
 } //end CartController

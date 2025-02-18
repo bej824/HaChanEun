@@ -63,18 +63,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	(
 		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
 		FROM ITEM
-	
-		<choose>
-				<when test="type == 'ITEM_NAME.toString()">
-					WHERE ITEM_NAME LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'ITEM_TAG'.toString()">
-					WHERE ITEM_TAG LIKE '%'||#{keyword}||'%'
-				</when>
-
-			</choose>	   
+		   
 			) 
 			WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="selectTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
 	</select>
 	
 </mapper>
