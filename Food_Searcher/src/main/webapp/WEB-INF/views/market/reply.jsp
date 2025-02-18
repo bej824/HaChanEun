@@ -345,7 +345,7 @@
 			type : 'POST',
 			url : '../market/commentadd/' + marketReplyId,
 			headers : { // 헤더 정보
-				'Content-Type' : 'application/json' // json content-type 설정
+				'Content-Type' : 'application/json' // json content-type 설정	
 			}, 
 			data : JSON.stringify(obj), 
 			success : function(result) {

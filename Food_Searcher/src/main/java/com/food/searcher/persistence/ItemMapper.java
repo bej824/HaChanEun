@@ -5,14 +5,17 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.food.searcher.domain.ItemVO;
+import com.food.searcher.util.Pagination;
 
 @Mapper
 public interface ItemMapper {
 	
 	int insert(ItemVO itemVO);
 	List<ItemVO> selectList();
+	List<ItemVO> selectListByPagination(Pagination pagination);
 	ItemVO selectOne(int itemId);
 	int update(ItemVO itemVO);
 	int delete(int itemId);
+	int selectTotalCount(Pagination pagination);
 
 }

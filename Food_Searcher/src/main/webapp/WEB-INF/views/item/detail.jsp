@@ -126,7 +126,6 @@ pageEncoding="UTF-8"%>
 				 $('#deleteForm').submit();
 			 }
 		});
-<<<<<<< HEAD
 	});
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
@@ -143,7 +142,6 @@ pageEncoding="UTF-8"%>
 			} 
 				console.log("수량 감소");
 		});
-=======
 	 // end deleteItem
 	
 		let quantity = $(".itemAmount").val();
@@ -169,7 +167,6 @@ pageEncoding="UTF-8"%>
 		        console.log(quantity);
 		    }
 		}); // end minus_btn
->>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 		
 		const data = {
 				memberId : $('#memberId').val(),

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.ItemMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -58,6 +59,17 @@ public class ItemServiceImple implements ItemService {
 	public int deleteItem(int itemId) {
 		log.info("deleteItem()");
 		return itemMapper.delete(itemId);
+	}
+
+	@Override
+	public List<ItemVO> getPagingItems(Pagination pagintaion) {
+		List<ItemVO> list = itemMapper.selectListByPagination(pagintaion);
+		return list.stream().collect(Collectors.toList());
+	}
+
+	@Override
+	public int getTotalCount(Pagination pagination) {
+		return itemMapper.selectTotalCount(pagination);
 	}
 
 	

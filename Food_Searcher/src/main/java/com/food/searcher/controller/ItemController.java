@@ -14,6 +14,8 @@ import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemService;
+import com.food.searcher.util.PageMaker;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -31,11 +33,18 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Model model, Integer itemId) {
+	public void list(Model model, Integer itemId, Pagination pagination) {
 		log.info("list");
-		List<ItemVO> itemList = itemService.getAllItem();
+		log.info("pagination : " + pagination);
+		pagination.setPageSize(10);
 		
-		model.addAttribute("itemList", itemList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
+		List<ItemVO> list = itemService.getPagingItems(pagination);
+		
+		log.info(list.size());
+		model.addAttribute("itemList", list);
 	}
 	
 	@GetMapping("/register")
@@ -92,10 +101,7 @@ public class ItemController {
 		
 		return "redirect:/item/list";
 	}
-<<<<<<< HEAD
 
-=======
-	
 	@GetMapping("/order")
 	public void orderGet (Model model, Integer itemId) {
 		log.info("orderGET()");
@@ -110,6 +116,5 @@ public class ItemController {
 		log.info(result);
 		return "redirect:/home"; // 나중에 마이페이지의 구매내역으로 넘김
 	}
->>>>>>> d34800b247d3e282cbc4c5303800e00293b09676
 	
 } // end ItemController
