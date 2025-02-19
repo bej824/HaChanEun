@@ -10,7 +10,7 @@
 <body>
 	<%@ include file ="../header.jsp" %>
 		<p>아이디</p>
-		<input type="text" name="memberId" id="memberId" placeholder="아이디 입력"
+		<input type="text" name="memberId" id="memberId" maxlength="20" placeholder="아이디 입력"
 			required>
 		<div id="idMsg" class="message" style="color: red;">아이디를 입력해주세요!</div>
 		<br>
@@ -87,7 +87,7 @@
     		let memberId = $(this).val();
   			idCheck = false;
   		  
-  		  	if (/[\W_]/.test(memberId) || memberId == '') {
+  			if (!/^[A-Za-z]+$/.test(memberId) || memberId == '') {
   				$('#idMsg').html('아이디는 공백이나 특수문자를 사용할 수 없습니다.').css('color', 'red');
   				return;
   			}

@@ -84,14 +84,17 @@
 	</c:if>
 	
 	<br>
+	<button id="btn_memberCoupon" class="button">쿠폰함</button>
 	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
 	<a href="../item/purchaseHistory" class="button">구매 내역</a>
 	<br>
 
-	<button id="btn_update" class="button">수정하기</button>
-	<button id="btn_inactive" class="button">회원탈퇴</button>
 	<br>
+	<button id="btn_update" class="button">수정하기</button>
 	<button id="btn_pwUpdate" class="button">비밀번호 변경</button>
+	<br>
+	<br>
+	<button id="btn_inactive" class="button">회원탈퇴</button>
 
 	<script type="text/javascript">
 		$(document).ajaxSend(function(e, xhr, opt){
@@ -103,6 +106,10 @@
 		
 		$(document).ready(function(){
 			
+		$('#btn_memberCoupon').click(function(){
+			window.location.href = "memberCoupon";
+		})
+			
 		$('#btn_update').click(function(){
 			let memberId = '<sec:authentication property="name" />';
 			let emailAgree = document.querySelector('input[name="emailAgree"]:checked').value;
@@ -111,13 +118,6 @@
 			update(memberId, emailAgree, memberMBTI);
 		});
 		
-		$('#btn_inactive').click(function(){
-			let memberId = '<sec:authentication property="name" />';
-			let memberStatus = 'inactive';
-			
-			inactive(memberId, memberStatus);
-			
-		});
 		
 		$('#btn_pwUpdate').click(function(){
 			let result = confirm("비밀번호를 수정하시겠습니까?");
@@ -131,6 +131,14 @@
 			if(emailUpdate){
 				window.location.href = "registerEmail?select=emailUpdate";
 			}
+			
+		});
+		
+		$('#btn_inactive').click(function(){
+			let memberId = '<sec:authentication property="name" />';
+			let memberStatus = 'inactive';
+			
+			inactive(memberId, memberStatus);
 			
 		});
 	

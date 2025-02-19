@@ -123,10 +123,10 @@ a:link, a:visited, a:hover, a:active {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 60px">번호</th>
-				<th style="width: 300px">특산품</th>
-				<th style="width: 120px">지역</th>
-				<th style="width: 40px">댓글수</th>
+				<th style="width: 10%">번호</th>
+				<th style="width: 50%">특산품</th>
+				<th style="width: 20%">지역</th>
+				<th style="width: 10%">댓글수</th>
 			</tr>
 		</thead>
 		<tbody>

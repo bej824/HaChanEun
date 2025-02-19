@@ -37,7 +37,6 @@ public class CouponController {
 	@PostMapping("register")
 	public int registerCouponPOST(DiscountCouponVO discountCouponVO, Principal principal) {
 		log.info("registerCouponPOST()");
-		log.info(discountCouponVO);
 		
 		return discountCouponService.createCoupon(discountCouponVO);
 	}
@@ -57,12 +56,8 @@ public class CouponController {
 	public List<DiscountCouponVO> getCouponGET(String searchBy,
 			@RequestParam(value= "searchText", required = false) String searchText) {
 		log.info("getCouponGET()");
-		log.info(searchBy + "검색할 텍스트" + searchText);
 		
-		List<DiscountCouponVO> couponList = discountCouponService.selectCoupon(searchBy, searchText);
-		log.info(couponList);
-		
-		return couponList;
+		return discountCouponService.selectCoupon(searchBy, searchText);
 	}
 	
 	@GetMapping("detail")
@@ -72,9 +67,7 @@ public class CouponController {
 			Model model) {
 		log.info("detailGET()");
 		
-		DiscountCouponVO discountCouponVO = discountCouponService.selectOneCoupon(couponId);
-		
-		model.addAttribute("discountCouponVO", discountCouponVO);
+		model.addAttribute("discountCouponVO", discountCouponService.selectOneCoupon(couponId));
 		model.addAttribute("itemId", itemId);
 	}
 	
@@ -84,9 +77,7 @@ public class CouponController {
 			Model model) {
 		log.info("modifyGET()");
 		
-		DiscountCouponVO discountCouponVO = discountCouponService.selectOneCoupon(couponId);
-		
-		model.addAttribute("discountCouponVO", discountCouponVO);
+		model.addAttribute("discountCouponVO", discountCouponService.selectOneCoupon(couponId));
 	}
 	
 	@ResponseBody
@@ -94,9 +85,7 @@ public class CouponController {
 	public int updatePOST(DiscountCouponVO discountCouponVO) {
 		log.info("updatePOST()");
 		
-		int result = discountCouponService.updateCoupon(discountCouponVO);
-		
-		return result;
+		return discountCouponService.updateCoupon(discountCouponVO);
 		
 	}
 	
@@ -105,9 +94,7 @@ public class CouponController {
 	public int deletePOST(int couponId) {
 		log.info("deletePOST()");
 		
-		int result = discountCouponService.deleteCoupon(couponId);
-		
-		return result;
+		return discountCouponService.deleteCoupon(couponId);
 	}
 	
 }

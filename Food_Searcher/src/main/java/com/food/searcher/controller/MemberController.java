@@ -40,6 +40,10 @@ public class MemberController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@GetMapping("memberCoupon")
+	public void memberCouponGET() {
+		log.info("memberCouponGET()");
+	}
 	
 	// 이메일 인증 호출
 	@GetMapping("/registerEmail")
@@ -134,7 +138,12 @@ public class MemberController {
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
 		
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		
+		
 		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("nowDate", now.format(formatter));
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정

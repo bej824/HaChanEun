@@ -39,17 +39,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests()
+		
+				.antMatchers(	 "/recipe/register"
+								,"/recipe/modify"
+								,"/access/memberPage"
+								,"/access/memberCoupon"
+								,"/coupon/memberCouponList").access("hasRole('ROLE_MEMBER')")
+		
 				.antMatchers(	 "/admin/**"
 								,"/coupon/**"
 								,"/local/register"
 								,"/local/modify"
 								,"/market/register"
 								,"/market/modify").access("hasRole('ROLE_ADMIN')")
-				
-				.antMatchers(	 "/recipe/register"
-								,"/recipe/modify").access("hasRole('ROLE_MEMBER')")
 				;
-
+				
 		// 접근 제한 경로 설정
 		httpSecurity.exceptionHandling().accessDeniedPage("/auth/accessDenied");
 

@@ -17,13 +17,14 @@
 	function birth(){
 		let age = document.getElementById("age");
 		let constellation = document.getElementById("constellation");
-		const nowDate = "${nowDate}";
+		let nowDate = "${nowDate}";
 		const nowyear = parseInt(nowDate.slice(0, 4), 10);
 		
 		const year = parseInt(memberDateOfBirth.slice(0, 4), 10);
 		const monthDay = parseInt(memberDateOfBirth.slice(4, 8), 10);
 		
 		age.innerHTML = nowyear - year;
+		console.log(nowDate);
 		   		
 		if (120 <= monthDay && monthDay <= 218) {
 			constellation.innerHTML = "물병자리";

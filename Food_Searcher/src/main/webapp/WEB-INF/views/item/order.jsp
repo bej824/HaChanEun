@@ -27,6 +27,10 @@
 		</tbody>
 	</table>
 	
+	<br>
+	<select name="couponSelect" id="couponSelect">
+	</select>
+	
 	<p>주소 입력</p>
 	
 	<button onclick="openPostcodePopup()">주소 검색</button>
@@ -44,34 +48,18 @@
     	<label>상세주소 : </label>
     	<input type="text" style="width: 300px;" id="detailaddress" required>
     </div>
-
-    <script>
-        function openPostcodePopup() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    // 선택한 주소 정보를 폼 필드에 입력
-                    document.getElementById('postcode').value = data.zonecode;
-                    document.getElementById('address').value = data.address;
-                }
-            }).open();
-        }
-    </script>
+    
+    <button id="order" class="button">구매</button>
+    
+    <input type="hidden" id="deleveryAddress">
     
     <script type="text/javascript">
-	    window.onload = function() {
-	    	  // URL에서 count 파라미터를 가져오기
-	    	  let urlParams = new URLSearchParams(window.location.search);
-	    	  let count = urlParams.get('count'); // count 값 추출
-	    	  let itemName = '${itemVO.itemName }';
-	    	  let itemPrice = ${itemVO.itemPrice};
-	    	  
-	    	  document.getElementById("itemInfo").innerHTML = "썸네일 영역" + "<br> 제품명 : " + itemName + "<br> 수량 : " + count + "<br> 총 가격 : " + count * itemPrice + "원";
-	    };
-    </script>
-    
-    <script>
-	  	$(document).ready(function() {
-	    // input 필드들에 대해 이벤트 리스너를 설정
+    	$(document).ready(function() {
+    		couponActive = [];
+    		
+    		couponList();
+    		
+    		// input 필드들에 대해 이벤트 리스너를 설정
 		    $("#postcode, #address, #detailaddress").on("input", updateOutput);
 		
 		    function updateOutput() {
@@ -83,17 +71,15 @@
 		      // 결과를 하나의 필드에 합치기
 		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
 		    }
-  		});
-	</script>
-    
-    <input type="hidden" id="deleveryAddress">
-    
-    <form action="order" method="POST">
-    	
-    </form>
-    
-    <script type="text/javascript">
-    	$(document).ready(function() {
+    		
+    		$('#couponSelect').change(function(){
+    			let couponSelect = $(this).val();
+    			
+    			console.log(couponSelect);
+    			console.log(couponActive);
+    			
+    		})
+    		
     		$('#order').click(function(){
     			let urlParams = new URLSearchParams(window.location.search);
   	    	  	let count = urlParams.get('count');
@@ -133,10 +119,81 @@
     			    }
     			});
     		});
-    	});
+    		
+    		function couponList() {
+    			let memberId = '<sec:authentication property="name" />';
+    			let itemId = '${param.itemId}';
+    			let couponSelect = $('#couponSelect');
+    			let couponSelectOption = [];
+    			
+    			couponSelect.empty();
+    			couponSelectOption.push('<option value="'+ 0 +'">'
+    	    			+ "쿠폰 선택 안함" +'</option>')
+    	    	couponActive.push(0);
+    			
+    			$.ajax({
+    			    type: 'POST',
+    			    url: '../coupon/memberCouponList',
+    			    data: {	memberId: memberId,
+    			    		itemId: itemId},
+    			    success: function(result) {
+    			    	
+    			    	result.forEach(function(CouponActiveVO) {
+    			    		
+    			    		let	couponUseCondition = "";
+    			    		
+    			    		let year = CouponActiveVO.couponExpireDate[0];
+    			    		let month = CouponActiveVO.couponExpireDate[1];
+    			    		let day = CouponActiveVO.couponExpireDate[2];
+    			    		let couponExpireDate = year + "년 " + month + "월 " + day + "일까지";
+    			    		
+    			    		if(CouponActiveVO.couponUseCondition != 0) {
+    			    			couponUseCondition = CouponActiveVO.couponUseCondition + "원 이상 구매 시";
+    			    		}
+    			    		
+    			    		if(CouponActiveVO.couponUsedDate != null) {
+    			    			
+    			    		} else {
+    			    			let option = '<option value="'+ CouponActiveVO.couponPrice +'">'
+    			    			+ CouponActiveVO.couponName + " : " 
+    			    			+ couponUseCondition + " "
+    			    			+ CouponActiveVO.couponPrice + "원 할인\. "
+    			    			+ couponExpireDate +'</option>';
+    			    			
+    			    			couponSelectOption.push(option);
+    			    			couponActive.push(CouponActiveVO);
+    			    			
+    			    		}
+    			    		
+    			    	})
+    			    			couponSelect.append(couponSelectOption);
+    			    }
+    			    	
+    			})
+    		}
+    		
+    	}); // end $(document).ready
+    	
+    	function openPostcodePopup() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 선택한 주소 정보를 폼 필드에 입력
+                    document.getElementById('postcode').value = data.zonecode;
+                    document.getElementById('address').value = data.address;
+                }
+            }).open();
+        }
+        
+	    window.onload = function() {
+	    	  // URL에서 count 파라미터를 가져오기
+	    	  let urlParams = new URLSearchParams(window.location.search);
+	    	  let count = urlParams.get('count'); // count 값 추출
+	    	  let itemName = '${itemVO.itemName }';
+	    	  let itemPrice = ${itemVO.itemPrice};
+	    	  
+	    	  document.getElementById("itemInfo").innerHTML = "썸네일 영역" + "<br> 제품명 : " + itemName + "<br> 수량 : " + count + "<br> 총 가격 : " + count * itemPrice + "원";
+	    };
     </script>
-    
-    <button id="order" class="button">구매</button>
     
 </body>
 </html>

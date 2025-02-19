@@ -21,15 +21,14 @@ public class CouponActiveVO {
 	private String memberId; // 발급받은 memberId
 	private int couponId; // 쿠폰 Id
 	private String couponName; // 쿠폰 이름
-	private String couponIssuedDate; // 쿠폰 발급 날짜
-	private String couponExpireDate; // 쿠폰 만료 날짜
-	private String couponUsedDate; // 쿠폰 사용 날짜
+	private LocalDate couponIssuedDate; // 쿠폰 발급 날짜
+	private LocalDate couponExpireDate; // 쿠폰 만료 날짜
+	private LocalDate couponUsedDate; // 쿠폰 사용 날짜
 	private int itemId; // 쿠폰 사용 상품 아이디
 	private String itemName; // 쿠폰 사용 상품 이름
 	
-	/**
-	 * 현재 로그인한 사용자와 교차검증을 위한 변수
-	 */
 	private String sellerId;
+	private int couponPrice;
+	private int couponUseCondition;
 
 }

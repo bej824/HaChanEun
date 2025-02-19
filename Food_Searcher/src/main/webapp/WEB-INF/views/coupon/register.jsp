@@ -175,7 +175,7 @@
 					    success: function(result) {
 					      if (result == '1') {
 					    	alert("쿠폰이 생성되었습니다.");
-					    	window.location.href = "couponList";
+					    	window.location.href = "list";
 					      } else {
 					    	  alert("다시 시도해주세요.");
 					      }
@@ -187,7 +187,7 @@
 			$('#btn_cancel').click(function() {
 				let result = confirm("쿠폰 생성을 취소하시겠습니까?");
 				if(result) {
-			    	window.location.href = "couponList";
+			    	window.location.href = "list";
 				}
 				
 			})

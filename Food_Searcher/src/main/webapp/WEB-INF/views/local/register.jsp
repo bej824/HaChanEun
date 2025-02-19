@@ -39,7 +39,7 @@
 		<p>특산품 : <input type="text" name="localTitle" id="localTitle" placeholder="특산품 이름을 입력해주세요."></p>
 	</div>
 	<div>
-        <textarea rows="20" cols="120" name="localContent" id="localContent"></textarea>
+        <textarea rows="20" cols="120" maxlength="500" name="localContent" id="localContent"></textarea>
 	</div>
 	
 	<button id="insert" class="button">글 작성</button>

@@ -40,7 +40,7 @@
 		placeholder="특산품 이름을 입력해주세요."></p>
 	</div>
 	<div>
-        <textarea rows="20" cols="120" name="localContent" id="localContent">${localSpecialityVO.localContent }</textarea>
+        <textarea rows="20" cols="120" maxlength="500" name="localContent" id="localContent">${localSpecialityVO.localContent }</textarea>
 	</div>
 	
 	<button id="btn_update" class="button">수정</button>

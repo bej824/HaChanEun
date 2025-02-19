@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,6 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		log.info("selectOneCoupon()");
 		
 		DiscountCouponVO coupon = discountCouponService.selectOneCoupon(couponActiveVO.getCouponId());
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		
 		if(couponActiveVO.getItemId() > 0) {
 			ItemVO item = itemService.getItemById(couponActiveVO.getItemId());
@@ -49,10 +48,25 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		}
 		
 		couponActiveVO.setCouponName(coupon.getCouponName());
-		couponActiveVO.setCouponIssuedDate(now.format(formatter));
-		couponActiveVO.setCouponExpireDate(now.plusDays(coupon.getCouponExpirationDate()).format(formatter));
+		couponActiveVO.setCouponIssuedDate(LocalDate.now());
+		couponActiveVO.setCouponExpireDate(LocalDate.now().plusDays(coupon.getCouponExpirationDate()));
 		
 		return couponActiveVO;
+	}
+	
+	@Override
+	public List<CouponActiveVO> selectCouponActive(String memberId, int itemId) {
+		log.info("selectCouponActive()");
+		log.info(memberId);
+		
+		return couponActiveMapper.selectCouponActive(memberId, itemId);
+	}
+	
+	@Override
+	public int updateCouponActiveByCouponActiveId(String memberId, int itemId) {
+		log.info("updateCouponActiveByCouponActiveId()");
+		
+		return couponActiveMapper.updateCouponActiveByCouponActiveId(memberId, itemId);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.food.searcher.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.CouponActiveVO;
@@ -47,4 +49,15 @@ public class CouponActiveController {
 		return couponActiveService.createCouponActive(couponActiveVO);
 		
 	}
+	
+	@ResponseBody
+	@PostMapping("memberCouponList")
+	public List<CouponActiveVO> memberCouponListPOST(
+			@RequestParam("memberId") String memberId,
+			@RequestParam(value="itemId", required = false, defaultValue = "0") int itemId){
+		log.info("couponListPOST()");
+		
+		return couponActiveService.selectCouponActive(memberId, itemId);
+	}
+	
 }
