@@ -24,6 +24,7 @@ public class CartVO {
 	// Item Join
 	private String itemName;
 	private int itemPrice;
+	private int itemAmount;
 	
 	private int totalPrice;
 	

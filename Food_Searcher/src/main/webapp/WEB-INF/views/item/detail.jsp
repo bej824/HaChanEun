@@ -130,22 +130,6 @@ pageEncoding="UTF-8"%>
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
 	
-		$(".plusBtn").on("click", function(){
-			$(".itemAmount").val(quantity++);
-			console.log("수량 증가");
-		});
-		
-	
-		$(".minusBtn").on("click", function(){
-				if(quantity > 1){
-					$(".itemAmount").val(quantity--);
-			} 
-				console.log("수량 감소");
-		});
-	 // end deleteItem
-	
-		let quantity = $(".itemAmount").val();
-		console.log(quantity);
 		let amount = '${itemVO.itemAmount}'
 		console.log(amount);
 	
@@ -202,7 +186,6 @@ pageEncoding="UTF-8"%>
 
 		    $('#orderForm').submit();
 		}); // end btnBuy
-	});
 		
 	</script>
 	<!-- 리뷰 -->

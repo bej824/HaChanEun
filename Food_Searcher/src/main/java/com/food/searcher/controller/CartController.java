@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.CartVO;
+import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.CartService;
+import com.food.searcher.service.ItemService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -28,7 +30,6 @@ public class CartController {
 	
 	@Autowired
 	private CartService cartService;
-	
 	
 	@GetMapping("/list/{memberId}")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
@@ -58,7 +59,6 @@ public class CartController {
 	public ResponseEntity<Integer> updateAmount(@PathVariable("cartId") int cartId, @RequestBody int cartAmount) {
 		log.info("cartId : " + cartId);
 		log.info("cartAmount : " + cartAmount);
-		
 		int result = cartService.updateAmount(cartId, cartAmount);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
