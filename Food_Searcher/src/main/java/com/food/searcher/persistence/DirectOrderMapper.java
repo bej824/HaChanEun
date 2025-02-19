@@ -16,7 +16,8 @@ public interface DirectOrderMapper {
 	DirectOrderVO selectOne(int orderId);
 	int insert(DirectOrderVO directOrderVO);
 	int cancel(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);
-	int refund(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);
+	int refundReady(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);
+	int refund(@Param("deliveryStatus") String deliveryStatus, @Param("refundReason") String refundReason, @Param("refundContent") String refundContent, @Param("orderId") int orderId);
 	int refundOK(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);
 	int deliveryReady(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);
 	int deliveryCompleted(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") int orderId);

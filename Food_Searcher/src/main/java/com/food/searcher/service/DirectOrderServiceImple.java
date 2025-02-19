@@ -68,8 +68,13 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	}
 	
 	@Override
-	public int refund(String deliveryStatus, int orderId) {
-		return directOrderMapper.refund(deliveryStatus, orderId);
+	public int refundReady(String deliveryStatus, int orderId) {
+		return directOrderMapper.refundReady(deliveryStatus, orderId);
+	}
+	
+	@Override
+	public int refund(String deliveryStatus, String refundReason, String refundContent, int orderId) {
+		return directOrderMapper.refund(deliveryStatus, refundReason, refundContent, orderId);
 	}
 	
 	@Override

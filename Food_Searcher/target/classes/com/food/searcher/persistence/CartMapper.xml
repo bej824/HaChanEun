@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="cartAmount" column="CART_AMOUNT" />
 		<result property="itemName" column="ITEM_NAME" />
    		<result property="itemPrice" column="ITEM_PRICE" />
+   		<result property="itemAmount" column="ITEM_AMOUNT" />
    		<result property="cartDate" column="CART_DATE" />
 		
 	</resultMap>
@@ -31,7 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.ITEM_ID,
             a.CART_AMOUNT,
             b.ITEM_NAME,
-            b.ITEM_PRICE
+            b.ITEM_PRICE,
+            b.ITEM_AMOUNT
         FROM CART a
         LEFT OUTER JOIN ITEM b
         ON a.ITEM_ID = b.ITEM_ID

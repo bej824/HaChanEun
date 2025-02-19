@@ -28,11 +28,19 @@ public class ItemOrderController {
 	    String deliveryStatus = deliveryStatusMap.get("deliveryStatus");
 	    return new ResponseEntity<Integer>(directOrderService.cancel(deliveryStatus, orderId), HttpStatus.OK);
 	}
+	
+	@PutMapping("/refundReady/{orderId}")
+	public ResponseEntity<Integer> refundReady(@PathVariable("orderId") int orderId, @RequestBody Map<String, String> deliveryStatusMap) {
+	    String deliveryStatus = deliveryStatusMap.get("deliveryStatus");
+	    return new ResponseEntity<Integer>(directOrderService.refundReady(deliveryStatus, orderId), HttpStatus.OK);
+	}
 
 	@PutMapping("/refund/{orderId}")
 	public ResponseEntity<Integer> refund(@PathVariable("orderId") int orderId, @RequestBody Map<String, String> deliveryStatusMap) {
 	    String deliveryStatus = deliveryStatusMap.get("deliveryStatus");
-	    return new ResponseEntity<Integer>(directOrderService.refund(deliveryStatus, orderId), HttpStatus.OK);
+	    String refundReason = deliveryStatusMap.get("refundReason");
+	    String refundContent = deliveryStatusMap.get("refundContent");
+	    return new ResponseEntity<Integer>(directOrderService.refund(deliveryStatus, refundReason, refundContent, orderId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/refundOK/{orderId}")
