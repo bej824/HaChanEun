@@ -18,6 +18,9 @@ public interface ItemMapper {
 	int update(ItemVO itemVO);
 	int delete(int itemId);
 	int selectTotalCount(Pagination pagination);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3cc5dd68e80aa25702b77d9e2bbad7091961d338
 	int itemAmount(@Param("itemAmount") int itemAmount, @Param("itemId") int itemId);
 }

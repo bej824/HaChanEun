@@ -96,11 +96,6 @@ pageEncoding="UTF-8"%>
     
 	</div>	
 	
-	
-	
-	
-	
-	
 	<br><br>	
 	<script type="text/javascript">
 	
@@ -130,6 +125,10 @@ pageEncoding="UTF-8"%>
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
 	
+<<<<<<< HEAD
+=======
+		console.log(quantity);
+>>>>>>> 3cc5dd68e80aa25702b77d9e2bbad7091961d338
 		let amount = '${itemVO.itemAmount}'
 		console.log(amount);
 	

@@ -33,16 +33,16 @@
 
     <div>
         <label for="postcode">우편번호: </label>
-        <input type="text" id="postcode" name="postcode">
+        <input type="text" id="postcode" name="postcode" required>
     </div>
 
     <div>
         <label for="address">주소: </label>
-        <input type="text" style="width: 300px;" id="address" name="address">
+        <input type="text" style="width: 300px;" id="address" name="address" required>
     </div>
     <div>
     	<label>상세주소 : </label>
-    	<input type="text" style="width: 300px;" id="detailaddress">
+    	<input type="text" style="width: 300px;" id="detailaddress" required>
     </div>
 
     <script>
@@ -65,7 +65,7 @@
 	    	  let itemName = '${itemVO.itemName }';
 	    	  let itemPrice = ${itemVO.itemPrice};
 	    	  
-	    	  document.getElementById("itemInfo").innerHTML = "썸네일 영역" + "<br> 제품명 : " + itemName + "<br> 수량 : " + count + "<br> 총 가격 : " + count * itemPrice;
+	    	  document.getElementById("itemInfo").innerHTML = "썸네일 영역" + "<br> 제품명 : " + itemName + "<br> 수량 : " + count + "<br> 총 가격 : " + count * itemPrice + "원";
 	    };
     </script>
     
@@ -89,12 +89,12 @@
     <input type="hidden" id="deleveryAddress">
     
     <form action="order" method="POST">
-    
+    	
     </form>
     
     <script type="text/javascript">
     	$(document).ready(function() {
-    		$('#order').click(function(e){
+    		$('#order').click(function(){
     			let urlParams = new URLSearchParams(window.location.search);
   	    	  	let count = urlParams.get('count');
   	    	  	let itemId = urlParams.get('itemId');
@@ -108,6 +108,10 @@
     			let deliveryAddress = $("#deleveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
     			
+    			if (!deliveryAddress) {
+                    alert('배송 주소를 입력해주세요.');
+                    return;  // 비어 있으면 AJAX 요청을 하지 않음
+                }
     			
     			$.ajax({
     			    url : 'order?itemId=' + itemId + '&count=' + count,
@@ -123,10 +127,9 @@
     			        deliveryAddress : deliveryAddress
     			    }),
     			    success : function(result) {
-    			        if(result == 1) {
+    			    	console.log(result);
     			            alert('결제 성공');
-    			            window.location.href = '/item/purchaseHistory';
-    			        }
+    			            window.location.href = 'purchaseHistory';
     			    }
     			});
     		});

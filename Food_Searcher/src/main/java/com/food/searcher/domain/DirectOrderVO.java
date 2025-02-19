@@ -23,4 +23,5 @@ public class DirectOrderVO {
 	private int itemId;
 	private int totalCount;
 	private Date deliveryCompletedDate;
+	private Date deliveryRefund;
 }

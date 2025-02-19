@@ -119,11 +119,17 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseHistory")
-	public void purchaseHistory(Model model, Principal principal) {
+	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
 		log.info("purchaseHistory()");
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(directOrderService.getAllOrder().size());
 		List<DirectOrderVO> directOrderVO = directOrderService.getOrder(principal.getName());
 		log.info("directOrderVO" + directOrderVO);
-		List<DirectOrderVO> allList = directOrderService.getAllOrder();
+		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
+		
+		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("directOrderVO", directOrderVO);
 		model.addAttribute("allList", allList);
 	}
