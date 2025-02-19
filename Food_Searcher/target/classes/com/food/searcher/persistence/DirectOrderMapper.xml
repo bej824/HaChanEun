@@ -15,6 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="totalCount" column="TOTAL_COUNT" />
 		<result property="deliveryCompletedDate" column="DELIVERY_COMPLETED_DATE" />
 		<result property="deliveryRefund" column="DELIVERY_REFUND" />
+		<result property="refundReason" column="REFUND_REASON" />
+		<result property="refundContent" column="REFUND_CONTENT" />
 	</resultMap>
 	
 	<insert id="insert">
@@ -62,8 +64,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
 	</update>
 	
-	<update id="refund">
+	<update id="refundReady">
 		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="refund">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, REFUND_REASON = #{refundReason}, REFUND_CONTENT = #{refundContent} WHERE ORDER_ID = #{orderId}
 	</update>
 	
 	<update id="refundOK">

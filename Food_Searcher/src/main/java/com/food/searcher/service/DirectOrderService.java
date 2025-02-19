@@ -12,7 +12,8 @@ public interface DirectOrderService {
 	DirectOrderVO getselectOne(int orderId);
 	int orderPurchase(DirectOrderVO directOrderVO);
 	int cancel(String deliveryStatus, int orderId);
-	int refund(String deliveryStatus, int orderId);
+	int refundReady(String deliveryStatus, int orderId);
+	int refund(String deliveryStatus, String refundReason, String refundContent, int orderId);
 	int refundOK(String deliveryStatus, int orderId);
 	int deliveryReady(String deliveryStatus, int orderId);
 	int deliveryCompleted(String deliveryStatus, int orderId);

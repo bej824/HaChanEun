@@ -23,6 +23,12 @@
 	<div>
 		<p>총 구매 가격 : ${directOrderVO.totalPrice }원</p>
 	</div>
+	<c:if test="${directOrderVO.totalPrice < 3000}">
+	<div>
+		<p>배송비 : 3000원</p>
+		<p>배송비 포함 가격 : ${directOrderVO.totalPrice + 3000 }원</p>
+	</div>
+	</c:if>
 	<div>
 		<p>배송지 : ${directOrderVO.deliveryAddress }</p>
 	</div>
@@ -34,13 +40,33 @@
 		<p>배송 완료일 : <fmt:formatDate value="${directOrderVO.deliveryCompletedDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
 	</div>
 	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '환불 하기' }">
+	<div>
+		<p>환불 사유</p>
+		<select name="refundReason">
+			<option>단순 변심</option>
+			<option>상품 불량</option>
+		</select>
+		<p>내용 </p>
+		<textarea rows="10" cols="70" id="refundContent" name="refundContent" maxlength="300" required></textarea>
+	</div>
+		<button id="refund" class="button">환불 신청</button>
+	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '환불 완료' }">
+	<div>
+		<p>환불 사유 : ${directOrderVO.refundReason }</p>
+		<p>내용</p>
+		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea>
+	</div>
+	</c:if>
 	
 	<c:if test="${directOrderVO.deliveryStatus eq '결제 완료'}">
 		<button id="cancel" class="button">결제 취소</button>
 	</c:if>
 	<c:set var="now" value="<%=new java.util.Date() %>" />
 	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now}">
-		<button id="refund" class="button">환불 신청</button>
+	<p>환불 가능일 : <fmt:formatDate value="${directOrderVO.deliveryRefund }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
+		<button id="refundReady" class="button">환불 하기</button>
 	</c:if>
 
 	<script type="text/javascript">
@@ -74,9 +100,37 @@
 		});
 		
 		$(document).ready(function() {
+			$('#refundReady').click(function(){
+				console.log("환불 하기");
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '환불 하기';
+				$.ajax({
+					url : 'refundReady/' + orderId,
+					type : 'PUT',
+					headers : {
+    			        'Content-Type' : 'application/json' // json content-type 설정
+    			    }, 
+    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
+    			    success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+
+				});
+			});
+		});
+		
+		$(document).ready(function() {
 			$('#refund').click(function(){
 				console.log("환불 신청");
 				let orderId = ${directOrderVO.orderId };
+				let refundReason = $("select[name='refundReason']").val();
+				let refundContent = $("#refundContent").val();
 				let deliveryStatus = '환불 신청';
 				$.ajax({
 					url : 'refund/' + orderId,
@@ -84,7 +138,10 @@
 					headers : {
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
-    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
+    			    data : JSON.stringify({ 
+    			    	deliveryStatus: deliveryStatus,
+    			    	refundReason : refundReason,
+    			    	refundContent : refundContent}),
     			    success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
@@ -120,6 +177,9 @@
 		<button id="completed" class="button">배송 완료</button>
 	</c:if>
 	<c:if test="${directOrderVO.deliveryStatus eq '환불 신청'}">
+		<p>환불 사유 : ${directOrderVO.refundReason }</p>
+		<p>내용</p>
+		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea>
 		<button id="refundOK" class="button">환불 승인</button>
 	</c:if>
 	</sec:authorize>
