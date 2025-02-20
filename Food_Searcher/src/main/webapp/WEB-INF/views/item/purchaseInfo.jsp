@@ -23,12 +23,6 @@
 	<div>
 		<p>총 구매 가격 : ${directOrderVO.totalPrice }원</p>
 	</div>
-	<c:if test="${directOrderVO.totalPrice < 3000}">
-	<div>
-		<p>배송비 : 3000원</p>
-		<p>배송비 포함 가격 : ${directOrderVO.totalPrice + 3000 }원</p>
-	</div>
-	</c:if>
 	<div>
 		<p>배송지 : ${directOrderVO.deliveryAddress }</p>
 	</div>
@@ -59,15 +53,36 @@
 		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea>
 	</div>
 	</c:if>
-	
-	<c:if test="${directOrderVO.deliveryStatus eq '결제 완료'}">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<c:if test="${directOrderVO.deliveryStatus eq '상품 준비중'}">
+		<p>택배사 :
+		<select name="deliveryCompany">
+			<option>CJ대한통운</option>
+			<option>로젠택배</option>
+			<option>경동택배</option>
+			<option>한진택배</option>
+			<option>우체국택배</option>
+		</select></p>
+		<c:set var="now" value="<%=new java.util.Date() %>" />
+		<fmt:formatDate value="${now }" pattern="yyyyMMddHHmmss" var="Date"/>
+		<p>송장 번호 : <input type="text" id="invoiceNumber" value="${Date }" required></p>
+		<button id="ready" class="button">배송 준비중</button>
+	</c:if>
+	</sec:authorize>
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 준비중' || directOrderVO.deliveryStatus eq '배송 중'}">
+		<p>택배사 : ${directOrderVO.deliveryCompany }</p>
+		<p>송장 번호 : ${directOrderVO.invoiceNumber }</p>
+	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '상품 준비중'}">
 		<button id="cancel" class="button">결제 취소</button>
 	</c:if>
+	<c:set var="authenticatedUser" value="${pageContext.request.userPrincipal.name}" />
 	<c:set var="now" value="<%=new java.util.Date() %>" />
-	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now}">
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now  && directOrderVO.memberId eq authenticatedUser }">
 	<p>환불 가능일 : <fmt:formatDate value="${directOrderVO.deliveryRefund }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
-		<button id="refundReady" class="button">환불 하기</button>
-	</c:if>
+	<button id="refundReady" class="button">환불 하기</button>
+</c:if>
+
 
 	<script type="text/javascript">
 		console.log('<sec:authentication property="name" />');
@@ -170,10 +185,10 @@
 	</script>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<c:if test="${directOrderVO.deliveryStatus eq '결제 완료'}">
-		<button id="ready" class="button">배송 준비중</button>
-	</c:if>
 	<c:if test="${directOrderVO.deliveryStatus eq '배송 준비중'}">
+		<button id="delivering" class="button">배송 중</button>
+	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 중'}">
 		<button id="completed" class="button">배송 완료</button>
 	</c:if>
 	<c:if test="${directOrderVO.deliveryStatus eq '환불 신청'}">
@@ -189,8 +204,37 @@
 			$('#ready').click(function(){
 				let orderId = ${directOrderVO.orderId };
 				let deliveryStatus = '배송 준비중';
+				let deliveryCompany = $("select[name='deliveryCompany']").val();
+				console.log(deliveryCompany);
+				let invoiceNumber = $("#invoiceNumber").val();
+				console.log(invoiceNumber);
 				$.ajax({
 					url : 'ready/' + orderId,
+					type : 'PUT',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : JSON.stringify({ 
+						deliveryStatus : deliveryStatus,
+						deliveryCompany : deliveryCompany,
+						invoiceNumber : invoiceNumber}),
+					success : function(result) {
+    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        if(result == 1) {
+    			            alert('상태 변경');
+    			            location.reload();
+    			        } else {
+    			            alert('예상치 못한 값:', result); // unexpected value
+    			        }
+    			    }
+				});
+			});
+			
+			$('#').click(function(){
+				let orderId = ${directOrderVO.orderId };
+				let deliveryStatus = '배송중';
+				$.ajax({
+					url : 'completed/' + orderId,
 					type : 'PUT',
 					headers : {
 						'Content-Type' : 'application/json'
