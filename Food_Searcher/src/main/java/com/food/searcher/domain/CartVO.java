@@ -20,6 +20,7 @@ public class CartVO {
 	private int itemId;
 	private String memberId;
 	private Date cartDate;
+	private int cartChecked;
 	
 	// Item Join
 	private String itemName;
@@ -32,8 +33,5 @@ public class CartVO {
 		this.cartAmount = cartAmount;
 	}
 	
-	public void initTotal() {
-		this.totalPrice = this.cartAmount * this.itemPrice;
-	}
 	
 }

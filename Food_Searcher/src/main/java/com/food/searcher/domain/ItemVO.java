@@ -24,5 +24,6 @@ public class ItemVO {
 	private int itemLike;
 	private String itemName;
 	private String memberId;
+	private int itemStatus;
 	
 }

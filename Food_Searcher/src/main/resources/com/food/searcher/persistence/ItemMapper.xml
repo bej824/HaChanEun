@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemLike" column="ITEM_LIKE" />
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemStatus" column="ITEM_STATUS" />
 	</resultMap>
 	
 	<insert id="insert">

@@ -34,9 +34,6 @@ public class CartServiceImple implements CartService {
 		log.info("getCartById()");
 		log.info("memberId : " + memberId);
 		List<CartVO> cartVO = cartMapper.selectOne(memberId);
-		for(CartVO vo : cartVO) {
-			vo.initTotal();
-		}
 		
 		log.info(cartVO);
 		return cartVO;
