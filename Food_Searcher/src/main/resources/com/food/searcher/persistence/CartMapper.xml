@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    		<result property="itemPrice" column="ITEM_PRICE" />
    		<result property="itemAmount" column="ITEM_AMOUNT" />
    		<result property="cartDate" column="CART_DATE" />
+   		<result property="cartChecked" column="CART_CHECKED" />
 		
 	</resultMap>
 	

@@ -45,7 +45,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
         <c:forEach var="CartVO" items="${cartVO }"> 
             <tr>
                 <td id="btnCheck">
-                <input type="checkbox" class="checkBox" checked="checked">
+                <input type="checkbox" class="checkBox" checked="checked" onchange="isChecked(this);">
                 </td> <!-- 선택 버튼 -->
                 <td>(썸네일)</td>	
                 <td>${CartVO.itemName } </td>
@@ -56,14 +56,11 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                     <button class="plusBtn">+</button>
                 </td>
                 <td> <div class="itemEachPrice">
-                각 <fmt:formatNumber value="${CartVO.itemPrice }" pattern="###,###,###" /> </div>
+                각 <fmt:formatNumber value="${CartVO.itemPrice }" pattern="#,###" />원</div>
                 <div class="itemTotalPrice" >
-                총 <fmt:formatNumber value="${CartVO.itemPrice * CartVO.cartAmount }" pattern="###,###,###" />
-                   <input type="hidden" value="total">
-                </div> </td>
+                총 <fmt:formatNumber value="${CartVO.itemPrice * CartVO.cartAmount }" pattern="#,###"/>원</div></td>
                 <td><button class="delBtn" >×</button></td>
-	            <td>
-		            <div style="display: none;">
+	            <td style="display: none;">
 			           	<input type="hidden" class="cartId" value="${CartVO.cartId }">
 			        	<input type="hidden" class="memberId" value="${CartVO.memberId }">
 			        	<input type="hidden" class="itemId" value="${CartVO.itemId }">
@@ -71,7 +68,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 			        	<input type="hidden" class="itemPrice" value="${CartVO.itemPrice }">
 			        	<input type="hidden" class="cartDate" value="${CartVO.cartDate }">
 			        	<input type="hidden" class="itemAmount" value="${CartVO.itemAmount }">
-		        	</div>
 	        	</td>
             </tr>
         </c:forEach>
@@ -119,7 +115,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 					success : function(result) {
 						console.log(result);
 							if(result == 1) {
-								let textContent = "총 " + itemTotalPrice.toLocaleString();
+								let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
 								$row.find(".itemTotalPrice").text(textContent);
 								$row.find(".itemTotalPrice").val(itemTotalPrice);
 								alert("수량 증가됨");
@@ -157,7 +153,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 					success : function(result) {
 						console.log("result = " + result);
 							if(result == 1) {
-								let textContent = "각 " + itemPrice.toLocaleString() + " | 총 " + itemTotalPrice.toLocaleString();
+								let textContent ="총 " + itemTotalPrice.toLocaleString() + "원";
 								$row.find(".itemTotalPrice").text(textContent);
 								$row.find(".itemTotalPrice").val(itemTotalPrice);
 								alert("수량 감소됨");
@@ -173,24 +169,27 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 			}); 
 		
 		function setTotalPrice(){
-			let row = $(this).closest('tr'); // 현재 버튼이 속한 tr 찾기
-			let itemTotalPrice = row.find(".itemTotalPrice").(); // tr에 있는 itemTotalPrice(cartId마다의 총 가격) 찾기
 			let totalPrice = 0; // 주문 가격 합계
 			
-			console.log("itemTotalPrice : " + itemTotalPrice);
-			
-			 $(".itemTotalPrice").each(function (){ 
-				 totalPrice += itemTotalPrice;
-				 let textContent = totalPrice;
-				 row.find("#totalPrice").text(textContent);
+			 $("tr").each(function (){  // 테이블 순회
+				 let isChecked = $(this).find(".checkBox").prop("checked"); // 체크박스 상태 확인
+				 
+				 if(isChecked) {				 
+					 let price = parseInt($(this).find(".itemPrice").val(), 10);
+				     let amount = parseInt($(this).find(".itemAmount").val(), 10);
+					 totalPrice += price * amount;
+					 console.log(totalPrice);
+					 $("#totalPrice").text(totalPrice.toLocaleString());
+				 }
 			 });
 		};
 
 		$(document).ready(function () {
 		    setTotalPrice(); // 페이지 로드 시 실행
-		    $(".checkBox, .plusBtn, .minusBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
+		    $(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
 		});
 		
+	
 	 $('.delBtn').on('click', function(){
 		 let cartId =  $(this).closest('tr').find('.cartId').val();
 		 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
