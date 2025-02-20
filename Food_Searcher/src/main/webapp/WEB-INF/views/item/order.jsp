@@ -22,8 +22,6 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td id="itemInfo" style="text-align: center;"></td>
 		</tbody>
 	</table>
 	
@@ -55,41 +53,48 @@
     
     <script type="text/javascript">
     	$(document).ready(function() {
-    		couponActive = [];
+    		let urlParams = new URLSearchParams(window.location.search);
+    		let count = urlParams.get('count'); // count 값 추출
+    		let itemId = urlParams.get('itemId');
     		
+    		let couponActive = [];
+    		let discountPrice = 0;
+	    	let itemName = '${itemVO.itemName }';
+	    	let itemPrice = ${itemVO.itemPrice};
+	    	const totalCost = count * itemPrice;
+	    	let totalPrice = totalCost;
+    		
+    		orderinfo(discountPrice);
     		couponList();
     		
     		// input 필드들에 대해 이벤트 리스너를 설정
 		    $("#postcode, #address, #detailaddress").on("input", updateOutput);
 		
-		    function updateOutput() {
-		      // 각 input 필드의 값을 가져오기
-		      const value1 = $("#postcode").val();
-		      const value2 = $("#address").val();
-		      const value3 = $("#detailaddress").val();
-		
-		      // 결과를 하나의 필드에 합치기
-		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
-		    }
     		
     		$('#couponSelect').change(function(){
     			let couponSelect = $(this).val();
     			
-    			console.log(couponSelect);
-    			console.log(couponActive);
+    			if(isNaN(couponSelect) || couponActive.length <= couponSelect || couponSelect < 0){
+    				couponList();
+    			}
     			
+    			if(couponSelect == 0) {
+    				discountPrice = '0';
+    			} else {
+    				discountPrice = couponActive[couponSelect].couponPrice;
+    			}
+    			
+    			totalPrice = totalCost - discountPrice;
+    			
+    			orderinfo(discountPrice);
     		})
     		
     		$('#order').click(function(){
-    			let urlParams = new URLSearchParams(window.location.search);
-  	    	  	let count = urlParams.get('count');
-  	    	  	let itemId = urlParams.get('itemId');
   	    	  	console.log("수량 : " + count);
   	    	  	let itemPrice = ${itemVO.itemPrice};
   	    	  	console.log("아이템 가격 : " + itemPrice);
     			let memberId = '<sec:authentication property="name" />';
     			console.log("memberId : " + memberId);
-    			let totalPrice = count * itemPrice;
     			console.log("총 금액 : " + totalPrice);
     			let deliveryAddress = $("#deleveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
@@ -120,11 +125,45 @@
     			});
     		});
     		
+    		function orderinfo(discountPrice){
+    			console.log(discountPrice);
+    	    	let tbody = $('table tbody');
+    	    	tbody.empty(); // 기존 테이블 내용 비우기
+    	    	
+    	    	let costCasting = "<br> 총 가격 : " + totalCost + "원";
+    	    	
+    	    	if(discountPrice != 0) {
+    	    	 	costCasting = "<br>" + "<s>총 가격 : " + totalCost + "원</s>" 
+    	    	 				+ "<br> 쿠폰 할인 : " + totalPrice + "원";
+    	    	}
+    	    	
+    	    	let row = '<tr>'
+    	    	+ '<td>' + "썸네일 영역" + "<br> 제품명 : " 
+    	    	+ itemName + "<br> 수량 : " 
+    	    	+ count
+    	    	+ costCasting
+    	    	+ '</td>'
+    	    	+ '</tr>';
+    	    	
+    	    	tbody.append(row);
+    		}
+    		
+    		function updateOutput() {
+  		      // 각 input 필드의 값을 가져오기
+  		      const value1 = $("#postcode").val();
+  		      const value2 = $("#address").val();
+  		      const value3 = $("#detailaddress").val();
+  		
+  		      // 결과를 하나의 필드에 합치기
+  		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
+  		    }
+    		
     		function couponList() {
     			let memberId = '<sec:authentication property="name" />';
     			let itemId = '${param.itemId}';
     			let couponSelect = $('#couponSelect');
     			let couponSelectOption = [];
+    			let listCount = 1;
     			
     			couponSelect.empty();
     			couponSelectOption.push('<option value="'+ 0 +'">'
@@ -154,7 +193,7 @@
     			    		if(CouponActiveVO.couponUsedDate != null) {
     			    			
     			    		} else {
-    			    			let option = '<option value="'+ CouponActiveVO.couponPrice +'">'
+    			    			let option = '<option value="'+ listCount +'">'
     			    			+ CouponActiveVO.couponName + " : " 
     			    			+ couponUseCondition + " "
     			    			+ CouponActiveVO.couponPrice + "원 할인\. "
@@ -162,11 +201,12 @@
     			    			
     			    			couponSelectOption.push(option);
     			    			couponActive.push(CouponActiveVO);
+    			    			listCount++;
     			    			
     			    		}
     			    		
     			    	})
-    			    			couponSelect.append(couponSelectOption);
+    			    	couponSelect.append(couponSelectOption);
     			    }
     			    	
     			})
@@ -186,12 +226,6 @@
         
 	    window.onload = function() {
 	    	  // URL에서 count 파라미터를 가져오기
-	    	  let urlParams = new URLSearchParams(window.location.search);
-	    	  let count = urlParams.get('count'); // count 값 추출
-	    	  let itemName = '${itemVO.itemName }';
-	    	  let itemPrice = ${itemVO.itemPrice};
-	    	  
-	    	  document.getElementById("itemInfo").innerHTML = "썸네일 영역" + "<br> 제품명 : " + itemName + "<br> 수량 : " + count + "<br> 총 가격 : " + count * itemPrice + "원";
 	    };
     </script>
     

@@ -18,8 +18,7 @@ public interface CouponActiveMapper {
 			);
 	
 	int updateCouponActiveByCouponActiveId(
-			 @Param("memberId") String memberId
-			,@Param("itemId") int itemId
+			 int couponActiveId
 			);
 
 }
