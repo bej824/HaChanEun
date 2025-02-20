@@ -17,6 +17,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="deliveryRefund" column="DELIVERY_REFUND" />
 		<result property="refundReason" column="REFUND_REASON" />
 		<result property="refundContent" column="REFUND_CONTENT" />
+		<result property="deliveryCompany" column="DELIVERY_COMPANY" />
+		<result property="invoiceNumber" column="INVOICE_NUMBER" />
 	</resultMap>
 	
 	<insert id="insert">
@@ -77,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="deliveryReady">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, DELIVERY_COMPANY = #{deliveryCompany}, INVOICE_NUMBER = #{invoiceNumber} WHERE ORDER_ID = #{orderId}
 	</update>
 	
 	<update id="deliveryCompleted">

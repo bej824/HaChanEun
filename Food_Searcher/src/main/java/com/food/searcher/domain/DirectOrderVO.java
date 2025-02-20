@@ -26,4 +26,6 @@ public class DirectOrderVO {
 	private Date deliveryRefund;
 	private String refundReason;
 	private String refundContent;
+	private String deliveryCompany;
+	private String invoiceNumber;
 }
