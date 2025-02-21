@@ -72,6 +72,7 @@ pageEncoding="UTF-8"%>
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
         <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
+        <input type="hidden" name="itemId" value="${itemVO.itemId }">
     </form><br>
 	
 	
@@ -115,7 +116,7 @@ pageEncoding="UTF-8"%>
 			var itemId = ${itemVO.itemId}
 			// 게시글ID 불러오기
 			
-			console.log("marketId : " + marketId);
+			console.log("itemId : " + itemId);
 			
 			 if (confirm('삭제하시겠습니까?')) {
 				 $('#deleteForm').submit();

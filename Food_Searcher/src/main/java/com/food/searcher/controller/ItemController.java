@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,18 +36,22 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Model model, Integer itemId, Pagination pagination) {
+	public void list(Model model, Integer itemStatus, Pagination pagination) {
 		log.info("list");
 		log.info("pagination : " + pagination);
+		List<ItemVO> itemList = itemService.getPagingItems(pagination);
+		log.info(itemList);
+		
 		pagination.setPageSize(10);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
-		List<ItemVO> list = itemService.getPagingItems(pagination);
+		log.info(pageMaker);
 		
-		log.info(list.size());
-		model.addAttribute("itemList", list);
+		log.info(itemList.size());
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("pageMaker", pageMaker);
 	}
 	
 	@GetMapping("/register")
@@ -99,6 +105,7 @@ public class ItemController {
 		log.info("delete()");
 		int result = itemService.deleteItem(itemId);
 		log.info(result + "행 삭제");
+		log.info("itemId : " + itemId);
 		
 		return "redirect:/item/list";
 	}
@@ -135,7 +142,7 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseInfo")
-	public void purchaseInfo(Model model, Integer orderId) {
+	public void purchaseInfo(Model model, String orderId) {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
 		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());

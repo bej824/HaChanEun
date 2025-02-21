@@ -52,20 +52,20 @@ li {
 <a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
 <hr>
-
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
-			
+					<input type="hidden" value="${itemVO.itemStatus }" >
 					<div>썸네일 삽입 예정</div><br>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>상품번호 : ${itemVO.itemId }</p>
 					<p>분류 : ${itemVO.itemTag }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>
+							원 &nbsp;&nbsp;&nbsp; 상태 : ${itemVO.itemStatus }</p>
 					
 			</div>
 			</c:forEach>
-	
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+	<input type="hidden" value="${itemVO.itemStatus }" >
 	
 	<ul>
 			<!-- 이전 버튼 생성을 위한 조건문 -->

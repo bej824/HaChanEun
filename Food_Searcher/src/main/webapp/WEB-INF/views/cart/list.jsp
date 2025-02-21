@@ -76,7 +76,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 
 	<p>합계 : <span id="totalPrice"></span> 원</p>
 	<div class="divOrder">
-	<a id="btnOrder" href="">주문하기</a>
+	<a id="btnOrder" href="<sec:authentication property="name" />/order">주문하기</a>
 	</div>
 
 

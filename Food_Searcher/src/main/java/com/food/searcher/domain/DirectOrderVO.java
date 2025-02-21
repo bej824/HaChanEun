@@ -14,7 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DirectOrderVO {
-	private int orderId;
+	private String orderId;
 	private String memberId;
 	private int totalPrice;
 	private String deliveryAddress;

@@ -36,18 +36,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectList" resultMap="itemResultMap">
-		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
+		SELECT * FROM ITEM WHERE ITEM_STATUS = 1 ORDER BY ITEM_ID DESC	
 	</select>
 	
 	<select id="selectOne" resultMap="itemResultMap">
 		SELECT * FROM ITEM WHERE ITEM_ID = #{itemId}
 	</select>
-
-	<update id="update">
-		UPDATE ITEM SET ITEM_NAME = #{itemName}, ITEM_PRICE = #{itemPrice},
-		ITEM_CONTENT = #{itemContent}, ITEM_TAG = #{itemTag}, ITEM_AMOUNT = #{itemAmount}
-		WHERE ITEM_ID = #{itemId}
-	</update>
 	
 	<update id="itemAmount">
 		UPDATE ITEM SET ITEM_AMOUNT = #{itemAmount}
@@ -72,5 +66,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
 	</select>
+	
+	<update id="update">
+	UPDATE ITEM SET
+		ITEM_NAME = #{itemName},
+		ITEM_PRICE = #{itemPrice},
+		ITEM_CONTENT = #{itemContent}, 
+		ITEM_TAG = #{itemTag}, 
+		ITEM_AMOUNT = #{itemAmount}, 
+		ITEM_STATUS = #{itemStatus}
+		WHERE ITEM_ID = #{itemId}
+	</update>
 	
 </mapper>

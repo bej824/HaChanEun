@@ -79,9 +79,9 @@
 	<c:set var="authenticatedUser" value="${pageContext.request.userPrincipal.name}" />
 	<c:set var="now" value="<%=new java.util.Date() %>" />
 	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now  && directOrderVO.memberId eq authenticatedUser }">
-	<p>환불 가능일 : <fmt:formatDate value="${directOrderVO.deliveryRefund }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
-	<button id="refundReady" class="button">환불 하기</button>
-</c:if>
+		<p>환불 가능일 : <fmt:formatDate value="${directOrderVO.deliveryRefund }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
+		<button id="refundReady" class="button">환불 하기</button>
+	</c:if>
 
 
 	<script type="text/javascript">
@@ -91,7 +91,7 @@
 		$(document).ready(function() {
 			$('#cancel').click(function(){
 				console.log("결제 취소");
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let deliveryStatus = '결제 취소';
 				$.ajax({
 					url : 'cancel/' + orderId,
@@ -117,7 +117,7 @@
 		$(document).ready(function() {
 			$('#refundReady').click(function(){
 				console.log("환불 하기");
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let deliveryStatus = '환불 하기';
 				$.ajax({
 					url : 'refundReady/' + orderId,
@@ -143,7 +143,7 @@
 		$(document).ready(function() {
 			$('#refund').click(function(){
 				console.log("환불 신청");
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let refundReason = $("select[name='refundReason']").val();
 				let refundContent = $("#refundContent").val();
 				let deliveryStatus = '환불 신청';
@@ -202,7 +202,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#ready').click(function(){
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let deliveryStatus = '배송 준비중';
 				let deliveryCompany = $("select[name='deliveryCompany']").val();
 				console.log(deliveryCompany);
@@ -230,11 +230,11 @@
 				});
 			});
 			
-			$('#').click(function(){
-				let orderId = ${directOrderVO.orderId };
-				let deliveryStatus = '배송중';
+			$('#delivering').click(function(){
+				let orderId = '${directOrderVO.orderId }';
+				let deliveryStatus = '배송 중';
 				$.ajax({
-					url : 'completed/' + orderId,
+					url : 'delivering/' + orderId,
 					type : 'PUT',
 					headers : {
 						'Content-Type' : 'application/json'
@@ -253,7 +253,7 @@
 			});
 			
 			$('#completed').click(function(){
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let deliveryStatus = '배송 완료';
 				$.ajax({
 					url : 'completed/' + orderId,
@@ -275,7 +275,7 @@
 			});
 			
 			$('#refundOK').click(function(){
-				let orderId = ${directOrderVO.orderId };
+				let orderId = '${directOrderVO.orderId }';
 				let deliveryStatus = '환불 완료';
 				$.ajax({
 					url : 'refundOK/' + orderId,

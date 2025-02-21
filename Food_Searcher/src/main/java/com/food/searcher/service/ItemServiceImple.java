@@ -34,9 +34,9 @@ public class ItemServiceImple implements ItemService {
 	}
 
 	@Override
-	public List<ItemVO> getAllItem() {
+	public List<ItemVO> getAllItem(int itemStatus) {
 		log.info("getAllItem()");
-		List<ItemVO> list = itemMapper.selectList();
+		List<ItemVO> list = itemMapper.selectList(itemStatus);
 		log.info(list);
 		return list.stream().collect(Collectors.toList());
 	}
