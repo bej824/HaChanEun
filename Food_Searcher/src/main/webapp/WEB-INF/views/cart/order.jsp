@@ -10,9 +10,11 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
+	<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<p>장바구니 구매</p>
 	<table>
 		<thead>
@@ -27,7 +29,7 @@
 			<tr>
 				<td>${CartVO.itemName }</td>
 				<td>${CartVO.cartAmount }</td>
-				<td>${CartVO.totalPrice }</td>
+				<td>${CartVO.itemPrice * CartVO.cartAmount }</td>
 			</tr>
 			</c:forEach>
 		</tbody>
@@ -50,8 +52,11 @@
     	<label>상세주소 : </label>
     	<input type="text" style="width: 300px;" id="detailaddress" maxlength="25" required>
     </div>
+    <input type="hidden" id="deleveryAddress">
 
-    <script>
+    <script type="text/javascript">
+    $("#postcode, #address, #detailaddress").on("input", updateOutput);
+    
         function openPostcodePopup() {
             new daum.Postcode({
                 oncomplete: function(data) {
@@ -61,23 +66,80 @@
                 }
             }).open();
         }
-    </script>
-    
-    <input type="hidden" id="deleveryAddress">
-    
-    <script type="text/javascript">
+        
+        function updateOutput() {
+		      // 각 input 필드의 값을 가져오기
+		      const value1 = $("#postcode").val();
+		      const value2 = $("#address").val();
+		      const value3 = $("#detailaddress").val();
+		
+		      // 결과를 하나의 필드에 합치기
+		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
+		    }
+
     	let length = ${cartVOSize };
     	console.log(length);
-    	for(let i = 0; i < length; i++) {
-    		$(document).ready(function() {
-    			$('#order').click(function(){
-    				let totalPrice = ${CartVO.totalPrice};
-      	    	  	console.log("총 가격 : " + totalPrice);
-    			});
-    		});
+    	let itemId = '${itemId }';
+    	console.log(itemId);
+    	let amount = '${amount }';
+    	console.log(amount);
+    	let itemPrice = '${itemPrice}';
+    	console.log(itemPrice);
+    	
+    	const itemIdSplit = itemId.split('/').filter(item => item !== '');
+    	const amountSplit = amount.split('/').filter(item => item !== '');
+    	const itemPriceSplit = itemPrice.split('/').filter(item => item !== '');
+    	
+    	const resultArray = [];
+    	
+    	for (let i = 0; i < length; i++) {
+    		  resultArray.push([itemIdSplit[i], amountSplit[i], itemPriceSplit[i] * amountSplit[i]]);
+    		}
+    	console.log(resultArray);
+    	
+    	for (let i = 0; i < length; i++) {
+    	    $(document).ready(function() {
+    	        $('#order').click(function(){
+    			setTimeout(function() {
+    	            let memberId = '<sec:authentication property="name" />';
+    	            console.log("memberId : " + memberId);
+    	            let itemId = itemIdSplit[i];
+    	            console.log("itemId : " + itemId);
+    	            let totalCount = amountSplit[i];
+    	            console.log("구매 수량 : " + totalCount);
+    	            let totalPrice = itemPriceSplit[i] * amountSplit[i];
+    	            console.log("총 가격 : " + totalPrice);
+    	            let deliveryAddress = $("#deleveryAddress").val();
+    	            console.log("주소 : " + deliveryAddress);
+
+    	                $.ajax({
+    	                    url: 'order',
+    	                    type: 'POST',
+    	                    headers: {
+    	                        'Content-Type': 'application/json' // json content-type 설정
+    	                    },
+    	                    data: JSON.stringify({
+    	                        memberId: memberId,
+    	                        itemId: itemId,
+    	                        totalCount: totalCount,
+    	                        totalPrice: totalPrice,
+    	                        deliveryAddress: deliveryAddress
+    	                    }),
+    	                    success: function(result) {
+    	                        console.log(result);
+    	                        alert('결제 성공');
+    	                        window.location.href = 'http://localhost:8080/searcher/item/purchaseHistory';
+    	                    }
+    	                });
+    	    	console.log(i);
+    			}, i * 1000); // i번째마다 1초씩 딜레이
+    	        });
+    	    });
     	}
+
+
     </script>
-    
+    <input type="hidden" id="deleveryAddress">
     <button id="order" class="button">구매</button>
 </body>
 </html>

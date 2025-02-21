@@ -135,7 +135,7 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseInfo")
-	public void purchaseInfo(Model model, Integer orderId) {
+	public void purchaseInfo(Model model, String orderId) {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
 		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());

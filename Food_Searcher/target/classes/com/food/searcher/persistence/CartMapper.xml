@@ -41,8 +41,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE a.MEMBER_ID = #{memberId}
 	</select>
 	
+	<select id="cartOrder" resultMap="cartResultMap">
+	  SELECT
+            a.CART_ID,
+            a.MEMBER_ID,
+            a.ITEM_ID,
+            a.CART_AMOUNT,
+            b.ITEM_NAME,
+            b.ITEM_PRICE,
+            b.ITEM_AMOUNT
+        FROM CART a
+        LEFT OUTER JOIN ITEM b
+        ON a.ITEM_ID = b.ITEM_ID
+        WHERE a.MEMBER_ID = #{memberId} and a.CART_CHECKED = 1
+	</select>
+	
 	<delete id="delete">
 		DELETE FROM CART WHERE CART_ID = #{cartId}
+	</delete>
+	
+	<delete id="cartDelete">
+		DELETE FROM CART WHERE CART_ID = #{cartId} and CART_CHECKED = 1
 	</delete>
 	
 	<update id="updateAmount">

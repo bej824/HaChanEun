@@ -13,7 +13,6 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th style="width: 5%">번호</th>
 				<th style="width: 8%">회원Id</th>
 				<th style="width: 5%">수량</th>
 				<th style="width: 8%">결제 금액</th>
@@ -25,7 +24,6 @@
 		<tbody>
 		<c:forEach var="DirectOrderVO" items="${directOrderVO }">
 			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderVO.orderId}'">
-				<td>${DirectOrderVO.orderId }</td>
 				<td>${DirectOrderVO.memberId }</td>
 				<td style="text-align: right;">${DirectOrderVO.totalCount }</td>
 				<td><fmt:formatNumber value="${DirectOrderVO.totalPrice}" pattern="###,###,###"/>원</td>
@@ -45,7 +43,6 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th style="width: 5%">번호</th>
 				<th style="width: 8%">회원Id</th>
 				<th style="width: 5%">수량</th>
 				<th style="width: 8%">결제 금액</th>
@@ -57,7 +54,6 @@
 		<tbody>
 		<c:forEach var="DirectOrderList" items="${allList }">
 			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderList.orderId}'">
-				<td>${DirectOrderList.orderId }</td>
 				<td>${DirectOrderList.memberId }</td>
 				<td style="text-align: right;">${DirectOrderList.totalCount }</td>
 				<td><fmt:formatNumber value="${DirectOrderList.totalPrice}" pattern="###,###,###"/>원</td>
