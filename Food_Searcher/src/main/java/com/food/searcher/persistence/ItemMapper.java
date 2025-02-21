@@ -12,7 +12,7 @@ import com.food.searcher.util.Pagination;
 public interface ItemMapper {
 	
 	int insert(ItemVO itemVO);
-	List<ItemVO> selectList();
+	List<ItemVO> selectList(int itemStatus);
 	List<ItemVO> selectListByPagination(Pagination pagination);
 	ItemVO selectOne(int itemId);
 	int update(ItemVO itemVO);
