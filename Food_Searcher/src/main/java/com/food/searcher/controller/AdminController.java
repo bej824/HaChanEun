@@ -1,5 +1,7 @@
 package com.food.searcher.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.AdminService;
 
 import lombok.extern.log4j.Log4j;
@@ -23,19 +26,32 @@ public class AdminController {
 	AdminService adminService;
 	
 	@GetMapping("/adminPage")
-	public void adminPageGET(Model model) {
+	public void adminPageGET() {
 		log.info("adminPageGET()");
 
-	} // end adminGET()
+	}
+	
+	@GetMapping("/itemManagement")
+	public void itemManagementGET() {
+		log.info("itemManagementGET()");
+	}
+	
+	@ResponseBody
+	@GetMapping("/itemList")
+	public List<ItemVO> itemListGET() {
+		log.info("itemListGET()");
+		
+		return adminService.itemGetAll();
+	}
 	
 	@ResponseBody
 	@PostMapping("/roleUpdate")
-	public int roleUpdatePOST(@RequestParam("memberId") String memberId) {
+	public int roleUpdatePOST(
+					 @RequestParam("memberId") String memberId
+					,@RequestParam("roleName") String roleName) {
 		log.info("roleUpdate");
-		String roleName = "ROLE_ADMIN";
-		int result = adminService.createRole(memberId, roleName);
 		
-		return result;
+		return adminService.createRole(memberId, roleName);
 	} // end roleUpdatePOST
 
 }

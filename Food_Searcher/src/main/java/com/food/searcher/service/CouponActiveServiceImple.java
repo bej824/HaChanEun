@@ -12,6 +12,7 @@ import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.CouponActiveMapper;
+import com.food.searcher.task.MemberCouponTask;
 
 import lombok.extern.log4j.Log4j;
 
@@ -23,17 +24,16 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	CouponActiveMapper couponActiveMapper;
 	
 	@Autowired
-	DiscountCouponService discountCouponService;
-	
-	@Autowired
-	ItemService itemService;
+	MemberCouponTask memberCouponTask;
 	
 	@Transactional
 	@Override
 	public int createCouponActive(CouponActiveVO couponActiveVO) {
 		log.info("createCouponActive()");
 		
-		log.info(couponActiveVO);
+		if(couponActiveVO.getItemName() == null) {
+			couponActiveVO.setItemName("");
+		}
 		
 		return couponActiveMapper.insertCouponActive(couponActiveVO);
 	}
@@ -43,16 +43,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	public CouponActiveVO selectOneCoupon(CouponActiveVO couponActiveVO) {
 		log.info("selectOneCoupon()");
 		
-		DiscountCouponVO coupon = discountCouponService.selectOneCoupon(couponActiveVO.getCouponId());
-		
-		if(couponActiveVO.getItemId() > 0) {
-			ItemVO item = itemService.getItemById(couponActiveVO.getItemId());
-			couponActiveVO.setItemName(item.getItemName());
-		}
-		
-		couponActiveVO.setCouponName(coupon.getCouponName());
-		couponActiveVO.setCouponIssuedDate(LocalDate.now());
-		couponActiveVO.setCouponExpireDate(LocalDate.now().plusDays(coupon.getCouponExpirationDate()));
+		couponActiveVO = memberCouponTask.setCouponInfo(couponActiveVO);
 		
 		return couponActiveVO;
 	}

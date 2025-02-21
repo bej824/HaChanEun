@@ -58,6 +58,7 @@
     		let itemId = urlParams.get('itemId');
     		
     		let couponActive = [];
+    		let couponSelectOption = 0;
     		let discountPrice = 0;
 	    	let itemName = '${itemVO.itemName }';
 	    	let itemPrice = ${itemVO.itemPrice};
@@ -74,9 +75,17 @@
     		$('#couponSelect').change(function(){
     			let couponSelect = $(this).val();
     			
+    			console.log(couponSelectOption);
     			if(isNaN(couponSelect) || couponActive.length <= couponSelect || couponSelect < 0){
     				couponList();
+    				return;
     			}
+    			
+    			if(totalCost < couponActive[couponSelect].couponUseCondition) {
+    				alert("사용 조건이 충족되지 않은 쿠폰입니다.");
+    				$(this).val(couponSelectOption).change();
+    				return;
+    			};
     			
     			if(couponSelect == 0) {
     				discountPrice = '0';
@@ -84,9 +93,8 @@
     				discountPrice = couponActive[couponSelect].couponPrice;
     			}
     			
-    			totalPrice = totalCost - discountPrice;
-    			
     			orderinfo(discountPrice);
+    			couponSelectOption = couponSelect;
     		})
     		
     		$('#order').click(function(){
@@ -126,7 +134,7 @@
     		});
     		
     		function orderinfo(discountPrice){
-    			console.log(discountPrice);
+    			totalPrice = totalCost - discountPrice;
     	    	let tbody = $('table tbody');
     	    	tbody.empty(); // 기존 테이블 내용 비우기
     	    	

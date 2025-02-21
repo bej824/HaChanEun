@@ -26,6 +26,7 @@ public class CouponActiveVO {
 	private LocalDate couponUsedDate; // 쿠폰 사용 날짜
 	private int itemId; // 쿠폰 사용 상품 아이디
 	private String itemName; // 쿠폰 사용 상품 이름
+	private int orderId;
 	
 	private String sellerId;
 	private int couponPrice;

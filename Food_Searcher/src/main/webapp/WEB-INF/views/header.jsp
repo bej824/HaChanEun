@@ -1,23 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.io.*, java.util.*"%>
-<%@ page import="javax.servlet.http.*, javax.servlet.*"%>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="com.food.searcher.domain.MarketVO" %>
-<%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
-<%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
-<%@page import="com.food.searcher.domain.RecipeVO"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>헤더</title>
+<%@ include file ="layout/head.jsp" %>
+<title>하찬은</title>
 <style>
 body {
 	transform: none !important; 
