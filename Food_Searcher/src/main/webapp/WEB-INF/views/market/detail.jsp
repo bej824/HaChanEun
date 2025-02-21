@@ -56,6 +56,7 @@ pageEncoding="UTF-8"%>
    	 <button onclick="location.href='modify?marketId=${marketVO.marketId }'" class="button">글수정</button>
 	</sec:authorize>
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	
     <button id="deleteMarket" class="button">글 삭제</button>
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="marketId" value="${marketVO.marketId }">
