@@ -75,8 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateCouponActiveByCouponActiveId">
 		UPDATE COUPON_ACTIVE
 		SET COUPON_USE_DATE = SYSDATE
-		WHERE MEMBER_ID = #{memberId}
-		AND COUPON_ID = #{couponId}
+		WHERE COUPON_ACTIVE_ID = #{couponActiveId}
 	</update>
 	
 </mapper>

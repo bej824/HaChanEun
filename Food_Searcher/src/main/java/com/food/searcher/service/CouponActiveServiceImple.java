@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DiscountCouponVO;
@@ -27,6 +28,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	@Autowired
 	ItemService itemService;
 	
+	@Transactional
 	@Override
 	public int createCouponActive(CouponActiveVO couponActiveVO) {
 		log.info("createCouponActive()");
@@ -36,6 +38,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		return couponActiveMapper.insertCouponActive(couponActiveVO);
 	}
 	
+	@Transactional
 	@Override
 	public CouponActiveVO selectOneCoupon(CouponActiveVO couponActiveVO) {
 		log.info("selectOneCoupon()");
@@ -54,6 +57,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		return couponActiveVO;
 	}
 	
+	@Transactional
 	@Override
 	public List<CouponActiveVO> selectCouponActive(String memberId, int itemId) {
 		log.info("selectCouponActive()");
@@ -62,11 +66,12 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		return couponActiveMapper.selectCouponActive(memberId, itemId);
 	}
 	
+	@Transactional
 	@Override
-	public int updateCouponActiveByCouponActiveId(String memberId, int itemId) {
+	public int updateCouponActiveByCouponActiveId(String memberId, int couponActiveId, int couponId) {
 		log.info("updateCouponActiveByCouponActiveId()");
 		
-		return couponActiveMapper.updateCouponActiveByCouponActiveId(memberId, itemId);
+		return couponActiveMapper.updateCouponActiveByCouponActiveId(couponActiveId);
 	}
 
 }

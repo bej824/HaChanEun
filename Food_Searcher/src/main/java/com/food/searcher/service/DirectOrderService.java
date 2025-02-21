@@ -15,6 +15,6 @@ public interface DirectOrderService {
 	int refundReady(String deliveryStatus, int orderId);
 	int refund(String deliveryStatus, String refundReason, String refundContent, int orderId);
 	int refundOK(String deliveryStatus, int orderId);
-	int deliveryReady(String deliveryStatus, int orderId);
+	int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, int orderId);
 	int deliveryCompleted(String deliveryStatus, int orderId);
 }

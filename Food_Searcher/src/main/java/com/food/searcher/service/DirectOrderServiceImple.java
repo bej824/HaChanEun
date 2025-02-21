@@ -83,8 +83,8 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	}
 	
 	@Override
-	public int deliveryReady(String deliveryStatus, int orderId) {
-		return directOrderMapper.deliveryReady(deliveryStatus, orderId);
+	public int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, int orderId) {
+		return directOrderMapper.deliveryReady(deliveryStatus, deliveryCompany, invoiceNumber, orderId);
 	}
 	
 	@Override

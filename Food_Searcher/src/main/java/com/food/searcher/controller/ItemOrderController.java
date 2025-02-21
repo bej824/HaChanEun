@@ -52,7 +52,9 @@ public class ItemOrderController {
 	@PutMapping("/ready/{orderId}")
 	public ResponseEntity<Integer> ready(@PathVariable("orderId") int orderId, @RequestBody Map<String, String> deliveryStatusMap) {
 	    String deliveryStatus = deliveryStatusMap.get("deliveryStatus");
-	    return new ResponseEntity<Integer>(directOrderService.deliveryReady(deliveryStatus, orderId), HttpStatus.OK);
+	    String deliveryCompany = deliveryStatusMap.get("deliveryCompany");
+	    String invoiceNumber = deliveryStatusMap.get("invoiceNumber");
+	    return new ResponseEntity<Integer>(directOrderService.deliveryReady(deliveryStatus, deliveryCompany, invoiceNumber, orderId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/completed/{orderId}")
