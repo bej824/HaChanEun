@@ -158,8 +158,8 @@
 			$(document).on("click", ".btn_update", function(){
 				$(".replyModal").attr("style", "display:block;");
 				
-				var replyId = $(this).closest('.reply_item').find('#replyId').val();   // 댓글 Id 가져오기
-				var replyContent = $(this).closest('.reply_item').find('#replyContent').val(); // 원본 댓글 내용 가져오기
+				let replyId = $(this).closest('.reply_item').find('#replyId').val();   // 댓글 Id 가져오기
+				let replyContent = $(this).closest('.reply_item').find('#replyContent').val(); // 원본 댓글 내용 가져오기
 				
 				let text = ' (수정됨)'
 				if(replyContent.includes(text)) {
@@ -178,8 +178,8 @@
 			$(".modal_modify_btn").on("click", function(){
 				console.log(this);
 			
-				var replyId = $("#recipeReplyId").val();
-				var replyContent = $("#modal_repCon").val();
+				let replyId = $("#recipeReplyId").val();
+				let replyContent = $("#modal_repCon").val();
 				
 				console.log("선택된 댓글 번호 : " + replyId + ", 수정된 댓글 내용 : " + replyContent);
 			
@@ -232,8 +232,8 @@
 			$(document).on("click", ".btn_commentupdate", function(){
 				$(".commentModifyModal").attr("style", "display:block;");
 				
-				var commentId =  $(this).closest('.comment_item').find("#recipeCommentId").val();
-				var commentContent =  $(this).closest('.comment_item').find("#commentContent").val(); // 원본 댓글 내용 가져오기
+				let commentId =  $(this).closest('.comment_item').find("#recipeCommentId").val();
+				let commentContent =  $(this).closest('.comment_item').find("#commentContent").val(); // 원본 댓글 내용 가져오기
 				
 				let text = ' (수정됨)'
 					if(commentContent.includes(text)) {

@@ -12,28 +12,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
 <style type="text/css">
-
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-    .image-list {
-        display: flex;
-        flex-wrap: wrap; /* 이미지가 가로로 나오고, 공간이 부족할 경우 줄 바꿈 */
-    }
-    .image_item {
-        margin: 5px; /* 이미지 간 간격 */
-    }
-    
-    .clickable-word {	
-	left : 30px;
-	width: 100%;
-	max-width: 600px; /* 댓글 창의 최대 너비 */
-	margin: 20px auto; /* 화면 중앙에 배치 */
-	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-}
-
 	.content {
 		width: 700px;
 		height: 80px;
@@ -57,12 +35,6 @@ textarea {
 	font-size: 16px;
 	resize: none;
 }
-    
-        .new-line {
-            display: block;  /* 새로운 줄로 나누기 */
-            margin-top: 10px;  /* 위쪽에 여백 추가 (선택 사항) */
-        }    
-
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

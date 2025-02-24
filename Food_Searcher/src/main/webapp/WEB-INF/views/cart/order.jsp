@@ -10,8 +10,7 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>Insert title here</title>
+<title>장바구니 구매</title>
 </head>
 <body>
 	<%@ include file ="/WEB-INF/views/header.jsp" %>
@@ -128,7 +127,7 @@
     	                    success: function(result) {
     	                        console.log(result);
     	                        alert('결제 성공');
-    	                        window.location.href = 'http://localhost:8080/searcher/item/purchaseHistory';
+    	                        window.location.href = 'http://localhost:8080/searcher/item/list';
     	                    }
     	                });
     	    	console.log(i);
