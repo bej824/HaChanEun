@@ -6,26 +6,6 @@
 <html>
 <head>
 <style type="text/css">
-textarea {
-  width: 700px;
-  height: 280px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  font-size: 16px;
-  resize: none;
-}
-
-    .image-list {
-        display: flex;
-        flex-wrap: wrap; /* 이미지가 가로로 나오고, 공간이 부족할 경우 줄 바꿈 */
-    }
-    .image_item {
-        margin: 5px; /* 이미지 간 간격 */
-    }
- 
  textarea.ingredient {
     width: 700px;
 	height: 65px;
@@ -36,7 +16,6 @@ textarea {
 	font-size: 16px;
 	resize: none;
 }
-    
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,15 +197,15 @@ maxlength="1500" required>${recipeVO.recipeContent }</textarea>
         });
     </script>
 		
-<script>
-	function goBack() {
-	  const referrer = document.referrer;
-	  if (referrer) {
-	    window.location.href = referrer;  // 이전 페이지로 이동
-	  } else {
-	    alert("이전 페이지가 없습니다.");
-	  }
-	}
-</script>	
+	<script>
+		function goBack() {
+		  const referrer = document.referrer;
+		  if (referrer) {
+		    window.location.href = referrer;  // 이전 페이지로 이동
+		  } else {
+		    alert("이전 페이지가 없습니다.");
+		  }
+		}
+	</script>	
 </body>
 </html>

@@ -129,7 +129,7 @@
     			    success : function(result) {
     			    	console.log(result);
     			            alert('결제 성공');
-    			            window.location.href = 'purchaseHistory';
+    			            window.location.href = 'list';
     			    }
     			});
     		});
