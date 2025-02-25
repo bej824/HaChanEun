@@ -21,6 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.food.searcher.task.MemberCouponTask;
+import com.food.searcher.util.RandomUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -97,8 +98,8 @@ public class RootConfig {
 	    }
 	    
 	    @Bean
-	    public MemberCouponTask memberCouponTask() {
-	        return new MemberCouponTask();
+	    public RandomUtil randomUtil() {
+	    	return new RandomUtil();
 	    }
 	
 } // end RootConfig

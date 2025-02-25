@@ -17,8 +17,6 @@ public interface CouponActiveMapper {
 			,@Param("itemId") int itemId
 			);
 	
-	int updateCouponActiveByCouponActiveId(
-			 int couponActiveId
-			);
+	int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO);
 
 }

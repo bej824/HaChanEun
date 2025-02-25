@@ -28,4 +28,7 @@ public class DirectOrderVO {
 	private String refundContent;
 	private String deliveryCompany;
 	private String invoiceNumber;
+	
+	private int couponActiveId;
+	private String itemName;
 }

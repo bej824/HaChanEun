@@ -30,7 +30,7 @@ public class AdminServiceImple implements AdminService {
 	public List<ItemVO> itemGetAll() {
 		log.info("itemGetAll()");
 		
-		return itemService.getAllItem();
+		return itemService.getAllItem(0);
 	}
 
 }

@@ -29,7 +29,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Override
 	public List<DiscountCouponVO> selectCoupon(String searchBy, String searchText) {
 		log.info("selectAllCoupon()");
-		log.info(searchBy + "검색할 텍스트" + searchText);
 		
 		return discountCouponMapper.selectCoupon(searchBy, searchText);
 	}

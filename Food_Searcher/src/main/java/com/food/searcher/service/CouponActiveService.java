@@ -13,7 +13,9 @@ public interface CouponActiveService {
 	
 	List<CouponActiveVO> selectCouponActive(String memberId, int itemId);
 	
-	int updateCouponActiveByCouponActiveId(String memberId, int couponActiveId, int couponId);
+	int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO);
+	
+	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
 	
 	
 

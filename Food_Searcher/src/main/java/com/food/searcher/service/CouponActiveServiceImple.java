@@ -24,7 +24,10 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	CouponActiveMapper couponActiveMapper;
 	
 	@Autowired
-	MemberCouponTask memberCouponTask;
+	DiscountCouponService discountCouponService;
+	
+	@Autowired
+	ItemService itemService;
 	
 	@Transactional
 	@Override
@@ -43,7 +46,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	public CouponActiveVO selectOneCoupon(CouponActiveVO couponActiveVO) {
 		log.info("selectOneCoupon()");
 		
-		couponActiveVO = memberCouponTask.setCouponInfo(couponActiveVO);
+		couponActiveVO = setCouponInfo(couponActiveVO);
 		
 		return couponActiveVO;
 	}
@@ -52,17 +55,35 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	@Override
 	public List<CouponActiveVO> selectCouponActive(String memberId, int itemId) {
 		log.info("selectCouponActive()");
-		log.info(memberId);
 		
 		return couponActiveMapper.selectCouponActive(memberId, itemId);
 	}
 	
 	@Transactional
 	@Override
-	public int updateCouponActiveByCouponActiveId(String memberId, int couponActiveId, int couponId) {
+	public int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO) {
 		log.info("updateCouponActiveByCouponActiveId()");
+		log.info(couponActiveVO);
 		
-		return couponActiveMapper.updateCouponActiveByCouponActiveId(couponActiveId);
+		return couponActiveMapper.updateCouponActiveByCouponActiveId(couponActiveVO);
 	}
+	
+	@Transactional
+	@Override
+	public CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO) {
+		
+		DiscountCouponVO coupon = discountCouponService.selectOneCoupon(couponActiveVO.getCouponId());
+		
+		if(couponActiveVO.getItemId() > 0) {
+			ItemVO item = itemService.getItemById(couponActiveVO.getItemId());
+			couponActiveVO.setItemName(item.getItemName());
+		}
+		
+		couponActiveVO.setCouponName(coupon.getCouponName());
+		couponActiveVO.setCouponIssuedDate(LocalDate.now());
+		couponActiveVO.setCouponExpireDate(LocalDate.now().plusDays(coupon.getCouponExpirationDate()));
+		
+		return couponActiveVO;
+	} // end setCouponInfo()
 
 }

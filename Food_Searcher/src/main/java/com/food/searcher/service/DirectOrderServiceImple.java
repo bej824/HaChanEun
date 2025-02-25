@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.CartVO;
+import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.CartMapper;
@@ -24,6 +25,9 @@ public class DirectOrderServiceImple implements DirectOrderService{
 
 	@Autowired
 	private DirectOrderMapper directOrderMapper;
+	
+	@Autowired
+	private CouponActiveService couponActiveService;
 	
 	@Autowired
 	private ItemMapper itemMapper;
@@ -52,6 +56,16 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		directOrderVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId());
+		
+		if(directOrderVO.getCouponActiveId() != 0) {
+			CouponActiveVO couponActiveVO = new CouponActiveVO();
+			couponActiveVO.setCouponActiveId(directOrderVO.getCouponActiveId());
+			couponActiveVO.setMemberId(directOrderVO.getMemberId());
+			couponActiveVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId());
+			couponActiveVO.setItemId(directOrderVO.getItemId());
+			couponActiveVO.setCouponUseDate(now);
+			couponActiveService.updateCouponActiveByCouponActiveId(couponActiveVO);
+		}
 		
 		log.info("insert()");
 		log.info(directOrderVO);

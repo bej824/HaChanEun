@@ -75,7 +75,6 @@
     		$('#couponSelect').change(function(){
     			let couponSelect = $(this).val();
     			
-    			console.log(couponSelectOption);
     			if(isNaN(couponSelect) || couponActive.length <= couponSelect || couponSelect < 0){
     				couponList();
     				return;
@@ -92,7 +91,6 @@
     			} else {
     				discountPrice = couponActive[couponSelect].couponPrice;
     			}
-    			
     			orderinfo(discountPrice);
     			couponSelectOption = couponSelect;
     		})
@@ -106,6 +104,8 @@
     			console.log("총 금액 : " + totalPrice);
     			let deliveryAddress = $("#deleveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
+    			let couponSelect = $('#couponSelect').val();
+    			let couponActiveId = couponActive[couponSelect].couponActiveId;
     			
     			if (!deliveryAddress) {
                     alert('배송 주소를 입력해주세요.');
@@ -123,7 +123,8 @@
     			        itemId : itemId,
     			        totalCount : count,
     			        totalPrice : totalPrice,
-    			        deliveryAddress : deliveryAddress
+    			        deliveryAddress : deliveryAddress,
+    			        couponActiveId : couponActiveId
     			    }),
     			    success : function(result) {
     			    	console.log(result);

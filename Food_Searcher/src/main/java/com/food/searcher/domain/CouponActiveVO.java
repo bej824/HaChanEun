@@ -1,6 +1,7 @@
 package com.food.searcher.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,10 +24,10 @@ public class CouponActiveVO {
 	private String couponName; // 쿠폰 이름
 	private LocalDate couponIssuedDate; // 쿠폰 발급 날짜
 	private LocalDate couponExpireDate; // 쿠폰 만료 날짜
-	private LocalDate couponUsedDate; // 쿠폰 사용 날짜
+	private LocalDateTime couponUseDate; // 쿠폰 사용 날짜
 	private int itemId; // 쿠폰 사용 상품 아이디
 	private String itemName; // 쿠폰 사용 상품 이름
-	private int orderId;
+	private String orderId;
 	
 	private String sellerId;
 	private int couponPrice;
