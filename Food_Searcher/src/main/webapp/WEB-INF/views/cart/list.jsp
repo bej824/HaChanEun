@@ -81,93 +81,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 
 
 	<script>
-	
-	$(document).ajaxSend(function(e, xhr, opt){
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		xhr.setRequestHeader(header, token);
-	});	 
-	
- 
-		$(".plusBtn").on("click", function() {
-			let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
-			let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
-			let cartId = $row.find(".cartId").val();
-			let itemPrice = parseInt($row.find(".itemPrice").val());
-			let itemAmount = $row.find("itemAmount").val();
-			 
-			console.log("itemAmount : " + itemAmount);
-			 // 수량 증가
-				 quantity += 1;
-				 parseInt($row.find(".itemAmount").val(quantity));
-				 console.log("quantity : " + quantity, "cartId : " + cartId, "itemPrice : " + itemPrice);
-				 
-				 let itemTotalPrice = itemPrice * quantity;
-				 let cartAmount = quantity.toString(); 
-				 
-			 $.ajax({
-					type : 'PUT',
-					url : '../update/' + cartId,
-					headers : {
-						'Content-Type' : 'application/json'
-					}, 
-					data : cartAmount,
-					success : function(result) {
-						console.log(result);
-							if(result == 1) {
-								let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
-								$row.find(".itemTotalPrice").text(textContent);
-								$row.find(".itemTotalPrice").val(itemTotalPrice);
-								alert("수량 증가됨");
-							} else {
-								alert("증가 실패");
-							}
-						}
-				}); // end ajax
-		}); // end plus_btn
-		
-	
-		$(".minusBtn").on("click", function(){
-			let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
-			let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
-			let cartId = $row.find(".cartId").val();
-			let itemPrice = parseInt($row.find(".itemPrice").val());
-			 
-		 
-		 // 수량 감소
-		 if (quantity > 1) {
-			 quantity -= 1;
-			 parseInt($row.find(".itemAmount").val(quantity));
-			 console.log("quantity : " + quantity, "cartId : " + cartId, "itemPrice : " + itemPrice);
-			 
-			 let itemTotalPrice = itemPrice * quantity;
-			 let cartAmount = quantity.toString(); 
-			 console.log("상품 가격 합계 : " + itemTotalPrice);
-				 $.ajax({
-					type : 'PUT',
-					url : '../update/' + cartId,
-					headers : {
-						'Content-Type' : 'application/json'
-					}, 
-					data : cartAmount,
-					success : function(result) {
-						console.log("result = " + result);
-							if(result == 1) {
-								let textContent ="총 " + itemTotalPrice.toLocaleString() + "원";
-								$row.find(".itemTotalPrice").text(textContent);
-								$row.find(".itemTotalPrice").val(itemTotalPrice);
-								alert("수량 감소됨");
-								} else {
-									alert("감소 실패");
-								}
-							}
-						}); // end ajax
-				 } else {
-					 alert("최소 수량입니다.");
-				 }
-			 
-			}); 
-		
 		function setTotalPrice(){
 			let totalPrice = 0; // 주문 가격 합계
 			
@@ -178,47 +91,122 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 					 let price = parseInt($(this).find(".itemPrice").val(), 10);
 				     let amount = parseInt($(this).find(".itemAmount").val(), 10);
 					 totalPrice += price * amount;
-					 console.log(totalPrice);
+					 console.log("totalPrice : " + totalPrice);
 					 $("#totalPrice").text(totalPrice.toLocaleString());
 				 }
 			 });
 		};
 
-		$(document).ready(function () {
-		    setTotalPrice(); // 페이지 로드 시 실행
-		    $(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
-		});
-		
-	
-	 $('.delBtn').on('click', function(){
-		 let cartId =  $(this).closest('tr').find('.cartId').val();
-		 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
-		 let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
-		 console.log("cartId : " + cartId, "memberId : " + memberId);
-		 
-		 if(deleteConfirm) {
-			 $.ajax({
-				 type : 'DELETE',
-				 url : '../delete/' + cartId,
-				 headers : {
-						'Content-Type' : 'application/json'
-					}, 
-				 success : function(result){
-					 console.log(result);
-					 if(result == 1) {
-						 alert('삭제 완료');
-						 location.reload(true);
-					 } else {
-						alert('삭제 실패');
-						location.reload(true);
-					 }
-				 }
+			$(document).ready(function () {
+		 	  setTotalPrice(); // 페이지 로드 시 실행
+		  	  $(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
+		    
+
+				$(".plusBtn").on("click", function() {
+					let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
+					let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
+					let cartId = $row.find(".cartId").val();
+					let itemPrice = parseInt($row.find(".itemPrice").val());
+					let itemAmount = $row.find("itemAmount").val();
+					 
+					 // 수량 증가
+						 quantity += 1;
+						 parseInt($row.find(".itemAmount").val(quantity));
+						 
+						 let itemTotalPrice = itemPrice * quantity;
+						 let cartAmount = quantity.toString(); 
+						 
+					 $.ajax({
+							type : 'PUT',
+							url : '../update/' + cartId,
+							headers : {
+								'Content-Type' : 'application/json'
+							}, 
+							data : cartAmount,
+							success : function(result) {
+								console.log(result);
+									if(result == 1) {
+										let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
+										$row.find(".itemTotalPrice").text(textContent);
+										$row.find(".itemTotalPrice").val(itemTotalPrice);
+										alert("수량 증가됨");
+									} else {
+										alert("증가 실패");
+									}
+								}
+						}); // end ajax
+				}); // end plus_btn
+				
+			
+				$(".minusBtn").on("click", function(){
+					let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
+					let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
+					let cartId = $row.find(".cartId").val();
+					let itemPrice = parseInt($row.find(".itemPrice").val());
 				 
-			 });
-		 }
-	 });
-		
-	
+				 // 수량 감소
+				 if (quantity > 1) {
+					 quantity -= 1;
+					 parseInt($row.find(".itemAmount").val(quantity));
+					 console.log("quantity : " + quantity, "cartId : " + cartId, "itemPrice : " + itemPrice);
+					 
+					 let itemTotalPrice = itemPrice * quantity;
+					 let cartAmount = quantity.toString(); 
+					 console.log("상품 가격 합계 : " + itemTotalPrice);
+					 
+						 $.ajax({
+							type : 'PUT',
+							url : '../update/' + cartId,
+							headers : {
+								'Content-Type' : 'application/json'
+							}, 
+							data : cartAmount,
+							success : function(result) {
+								console.log("result = " + result);
+									if(result == 1) {
+										let textContent ="총 " + itemTotalPrice.toLocaleString() + "원";
+										$row.find(".itemTotalPrice").text(textContent);
+										$row.find(".itemTotalPrice").val(itemTotalPrice);
+										alert("수량 감소됨");
+										} else {
+											alert("감소 실패");
+										}
+									}
+								}); // end ajax
+						 } else {
+							 alert("최소 수량입니다.");
+						 }
+					}); 
+			    
+			    $('.delBtn').on('click', function(){
+					 let cartId =  $(this).closest('tr').find('.cartId').val();
+					 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
+					 let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
+					 console.log("cartId : " + cartId, "memberId : " + memberId);
+					 
+					 if(deleteConfirm) {
+						 $.ajax({
+							 type : 'DELETE',
+							 url : '../delete/' + cartId,
+							 headers : {
+									'Content-Type' : 'application/json'
+								}, 
+							 success : function(result){
+								 console.log(result);
+								 if(result == 1) {
+									 alert('삭제 완료');
+									 location.reload(true);
+								 } else {
+									alert('삭제 실패');
+									location.reload(true);
+								 }
+							 }
+							 
+						 });
+					 }
+				 });
+			    
+			});
 	 
 	
 </script>

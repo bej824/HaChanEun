@@ -35,8 +35,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice}, #{itemContent}, #{itemTag}, #{itemAmount}, #{memberId})		
 	</insert>
 	
-	<select id="selectList" resultMap="itemResultMap">
-		SELECT * FROM ITEM WHERE ITEM_STATUS = 1 ORDER BY ITEM_ID DESC	
+	<select id="selectAll" resultMap="itemResultMap">
+		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
+	</select>
+	
+	<select id="selectStatus" resultMap="itemResultMap">
+		SELECT * FROM ITEM WHERE ITEM_STATUS = #{itemStatus} ORDER BY ITEM_ID DESC
 	</select>
 	
 	<select id="selectOne" resultMap="itemResultMap">
@@ -52,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM ITEM WHERE ITEM_ID = #{itemId}
 	</delete>
 	
-	<select id="selectListByPagination" resultMap="itemResultMap">
+	<select id="selectAllByPagination" resultMap="itemResultMap">
 	<!-- 페이지네이션 -->
 	SELECT * FROM
 	(
@@ -63,8 +67,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
+	<select id="selectStatusByPagination" resultMap="itemResultMap" parameterType="map">
+	<!-- 페이지네이션 -->
+	SELECT * FROM
+	(
+		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
+		FROM ITEM
+		WHERE ITEM_STATUS = 1
+			) 
+			WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
+	</select>
+	
+	<select id="selectTotalCountByStatus" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = #{itemStatus}
 	</select>
 	
 	<update id="update">

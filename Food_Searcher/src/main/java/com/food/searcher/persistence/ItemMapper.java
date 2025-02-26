@@ -10,11 +10,16 @@ import com.food.searcher.util.Pagination;
 
 @Mapper
 public interface ItemMapper {
-	
 	int insert(ItemVO itemVO);
-	List<ItemVO> selectList(int itemStatus);
-	List<ItemVO> selectListByPagination(Pagination pagination);
+	
+	List<ItemVO> selectAll();
+	List<ItemVO> selectAllByPagination(Pagination pagination); // 전체 게시글 페이징 처리
+	
+	List<ItemVO> selectStatus(int itemStatus);
+	List<ItemVO> selectStatusByPagination(Pagination pagination);
+	
 	ItemVO selectOne(int itemId);
+	
 	int update(ItemVO itemVO);
 	int delete(int itemId);
 	int selectTotalCount(Pagination pagination);

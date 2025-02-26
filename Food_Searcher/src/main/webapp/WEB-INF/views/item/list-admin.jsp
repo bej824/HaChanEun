@@ -39,7 +39,7 @@ li {
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
 
-<h1>상품 리스트</h1>
+<h1>전체 상품 리스트</h1>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 <a href="/searcher/item/register" class="button">상품 등록</a>  
@@ -49,9 +49,6 @@ li {
 <a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
 <br><br>
-<a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
-
-<br><a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
 
 <hr>
 			<c:forEach var="itemVO" items="${itemList}">
@@ -69,7 +66,8 @@ li {
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	
-	<form id="listForm" action="list" method="get">
+		
+	<form id="listForm" action="list-admin" method="get">
 	    	<input type="hidden" name="pageNum" >
 	    </form>
 	
@@ -93,6 +91,7 @@ li {
 				class="button">다음</a></li>
 		</c:if>
 	</ul>
+	
 	
 <script type="text/javascript">
 	
@@ -127,7 +126,6 @@ li {
 		
 		listForm.submit(); // form 전송
 	}); // end on()
-	
 	
 	
 </script>	
