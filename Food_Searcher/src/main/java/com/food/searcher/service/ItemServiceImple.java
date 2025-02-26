@@ -1,6 +1,8 @@
 package com.food.searcher.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,39 @@ public class ItemServiceImple implements ItemService {
 		
 		return itemResult;
 	}
-
+	
 	@Override
-	public List<ItemVO> getAllItem(int itemStatus) {
+	public List<ItemVO> getAllItem() {
 		log.info("getAllItem()");
-		List<ItemVO> list = itemMapper.selectList(itemStatus);
+		List<ItemVO> list = itemMapper.selectAll();
 		log.info(list);
 		return list.stream().collect(Collectors.toList());
 	}
-
+	
+	@Override
+	public List<ItemVO> getPagingAllItems(Pagination pagination) {
+		log.info("getPagingItems()");
+		List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
+		log.info(list);
+		return list.stream().collect(Collectors.toList());
+	} 
+	
+	@Override
+	public List<ItemVO> getItemByStatus(int itemStatus) {
+		log.info("getItemByStatus()");
+		List<ItemVO> list = itemMapper.selectStatus(itemStatus);
+		log.info(list);
+		return list.stream().collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
+		log.info("getPagingStatusItems()");
+		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
+		log.info(list);
+		return list.stream().collect(Collectors.toList());
+	} 
+	
 	@Override
 	public ItemVO getItemById(int itemId) {
 		log.info("getItemById()");
@@ -61,16 +87,12 @@ public class ItemServiceImple implements ItemService {
 		return itemMapper.delete(itemId);
 	}
 
-	@Override
-	public List<ItemVO> getPagingItems(Pagination pagintaion) {
-		List<ItemVO> list = itemMapper.selectListByPagination(pagintaion);
-		return list.stream().collect(Collectors.toList());
-	}
 
 	@Override
 	public int getTotalCount(Pagination pagination) {
 		return itemMapper.selectTotalCount(pagination);
 	}
+
 
 	
 } // end ItemServiceImple

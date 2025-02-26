@@ -37,12 +37,6 @@ public interface DiscountCouponService {
 	DiscountCouponVO selectOneCoupon(int couponId);
 	
 	/**
-	 * @param sellerId 판매자 아이디
-	 * @return 판매자가 관리 가능한 쿠폰
-	 */
-	List<DiscountCouponVO> selectFRCouponBySellerId(String sellerId);
-	
-	/**
 	 * @param memberId 로그인한 사람의 아이디
 	 * @param itemId 현재 존재하는 상품칸
 	 * @return 첫구매 혹은 재구매 쿠폰

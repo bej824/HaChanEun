@@ -7,13 +7,8 @@
 <head>
 <style>
 
-#area{
-	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
-    gap: 20px; /* 아이템 사이 여백 추가 */
-}
 
 .item {
-	flex: 1 1 calc(33.333% - 20px); /* 한 줄에 3개 배치 (여백 포함) */
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
     background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
@@ -44,34 +39,18 @@ li {
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
 
-<h1>상품 리스트</h1>
+<h1>전체 상품 리스트</h1>
 
-<div class="testDiv">
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 <a href="/searcher/item/register" class="button">상품 등록</a>  
 </sec:authorize>
-<br>
+
 <sec:authorize access="hasRole('ROLE_MEMBER')">
 <a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
-<br>
-<a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
+<br><br>
 
-<br><a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
-</div>
-
-	<form id="searchForm" method="get" action="list">
-			<input type="hidden" name="pageNum">
-			<select name="type">
-				<option value="ITEM_NAME">상품명</option>
-				<option value="ITEM_CONTENT">상품 설명</option>
-				<option value="ITEM_TAG">상품 태그</option>
-			</select>
-			<input type="text" name="keyword">
-			<button class="button"> 검색 </button>
-	</form>
 <hr>
-
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
@@ -87,10 +66,9 @@ li {
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	
-	<form id="listForm" action="list" method="get">
+		
+	<form id="listForm" action="list-admin" method="get">
 	    	<input type="hidden" name="pageNum" >
-	    	<input type="hidden" name="type" >
-			<input type="hidden" name="keyword">
 	    </form>
 	
 	<ul>
@@ -113,9 +91,18 @@ li {
 				class="button">다음</a></li>
 		</c:if>
 	</ul>
-
+	
 	
 <script type="text/javascript">
+	
+	$(document).ajaxSend(function(e, xhr, opt){
+		console.log("ajaxSend");
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		xhr.setRequestHeader(header, token);
+	});
 	
 	// pagination_button을 클릭하면 페이지 이동
 	$(".pagination_button a").on("click", function(e){
@@ -124,15 +111,9 @@ li {
 	
 		var pageNum = $(this).attr("href"); // a태그의 href 값 저장
 		// 현재 페이지 사이즈값 저장
-		var type = "<c:out value='${pageMaker.pagination.type }' />";
-		var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
 		 
 		// 페이지 번호를 input name='pageNum' 값으로 적용
 		listForm.find("input[name='pageNum']").val(pageNum);
-		// type 값을 적용
-		listForm.find("input[name='type']").val(type);
-		// keyword 값을 적용
-		listForm.find("input[name='keyword']").val(keyword);
 		
 		// ⭐ 모든 버튼에서 'selected' 클래스를 제거 후 현재 버튼에 추가
         $(".pagination_button").removeClass("selected");
@@ -141,30 +122,9 @@ li {
         // URL을 새로 업데이트
         const url = new URL(window.location.href);
         url.searchParams.set("pageNum", pageNum);
-        url.searchParams.set("type", type);
-        url.searchParams.set("keyword", keyword);
         window.history.pushState({}, '', url); 
 		
 		listForm.submit(); // form 전송
-	}); // end on()
-	
-	$("#searchForm button").on("click", function(e){
-		var searchForm = $("#searchForm");
-		e.preventDefault(); // a 태그 이벤트 방지
-		
-		var keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
-		console.log(keywordVal);
-		if(keywordVal == '') {
-			alert('검색 내용을 입력하세요.');
-			return;
-		}
-		
-		var pageNum = 1; // 검색 후 1페이지로 고정
-		// 현재 페이지 사이즈값 저장
-		 
-		// 페이지 번호를 input name='pageNum' 값으로 적용
-		searchForm.find("input[name='pageNum']").val(pageNum);
-		searchForm.submit(); // form 전송
 	}); // end on()
 	
 	

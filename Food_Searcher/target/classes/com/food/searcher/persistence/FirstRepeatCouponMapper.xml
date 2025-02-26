@@ -39,12 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,#{couponExpirationDate})
 
 	</insert>
-
-	<select id="selectCouponBySellerId" resultMap="firstRepeatCouponCouponMap">
-		SELECT *
-		FROM FIRST_REPEAT_COUPON
-		WHERE SELLER_ID = #{sellerId}
-	</select>
 	
 	<select id="selectCouponByItemId" resultMap="firstRepeatCouponCouponMap">
 		SELECT *

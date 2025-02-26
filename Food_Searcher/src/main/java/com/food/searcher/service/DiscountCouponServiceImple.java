@@ -55,13 +55,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	
 	@Transactional
 	@Override
-	public List<DiscountCouponVO> selectFRCouponBySellerId(String sellerId) {
-		
-		return firstRepeatCouponMapper.selectCouponBySellerId(sellerId);
-	}
-	
-	@Transactional
-	@Override
 	public List<DiscountCouponVO> selectFRCouponByitemId(String memberId, int itemId) {
 		log.info("selectFRCoupon()");
 		

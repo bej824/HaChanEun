@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
@@ -36,20 +36,51 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Model model, Integer itemStatus, Pagination pagination) {
-		log.info("list");
-		log.info("pagination : " + pagination);
-		List<ItemVO> itemList = itemService.getPagingItems(pagination);
-		log.info(itemList);
+	public String list(Model model,
+				     @RequestParam(required = false) String type,
+					 @RequestParam(required = false) String keyword,
+					 @RequestParam(value="pageNum", defaultValue = "1") int pageNum,
+				     Pagination pagination) {
+		log.info("statusListGET()");
+		log.info("pageNum = " + pageNum);
+		log.info("keyword = " + keyword);
+		log.info("type = " + type);
 		
+		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
+		if(!itemList.isEmpty()) {
+			model.addAttribute("itemList", itemList);
+			log.info("itemList : " + itemList);
+		} else {
+			log.info("검색 결과 없음");
+			return "returnPage";
+		}
+
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
-		log.info(pageMaker);
 		
-		log.info(itemList.size());
-		model.addAttribute("itemList", itemList);
+		log.info(pageMaker);
+	    model.addAttribute("pageMaker", pageMaker);
+	    
+	    return "/item/list";
+	}
+	
+	@GetMapping("/list-admin")
+	public String listAdmin(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Pagination pagination) {
+		log.info("listAdminGET()");
+
+		List<ItemVO> itemList = itemService.getPagingAllItems(pagination);
+		log.info("itemList : " + itemList);
+		
+		PageMaker pageMaker = new PageMaker(); // PageMaker 객체 생성
+		pageMaker.setPagination(pagination); // pagination 객체 적용
+		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
+		
+		log.info(pageMaker);
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("itemList", itemList);
+		
+		return "/item/list-admin";
 	}
 	
 	@GetMapping("/register")

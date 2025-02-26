@@ -72,15 +72,6 @@ public class CouponController {
 	}
 	
 	@ResponseBody
-	@GetMapping("FRCouponList")
-	public List<DiscountCouponVO> getFRCouponListGET(Principal principal) {
-		log.info("getFRCouponListGET()");
-		String sellerId = principal.getName();
-		
-		return discountCouponService.selectFRCouponBySellerId(sellerId);
-	}
-	
-	@ResponseBody
 	@GetMapping("getCoupon")
 	public List<DiscountCouponVO> getCouponGET(String searchBy,
 			@RequestParam(value= "searchText", required = false) String searchText) {

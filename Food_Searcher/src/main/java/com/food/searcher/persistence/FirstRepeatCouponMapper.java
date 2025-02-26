@@ -15,7 +15,5 @@ public interface FirstRepeatCouponMapper {
 	List<DiscountCouponVO> selectCouponByItemId(
 			  @Param("memberId") String memberId
 			, @Param("itemId") int itemId);
-	
-	List<DiscountCouponVO> selectCouponBySellerId(String sellerId);
 
 }
