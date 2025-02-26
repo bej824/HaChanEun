@@ -36,23 +36,33 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Model model,
-				     @ModelAttribute("pagination") Pagination pagination) {
+	public String list(Model model,
+				     @RequestParam(required = false) String type,
+					 @RequestParam(required = false) String keyword,
+					 @RequestParam(value="pageNum", defaultValue = "1") int pageNum,
+				     Pagination pagination) {
 		log.info("statusListGET()");
-		
-		log.info("pagination start: " + pagination.getStart());
-		log.info("pagination end: " + pagination.getEnd());
+		log.info("pageNum = " + pageNum);
+		log.info("keyword = " + keyword);
+		log.info("type = " + type);
 		
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
-		log.info(itemList);
-		
+		if(!itemList.isEmpty()) {
+			model.addAttribute("itemList", itemList);
+			log.info("itemList : " + itemList);
+		} else {
+			log.info("검색 결과 없음");
+			return "returnPage";
+		}
+
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
 		
 		log.info(pageMaker);
 	    model.addAttribute("pageMaker", pageMaker);
-	    model.addAttribute("itemList", itemList);
+	    
+	    return "/item/list";
 	}
 	
 	@GetMapping("/list-admin")

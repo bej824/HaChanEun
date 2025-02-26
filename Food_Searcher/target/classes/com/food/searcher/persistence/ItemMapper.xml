@@ -74,6 +74,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
 		FROM ITEM
 		WHERE ITEM_STATUS = 1
+		<choose>
+				<when test="type == 'ITEM_NAME'.toString()">
+					AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'ITEM_CONTENT'.toString()">
+					AND ITEM_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'ITEM_TAG'.toString()">
+					AND ITEM_TAG LIKE '%'||#{keyword}||'%'
+				</when>
+		</choose>
 			) 
 			WHERE RN BETWEEN #{start} AND #{end}
 	</select>
