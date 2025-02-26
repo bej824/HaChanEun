@@ -6,49 +6,6 @@
 <html>
 <head>
 <style type="text/css">
-table {
-	border-style: solid;
-	border-radius: 4px;
-	border-width: 1px;
-	text-align: center;
-}
-
-th {
-	border-style: outset;
-	border-width: 1px;
-	text-align: center;
-}
-
-td {
-	border-style: outset;
-	border-width: 1px;
-	text-align: center;
-	cursor: pointer;
-}
-
-ul {
-	list-style-type: none;
-	text-align: center;
-}
-
-li {
-	display: inline-block;
-}
-
-.button:hover {
-    background-color: #45a049; /* 마우스를 올렸을 때의 배경색 */
-    color: white; /* 글자색 */
-}
-
-    .button.selected {
-        background-color: red;
-        color: white;
-    }
-
-    .button:active {
-        background-color: darkgreen;
-    }
-
 .search {
 	margin-left: 750px;
 }

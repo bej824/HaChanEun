@@ -25,12 +25,12 @@
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 100px">쿠폰 이름</th>
-				<th style="width: 100px">발급 권한</th>
-				<th style="width: 120px">쿠폰 가격</th>
-				<th style="width: 120px">쿠폰 제한</th>
-				<th style="width: 120px">쿠폰 사용 기한</th>
-				<th style="width: 100px">쿠폰 발급조건</th>
+				<th style="width: 16.67%">쿠폰 이름</th>
+				<th style="width: 16.67%">발급 권한</th>
+				<th style="width: 20%">쿠폰 가격</th>
+				<th style="width: 20%">쿠폰 제한</th>
+				<th style="width: 20%">쿠폰 사용 기한</th>
+				<th style="width: 16.67%">쿠폰 발급조건</th>
 			</tr>
 		</thead>
 		<tbody>

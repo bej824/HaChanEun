@@ -93,17 +93,9 @@ li {
 				class="button">다음</a></li>
 		</c:if>
 	</ul>
+
 	
 <script type="text/javascript">
-	
-	$(document).ajaxSend(function(e, xhr, opt){
-		console.log("ajaxSend");
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-
-		xhr.setRequestHeader(header, token);
-	});
 	
 	// pagination_button을 클릭하면 페이지 이동
 	$(".pagination_button a").on("click", function(e){
@@ -127,7 +119,6 @@ li {
 		
 		listForm.submit(); // form 전송
 	}); // end on()
-	
 	
 	
 </script>	

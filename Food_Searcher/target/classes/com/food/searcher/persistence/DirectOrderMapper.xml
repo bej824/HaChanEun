@@ -30,7 +30,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        TOTAL_PRICE,
 	        DELIVERY_ADDRESS
 	    ) VALUES (
-	        ORDER_SEQ.NEXTVAL, 
+	        #{orderId}, 
+	        #{memberId}, 
+	        #{itemId},
+	        #{totalCount},
+	        #{totalPrice}, 
+	        #{deliveryAddress}
+	    )
+	</insert>
+	
+	<insert id="cartInsert">
+	    INSERT INTO DIRECT_ORDER(
+	        ORDER_ID,
+	        MEMBER_ID,
+	        ITEM_ID,
+	        TOTAL_COUNT,
+	        TOTAL_PRICE,
+	        DELIVERY_ADDRESS
+	    ) VALUES (
+	        #{orderId}, 
 	        #{memberId}, 
 	        #{itemId},
 	        #{totalCount},
@@ -58,6 +76,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ORDER_ID = #{orderId}
 	</select>
 	
+	<select id="sellerList" resultMap="orderResultMap">
+		SELECT * FROM DIRECT_ORDER d
+		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		WHERE i.member_id = #{memberId}
+	</select>
+	
 	<select id="selectMember" resultMap="orderResultMap">
 		SELECT * FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId} ORDER BY ORDER_ID DESC
 	</select>
@@ -80,6 +104,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="deliveryReady">
 		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, DELIVERY_COMPANY = #{deliveryCompany}, INVOICE_NUMBER = #{invoiceNumber} WHERE ORDER_ID = #{orderId}
+	</update>
+	
+	<update id="delivering">
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
 	</update>
 	
 	<update id="deliveryCompleted">

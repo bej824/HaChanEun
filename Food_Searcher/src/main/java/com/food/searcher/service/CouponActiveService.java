@@ -9,11 +9,13 @@ public interface CouponActiveService {
 	
 	int createCouponActive(CouponActiveVO couponActiveVO);
 	
-	CouponActiveVO selectOneCoupon(CouponActiveVO couponActiveVO);
-	
 	List<CouponActiveVO> selectCouponActive(String memberId, int itemId);
 	
-	int updateCouponActiveByCouponActiveId(String memberId, int couponActiveId, int couponId);
+	int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO);
+	
+	int updateCouponActiveByOrderId(String orderId);
+	
+	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
 	
 	
 

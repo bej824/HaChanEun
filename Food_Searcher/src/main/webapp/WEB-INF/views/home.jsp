@@ -33,8 +33,6 @@ li {
 
 </style>
 
-<link rel="stylesheet"
-	href="./resources/css/Base.css">
 <title>Home</title>
 </head>
 <body>
@@ -92,7 +90,7 @@ li {
 	</table>
 	<br>
 		
-	<a href="local/map" class="button">특산품</a>
+	<a href="local/list" class="button">특산품</a>
 	<table border="1">
 	<thead>
 		<tr>

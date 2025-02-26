@@ -34,10 +34,7 @@ public class CouponActiveController {
 			Principal principal) {
 		log.info("activeRegisterGet()");
 		
-		couponActiveVO = couponActiveService.selectOneCoupon(couponActiveVO);
-		log.info(couponActiveVO);
-		
-		model.addAttribute("couponActiveVO", couponActiveService.selectOneCoupon(couponActiveVO));
+		model.addAttribute("couponActiveVO", couponActiveService.setCouponInfo(couponActiveVO));
 		
 	}
 	

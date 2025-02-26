@@ -44,7 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								,"/recipe/modify"
 								,"/access/memberPage"
 								,"/access/memberCoupon"
-								,"/coupon/memberCouponList").access("hasRole('ROLE_MEMBER')")
+								,"/coupon/memberCouponList"
+								,"/item/purchaseInfo"
+								,"/item/order").access("hasRole('ROLE_MEMBER')")
 		
 				.antMatchers(	 "/admin/**"
 								,"/coupon/**"

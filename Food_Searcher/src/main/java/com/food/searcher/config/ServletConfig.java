@@ -14,6 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration // Spring Container에서 관리하는 설정 클래스
 @EnableWebMvc // Spring MVC 기능 사용
 @ComponentScan(basePackages = {"com.food.searcher"})
+@ComponentScan(basePackages = {"com.food.searcher.task"})
 // component scan 설정
 public class ServletConfig implements WebMvcConfigurer{
 

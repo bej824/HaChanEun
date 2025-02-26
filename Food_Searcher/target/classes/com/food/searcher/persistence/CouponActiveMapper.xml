@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="couponUseDate" column="COUPON_USE_DATE" />
 		<result property="itemId" column="ITEM_ID" />
 		<result property="itemName" column="ITEM_NAME" />
+		<result property="orderId" column="ORDER_ID" />
 		
 		<result property="couponPrice" column="COUPON_PRICE" />
 		<result property="couponUseCondition" column="COUPON_USE_CONDITION" />
@@ -34,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,COUPON_USE_DATE
 		,ITEM_ID
 		,ITEM_NAME
+		,ORDER_ID
 		) VALUES
 		(COUPON_ACTIVE_SEQ.NEXTVAL
 		,#{memberId}
@@ -44,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,null
 		,#{itemId }
 		,#{itemName }
+		,null
 		)
 		
 	</insert>
@@ -74,8 +77,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateCouponActiveByCouponActiveId">
 		UPDATE COUPON_ACTIVE
-		SET COUPON_USE_DATE = SYSDATE
+		SET COUPON_USE_DATE = #{couponUseDate}
+		,ITEM_ID = #{itemId}
+		,ORDER_ID = #{orderId}
 		WHERE COUPON_ACTIVE_ID = #{couponActiveId}
+	</update>
+	
+	<update id="updateCouponActiveByOrderId">
+		UPDATE COUPON_ACTIVE
+		SET COUPON_USE_DATE = NULL
+		,ITEM_ID = CASE
+					WHEN ITEM_NAME IS NULL OR ITEM_NAME = '' THEN 0
+                	ELSE ITEM_ID
+					END
+		,ORDER_ID = NULL
+		WHERE ORDER_ID = #{orderId}
+		AND COUPON_USE_DATE IS NOT NULL
+		AND COUPON_EXPIRE_DATE >= SYSDATE
 	</update>
 	
 </mapper>

@@ -1,23 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.io.*, java.util.*"%>
-<%@ page import="javax.servlet.http.*, javax.servlet.*"%>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="com.food.searcher.domain.MarketVO" %>
-<%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
-<%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
-<%@page import="com.food.searcher.domain.RecipeVO"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>헤더</title>
+<%@ include file ="layout/head.jsp" %>
+<title>하찬은</title>
 <style>
 body {
 	transform: none !important; 
@@ -56,7 +45,6 @@ body {
 	
 }
 
-
 a, a:hover {
 	color: black;
 	text-decoration: none;
@@ -89,12 +77,33 @@ p {
 	cursor: pointer;
 }
 
+    .button.selected {
+        background-color: red;
+        color: white;
+    }
+
+    .button:active {
+        background-color: darkgreen;
+    }
+
 textarea[readonly] {
 	width: 700px;
 	height: 280px;
 	padding: 12px 20px;
     background-color: #f2f2f2;
     resize: none;
+}
+
+textarea {
+  width: 700px;
+  height: 280px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
 }
 
 #front_img{
@@ -107,7 +116,6 @@ textarea[readonly] {
 }
 
 #front_img a {
-	
 	color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
     text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
     transform: none !important; 
@@ -169,8 +177,13 @@ textarea[readonly] {
 	display: flex;
     justify-content: center; /* 수평 중앙 정렬 */
     text-align: center;      /* 텍스트 중앙 정렬 */
-    
-    
+}
+
+table {
+	border-style: solid;
+	border-radius: 4px;
+	border-width: 1px;
+	text-align: center;
 }
 
 li {
@@ -213,10 +226,7 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
         <div id="front_img">
         <a href="/searcher/home">Home</a>
         </div>
-    
     </div>
-    
-   
     
     <div id="boardArea">
     
@@ -228,9 +238,14 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 			<p><sec:authentication property="name" />님 환영합니다.</p>
 		</sec:authorize>
 		<div class="myPage">
-    	<sec:authorize access="isAuthenticated()">
+    	<sec:authorize access="hasRole('ROLE_MEMBER')">
         	<a href="/searcher/auth/login">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a>
+        	<a href="/searcher/seller/sellerManagement">관리페이지</a>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_SELLER')">
+        	<a href="/searcher/auth/login">로그아웃</a> <br>
+        	<a href="/searcher/seller/sellerManagement">관리페이지</a>
         </sec:authorize>
         
    		<sec:authorize access="!isAuthenticated()">
@@ -251,17 +266,14 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 	</div>
 	
 	<script type="text/javascript">
+		$(document).ajaxSend(function(e, xhr, opt){
+			
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 	
-	$(document).ajaxSend(function(e, xhr, opt){
-		console.log("ajaxSend");
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-
-		xhr.setRequestHeader(header, token);
-	});	 
-	
-</script>
+			xhr.setRequestHeader(header, token);
+		});	 
+	</script>
 
 </body>
 </html>

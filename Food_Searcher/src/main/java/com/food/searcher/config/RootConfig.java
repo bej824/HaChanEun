@@ -20,6 +20,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.food.searcher.task.MemberCouponTask;
+import com.food.searcher.util.RandomUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -93,6 +95,11 @@ public class RootConfig {
 	        scheduler.setThreadNamePrefix("scheduled-task-"); // 스레드 이름 접두어 설정
 	        scheduler.initialize();
 	        return scheduler;
+	    }
+	    
+	    @Bean
+	    public RandomUtil randomUtil() {
+	    	return new RandomUtil();
 	    }
 	
 } // end RootConfig

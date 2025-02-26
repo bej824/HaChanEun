@@ -2,12 +2,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<%@ page import="java.io.*, java.util.*"%>
+<%@ page import="javax.servlet.http.*, javax.servlet.*"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="com.food.searcher.domain.MarketVO" %>
+<%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
+<%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
+<%@page import="com.food.searcher.domain.RecipeVO"%>
+
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <meta name="authenticatedUser" content="${authentication.name}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="../resources/css/Base.css">
 	
 <style>
 /* 테이블 컨테이너 */

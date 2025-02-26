@@ -87,8 +87,8 @@
     		let memberId = $(this).val();
   			idCheck = false;
   		  
-  			if (!/^[A-Za-z]+$/.test(memberId) || memberId == '') {
-  				$('#idMsg').html('아이디는 공백이나 특수문자를 사용할 수 없습니다.').css('color', 'red');
+  			if (!/^[A-Za-z0-9]+$/.test(memberId) || memberId == '') {
+  				$('#idMsg').html('아이디는 영어와 숫자만을 사용할 수 있습니다.').css('color', 'red');
   				return;
   			}
   		  

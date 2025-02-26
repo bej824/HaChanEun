@@ -59,8 +59,8 @@
 	
 	<script>
     function updateFilters() {
-        var type = document.getElementById("type").value;
-        var keyword = document.getElementById("keyword");
+        let type = document.getElementById("type").value;
+        let keyword = document.getElementById("keyword");
 
         // 추가 필터 초기화 (기존 옵션 제거)
         keyword.innerHTML = '';
@@ -68,40 +68,40 @@
         // 필터를 선택한 type 값에 따라 다르게 처리
         if (type === "나이") {
             // '나이'에 대한 추가 필터
-            var options = ["10대 이하", "10대", "20대", "30대", "40대", "50대 이상"];
+            let options = ["10대 이하", "10대", "20대", "30대", "40대", "50대 이상"];
             keyword.style.display = "inline";  // 추가 필터 보이기
             options.forEach(function(optionText) {
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.value = optionText;
                 option.text = optionText;
                 keyword.appendChild(option);
             });
         } else if (type === "성별") {
             // '성별'에 대한 추가 필터
-            var options = ['male', 'female'];
+            let options = ['male', 'female'];
             keyword.style.display = "inline";  // 추가 필터 보이기
             options.forEach(function(optionText) {
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.value = optionText;
                 option.text = optionText;
                 keyword.appendChild(option);
             });
         } else if (type === "MBTI") {
             // 'MBTI'에 대한 추가 필터
-            var options = ['ISFJ', 'ISTJ', 'ISTP', 'ISFP', 'INFJ', 'INTJ', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ESTJ', 'ESFJ', 'ENFP', 'ENTP', 'ENFJ', 'ENTJ'];
+            let options = ['ISFJ', 'ISTJ', 'ISTP', 'ISFP', 'INFJ', 'INTJ', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ESTJ', 'ESFJ', 'ENFP', 'ENTP', 'ENFJ', 'ENTJ'];
             keyword.style.display = "inline";  // 추가 필터 보이기
             options.forEach(function(optionText) {
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.value = optionText;
                 option.text = optionText;
                 keyword.appendChild(option);
             });
         } else if (type === "별자리") {
             // '별자리'에 대한 추가 필터
-            var options = ['양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '사수자리', '염소자리', '물병자리', '물고기자리'];
+            let options = ['양자리', '황소자리', '쌍둥이자리', '게자리', '사자자리', '처녀자리', '천칭자리', '전갈자리', '사수자리', '염소자리', '물병자리', '물고기자리'];
             keyword.style.display = "inline";  // 추가 필터 보이기
             options.forEach(function(optionText) {
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.value = optionText;
                 option.text = optionText;
                 keyword.appendChild(option);
@@ -113,20 +113,20 @@
 </script>
 
 <script type="text/javascript">
-window.onload = function() {
-    // 새로고침이 감지된 경우
-    if (sessionStorage.getItem("reloaded")) {
-
-        // URL에서 검색어 제거
-        window.history.replaceState({}, document.title, window.location.pathname);
-
-        // 새로고침 플래그 삭제
-        sessionStorage.removeItem("reloaded");
-    }
-};
-
-window.addEventListener("beforeunload", function() {
-    sessionStorage.setItem("reloaded", "true");
+	window.onload = function() {
+	    // 새로고침이 감지된 경우
+	    if (sessionStorage.getItem("reloaded")) {
+	
+	        // URL에서 검색어 제거
+	        window.history.replaceState({}, document.title, window.location.pathname);
+	
+	        // 새로고침 플래그 삭제
+	        sessionStorage.removeItem("reloaded");
+	    }
+	};
+	
+	window.addEventListener("beforeunload", function() {
+	    sessionStorage.setItem("reloaded", "true");
 });
 
 </script>

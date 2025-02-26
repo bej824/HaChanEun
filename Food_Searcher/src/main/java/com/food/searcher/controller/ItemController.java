@@ -2,13 +2,10 @@ package com.food.searcher.controller;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +36,7 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@GetMapping("/list")
-	public void list(Map<String, Object> map,
+	public void list(Model model,
 				     @ModelAttribute("pagination") Pagination pagination) {
 		log.info("statusListGET()");
 		
@@ -49,13 +46,13 @@ public class ItemController {
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		log.info(itemList);
 		
-		PageMaker pageMaker = new PageMaker(); // PageMaker 객체 생성
-		pageMaker.setPagination(pagination); // pagination 객체 적용
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
 		
 		log.info(pageMaker);
-	    map.put("pageMaker", pageMaker);
-	    map.put("itemList", itemList);
+	    model.addAttribute("pageMaker", pageMaker);
+	    model.addAttribute("itemList", itemList);
 	}
 	
 	@GetMapping("/list-admin")
@@ -164,7 +161,7 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseInfo")
-	public void purchaseInfo(Model model, Integer orderId) {
+	public void purchaseInfo(Model model, String orderId) {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
 		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());

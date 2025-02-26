@@ -9,12 +9,14 @@ public interface DirectOrderService {
 	List<DirectOrderVO> getAllOrder();
 	List<DirectOrderVO> getOrder(String memberId);
 	List<DirectOrderVO> getPagingBoards(Pagination pagination);
-	DirectOrderVO getselectOne(int orderId);
+	DirectOrderVO getselectOne(String orderId);
 	int orderPurchase(DirectOrderVO directOrderVO);
-	int cancel(String deliveryStatus, int orderId);
-	int refundReady(String deliveryStatus, int orderId);
-	int refund(String deliveryStatus, String refundReason, String refundContent, int orderId);
-	int refundOK(String deliveryStatus, int orderId);
-	int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, int orderId);
-	int deliveryCompleted(String deliveryStatus, int orderId);
+	int cartPurchase(DirectOrderVO directOrderVO);
+	int cancel(String deliveryStatus, String orderId);
+	int refundReady(String deliveryStatus, String orderId);
+	int refund(String deliveryStatus, String refundReason, String refundContent, String orderId);
+	int refundOK(String deliveryStatus, String orderId);
+	int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, String orderId);
+	int delivering(String deliveryStatus, String orderId);
+	int deliveryCompleted(String deliveryStatus, String orderId);
 }

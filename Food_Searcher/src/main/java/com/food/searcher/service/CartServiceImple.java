@@ -53,6 +53,11 @@ public class CartServiceImple implements CartService {
 		cartVO.setCartAmount(cartAmount);
 		
 		return cartMapper.updateAmount(cartVO);
+	}
+
+	@Override
+	public int updateChecked(int cartChecked, int cartId) {
+		return cartMapper.updateChecked(cartChecked, cartId);
 	}	
 
 }

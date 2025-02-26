@@ -82,7 +82,9 @@
 	</div>
 	
 		<div>
+		<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
 		<input type="submit" value="등록">	
+		</sec:authorize>
 		</div>
 		
 		

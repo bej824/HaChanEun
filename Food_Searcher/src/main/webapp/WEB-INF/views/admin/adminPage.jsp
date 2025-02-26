@@ -14,6 +14,7 @@
 <div id="idMsg" class="message" style="color: red;">아이디를 입력해주세요!</div> <br>
 
 <button class="button" id="roleUp">등급 업</button>
+<button class="button" id="itemManagement">판매 상품 관리 목록</button>
 
 <button class="button" onclick="couponList()">쿠폰 목록</button>
 
@@ -45,21 +46,23 @@
 			let memberId = $('#memberId').val();
 			
 			if(idCheck) {
-				update()
+				roleUpdate(memberId);
 			}
-			
-			console.log(memberId);
-			
 		})
 		
-		function update() {
-			let memberId = document.getElementById("memberId").value;
+		$('#itemManagement').click(function(){
+			window.location.href = "itemManagement";
+		})
+		
+		function roleUpdate(memberId) {
+			let roleName = "ROLE_ADMIN";
 			let result = confirm(memberId + "님을 운영자 등록시키겠습니까?");
 			if (result) {
 				$.ajax({
 	  		    	type: 'POST',
 	  		    	url: 'roleUpdate',
-	  		    	data: { memberId: memberId },
+	  		    	data: { memberId: memberId,
+	  		    			roleName: roleName},
 	  		    	success: function(result) {
 	  		      		alert("등록완료되었습니다.");
 	  		    	}

@@ -5,19 +5,6 @@
 <html>
 <head>
 <style type="text/css">
-.button {
-	background-color: #04AA6D;
-	border: none;
-	color: white;
-	padding: 6px 12px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
-}
-
 textarea.ingredient {
     width: 700px;
 	height: 65px;
@@ -27,10 +14,6 @@ textarea.ingredient {
 	background-color: #f8f8f8;
 	font-size: 16px;
 	resize: none;
-}
-.image-drop,
-.image-list {
-    text-align: center;
 }
 </style>
 <meta charset="UTF-8">
@@ -112,12 +95,12 @@ textarea.ingredient {
 	</div>
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
 
-<script>
+	<script>
     // ajaxSend() : AJAX 요청이 전송되려고 할 때 실행할 함수를 지정
     // ajax 요청을 보낼 때마다 CSRF 토큰을 요청 헤더에 추가하는 코드
     $(document).ajaxSend(function(e, xhr, opt){
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
 
         xhr.setRequestHeader(header, token);
     });
@@ -173,7 +156,7 @@ textarea.ingredient {
             });
         });
     });
-</script>
+	</script>
 
 	<script>
 		$(document).ready(function() {
