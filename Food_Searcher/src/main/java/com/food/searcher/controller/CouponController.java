@@ -33,14 +33,6 @@ public class CouponController {
 		
 	}
 	
-	@ResponseBody
-	@PostMapping("register")
-	public int registerCouponPOST(DiscountCouponVO discountCouponVO, Principal principal) {
-		log.info("registerCouponPOST()");
-		
-		return discountCouponService.createCoupon(discountCouponVO);
-	}
-	
 	@GetMapping("list")
 	public void couponListGET(
 			@RequestParam(value = "itemId", required = false, defaultValue = "0") int itemId,
@@ -49,15 +41,6 @@ public class CouponController {
 		log.info("couponListGET()");
 		
 		model.addAttribute("itemId", itemId);
-	}
-	
-	@ResponseBody
-	@GetMapping("getCoupon")
-	public List<DiscountCouponVO> getCouponGET(String searchBy,
-			@RequestParam(value= "searchText", required = false) String searchText) {
-		log.info("getCouponGET()");
-		
-		return discountCouponService.selectCoupon(searchBy, searchText);
 	}
 	
 	@GetMapping("detail")
@@ -78,6 +61,23 @@ public class CouponController {
 		log.info("modifyGET()");
 		
 		model.addAttribute("discountCouponVO", discountCouponService.selectOneCoupon(couponId));
+	}
+	
+	@ResponseBody
+	@PostMapping("register")
+	public int registerCouponPOST(DiscountCouponVO discountCouponVO, Principal principal) {
+		log.info("registerCouponPOST()");
+		
+		return discountCouponService.createCoupon(discountCouponVO);
+	}
+	
+	@ResponseBody
+	@GetMapping("getCoupon")
+	public List<DiscountCouponVO> getCouponGET(String searchBy,
+			@RequestParam(value= "searchText", required = false) String searchText) {
+		log.info("getCouponGET()");
+		
+		return discountCouponService.selectCoupon(searchBy, searchText);
 	}
 	
 	@ResponseBody

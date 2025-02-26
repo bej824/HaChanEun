@@ -15,14 +15,13 @@
 	
 	<p>할인가격 : ${discountCouponVO.couponPrice } 원</p>
 	
-	<p>발급주체 : ${discountCouponVO.couponIssuer }</p>
-	
+	<p id="couponIssuer"></p>
 	
 	<p>사용조건 : ${discountCouponVO.couponUseCondition }원 이상 구매 시 사용 가능</p>
 	
 	<p>쿠폰 사용 기한 : ${discountCouponVO.couponExpirationDate }일 </p>
 
-	<p>쿠폰 발급 주기 : ${discountCouponVO.couponEvent }</p>
+	<p id="couponEvent"></p>
 	
 	<p>쿠폰 정보</p>
 	<p>${discountCouponVO.couponContent }</p>
@@ -42,6 +41,8 @@
 	});
 	
 	$(document).ready(function(){
+		
+		dataToDisplay();
 		
 		$('#btn_index').click(function(){
 			window.location.href = "list?itemId=" + ${itemId };
@@ -91,6 +92,25 @@
 			}
 			
 		})
+		
+		function dataToDisplay() {
+			
+			if('${discountCouponVO.couponEvent }' == 'oneTime') {
+				$('#couponEvent').html('쿠폰 발급 주기 : 프로모션');
+			} else if('${discountCouponVO.couponEvent }' == 'memberDateOfBirth') {
+				$('#couponEvent').html('쿠폰 발급 주기 : 생일');
+			} else if('${discountCouponVO.couponEvent }' == 'memberMBTI') {
+				$('#couponEvent').html('쿠폰 발급 주기 : 오늘의 mbti');
+			}
+			
+			if('${discountCouponVO.couponIssuer }' == 'ROLE_ADMIN') {
+				$('#couponIssuer').html('발급자 : 사이트');
+			} else if('${discountCouponVO.couponIssuer }' == 'ROLE_SELLER') {
+				$('#couponIssuer').html('발급자 : 판매자');
+			}
+			
+			
+		}
 		
 	})
 	

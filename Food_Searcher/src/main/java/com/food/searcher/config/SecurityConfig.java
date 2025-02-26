@@ -38,6 +38,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// HttpSecurity 객체를 통해 HTTP 보안 기능을 구성
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		
+		httpSecurity.authorizeRequests()
+		
+		.antMatchers("/access/register").access("!hasRole('ROLE_MEMBER')")
+
+		.antMatchers("/seller/authenticate").access("!hasRole('ROLE_SELLER')");
+		// 특정 권한의 접근불가 제한. 특수한 경우 제외하고는 밑의 접근허가 필터를 사용할 것.
+		
 		httpSecurity.authorizeRequests()
 		
 				.antMatchers(	 "/recipe/register"
@@ -46,14 +54,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								,"/access/memberCoupon"
 								,"/coupon/memberCouponList"
 								,"/item/purchaseInfo"
-								,"/item/order").access("hasRole('ROLE_MEMBER')")
+								,"/item/order"
+								,"/seller/authenticate").access("hasRole('ROLE_MEMBER')")
 		
+				.antMatchers(	 "/seller/**").access("hasRole('ROLE_SELLER')")
+				
 				.antMatchers(	 "/admin/**"
-								,"/coupon/**"
 								,"/local/register"
 								,"/local/modify"
 								,"/market/register"
 								,"/market/modify").access("hasRole('ROLE_ADMIN')")
+				
 				;
 				
 		// 접근 제한 경로 설정

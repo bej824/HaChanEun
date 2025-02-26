@@ -77,6 +77,13 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info(item + "행 업데이트 완료");
 		return result;
 	}
+	
+	@Override
+	public List<DirectOrderVO> sellerList(String memberId) {
+		log.info("sellerList()");
+		
+		return directOrderMapper.sellerList(memberId);
+	}
 
 	@Transactional(value = "transactionManager")
 	@Override

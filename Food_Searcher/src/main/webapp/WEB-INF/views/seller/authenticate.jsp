@@ -23,6 +23,8 @@
 	<input type="text" name="openingDate" id="openingDate" placeholder="개업일자 8자리를 입력해주세요." required>
 	<div id="dateMsg" class="message" style="color: red;">개업일자를 입력해주세요!</div>
 	
+	<button id="btn_register" class="button">판매자 등록</button>
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
@@ -72,8 +74,7 @@
 			
 		})
 		
-		
-		function authenticate () {
+		$('#btn_register').click(function(){
 			let CEOName = $('#CEOName').val();
 			let businessRegistrationNumber = $('#businessRegistrationNumber').val();
 			let openingDate = $('#openingDate').val();
@@ -88,6 +89,13 @@
 				alert("개업일자를 다시 한번 확인 후 입력해주세요.");
 				return;
 			}
+			
+			authenticate ();
+			
+		})
+		
+		
+		function authenticate () {
 			
 			console.log("대표자 성함 : ", CEOName);
 			console.log("사업자등록번호 : ", businessRegistrationNumber);
@@ -106,6 +114,7 @@
 	  		    	data: { },
 	  		    	success: function(result) {
 	  		      		alert("등록완료되었습니다.");
+	  		      	window.location.href = "../home";
 	  		    	}
 	  		  	});
 			} else {

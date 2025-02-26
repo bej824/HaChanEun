@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.food.searcher.persistence.FirstRepeatCouponMapper">
+
+	<resultMap type="com.food.searcher.domain.DiscountCouponVO"
+		id="firstRepeatCouponCouponMap">
+
+		<id property="couponId" column="COUPON_ID" />
+		<result property="couponName" column="COUPON_NAME" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="couponPrice" column="COUPON_PRICE" />
+		<result property="couponUseCondition" column="COUPON_USE_CONDITION" />
+		<result property="couponEvent" column="COUPON_EVENT" />
+		<result property="couponExpirationDate" column="COUPON_EXPIRATION_DATE" />
+		<result property="sellerId" column="SELLER_ID" />
+
+	</resultMap>
+
+	<insert id="insertCoupon">
+		INSERT INTO FIRST_REPEAT_COUPON(
+		COUPON_ID
+		,COUPON_NAME
+		,COUPON_CONTENT
+		,COUPON_PRICE
+		,COUPON_USE_CONDITION
+		,COUPON_EVENT
+		,COUPON_EXPIRATION_DATE
+		) VALUES (
+		 #{coupon_Id}
+		,#{couponName}
+		,#{couponContent}
+		,#{couponPrice}
+		,#{couponUseCondition}
+		,#{couponEvent}
+		,#{couponExpirationDate})
+
+	</insert>
+	
+	<select id="selectCouponByItemId" resultMap="firstRepeatCouponCouponMap">
+		SELECT *
+		FROM FIRST_REPEAT_COUPON
+		WHERE ITEM_ID = #{itemId}
+		AND COUPON_EVENT =
+		CASE
+		WHEN
+		(SELECT COUNT(*)
+		FROM DIRECT_ORDER
+		WHERE MEMBER_ID = #{memberId}
+		AND ITEM_ID = #{itemId}
+		AND DELIVERY_REFUND &lt;= SYSDATE) = 0
+		THEN 'FIRST_ORDER_COUPON'
+		ELSE 'REPEAT_ORDER_COUPON'
+		END;
+	</select>
+
+</mapper>
