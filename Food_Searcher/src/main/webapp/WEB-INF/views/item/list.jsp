@@ -6,7 +6,11 @@
 <html>
 <head>
 <style>
-
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 20px;        /* 아이템 간의 간격 */
+    }
 
 .item {
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
@@ -14,8 +18,9 @@
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-    height: 200px; /* 첨부 목록의 고정 높이 설정 */
-    width: 500px; /* 첨부 목록의 고정 너비 설정 */
+    height: 300px; /* 첨부 목록의 고정 높이 설정 */
+    width: 250px;     /* 각 아이템의 너비 */
+    box-sizing: border-box;
 }
 
 li {
@@ -41,10 +46,6 @@ li {
 
 <h1>상품 리스트</h1>
 
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-<a href="/searcher/item/register" class="button">상품 등록</a>  
-</sec:authorize>
-
 <sec:authorize access="hasRole('ROLE_MEMBER')">
 <a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
@@ -52,10 +53,18 @@ li {
 <a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
 <hr>
+		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
-					<div>썸네일 삽입 예정</div><br>
+					<c:forEach var="attachVO" items="${attachVO}">
+					<c:if test="${itemVO.itemId eq attachVO.itemId}">
+					<div class="image_item">
+					        <img width="100px" height="100px" 
+					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" />
+				        </div>
+				        </c:if>
+				        </c:forEach>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>상품번호 : ${itemVO.itemId }</p>
 					<p>분류 : ${itemVO.itemTag }</p>
@@ -64,6 +73,7 @@ li {
 					
 			</div>
 			</c:forEach>
+		</div>
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	

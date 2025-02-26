@@ -8,6 +8,7 @@ import com.food.searcher.util.Pagination;
 public interface ItemService {
 	int createItem(ItemVO itemVO);
 	List<ItemVO> getAllItem(int itemStatus);
+	List<ItemVO> getAllItem();
 	List<ItemVO> getPagingItems(Pagination pagintaion);
 	ItemVO getItemById(int itemId);
 	int updateItem(ItemVO itemVO);

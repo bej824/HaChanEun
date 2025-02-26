@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.DirectOrderService;
+import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -35,6 +37,9 @@ public class ItemController {
 	@Autowired
 	private DirectOrderService directOrderService;
 	
+	@Autowired
+	private ItemAttachService attachService;
+	
 	@GetMapping("/list")
 	public void list(Model model, Integer itemStatus, Pagination pagination) {
 		log.info("list");
@@ -48,6 +53,10 @@ public class ItemController {
 		log.info(pageMaker);
 		
 		log.info(itemList.size());
+		
+		List<ItemAttachVO> attachVO = attachService.getSelectAll();
+		log.info("이미지 : " + attachVO);
+		model.addAttribute("attachVO", attachVO);
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("pageMaker", pageMaker);
 	}
@@ -78,6 +87,10 @@ public class ItemController {
 		log.info("ItemVO = " + itemVO);
 		
 		model.addAttribute("itemVO", itemVO);
+		if(itemId.equals(itemVO.getItemId())) {
+			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			model.addAttribute("attachVO", attachVO);
+		}
 	}
 	
 	@GetMapping("/modify")
@@ -129,14 +142,13 @@ public class ItemController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(directOrderService.getAllOrder().size());
-		List<DirectOrderVO> directOrderVO = directOrderService.getOrder(principal.getName());
+		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName()));
+		log.info(pageMaker);
+		List<DirectOrderVO> directOrderVO = directOrderService.getPagingmemberList(principal.getName(), pagination);
 		log.info("directOrderVO" + directOrderVO);
-		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("directOrderVO", directOrderVO);
-		model.addAttribute("allList", allList);
 	}
 	
 	@GetMapping("/purchaseInfo")

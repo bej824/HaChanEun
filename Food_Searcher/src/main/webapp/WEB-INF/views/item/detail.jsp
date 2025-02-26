@@ -46,7 +46,25 @@ pageEncoding="UTF-8"%>
 	<div id="area">
 	<div>
 		<h2>${itemVO.itemName }</h2>
-		<div id="img">(썸네일)</div><br>
+		<div class="image-upload">
+		<div class="image-view">
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+				<c:forEach var="attachVO" items="${attachVO}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif'}">
+				        <div class="image_item">
+				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
+					        <img width="100px" height="100px" 
+					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+				        </div>
+				    </c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
 		<div>
 		<textarea id="itemContent" class="content" readonly>${itemVO.itemContent }</textarea>
 		</div>

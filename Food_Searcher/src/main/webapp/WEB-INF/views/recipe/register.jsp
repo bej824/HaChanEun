@@ -22,12 +22,6 @@ textarea.ingredient {
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- css 파일 불러오기 -->
-<link rel="stylesheet"
-	href="../resources/css/Base.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/image.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/attach.css">
 <title>글 작성 페이지</title>
 </head>
 <body>

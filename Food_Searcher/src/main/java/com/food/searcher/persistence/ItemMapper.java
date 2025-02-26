@@ -13,6 +13,7 @@ public interface ItemMapper {
 	
 	int insert(ItemVO itemVO);
 	List<ItemVO> selectList(int itemStatus);
+	List<ItemVO> selectListAll();
 	List<ItemVO> selectListByPagination(Pagination pagination);
 	ItemVO selectOne(int itemId);
 	int update(ItemVO itemVO);

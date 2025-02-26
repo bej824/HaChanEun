@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.AdminService;
+import com.food.searcher.service.DirectOrderService;
+import com.food.searcher.service.ItemService;
+import com.food.searcher.util.PageMaker;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -24,6 +30,12 @@ public class AdminController {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	private DirectOrderService directOrderService;
+	
+	@Autowired
+	private ItemService itemService;
 	
 	@GetMapping("/adminPage")
 	public void adminPageGET() {
@@ -53,5 +65,25 @@ public class AdminController {
 		
 		return adminService.createRole(memberId, roleName);
 	} // end roleUpdatePOST
+	
+	@GetMapping("/purchaseHistory")
+	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(directOrderService.getTotalCount(pagination));
+		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
+		
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("allList", allList);
+	}
+	
+	@GetMapping("/purchaseInfo")
+	public void purchaseInfo(Model model, String orderId) {
+		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
+		log.info("info : " + directOrderVO);
+		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+		model.addAttribute("itemVO", itemVO);
+		model.addAttribute("directOrderVO", directOrderVO);
+	}
 
 }
