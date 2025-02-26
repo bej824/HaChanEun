@@ -7,6 +7,7 @@ import com.food.searcher.util.Pagination;
 
 public interface DirectOrderService {
 	List<DirectOrderVO> getAllOrder();
+	List<DirectOrderVO> sellerList(String memberId);
 	List<DirectOrderVO> getOrder(String memberId);
 	List<DirectOrderVO> getPagingBoards(Pagination pagination);
 	DirectOrderVO getselectOne(String orderId);

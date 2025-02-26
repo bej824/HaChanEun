@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.service.SellerService;
 import com.food.searcher.util.Pagination;
@@ -31,6 +33,12 @@ public class SellerController {
 		
 	}
 	
+	@GetMapping("management")
+	public void managementGET() {
+		log.info("managementGET()");
+	}
+	
+	@ResponseBody
 	@PostMapping("roleUpdate")
 	public int roleUpdatePOST(Principal principal) {
 		log.info("roleUpdatePOST()");
@@ -38,17 +46,19 @@ public class SellerController {
 		
 		return sellerService.SellerCreate(memberId);
 	}
-
-	private DirectOrderMapper directOrderMapper;
 	
-	@GetMapping("sellerManagement")
-	public void main() {
-		log.info("get");
+	@ResponseBody
+	@GetMapping("sellerCoupon")
+	public List<DiscountCouponVO> sellerCouponGET() {
+		log.info("sellerCouponGET()");
+		
+		return sellerService.selectSellerCoupon();
 	}
 	
 	@GetMapping("/purchaseHistory")
-	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
-		List<DirectOrderVO> directOrderVO = directOrderMapper.sellerList(principal.getName());
-		model.addAttribute("directOrderVO", directOrderVO);
+	public void purchaseHistoryGET(Model model, Principal principal, Pagination pagination) {
+		log.info("purchaseHistoryGET()");
+		
+		model.addAttribute("directOrderVO", sellerService.purchaseHistory(principal.getName()));
 	}
 }
