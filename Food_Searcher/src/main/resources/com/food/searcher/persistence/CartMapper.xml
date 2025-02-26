@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateAmount">
 		UPDATE CART
-		SET CART_AMOUNT = #{cartChecked} WHERE CART_ID = #{cartId}
+		SET CART_AMOUNT = #{cartAmount} WHERE CART_ID = #{cartId}
 	</update>
 	
 </mapper>

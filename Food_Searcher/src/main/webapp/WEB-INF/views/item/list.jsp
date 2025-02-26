@@ -6,13 +6,20 @@
 <html>
 <head>
 <style>
+<<<<<<< HEAD
 .item-container {
         display: flex;
         flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
         gap: 20px;        /* 아이템 간의 간격 */
     }
 
+#area{
+	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
+    gap: 20px; /* 아이템 사이 여백 추가 */
+}
+
 .item {
+	flex: 1 1 calc(33.333% - 20px); /* 한 줄에 3개 배치 (여백 포함) */
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
     background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
@@ -46,12 +53,30 @@ li {
 
 <h1>상품 리스트</h1>
 
+<div class="testDiv">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+<a href="/searcher/item/register" class="button">상품 등록</a>  
+</sec:authorize>
+<br>
 <sec:authorize access="hasRole('ROLE_MEMBER')">
 <a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
-<br><br>
+<br>
 <a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
+<br><a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
+</div>
+
+	<form id="searchForm" method="get" action="list">
+			<input type="hidden" name="pageNum">
+			<select name="type">
+				<option value="ITEM_NAME">상품명</option>
+				<option value="ITEM_CONTENT">상품 설명</option>
+				<option value="ITEM_TAG">상품 태그</option>
+			</select>
+			<input type="text" name="keyword">
+			<button class="button"> 검색 </button>
+	</form>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
@@ -68,8 +93,8 @@ li {
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>상품번호 : ${itemVO.itemId }</p>
 					<p>분류 : ${itemVO.itemTag }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>
-							원 &nbsp;&nbsp;&nbsp; 상태 : ${itemVO.itemStatus }</p>
+					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원
+							&nbsp;&nbsp;&nbsp; 상태 : ${itemVO.itemStatus }</p>
 					
 			</div>
 			</c:forEach>
@@ -77,32 +102,81 @@ li {
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	
+	<form id="listForm" action="list" method="get">
+	    	<input type="hidden" name="pageNum" >
+	    	<input type="hidden" name="type" >
+			<input type="hidden" name="keyword">
+	    </form>
+	
 	<ul>
 			<!-- 이전 버튼 생성을 위한 조건문 -->
 			<c:if test="${pageMaker.isPrev() }">
-				<li class="pagination_button"><a href="list?pageNum=${pageMaker.startNum - 1}">이전</a></li>
+				<li class="pagination_button"><a href="${pageMaker.startNum - 1}">이전</a></li>
 			</c:if>
 			<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
 			<c:forEach begin="${pageMaker.startNum }"
 				end="${pageMaker.endNum }" var="num">
-				<li class="pagination_button"><a href="list?pageNum=${num }">${num }</a></li>
+				<li class="pagination_button"><a href="${num }">${num }</a></li>
 			</c:forEach>
 			<!-- 다음 버튼 생성을 위한 조건문 -->
 			<c:if test="${pageMaker.isNext() }">
-				<li class="pagination_button"><a href="list?pageNum=${pageMaker.endNum + 1}">다음</a></li>
+				<li class="pagination_button"><a href="${pageMaker.endNum + 1}">다음</a></li>
 			</c:if>
 		</ul>
+
 	
 <script type="text/javascript">
 	
-	$(document).ajaxSend(function(e, xhr, opt){
-		console.log("ajaxSend");
+	// pagination_button을 클릭하면 페이지 이동
+	$(".pagination_button a").on("click", function(e){
+		var listForm = $("#listForm"); // form 객체 참조
+		e.preventDefault(); // a 태그 이벤트 방지
+	
+		var pageNum = $(this).attr("href"); // a태그의 href 값 저장
+		// 현재 페이지 사이즈값 저장
+		var type = "<c:out value='${pageMaker.pagination.type }' />";
+		var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
+		 
+		// 페이지 번호를 input name='pageNum' 값으로 적용
+		listForm.find("input[name='pageNum']").val(pageNum);
+		// type 값을 적용
+		listForm.find("input[name='type']").val(type);
+		// keyword 값을 적용
+		listForm.find("input[name='keyword']").val(keyword);
 		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
+		// ⭐ 모든 버튼에서 'selected' 클래스를 제거 후 현재 버튼에 추가
+        $(".pagination_button").removeClass("selected");
+        $(this).parent().addClass("selected");
 
-		xhr.setRequestHeader(header, token);
-	});
+        // URL을 새로 업데이트
+        const url = new URL(window.location.href);
+        url.searchParams.set("pageNum", pageNum);
+        url.searchParams.set("type", type);
+        url.searchParams.set("keyword", keyword);
+        window.history.pushState({}, '', url); 
+		
+		listForm.submit(); // form 전송
+	}); // end on()
+	
+	$("#searchForm button").on("click", function(e){
+		var searchForm = $("#searchForm");
+		e.preventDefault(); // a 태그 이벤트 방지
+		
+		var keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
+		console.log(keywordVal);
+		if(keywordVal == '') {
+			alert('검색 내용을 입력하세요.');
+			return;
+		}
+		
+		var pageNum = 1; // 검색 후 1페이지로 고정
+		// 현재 페이지 사이즈값 저장
+		 
+		// 페이지 번호를 input name='pageNum' 값으로 적용
+		searchForm.find("input[name='pageNum']").val(pageNum);
+		searchForm.submit(); // form 전송
+	}); // end on()
+	
 	
 </script>	
 </div> <!-- area -->

@@ -68,7 +68,8 @@ public class CartController {
 	}
 	
 	@PutMapping("/update/{cartId}")
-	public ResponseEntity<Integer> updateAmount(@PathVariable("cartId") int cartId, @RequestBody int cartAmount) {
+	public ResponseEntity<Integer> updateAmount(@PathVariable("cartId") int cartId,
+											 	@RequestBody int cartAmount) {
 		log.info("cartId : " + cartId);
 		log.info("cartAmount : " + cartAmount);
 		int result = cartService.updateAmount(cartId, cartAmount);

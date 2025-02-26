@@ -101,146 +101,94 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     
 	<button id="order" class="button">구매</button>
 
-
-	<script type="text/javascript">
+	<script>
+			
+		$(".plusBtn, .minusBtn").on("click", function () {
+		    let $row = $(this).closest("tr"); // 현재 버튼이 속한 tr
+		    let quantity = parseInt($row.find(".itemAmount").val()); // 현재 수량
+		    let cartId = $row.find(".cartId").val();
+		    let itemPrice = parseInt($row.find(".itemPrice").val());
 	
-	$(document).ajaxSend(function(e, xhr, opt){
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		xhr.setRequestHeader(header, token);
-	});	 
-	
- 
-		$(".plusBtn").on("click", function() {
-			let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
-			let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
-			let cartId = $row.find(".cartId").val();
-			let itemPrice = parseInt($row.find(".itemPrice").val());
-			let itemAmount = $row.find("itemAmount").val();
-			 
-			console.log("itemAmount : " + itemAmount);
-			 // 수량 증가
-				 quantity += 1;
-				 parseInt($row.find(".itemAmount").val(quantity));
-				 console.log("quantity : " + quantity, "cartId : " + cartId, "itemPrice : " + itemPrice);
-				 
-				 let itemTotalPrice = itemPrice * quantity;
-				 let cartAmount = quantity.toString(); 
-				 
-			 $.ajax({
-					type : 'PUT',
-					url : '../update/' + cartId,
-					headers : {
-						'Content-Type' : 'application/json'
-					}, 
-					data : cartAmount,
-					success : function(result) {
-						console.log(result);
-							if(result == 1) {
-								let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
-								$row.find(".itemTotalPrice").text(textContent);
-								$row.find(".itemTotalPrice").val(itemTotalPrice);
-								alert("수량 증가됨");
-							} else {
-								alert("증가 실패");
-							}
-						}
-				}); // end ajax
-		}); // end plus_btn
-		
-	
-		$(".minusBtn").on("click", function(){
-			let $row = $(this).closest('tr'); // 현재 버튼이 속한 tr
-			let quantity = parseInt($row.find(".itemAmount").val()); // tr에 있는 itemAmount 찾기
-			let cartId = $row.find(".cartId").val();
-			let itemPrice = parseInt($row.find(".itemPrice").val());
-			 
-		 
-		 // 수량 감소
-		 if (quantity > 1) {
-			 quantity -= 1;
-			 parseInt($row.find(".itemAmount").val(quantity));
-			 console.log("quantity : " + quantity, "cartId : " + cartId, "itemPrice : " + itemPrice);
-			 
-			 let itemTotalPrice = itemPrice * quantity;
-			 let cartAmount = quantity.toString(); 
-			 console.log("상품 가격 합계 : " + itemTotalPrice);
-				 $.ajax({
-					type : 'PUT',
-					url : '../update/' + cartId,
-					headers : {
-						'Content-Type' : 'application/json'
-					}, 
-					data : cartAmount,
-					success : function(result) {
-						console.log("result = " + result);
-							if(result == 1) {
-								let textContent ="총 " + itemTotalPrice.toLocaleString() + "원";
-								$row.find(".itemTotalPrice").text(textContent);
-								$row.find(".itemTotalPrice").val(itemTotalPrice);
-								alert("수량 감소됨");
-								} else {
-									alert("감소 실패");
-								}
-							}
-						}); // end ajax
-				 } else {
-					 alert("최소 수량입니다.");
-				 }
-			 
-			}); 
-		
-		
-
-		$(document).ready(function () {
-		    setTotalPrice(); // 페이지 로드 시 실행
-		    $(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
-		});
-		
-	
-	 $('.delBtn').on('click', function(){
-		 let cartId =  $(this).closest('tr').find('.cartId').val();
-		 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
-		 let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
-		 console.log("cartId : " + cartId, "memberId : " + memberId);
-		 
-		 if(deleteConfirm) {
-			 $.ajax({
-				 type : 'DELETE',
-				 url : '../delete/' + cartId,
-				 headers : {
-						'Content-Type' : 'application/json'
-					}, 
-				 success : function(result){
-					 console.log(result);
-					 if(result == 1) {
-						 alert('삭제 완료');
-						 location.reload(true);
-					 } else {
-						alert('삭제 실패');
-						location.reload(true);
-					 }
-				 }
-				 
-			 });
-		 }
-	 });
-	 
-	 $("#postcode, #address, #detailaddress").on("input", updateOutput);
-	    
-     
-     
-     function updateOutput() {
-		      // 각 input 필드의 값을 가져오기
-		      const value1 = $("#postcode").val();
-		      const value2 = $("#address").val();
-		      const value3 = $("#detailaddress").val();
-		
-		      // 결과를 하나의 필드에 합치기
-		      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
+		    // 증가 또는 감소 로직 결정
+		    let isIncrease = $(this).hasClass("plusBtn"); // 버튼이 plusBtn인지 확인
+		    if (isIncrease) {
+		        quantity += 1;
+		    } else {
+		        if (quantity > 1) {
+		            quantity -= 1;
+		        } else {
+		            alert("최소 수량입니다.");
+		            return;
+		        }
 		    }
-     
-     function isChecked(checkbox) {
+	
+		    $row.find(".itemAmount").val(quantity); // 변경된 수량 업데이트
+	
+		    let itemTotalPrice = itemPrice * quantity;
+		    let cartAmount = quantity.toString();
+	
+		    console.log(
+		        "quantity : " + quantity,
+		        "cartId : " + cartId,
+		        "itemPrice : " + itemPrice,
+		        "itemTotalPrice : " + itemTotalPrice
+		    );
+	
+		    $.ajax({
+		        type: "PUT",
+		        url: "../update/" + cartId,
+		        headers: {
+		            "Content-Type": "application/json",
+		        },
+		        data: cartAmount,
+		        success: function (result) {
+		            console.log(result);
+		            if (result == 1) {
+		                let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
+		                $row.find(".itemTotalPrice").text(textContent);
+		                $row.find(".itemTotalPrice").val(itemTotalPrice);
+		                alert(isIncrease ? "수량 증가됨" : "수량 감소됨");
+		            } else {
+		                alert("변경 실패");
+		            }
+		        },
+		    }); // end ajax
+		});
+
+	    
+	    $('.delBtn').on('click', function(){
+			 let cartId =  $(this).closest('tr').find('.cartId').val();
+			 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
+			 let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
+			 console.log("cartId : " + cartId, "memberId : " + memberId);
+			 
+			 if(deleteConfirm) {
+				 $.ajax({
+					 type : 'DELETE',
+					 url : '../delete/' + cartId,
+					 headers : {
+							'Content-Type' : 'application/json'
+						}, 
+					 success : function(result){
+						 console.log(result);
+						 if(result == 1) {
+							 alert('삭제 완료');
+							 location.reload(true);
+						 } else {
+							alert('삭제 실패');
+							location.reload(true);
+						 }
+		                }
+		            });
+		        }
+		    });
+	    
+	    $(document).ready(function () {
+			setTotalPrice(); // 페이지 로드 시 실행
+			$(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
+	    }); // document
+	    
+	    function isChecked(checkbox) {
     	    if (checkbox.checked) {
     	      let memberId = $(checkbox).closest('tr').find('.memberId').val();
     	      let cartId = $(checkbox).closest('tr').find('.cartId').val();
@@ -289,105 +237,107 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     	      });
     	    }
     	  }
-     
-		
-     $(document).ready(function() {
-    	    $('#order').click(function() {
-    	        $('tbody tr').each(function(index) {
-    	            // 각 tr 태그 내의 hidden input 값들을 가져옴
-    	            let memberId = $(this).find('.memberId').val();
-    	            console.log("memberId : " + memberId);
 
-    	            let itemId = $(this).find('.itemId').val();
-    	            console.log("itemId : " + itemId);
-
-    	            let totalCount = $(this).find('.itemAmount').val();
-    	            console.log("구매 수량 : " + totalCount);
-
-    	            let itemPrice = $(this).find('.itemPrice').val();
-    	            console.log("아이템 가격 : " + itemPrice);
-
-    	            let totalPrice = $(this).find('.itemPrice').val() * totalCount;
-    	            console.log("총 가격 : " + totalPrice);
-
-    	            let deliveryAddress = $("#deleveryAddress").val();
-    	            console.log("주소 : " + deliveryAddress);
-    	            
-    	            let orderCount = index;
-    	            console.log(orderCount);
-    	            
-    	            let checked = $(this).find('.cartChecked').val();
-    	            console.log("cartChecked : " + checked);
-    	            if(checked == 1) {
-    	            $.ajax({
-	                    url: 'order',
-	                    type: 'POST',
-	                    headers: {
-	                        'Content-Type': 'application/json' // json content-type 설정
-	                    },
-	                    data: JSON.stringify({
-	                        memberId: memberId,
-	                        itemId: itemId,
-	                        totalCount: totalCount,
-	                        totalPrice: totalPrice,
-	                        deliveryAddress: deliveryAddress,
-	                        orderCount : orderCount
-	                    }),
-	                    success: function(result) {
-	                        console.log(result);
-	                        alert('결제 성공');
-	                        window.location.href = 'http://localhost:8080/searcher/item/list';
-	                    }
-	                });
-    	            }
-    	        });
-    	    });
-    	});
-     
-     function setTotalPrice() {
-    	    let totalPrice = 0; // 주문 가격 합계
-    	    
-    	    $("tr").each(function () {  // 테이블 순회
-    	      // .cartChecked의 값을 가져와 체크 여부를 확인
-    	      let checked = $(this).find('.cartChecked').val();
-    	      
-    	      // cartChecked 값이 '1'이면 체크, 아니면 체크 해제
-    	      let isChecked = (checked === "1");
-    	      
-    	      // 체크된 항목만 처리
-    	      if (isChecked) {
-    	        let price = parseInt($(this).find(".itemPrice").val(), 10);
-    	        let amount = parseInt($(this).find(".itemAmount").val(), 10);
-    	        
-    	        if (!isNaN(price) && !isNaN(amount)) {
-    	          totalPrice += price * amount; // 총 가격 계산
-    	        }
-    	      } 
-
-    	      // 체크박스 상태 변경 (cartChecked 값에 따라)
-    	      $(this).find(".checkBox").prop("checked", isChecked);
-    	    });
-    	    
-    	    // 총 가격을 화면에 표시
-    	    $("#totalPrice").text(totalPrice.toLocaleString());
-    	  }
-
-    	  // 체크박스를 클릭할 때마다 총 가격을 재계산
-    	  $(document).ready(function() {
-    	    $('.checkBox').change(function() {
-    	      setTotalPrice();  // 체크박스 상태 변경 시 총 가격 계산
-    	    });
-    	  });
-
-     function openPostcodePopup() {
-         new daum.Postcode({
-             oncomplete: function(data) {
-                 // 선택한 주소 정보를 폼 필드에 입력
-                 document.getElementById('postcode').value = data.zonecode;
-                 document.getElementById('address').value = data.address;
-             }
-         }).open();
-     }
+		 $("#postcode, #address, #detailaddress").on("input", updateOutput);
+	     function updateOutput() {
+			      // 각 input 필드의 값을 가져오기
+			      const value1 = $("#postcode").val();
+			      const value2 = $("#address").val();
+			      const value3 = $("#detailaddress").val();
+			
+			      // 결과를 하나의 필드에 합치기
+			      $("#deleveryAddress").val(value1 + " - " + value2 + " " + value3);
+			    }
+	    	     
+			
+	    	    $('#order').click(function() {
+	    	        $('tbody tr').each(function(index) {
+	    	            // 각 tr 태그 내의 hidden input 값들을 가져옴
+	    	            let memberId = $(this).find('.memberId').val();
+	    	            console.log("memberId : " + memberId);
+	
+	    	            let itemId = $(this).find('.itemId').val();
+	    	            console.log("itemId : " + itemId);
+	
+	    	            let totalCount = $(this).find('.itemAmount').val();
+	    	            console.log("구매 수량 : " + totalCount);
+	
+	    	            let itemPrice = $(this).find('.itemPrice').val();
+	    	            console.log("아이템 가격 : " + itemPrice);
+	
+	    	            let totalPrice = $(this).find('.itemPrice').val() * totalCount;
+	    	            console.log("총 가격 : " + totalPrice);
+	
+	    	            let deliveryAddress = $("#deleveryAddress").val();
+	    	            console.log("주소 : " + deliveryAddress);
+	    	            
+	    	            let orderCount = index;
+	    	            console.log(orderCount);
+	    	            
+	    	            let checked = $(this).find('.cartChecked').val();
+	    	            console.log("cartChecked : " + checked);
+	    	            if(checked == 1) {
+	    	            $.ajax({
+		                    url: 'order',
+		                    type: 'POST',
+		                    headers: {
+		                        'Content-Type': 'application/json' // json content-type 설정
+		                    },
+		                    data: JSON.stringify({
+		                        memberId: memberId,
+		                        itemId: itemId,
+		                        totalCount: totalCount,
+		                        totalPrice: totalPrice,
+		                        deliveryAddress: deliveryAddress,
+		                        orderCount : orderCount
+		                    }),
+		                    success: function(result) {
+		                        console.log(result);
+		                        alert('결제 성공');
+		                        window.location.href = 'http://localhost:8080/searcher/item/list';
+		                    }
+		                });
+	    	            }
+	    	        });
+	    	    });
+	     
+	     function setTotalPrice() {
+	    	    let totalPrice = 0; // 주문 가격 합계
+	    	    
+	    	    $("tr").each(function () {  // 테이블 순회
+	    	      // .cartChecked의 값을 가져와 체크 여부를 확인
+	    	      let checked = $(this).find('.cartChecked').val();
+	    	      
+	    	      // cartChecked 값이 '1'이면 체크, 아니면 체크 해제
+	    	      let isChecked = (checked === "1");
+	    	      
+	    	      // 체크된 항목만 처리
+	    	      if (isChecked) {
+	    	        let price = parseInt($(this).find(".itemPrice").val(), 10);
+	    	        let amount = parseInt($(this).find(".itemAmount").val(), 10);
+	    	        
+	    	        if (!isNaN(price) && !isNaN(amount)) {
+	    	          totalPrice += price * amount; // 총 가격 계산
+	    	        }
+	    	      } 
+	
+	    	      // 체크박스 상태 변경 (cartChecked 값에 따라)
+	    	      $(this).find(".checkBox").prop("checked", isChecked);
+	    	    });
+	    	    
+	    	    // 총 가격을 화면에 표시
+	    	    $("#totalPrice").text(totalPrice.toLocaleString());
+	    	  }
+	
+	     function openPostcodePopup() {
+	         new daum.Postcode({
+	             oncomplete: function(data) {
+	                 // 선택한 주소 정보를 폼 필드에 입력
+	                 document.getElementById('postcode').value = data.zonecode;
+	                 document.getElementById('address').value = data.address;
+	             }
+	         }).open();
+	     }
 	
 </script>
 </div> <!-- area -->
