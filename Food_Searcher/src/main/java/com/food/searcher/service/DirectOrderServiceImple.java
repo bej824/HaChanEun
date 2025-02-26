@@ -84,6 +84,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info("cancel()");
 		int result = directOrderMapper.cancel(deliveryStatus, orderId);
 		log.info(result + "행 업데이트 완료");
+		couponActiveService.updateCouponActiveByOrderId(orderId);
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
 		int itemAmount = itemVO.getItemAmount() + directOrderVO.getTotalCount();
@@ -104,10 +105,18 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		return directOrderMapper.refund(deliveryStatus, refundReason, refundContent, orderId);
 	}
 	
+	@Transactional
 	@Override
 	public int refundOK(String deliveryStatus, String orderId) {
 		log.info("환불 승인");
-		return directOrderMapper.refundOK(deliveryStatus, orderId);
+		
+		int result = directOrderMapper.refundOK(deliveryStatus, orderId);
+		
+		if(result == 1) {
+			couponActiveService.updateCouponActiveByOrderId(orderId);
+		}
+		
+		return result;
 	}
 	
 	@Override

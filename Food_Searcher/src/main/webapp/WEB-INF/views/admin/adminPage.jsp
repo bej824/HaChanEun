@@ -46,7 +46,7 @@
 			let memberId = $('#memberId').val();
 			
 			if(idCheck) {
-				roleupdate();
+				roleUpdate(memberId);
 			}
 		})
 		
@@ -54,8 +54,7 @@
 			window.location.href = "itemManagement";
 		})
 		
-		function roleUpdate() {
-			let memberId = document.getElementById("memberId").value;
+		function roleUpdate(memberId) {
 			let roleName = "ROLE_ADMIN";
 			let result = confirm(memberId + "님을 운영자 등록시키겠습니까?");
 			if (result) {

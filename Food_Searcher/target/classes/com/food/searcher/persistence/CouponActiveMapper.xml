@@ -83,4 +83,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE COUPON_ACTIVE_ID = #{couponActiveId}
 	</update>
 	
+	<update id="updateCouponActiveByOrderId">
+		UPDATE COUPON_ACTIVE
+		SET COUPON_USE_DATE = NULL
+		,ITEM_ID = CASE
+					WHEN ITEM_NAME IS NULL OR ITEM_NAME = '' THEN 0
+                	ELSE ITEM_ID
+					END
+		,ORDER_ID = NULL
+		WHERE ORDER_ID = #{orderId}
+		AND COUPON_USE_DATE IS NOT NULL
+		AND COUPON_EXPIRE_DATE >= SYSDATE
+	</update>
+	
 </mapper>

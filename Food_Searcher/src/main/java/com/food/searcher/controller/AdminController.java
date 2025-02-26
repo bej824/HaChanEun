@@ -49,7 +49,7 @@ public class AdminController {
 	public int roleUpdatePOST(
 					 @RequestParam("memberId") String memberId
 					,@RequestParam("roleName") String roleName) {
-		log.info("roleUpdate");
+		log.info("roleUpdatePOST()");
 		
 		return adminService.createRole(memberId, roleName);
 	} // end roleUpdatePOST

@@ -262,7 +262,6 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 	
 	<script type="text/javascript">
 		$(document).ajaxSend(function(e, xhr, opt){
-			console.log("ajaxSend");
 			
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");

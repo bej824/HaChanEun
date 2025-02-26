@@ -33,8 +33,6 @@ li {
 
 </style>
 
-<link rel="stylesheet"
-	href="./resources/css/Base.css">
 <title>Home</title>
 </head>
 <body>
