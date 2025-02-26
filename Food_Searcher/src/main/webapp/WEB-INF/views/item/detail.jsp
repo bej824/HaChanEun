@@ -56,25 +56,23 @@ pageEncoding="UTF-8"%>
 		<p>판매자 : ${itemVO.memberId } </p>
 	</div>
 	
-	
-	
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-
-	
 	<button onclick="location.href='list'" class="button" id="listBoard">글 목록</button>
-	<br><br>
+	<br>
 	
-		
-   	 <button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button><br>
-	
+	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
+	<div>
+   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
     <button id="deleteItem" class="button">글 삭제</button>
+    </div>
+    </sec:authorize>
+    
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
         <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
         <input type="hidden" name="itemId" value="${itemVO.itemId }">
     </form><br>
-	
 	
 	<div class="buy">
 		<sec:authorize access="isAnonymous()">
@@ -87,8 +85,10 @@ pageEncoding="UTF-8"%>
 		<button class="plusBtn">+</button>
 		<br><br>
 		
+		<c:if test="${itemVO.itemAmount > 0}">
 		<button id="btnCart" class="button">장바구니 담기</button><br>
     	<button type="button" onclick="window.location.href='order?itemId=${itemVO.itemId}&count=' + $('.itemAmount').val()" id="btnBuy" class="button">바로 구매</button>
+		</c:if>
 	</sec:authorize>
 	
     <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
@@ -167,6 +167,7 @@ pageEncoding="UTF-8"%>
 				success: function(result){
 				if (result == '1') {
 					alert("장바구니 추가 성공")	
+					window.location.href = 'http://localhost:8080/searcher/item/list';
 				} else {
 					alert("장바구니 추가 실패")
 				  }

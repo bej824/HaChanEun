@@ -99,7 +99,6 @@
     	for (let i = 0; i < length; i++) {
     	    $(document).ready(function() {
     	        $('#order').click(function(){
-    			setTimeout(function() {
     	            let memberId = '<sec:authentication property="name" />';
     	            console.log("memberId : " + memberId);
     	            let itemId = itemIdSplit[i];
@@ -122,7 +121,8 @@
     	                        itemId: itemId,
     	                        totalCount: totalCount,
     	                        totalPrice: totalPrice,
-    	                        deliveryAddress: deliveryAddress
+    	                        deliveryAddress: deliveryAddress,
+    	                        orderCount : i
     	                    }),
     	                    success: function(result) {
     	                        console.log(result);
@@ -131,7 +131,6 @@
     	                    }
     	                });
     	    	console.log(i);
-    			}, i * 1000); // i번째마다 1초씩 딜레이
     	        });
     	    });
     	}

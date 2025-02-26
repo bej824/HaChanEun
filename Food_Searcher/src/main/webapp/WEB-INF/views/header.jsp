@@ -238,9 +238,14 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 			<p><sec:authentication property="name" />님 환영합니다.</p>
 		</sec:authorize>
 		<div class="myPage">
-    	<sec:authorize access="isAuthenticated()">
+    	<sec:authorize access="hasRole('ROLE_MEMBER')">
         	<a href="/searcher/auth/login">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a>
+        	<a href="/searcher/seller/sellerManagement">관리페이지</a>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_SELLER')">
+        	<a href="/searcher/auth/login">로그아웃</a> <br>
+        	<a href="/searcher/seller/sellerManagement">관리페이지</a>
         </sec:authorize>
         
    		<sec:authorize access="!isAuthenticated()">

@@ -42,8 +42,6 @@ public class ItemController {
 		List<ItemVO> itemList = itemService.getPagingItems(pagination);
 		log.info(itemList);
 		
-		pagination.setPageSize(10);
-		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));

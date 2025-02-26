@@ -56,8 +56,7 @@
 	
 	<div>
 	<p>상품 설명 : </p>
-	<textarea rows="20" cols="120" id="itemContent" name="itemContent" placeholder="내용을 입력하세요." maxlength="1500" required>
-	</textarea><br>
+	<textarea rows="20" cols="120" id="itemContent" name="itemContent" placeholder="내용을 입력하세요." maxlength="1500" required></textarea><br>
 	<button id="registerItem"> 등록 </button>
 	</div>
 	

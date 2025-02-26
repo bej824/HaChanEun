@@ -146,7 +146,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public int cartPurchase(DirectOrderVO directOrderVO) {
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		directOrderVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId());
+		directOrderVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId() + directOrderVO.getOrderCount());
 		
 		log.info("cartInsert()");
 		log.info(directOrderVO);

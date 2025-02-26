@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.MEMBER_ID,
             a.ITEM_ID,
             a.CART_AMOUNT,
+            a.CART_CHECKED,
             b.ITEM_NAME,
             b.ITEM_PRICE,
             b.ITEM_AMOUNT
@@ -47,6 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.MEMBER_ID,
             a.ITEM_ID,
             a.CART_AMOUNT,
+            a.CART_CHECKED,
             b.ITEM_NAME,
             b.ITEM_PRICE,
             b.ITEM_AMOUNT
@@ -64,9 +66,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM CART WHERE CART_ID = #{cartId} and CART_CHECKED = 1
 	</delete>
 	
+	<update id="updateChecked">
+		UPDATE CART
+		SET CART_CHECKED = #{cartChecked} WHERE CART_ID = #{cartId}
+	</update>
+	
 	<update id="updateAmount">
 		UPDATE CART
-		SET CART_AMOUNT = #{cartAmount} WHERE CART_ID = #{cartId}
+		SET CART_AMOUNT = #{cartChecked} WHERE CART_ID = #{cartId}
 	</update>
 	
 </mapper>

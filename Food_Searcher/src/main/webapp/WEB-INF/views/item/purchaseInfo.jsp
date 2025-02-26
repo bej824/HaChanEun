@@ -21,7 +21,7 @@
 		<p>구매 수량 : ${directOrderVO.totalCount }</p>
 	</div>
 	<div>
-		<p>총 구매 가격 : ${directOrderVO.totalPrice }원</p>
+		<p>총 구매 가격 : <fmt:formatNumber value="${directOrderVO.totalPrice }" pattern="###,###,###" />원</p>
 	</div>
 	<div>
 		<p>배송지 : ${directOrderVO.deliveryAddress }</p>
