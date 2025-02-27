@@ -63,7 +63,7 @@ public class CartController {
 	@DeleteMapping("/delete/{cartId}")
 	public ResponseEntity<Integer> deleteCart(CartVO cartVO, @PathVariable("cartId") int cartId) {
 		      log.info("deleteCart()");
-		      cartService.deleteCart(cartId);
+		      
 		      return new ResponseEntity<Integer>(cartService.deleteCart(cartId), HttpStatus.OK);
 	}
 	
@@ -80,8 +80,8 @@ public class CartController {
 	public ResponseEntity<Integer> updateChecked(@PathVariable("memberId") String memberId, 
 	                                              @RequestBody CartVO cartVO) {
 	    log.info("checked");
-	    int result = cartService.updateChecked(cartVO.getCartChecked(), cartVO.getCartId());
-	    return new ResponseEntity<>(result, HttpStatus.OK);
+	    
+	    return new ResponseEntity<>(cartService.updateChecked(cartVO.getCartChecked(), cartVO.getCartId()), HttpStatus.OK);
 	}
 	
 } //end CartController

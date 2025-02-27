@@ -29,6 +29,7 @@ public class ItemVO {
 	private int itemStatus;
 	
 	private List<ItemAttachVO> attachList;
+	private int itemCount;
 	
 	public List<ItemAttachVO> getAttachList() {
 		if(attachList == null) {
