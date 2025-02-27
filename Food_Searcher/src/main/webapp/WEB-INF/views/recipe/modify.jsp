@@ -71,12 +71,12 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 		</div>
 		<div>
 			<p>재료</p>
-			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="250" required>${recipeVO.ingredient }</textarea>
+			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="50" required>${recipeVO.ingredient }</textarea>
 		</div>
 		<div>
 			<p>레시피 : </p>
 			<textarea rows="20" cols="120" name="recipeContent" placeholder="내용 입력" 
-maxlength="1500" required>${recipeVO.recipeContent }</textarea>
+maxlength="400" required>${recipeVO.recipeContent }</textarea>
 		</div>
 
 	<!-- 기존 첨부 파일 리스트 데이터 구성 -->

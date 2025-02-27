@@ -61,4 +61,10 @@ public class SellerController {
 		
 		model.addAttribute("directOrderVO", sellerService.purchaseHistory(principal.getName()));
 	}
+	
+	@GetMapping("/purchaseInfo")
+	public void purchaseInfo(Model model, String orderId) {
+		model.addAttribute("directOrderVO", sellerService.purchaseInfo(orderId));
+		model.addAttribute("itemVO", sellerService.purchaseItemInfo(orderId));
+	}
 }

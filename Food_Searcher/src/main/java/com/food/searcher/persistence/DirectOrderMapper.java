@@ -20,11 +20,11 @@ public interface DirectOrderMapper {
 	int selectMemberTotalCount(String memberId);
 	int insert(DirectOrderVO directOrderVO);
 	int cartInsert(DirectOrderVO directOrderVO);
-	int cancel(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") String orderId);
-	int refundReady(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") String orderId);
-	int refund(@Param("deliveryStatus") String deliveryStatus, @Param("refundReason") String refundReason, @Param("refundContent") String refundContent, @Param("orderId") String orderId);
-	int refundOK(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") String orderId);
-	int deliveryReady(@Param("deliveryStatus") String deliveryStatus, @Param("deliveryCompany") String deliveryCompany, @Param("invoiceNumber") String invoiceNumber, @Param("orderId") String orderId);
-	int delivering(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") String orderId);
-	int deliveryCompleted(@Param("deliveryStatus") String deliveryStatus, @Param("orderId") String orderId);
+	int cancel(@Param("orderId") String orderId);
+	int refundReady(@Param("orderId") String orderId);
+	int refund(@Param("refundReason") String refundReason, @Param("refundContent") String refundContent, @Param("orderId") String orderId);
+	int refundOK(@Param("orderId") String orderId);
+	int deliveryReady(@Param("deliveryCompany") String deliveryCompany, @Param("invoiceNumber") String invoiceNumber, @Param("orderId") String orderId);
+	int delivering(@Param("orderId") String orderId);
+	int deliveryCompleted(@Param("orderId") String orderId);
 }

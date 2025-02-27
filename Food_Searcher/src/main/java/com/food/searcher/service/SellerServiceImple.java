@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
+import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.DirectOrderMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -23,6 +24,9 @@ public class SellerServiceImple implements SellerService {
 	
 	@Autowired
 	DirectOrderService directOrderService;
+	
+	@Autowired
+	private ItemService itemService;
 	
 	@Override
 	public int SellerCreate(String memberId) {
@@ -43,6 +47,17 @@ public class SellerServiceImple implements SellerService {
 	public List<DirectOrderVO> purchaseHistory(String memberId) {
 		
 		return directOrderService.sellerList(memberId);
+	}
+
+	@Override
+	public DirectOrderVO purchaseInfo(String orderId) {
+		return directOrderService.getselectOne(orderId);
+	}
+
+	@Override
+	public ItemVO purchaseItemInfo(String orderId) {
+		DirectOrderVO directOrderVO = purchaseInfo(orderId);
+		return itemService.getItemById(directOrderVO.getItemId());
 	}
 
 }

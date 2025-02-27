@@ -62,26 +62,6 @@ public class RecipeController {
 		model.addAttribute("recipeList", recipeList);
 	}
 
-	@GetMapping("/register")
-	public void registerGET() {
-		log.info("registerGET()");
-	}
-
-	// register.jsp에서 전송받은 게시글 데이터를 저장
-	@PostMapping("/register")
-	public String registerPOST(RecipeVO recipeVO, Principal principal) {
-		log.info("registerPOST()");
-		log.info(principal);
-		log.info("User role: " + principal.getName());
-		recipeVO.setMemberId(principal.getName());
-		log.info("recipeVO = " + recipeVO.toString());
-
-		int result = recipeService.createBoard(recipeVO);
-		log.info(result + "행 등록");
-
-		return "redirect:/recipe/list";
-	}
-
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
 	// 조회된 게시글 데이터를 detail.jsp로 전송
 	@GetMapping("/detail")
@@ -117,6 +97,26 @@ public class RecipeController {
 			log.info("AttachVO : " + attachVO);
 			model.addAttribute("idList", attachVO);
 		}
+	}
+	
+	@GetMapping("/register")
+	public void registerGET() {
+		log.info("registerGET()");
+	}
+
+	// register.jsp에서 전송받은 게시글 데이터를 저장
+	@PostMapping("/register")
+	public String registerPOST(RecipeVO recipeVO, Principal principal) {
+		log.info("registerPOST()");
+		log.info(principal);
+		log.info("User role: " + principal.getName());
+		recipeVO.setMemberId(principal.getName());
+		log.info("recipeVO = " + recipeVO.toString());
+
+		int result = recipeService.createBoard(recipeVO);
+		log.info(result + "행 등록");
+
+		return "redirect:/recipe/list";
 	}
 
 	// 게시글 번호를 전송받아 상세 게시글 조회

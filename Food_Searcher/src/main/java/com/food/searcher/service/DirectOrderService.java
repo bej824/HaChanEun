@@ -16,11 +16,17 @@ public interface DirectOrderService {
 	int getMemberTotalCount(String memberId);
 	int orderPurchase(DirectOrderVO directOrderVO);
 	int cartPurchase(DirectOrderVO directOrderVO);
-	int cancel(String deliveryStatus, String orderId);
-	int refundReady(String deliveryStatus, String orderId);
-	int refund(String deliveryStatus, String refundReason, String refundContent, String orderId);
-	int refundOK(String deliveryStatus, String orderId);
-	int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, String orderId);
-	int delivering(String deliveryStatus, String orderId);
-	int deliveryCompleted(String deliveryStatus, String orderId);
+	int cancel(String orderId);
+	int refundReady(String orderId);
+	int refund(String refundReason, String refundContent, String orderId);
+	int refundOK(String orderId);
+	int deliveryReady(String deliveryCompany, String invoiceNumber, String orderId);
+	int delivering(String orderId);
+	
+	/** 배송 완료
+	 * @param deliveryStatus
+	 * @param orderId
+	 * @return
+	 */
+	int deliveryCompleted(String orderId);
 }

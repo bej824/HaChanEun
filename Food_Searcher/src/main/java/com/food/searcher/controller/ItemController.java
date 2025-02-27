@@ -133,7 +133,14 @@ public class ItemController {
 		log.info("modifyGET()");
 		log.info("itemId = " + itemId);
 		ItemVO itemVO = itemService.getItemById(itemId);
-		model.addAttribute("itemVO", itemVO);
+		
+		if(itemId.equals(itemVO.getItemId())) {
+			model.addAttribute("itemVO", itemVO);
+			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			if (attachVO != null && !attachVO.isEmpty()) {
+				model.addAttribute("idList", attachVO);
+			}
+		}
 	}
 	
 	@PostMapping("/modify")

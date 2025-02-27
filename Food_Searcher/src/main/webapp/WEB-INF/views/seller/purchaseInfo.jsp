@@ -78,7 +78,6 @@
 		$(document).ready(function(){
 			$('#ready').click(function(){
 				let orderId = '${directOrderVO.orderId }';
-				let deliveryStatus = '배송 준비중';
 				let deliveryCompany = $("select[name='deliveryCompany']").val();
 				console.log(deliveryCompany);
 				let invoiceNumber = $("#invoiceNumber").val();
@@ -90,7 +89,6 @@
 						'Content-Type' : 'application/json'
 					},
 					data : JSON.stringify({ 
-						deliveryStatus : deliveryStatus,
 						deliveryCompany : deliveryCompany,
 						invoiceNumber : invoiceNumber}),
 					success : function(result) {
@@ -107,14 +105,12 @@
 			
 			$('#delivering').click(function(){
 				let orderId = '${directOrderVO.orderId }';
-				let deliveryStatus = '배송 중';
 				$.ajax({
 					url : 'delivering/' + orderId,
 					type : 'PUT',
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : JSON.stringify({ deliveryStatus : deliveryStatus }),
 					success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
@@ -129,14 +125,12 @@
 			
 			$('#completed').click(function(){
 				let orderId = '${directOrderVO.orderId }';
-				let deliveryStatus = '배송 완료';
 				$.ajax({
 					url : 'completed/' + orderId,
 					type : 'PUT',
 					headers : {
 						'Content-Type' : 'application/json'
 					},
-					data : JSON.stringify({ deliveryStatus : deliveryStatus }),
 					success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {

@@ -211,31 +211,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<update id="cancel">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '결제 취소' WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '상품 준비중'
 	</update>
 	
 	<update id="refundReady">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '환불 하기' WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '배송 완료'
 	</update>
 	
 	<update id="refund">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, REFUND_REASON = #{refundReason}, REFUND_CONTENT = #{refundContent} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '환불 신청', REFUND_REASON = #{refundReason}, REFUND_CONTENT = #{refundContent} WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '환불 하기'
 	</update>
 	
 	<update id="refundOK">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '환불 완료' WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '환불 신청'
 	</update>
 	
 	<update id="deliveryReady">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, DELIVERY_COMPANY = #{deliveryCompany}, INVOICE_NUMBER = #{invoiceNumber} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '배송 준비중', DELIVERY_COMPANY = #{deliveryCompany}, INVOICE_NUMBER = #{invoiceNumber} WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '상품 준비중'
 	</update>
 	
 	<update id="delivering">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus} WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '배송 중' WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '배송 준비중'
 	</update>
 	
 	<update id="deliveryCompleted">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = #{deliveryStatus}, DELIVERY_COMPLETED_DATE = SYSDATE, DELIVERY_REFUND = SYSDATE + 7  WHERE ORDER_ID = #{orderId}
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '배송 완료', DELIVERY_COMPLETED_DATE = SYSDATE, DELIVERY_REFUND = SYSDATE + 7  WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '배송 중'
 	</update>
 
 </mapper>

@@ -53,7 +53,7 @@ li {
 <h1>상품 리스트</h1>
 
 <div class="testDiv">
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+<sec:authorize access="hasRole('ROLE_SELLER')">
 <a href="/searcher/item/register" class="button">상품 등록</a>  
 </sec:authorize>
 <br>
@@ -63,7 +63,10 @@ li {
 <br>
 <a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
-<br><a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
+<br>
+<sec:authorize access="hasRole('ROLE_SELLER')">
+<a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
+</sec:authorize>
 </div>
 
 	<form id="searchForm" method="get" action="list">
@@ -84,7 +87,7 @@ li {
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">
 					<div class="image_item">
-					        <img width="100px" height="100px" 
+					        <img width="200px" height="120px" 
 					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" />
 				        </div>
 				        </c:if>
@@ -108,7 +111,7 @@ li {
 	    </form>
 	
 	<ul>
-			<!-- 이전 버튼 생성을 위한 조건문 -->
+		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
 			<li class="pagination_button"><a href="${pageMaker.startNum - 1}"
 				class="button">이전</a></li>
@@ -118,7 +121,8 @@ li {
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
 			<li class="pagination_button ${param.pageNum == num ? 'selected' : ''}"
-               onclick="changeColor(this, ${num}); return isNumber(${num})"><a href="${num }" class="button">${num }</a></li>
+               onclick="changeColor(this, ${num}); return isNumber(${num})"></li>
+               <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
@@ -130,16 +134,15 @@ li {
 
 	
 <script type="text/javascript">
-	
 	// pagination_button을 클릭하면 페이지 이동
 	$(".pagination_button a").on("click", function(e){
-		var listForm = $("#listForm"); // form 객체 참조
+		let listForm = $("#listForm"); // form 객체 참조
 		e.preventDefault(); // a 태그 이벤트 방지
 	
-		var pageNum = $(this).attr("href"); // a태그의 href 값 저장
+		let pageNum = $(this).attr("href"); // a태그의 href 값 저장
 		// 현재 페이지 사이즈값 저장
-		var type = "<c:out value='${pageMaker.pagination.type }' />";
-		var keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
+		let type = "<c:out value='${pageMaker.pagination.type }' />";
+		let keyword = "<c:out value='${pageMaker.pagination.keyword }' />";
 		 
 		// 페이지 번호를 input name='pageNum' 값으로 적용
 		listForm.find("input[name='pageNum']").val(pageNum);
@@ -173,14 +176,13 @@ li {
 			return;
 		}
 		
-		var pageNum = 1; // 검색 후 1페이지로 고정
+		let pageNum = 1; // 검색 후 1페이지로 고정
 		// 현재 페이지 사이즈값 저장
 		 
 		// 페이지 번호를 input name='pageNum' 값으로 적용
 		searchForm.find("input[name='pageNum']").val(pageNum);
 		searchForm.submit(); // form 전송
 	}); // end on()
-	
 	
 </script>	
 </div> <!-- area -->

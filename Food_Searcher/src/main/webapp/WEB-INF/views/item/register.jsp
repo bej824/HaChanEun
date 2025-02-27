@@ -57,33 +57,12 @@
 	<div>
 	<p>상품 설명 : </p>
 	<textarea rows="20" cols="120" id="itemContent" name="itemContent" placeholder="내용을 입력하세요." maxlength="1500" required></textarea><br>
-	<button id="registerItem"> 등록 </button>
 	</div>
 	
 	</form>
 
-<script>
-$(document).ajaxSend(function(e, xhr, opt){
-	console.log("ajaxSend");
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-
-	xhr.setRequestHeader(header, token);
-});
-
-$(document).ready(function() {
-	$('#registerItem').click(function(e) {
-		e.preventDefault();  // 기본 폼 제출 동작을 막음
-		registerForm.submit();
-	});
-});
-
-</script>
-
 	<div class="image-upload">
 		<h2>이미지 파일 업로드</h2>
-		<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 		<p>* 최대 용량은 10MB 입니다.</p>
 		<div class="image-drop">이미지를 드래그 하세요.</div>
 		<h2>선택한 이미지 파일 :</h2>
@@ -100,10 +79,10 @@ $(document).ready(function() {
 	<sec:authorize access="isAuthenticated()">
 	<button id="registerBoard" class="button">등록</button>
 	</sec:authorize>
-	<button onclick="window.location.href='list'" class="button">뒤로가기</button>
+	<button onclick="window.location.href='../seller/management'" class="button">뒤로가기</button>
 	</div>
 	</div>
-	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/images.js"></script>
 
 	<script>
     // ajaxSend() : AJAX 요청이 전송되려고 할 때 실행할 함수를 지정
@@ -191,6 +170,6 @@ $(document).ready(function() {
 			});
 		});
 	</script>
-</div> <!-- area -->
+<!-- area -->
 </body>
 </html>

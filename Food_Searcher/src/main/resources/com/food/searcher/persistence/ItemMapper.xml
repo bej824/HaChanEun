@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemAmount" column="ITEM_AMOUNT" />
 		<result property="itemDate" column="ITEM_DATE" jdbcType="DATE" />
 		<result property="itemLike" column="ITEM_LIKE" />
-		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemName" column="ITEM_NAME" jdbcType="VARCHAR" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="itemStatus" column="ITEM_STATUS" />
 	</resultMap>
@@ -108,6 +108,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectStatusTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = 1
+		<choose>
+				<when test="type == 'ITEM_NAME'.toString()">
+					AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'ITEM_CONTENT'.toString()">
+					AND ITEM_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'ITEM_TAG'.toString()">
+					AND ITEM_TAG LIKE '%'||#{keyword}||'%'
+				</when>
+		</choose>
 	</select>
 	
 	<select id="selectTotalCountByStatus" resultType="Integer">

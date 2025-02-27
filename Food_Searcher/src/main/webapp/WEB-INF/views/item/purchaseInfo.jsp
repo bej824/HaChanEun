@@ -76,14 +76,12 @@
 			$('#cancel').click(function(){
 				console.log("결제 취소");
 				let orderId = '${directOrderVO.orderId }';
-				let deliveryStatus = '결제 취소';
 				$.ajax({
 					url : 'cancel/' + orderId,
 					type : 'PUT',
 					headers : {
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
-    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
     			    success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
@@ -102,14 +100,12 @@
 			$('#refundReady').click(function(){
 				console.log("환불 하기");
 				let orderId = '${directOrderVO.orderId }';
-				let deliveryStatus = '환불 하기';
 				$.ajax({
 					url : 'refundReady/' + orderId,
 					type : 'PUT',
 					headers : {
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
-    			    data : JSON.stringify({ deliveryStatus: deliveryStatus }),
     			    success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
@@ -130,7 +126,6 @@
 				let orderId = '${directOrderVO.orderId }';
 				let refundReason = $("select[name='refundReason']").val();
 				let refundContent = $("#refundContent").val();
-				let deliveryStatus = '환불 신청';
 				$.ajax({
 					url : 'refund/' + orderId,
 					type : 'PUT',
@@ -138,7 +133,6 @@
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
     			    data : JSON.stringify({ 
-    			    	deliveryStatus: deliveryStatus,
     			    	refundReason : refundReason,
     			    	refundContent : refundContent}),
     			    success : function(result) {

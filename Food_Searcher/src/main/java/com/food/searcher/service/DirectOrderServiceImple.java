@@ -2,7 +2,9 @@ package com.food.searcher.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,9 +89,9 @@ public class DirectOrderServiceImple implements DirectOrderService{
 
 	@Transactional(value = "transactionManager")
 	@Override
-	public int cancel(String deliveryStatus, String orderId) {
+	public int cancel(String orderId) {
 		log.info("cancel()");
-		int result = directOrderMapper.cancel(deliveryStatus, orderId);
+		int result = directOrderMapper.cancel(orderId);
 		log.info(result + "행 업데이트 완료");
 		couponActiveService.updateCouponActiveByOrderId(orderId);
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
@@ -101,23 +103,23 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	}
 	
 	@Override
-	public int refundReady(String deliveryStatus, String orderId) {
+	public int refundReady(String orderId) {
 		log.info("환불 하기");
-		return directOrderMapper.refundReady(deliveryStatus, orderId);
+		return directOrderMapper.refundReady(orderId);
 	}
 	
 	@Override
-	public int refund(String deliveryStatus, String refundReason, String refundContent, String orderId) {
+	public int refund(String refundReason, String refundContent, String orderId) {
 		log.info("환불 신청");
-		return directOrderMapper.refund(deliveryStatus, refundReason, refundContent, orderId);
+		return directOrderMapper.refund(refundReason, refundContent, orderId);
 	}
 	
 	@Transactional
 	@Override
-	public int refundOK(String deliveryStatus, String orderId) {
+	public int refundOK(String orderId) {
 		log.info("환불 승인");
 		
-		int result = directOrderMapper.refundOK(deliveryStatus, orderId);
+		int result = directOrderMapper.refundOK(orderId);
 		
 		if(result == 1) {
 			couponActiveService.updateCouponActiveByOrderId(orderId);
@@ -127,21 +129,21 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	}
 	
 	@Override
-	public int deliveryReady(String deliveryStatus, String deliveryCompany, String invoiceNumber, String orderId) {
+	public int deliveryReady(String deliveryCompany, String invoiceNumber, String orderId) {
 		log.info("배송 준비중");
-		return directOrderMapper.deliveryReady(deliveryStatus, deliveryCompany, invoiceNumber, orderId);
+		return directOrderMapper.deliveryReady(deliveryCompany, invoiceNumber, orderId);
 	}
 	
 	@Override
-	public int delivering(String deliveryStatus, String orderId) {
+	public int delivering(String orderId) {
 		log.info("배송 중");
-		return directOrderMapper.delivering(deliveryStatus, orderId);
+		return directOrderMapper.delivering(orderId);
 	}
 	
 	@Override
-	public int deliveryCompleted(String deliveryStatus, String orderId) {
+	public int deliveryCompleted(String orderId) {
 		log.info("배송 완료");
-		return directOrderMapper.deliveryCompleted(deliveryStatus, orderId);
+		return directOrderMapper.deliveryCompleted(orderId);
 	}
 	
 	@Override
@@ -185,5 +187,18 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public int getMemberTotalCount(String memberId) {
 		return directOrderMapper.selectMemberTotalCount(memberId);
 	}
+	
+	  public Map<String, Integer> calculateTotalPrice(List<ItemVO> list, CouponActiveVO activeVO, String memberId) {
+	      Map<String, Integer> acount = new HashMap<String, Integer>();
+	      int totalCost = 0;
+	      
+	      for(int i = 0; i < list.size(); i++) {
+	         //totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
+	      }
+	      
+	      acount.put(memberId, totalCost - activeVO.getCouponPrice());
+	      
+	      return acount;
+	   }
 
 }

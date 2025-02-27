@@ -56,11 +56,11 @@ textarea.ingredient {
 		</div>
 		<div>
 			<p>재료</p>
-			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="250" required></textarea>
+			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="50" required></textarea>
 		</div>
 		<div>
 			<p>레시피 :</p>
-			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="1500" required></textarea>
+			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="400" required></textarea>
 		</div>
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
