@@ -106,6 +106,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
 	</select>
 	
+	<select id="selectStatusTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = 1
+	</select>
+	
 	<select id="selectTotalCountByStatus" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = #{itemStatus}
 	</select>
