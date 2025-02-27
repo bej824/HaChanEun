@@ -6,11 +6,11 @@
 <html>
 <head>
 <style>
-<<<<<<< HEAD
 .item-container {
         display: flex;
         flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
         gap: 20px;        /* 아이템 간의 간격 */
+        
     }
 
 #area{
@@ -19,7 +19,6 @@
 }
 
 .item {
-	flex: 1 1 calc(33.333% - 20px); /* 한 줄에 3개 배치 (여백 포함) */
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
     background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
@@ -110,19 +109,24 @@ li {
 	
 	<ul>
 			<!-- 이전 버튼 생성을 위한 조건문 -->
-			<c:if test="${pageMaker.isPrev() }">
-				<li class="pagination_button"><a href="${pageMaker.startNum - 1}">이전</a></li>
-			</c:if>
-			<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
-			<c:forEach begin="${pageMaker.startNum }"
-				end="${pageMaker.endNum }" var="num">
-				<li class="pagination_button"><a href="${num }">${num }</a></li>
-			</c:forEach>
-			<!-- 다음 버튼 생성을 위한 조건문 -->
-			<c:if test="${pageMaker.isNext() }">
-				<li class="pagination_button"><a href="${pageMaker.endNum + 1}">다음</a></li>
-			</c:if>
-		</ul>
+		<c:if test="${pageMaker.isPrev() }">
+			<li class="pagination_button"><a href="${pageMaker.startNum - 1}"
+				class="button">이전</a></li>
+		</c:if>
+
+		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
+		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
+			var="num">
+			<li class="pagination_button ${param.pageNum == num ? 'selected' : ''}"
+               onclick="changeColor(this, ${num}); return isNumber(${num})"><a href="${num }" class="button">${num }</a></li>
+		</c:forEach>
+
+		<!-- 다음 버튼 생성을 위한 조건문 -->
+		<c:if test="${pageMaker.isNext() }">
+			<li class="pagination_button"><a href="${pageMaker.endNum + 1}"
+				class="button">다음</a></li>
+		</c:if>
+	</ul>
 
 	
 <script type="text/javascript">

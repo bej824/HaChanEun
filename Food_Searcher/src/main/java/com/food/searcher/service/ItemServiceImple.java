@@ -94,6 +94,11 @@ public class ItemServiceImple implements ItemService {
       return itemMapper.selectTotalCount(pagination);
    }
 
+@Override
+public int getStatusTotalCount(Pagination pagination) {
+	return itemMapper.selectStatusTotalCount(pagination);
+}
+
 
    
 } // end ItemServiceImple

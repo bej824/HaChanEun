@@ -53,7 +53,7 @@ public class ItemController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
+		pageMaker.setTotalCount(itemService.getStatusTotalCount(pagination));
 		
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		if(!itemList.isEmpty()) {
