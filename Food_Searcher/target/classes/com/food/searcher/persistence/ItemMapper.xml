@@ -43,8 +43,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM ITEM WHERE ITEM_STATUS = #{itemStatus} ORDER BY ITEM_ID DESC
 	</select>
 	
+	<select id="selectListAll" resultMap="itemResultMap">
+		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
+	</select>
+	
 	<select id="selectOne" resultMap="itemResultMap">
 		SELECT * FROM ITEM WHERE ITEM_ID = #{itemId}
+	</select>
+	
+	<select id="selectListByMemberId" resultMap="itemResultMap">
+		SELECT ITEM.*, 
+		FIRST_REPEAT_COUPON.*
+		FROM ITEM
+		LEFT JOIN FIRST_REPEAT_COUPON
+		ON ITEM.MEMBER_ID = FIRST_REPEAT_COUPON.SELLER_ID
+		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
 	<update id="itemAmount">
@@ -93,6 +106,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
 	</select>
 	
+	<select id="selectStatusTotalCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = 1
+	</select>
+	
 	<select id="selectTotalCountByStatus" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = #{itemStatus}
 	</select>
@@ -105,6 +122,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ITEM_TAG = #{itemTag}, 
 		ITEM_AMOUNT = #{itemAmount}, 
 		ITEM_STATUS = #{itemStatus}
+		WHERE ITEM_ID = #{itemId}
+	</update>
+	
+	<update id="updateStatus">
+		UPDATE ITEM
+		SET ITEM_STATUS = #{itemStatus}
 		WHERE ITEM_ID = #{itemId}
 	</update>
 	

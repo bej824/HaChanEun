@@ -6,6 +6,12 @@
 <html>
 <head>
 <style>
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 20px;        /* 아이템 간의 간격 */
+        
+    }
 
 #area{
 	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
@@ -13,14 +19,14 @@
 }
 
 .item {
-	flex: 1 1 calc(33.333% - 20px); /* 한 줄에 3개 배치 (여백 포함) */
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
     background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-    height: 200px; /* 첨부 목록의 고정 높이 설정 */
-    width: 500px; /* 첨부 목록의 고정 너비 설정 */
+    height: 300px; /* 첨부 목록의 고정 높이 설정 */
+    width: 250px;     /* 각 아이템의 너비 */
+    box-sizing: border-box;
 }
 
 li {
@@ -71,11 +77,18 @@ li {
 			<button class="button"> 검색 </button>
 	</form>
 <hr>
-
+		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
-					<div>썸네일 삽입 예정</div><br>
+					<c:forEach var="attachVO" items="${attachVO}">
+					<c:if test="${itemVO.itemId eq attachVO.itemId}">
+					<div class="image_item">
+					        <img width="100px" height="100px" 
+					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" />
+				        </div>
+				        </c:if>
+				        </c:forEach>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>상품번호 : ${itemVO.itemId }</p>
 					<p>분류 : ${itemVO.itemTag }</p>
@@ -84,6 +97,7 @@ li {
 					
 			</div>
 			</c:forEach>
+		</div>
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	

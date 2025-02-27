@@ -17,6 +17,7 @@
 <button class="button" id="itemManagement">판매 상품 관리 목록</button>
 
 <button class="button" onclick="couponList()">쿠폰 목록</button>
+<br><a href="purchaseHistory" class="button">회원 전체 거래 내역</a>
 
 	<script type="text/javascript">
 	

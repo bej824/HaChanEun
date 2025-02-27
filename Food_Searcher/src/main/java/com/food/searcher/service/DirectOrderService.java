@@ -10,7 +10,10 @@ public interface DirectOrderService {
 	List<DirectOrderVO> sellerList(String memberId);
 	List<DirectOrderVO> getOrder(String memberId);
 	List<DirectOrderVO> getPagingBoards(Pagination pagination);
+	List<DirectOrderVO> getPagingmemberList(String memberId, Pagination pagination);
 	DirectOrderVO getselectOne(String orderId);
+	int getTotalCount(Pagination pagination);
+	int getMemberTotalCount(String memberId);
 	int orderPurchase(DirectOrderVO directOrderVO);
 	int cartPurchase(DirectOrderVO directOrderVO);
 	int cancel(String deliveryStatus, String orderId);

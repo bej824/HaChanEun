@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원 전체 거래 내역</title>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
@@ -34,5 +34,30 @@
 		</c:forEach>
 		</tbody>
 	</table>
+	
+	<ul>
+			<!-- 이전 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isPrev() }">
+			    <li class="pagination_button">
+			        <a href="purchaseHistory?pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
+			    </li>
+			</c:if>
+			
+			<!-- 페이지 번호 생성 (시작 번호부터 끝 번호까지) -->
+			<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
+			    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
+			        <li class="pagination_button">
+			            <a href="purchaseHistory?pageNum=${num}">${num}</a>
+			        </li>
+			    </c:forEach>
+			</c:if>
+			
+			<!-- 다음 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isNext() }">
+			    <li class="pagination_button">
+			        <a href="purchaseHistory?pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
+			    </li>
+			</c:if>		
+		</ul>
 </body>
 </html>

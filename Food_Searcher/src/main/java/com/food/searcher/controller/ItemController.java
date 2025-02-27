@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.DirectOrderService;
+import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -35,6 +37,9 @@ public class ItemController {
 	@Autowired
 	private DirectOrderService directOrderService;
 	
+	@Autowired
+	private ItemAttachService attachService;
+	
 	@GetMapping("/list")
 	public String list(Model model,
 				     @RequestParam(required = false) String type,
@@ -46,6 +51,10 @@ public class ItemController {
 		log.info("keyword = " + keyword);
 		log.info("type = " + type);
 		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(itemService.getStatusTotalCount(pagination));
+		
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);
@@ -54,11 +63,14 @@ public class ItemController {
 			log.info("검색 결과 없음");
 			return "returnPage";
 		}
-
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(itemService.getTotalCountByStatus(pagination));
 		
+		log.info(itemList.size());
+		
+		List<ItemAttachVO> attachVO = attachService.getSelectAll();
+		log.info("이미지 : " + attachVO);
+		model.addAttribute("attachVO", attachVO);
+		model.addAttribute("itemList", itemList);
+
 		log.info(pageMaker);
 	    model.addAttribute("pageMaker", pageMaker);
 	    
@@ -109,6 +121,10 @@ public class ItemController {
 		log.info("ItemVO = " + itemVO);
 		
 		model.addAttribute("itemVO", itemVO);
+		if(itemId.equals(itemVO.getItemId())) {
+			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			model.addAttribute("attachVO", attachVO);
+		}
 	}
 	
 	@GetMapping("/modify")
@@ -160,14 +176,13 @@ public class ItemController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(directOrderService.getAllOrder().size());
-		List<DirectOrderVO> directOrderVO = directOrderService.getOrder(principal.getName());
+		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName()));
+		log.info(pageMaker);
+		List<DirectOrderVO> directOrderVO = directOrderService.getPagingmemberList(principal.getName(), pagination);
 		log.info("directOrderVO" + directOrderVO);
-		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("directOrderVO", directOrderVO);
-		model.addAttribute("allList", allList);
 	}
 	
 	@GetMapping("/purchaseInfo")

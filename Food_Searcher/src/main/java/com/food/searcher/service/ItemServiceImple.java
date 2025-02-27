@@ -20,66 +20,67 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 
 public class ItemServiceImple implements ItemService {
-	
-	@Autowired
-	ItemMapper itemMapper;
-	
-	
-	@Override
-	public int createItem(ItemVO itemVO) {
-		log.info("createItem()");
-		log.info("ItemVO : " + itemVO);
-		int itemResult = itemMapper.insert(itemVO);
-		log.info(itemResult + "행 상품 등록");
-		
-		return itemResult;
-	}
-	
-	@Override
-	public List<ItemVO> getAllItem() {
-		log.info("getAllItem()");
-		List<ItemVO> list = itemMapper.selectAll();
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<ItemVO> getPagingAllItems(Pagination pagination) {
-		log.info("getPagingItems()");
-		List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
-	} 
-	
-	@Override
-	public List<ItemVO> getItemByStatus(int itemStatus) {
-		log.info("getItemByStatus()");
-		List<ItemVO> list = itemMapper.selectStatus(itemStatus);
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
-		log.info("getPagingStatusItems()");
-		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
-	} 
-	
-	@Override
-	public ItemVO getItemById(int itemId) {
-		log.info("getItemById()");
-		log.info("itemId : " + itemId);
-		ItemVO itemVO = itemMapper.selectOne(itemId);
-		return itemVO;
-	}
+   
+   @Autowired
+   ItemMapper itemMapper;
+   
+   
+   @Override
+   public int createItem(ItemVO itemVO) {
+      log.info("createItem()");
+      log.info("ItemVO : " + itemVO);
+      int itemResult = itemMapper.insert(itemVO);
+      log.info(itemResult + "행 상품 등록");
+      
+      return itemResult;
+   }
+   
+   @Override
+   public List<ItemVO> getAllItem() {
+      log.info("getAllItem()");
+      List<ItemVO> list = itemMapper.selectAll();
+      log.info(list);
+      return list.stream().collect(Collectors.toList());
+   }
+   
+   @Override
+   public List<ItemVO> getPagingAllItems(Pagination pagination) {
+      log.info("getPagingItems()");
+      List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
+      log.info(list);
+      return list.stream().collect(Collectors.toList());
+   } 
+   
+   @Override
+   public List<ItemVO> getItemByStatus(int itemStatus) {
+      log.info("getItemByStatus()");
+      List<ItemVO> list = itemMapper.selectStatus(itemStatus);
+      log.info(list);
+      return list.stream().collect(Collectors.toList());
+   }
+   
+   @Override
+   public List<ItemVO> getPagingStatusItems(Pagination pagination) {
+      log.info("getPagingStatusItems()");
+      List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
+      log.info(pagination);
+      log.info(list);
+      return list.stream().collect(Collectors.toList());
+   } 
+   
+   @Override
+   public ItemVO getItemById(int itemId) {
+      log.info("getItemById()");
+      log.info("itemId : " + itemId);
+      ItemVO itemVO = itemMapper.selectOne(itemId);
+      return itemVO;
+   }
 
-	@Override
-	public int updateItem(ItemVO itemVO) {
-		log.info("updateItem()");
-		return itemMapper.update(itemVO);
-	}
+   @Override
+   public int updateItem(ItemVO itemVO) {
+      log.info("updateItem()");
+      return itemMapper.update(itemVO);
+   }
 
 	@Override
 	public int deleteItem(int itemId) {
@@ -87,16 +88,26 @@ public class ItemServiceImple implements ItemService {
 		return itemMapper.delete(itemId);
 	}
 	
-	@Override
-	public int getTotalCountByStatus(Pagination pagination) {
-		return itemMapper.selectTotalCountByStatus(pagination);
-	}
+   @Override
+   public int getTotalCount(Pagination pagination) {
+      return itemMapper.selectTotalCount(pagination);
+   }
 
-	@Override
-	public int getTotalCount(Pagination pagination) {
-		return itemMapper.selectTotalCount(pagination);
-	}
+@Override
+public int getStatusTotalCount(Pagination pagination) {
+	return itemMapper.selectStatusTotalCount(pagination);
+}
 
-
+@Override
+public int updateStatus(int itemId, int itemStatus) {
+	log.info("updateStatus()");
+	ItemVO itemVO = new ItemVO();
+	itemVO.setItemId(itemId);
+	itemVO.setItemStatus(itemStatus);
 	
+	return itemMapper.updateStatus(itemVO);
+}
+
+
+   
 } // end ItemServiceImple

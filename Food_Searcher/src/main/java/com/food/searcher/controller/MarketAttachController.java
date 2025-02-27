@@ -30,7 +30,7 @@ import com.food.searcher.util.FileUploadUtil;
 import lombok.extern.log4j.Log4j;
 
 @RestController
-@RequestMapping(value = "/images")
+@RequestMapping(value = "/imaged")
 @Log4j
 
 public class MarketAttachController {

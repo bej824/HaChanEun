@@ -171,4 +171,19 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		return result;
 	}
 
+	@Override
+	public int getTotalCount(Pagination pagination) {
+		return directOrderMapper.selectTotalCount(pagination);
+	}
+
+	@Override
+	public List<DirectOrderVO> getPagingmemberList(String memberId, Pagination pagination) {
+		return directOrderMapper.memberList(memberId, pagination);
+	}
+
+	@Override
+	public int getMemberTotalCount(String memberId) {
+		return directOrderMapper.selectMemberTotalCount(memberId);
+	}
+
 }

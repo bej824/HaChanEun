@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.ItemAttachMapper">
+
+	<resultMap type="com.food.searcher.domain.ItemAttachVO"
+		id="attachResultMap">
+		
+		<id property="attachId" column="ATTACH_ID" /> 
+		<result property="itemId" column="ITEM_ID" />
+		<result property="attachPath" column="ATTACH_PATH" />
+		<result property="attachRealName" column="ATTACH_REAL_NAME" />
+		<result property="attachChgName" column="ATTACH_CHG_NAME" />
+		<result property="attachExtension" column="ATTACH_EXTENSION"/>
+		<result property="attachDateCreated" column="ATTACH_DATE_CREATED"/>
+	</resultMap>
+
+	<insert id="insert">
+		INSERT INTO Item_ATTACH 
+		(ATTACH_ID, ITEM_ID, ATTACH_PATH, ATTACH_REAL_NAME, 
+		ATTACH_CHG_NAME, ATTACH_EXTENSION)
+		VALUES (ITEM_ATTACH_SEQ.NEXTVAL, #{itemId}, #{attachPath}, #{attachRealName}, 
+		#{attachChgName}, #{attachExtension})
+	</insert>
+
+	<select id="selectAll" resultMap="attachResultMap">
+		SELECT * FROM Item_ATTACH
+	</select>
+	
+	<select id="selectByItemId" resultMap="attachResultMap">
+		SELECT * FROM Item_ATTACH 
+		WHERE ITEM_ID = #{itemId}
+	</select>
+	
+	<select id="selectByAttachId" resultMap="attachResultMap"> 
+		SELECT * FROM Item_ATTACH 
+		WHERE ATTACH_ID = #{attachId} 
+	</select>
+
+	<select id="selectIdList" resultType="Integer">
+		SELECT ATTACH_ID FROM Item_ATTACH
+	</select>
+
+	<update id="update">
+		UPDATE Item_ATTACH
+		SET ATTACH_PATH = #{attachPath},
+    	ATTACH_REAL_NAME = #{attachRealName},
+    	ATTACH_CHG_NAME = #{attachChgName},
+    	ATTACH_EXTENSION = #{attachExtension}
+		WHERE ATTACH_ID = #{attachId}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM Item_ATTACH
+		WHERE ITEM_ID = #{itemId}
+	</delete>
+
+</mapper>
