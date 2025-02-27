@@ -47,6 +47,17 @@ public class ItemServiceImple implements ItemService {
 		log.info(insertAttachResult + "행 파일 정보 등록");
 		return itemResult;
 	}
+	
+	@Override
+	public int deleteItem(int itemId) {
+		log.info("deleteItem()");
+		return itemMapper.delete(itemId);
+	}
+	
+   @Override
+   public int getTotalCount(Pagination pagination) {
+      return itemMapper.selectTotalCount(pagination);
+   }
 
 	@Override
 	public List<ItemVO> getAllItem() {
@@ -111,19 +122,19 @@ public class ItemServiceImple implements ItemService {
 	}
 
 	@Override
-	public int deleteItem(int itemId) {
-		log.info("deleteItem()");
-		return itemMapper.delete(itemId);
-	}
-
-	@Override
-	public int getTotalCount(Pagination pagination) {
-		return itemMapper.selectTotalCount(pagination);
-	}
-
-	@Override
 	public int getStatusTotalCount(Pagination pagination) {
 		return itemMapper.selectStatusTotalCount(pagination);
 	}
+	
+	@Override
+	public int updateStatus(int itemId, int itemStatus) {
+		log.info("updateStatus()");
+		ItemVO itemVO = new ItemVO();
+		itemVO.setItemId(itemId);
+		itemVO.setItemStatus(itemStatus);
+		
+		return itemMapper.updateStatus(itemVO);
+	}
+
 
 } // end ItemServiceImple

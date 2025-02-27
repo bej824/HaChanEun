@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
+import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.DirectOrderMapper;
+import com.food.searcher.service.AdminService;
 import com.food.searcher.service.SellerService;
 import com.food.searcher.util.Pagination;
 
@@ -26,11 +28,23 @@ public class SellerController {
 	
 	@Autowired
 	SellerService sellerService;
-	
+		
 	@GetMapping("authenticate")
 	public void authenticateGET() {
 		log.info("authenticateGET()");
 		
+	}
+	
+	@GetMapping("/status")
+	public void statusGET() {
+		log.info("statusGET()");
+	}
+	
+	@GetMapping("/itemList")
+	public List<ItemVO> itemListGET() {
+		log.info("itemListGET()");
+		
+		return null;
 	}
 	
 	@GetMapping("management")

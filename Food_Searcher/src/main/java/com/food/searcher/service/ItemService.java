@@ -20,5 +20,6 @@ public interface ItemService {
    int deleteItem(int itemId);
    int getTotalCount(Pagination pagination);
    int getStatusTotalCount(Pagination pagination);
+   int updateStatus(int itemId, int itemStatus);
    
 }

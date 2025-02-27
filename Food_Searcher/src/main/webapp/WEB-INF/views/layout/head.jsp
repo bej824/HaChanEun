@@ -15,7 +15,7 @@
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <meta name="authenticatedUser" content="${authentication.name}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
+
 <style>
 /* 테이블 컨테이너 */
 .table-container {

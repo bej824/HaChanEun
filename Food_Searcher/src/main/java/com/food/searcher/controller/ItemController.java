@@ -63,8 +63,7 @@ public class ItemController {
 			log.info("검색 결과 없음");
 			return "returnPage";
 		}
-
-
+		
 		log.info(itemList.size());
 		
 		List<ItemAttachVO> attachVO = attachService.getSelectAll();

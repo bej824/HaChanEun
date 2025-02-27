@@ -136,4 +136,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ITEM_ID = #{itemId}
 	</update>
 	
+	<update id="updateStatus">
+		UPDATE ITEM
+		SET ITEM_STATUS = #{itemStatus}
+		WHERE ITEM_ID = #{itemId}
+	</update>
+	
 </mapper>
