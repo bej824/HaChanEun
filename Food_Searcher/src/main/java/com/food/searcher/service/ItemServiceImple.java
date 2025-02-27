@@ -86,7 +86,11 @@ public class ItemServiceImple implements ItemService {
 		log.info("deleteItem()");
 		return itemMapper.delete(itemId);
 	}
-
+	
+	@Override
+	public int getTotalCountByStatus(Pagination pagination) {
+		return itemMapper.selectTotalCountByStatus(pagination);
+	}
 
 	@Override
 	public int getTotalCount(Pagination pagination) {

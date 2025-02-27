@@ -18,6 +18,8 @@ public interface ItemService {
 	
 	int updateItem(ItemVO itemVO);
 	int deleteItem(int itemId);
+	
+	int getTotalCountByStatus(Pagination pagination);
 	int getTotalCount(Pagination pagination);
 	
 }

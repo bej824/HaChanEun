@@ -57,7 +57,7 @@ public class ItemController {
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
+		pageMaker.setTotalCount(itemService.getTotalCountByStatus(pagination));
 		
 		log.info(pageMaker);
 	    model.addAttribute("pageMaker", pageMaker);
