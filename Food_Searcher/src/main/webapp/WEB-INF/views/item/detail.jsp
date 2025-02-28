@@ -46,9 +46,6 @@ pageEncoding="UTF-8"%>
 	<div id="area">
 	<div>
 		<h2>${itemVO.itemName }</h2>
-		<div class="image-upload">
-		<div class="image-view">
-			<div class="image-list">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${attachVO}">
 				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
@@ -57,14 +54,11 @@ pageEncoding="UTF-8"%>
 				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
 				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
-					        <img width="100px" height="100px" 
+					        <img width="150px" height="150px" 
 					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
 				        </div>
 				    </c:if>
 				</c:forEach>
-			</div>
-		</div>
-	</div>
 		<div>
 		<textarea id="itemContent" class="content" readonly>${itemVO.itemContent }</textarea>
 		</div>
@@ -76,7 +70,7 @@ pageEncoding="UTF-8"%>
 	
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-	<button onclick="location.href='list'" class="button" id="listBoard">글 목록</button>
+	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button" id="listBoard">글 목록</button>
 	<br>
 	
 	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">

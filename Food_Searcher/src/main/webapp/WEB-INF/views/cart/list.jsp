@@ -49,7 +49,15 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                 <td id="btnCheck">
                 <input type="checkbox" class="checkBox" onchange="isChecked(this);">
                 </td> <!-- 선택 버튼 -->
-                <td>(썸네일)${CartVO.cartChecked }</td>	
+                <td>
+                <c:forEach var="attachVO" items="${attachVO}">
+                	<c:if test="${CartVO.itemId eq attachVO.itemId }">
+                		<a href="../../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
+					        <img width="150px" height="150px" 
+					        src="../../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+                	</c:if>
+                </c:forEach>
+                </td>	
                 <td>${CartVO.itemName } </td>
                 <td>
                     <button class="minusBtn">-</button>

@@ -6,7 +6,12 @@
 <html>
 <head>
 <style>
-
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 20px;        /* 아이템 간의 간격 */
+        
+    }
 
 .item {
 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
@@ -14,8 +19,9 @@
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-    height: 200px; /* 첨부 목록의 고정 높이 설정 */
-    width: 500px; /* 첨부 목록의 고정 너비 설정 */
+    height: 300px; /* 첨부 목록의 고정 높이 설정 */
+    width: 250px;     /* 각 아이템의 너비 */
+    box-sizing: border-box;
 }
 
 li {
@@ -51,6 +57,7 @@ li {
 <br><br>
 
 <hr>
+	<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
@@ -63,6 +70,7 @@ li {
 					
 			</div>
 			</c:forEach>
+	</div>
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
 	
@@ -82,7 +90,8 @@ li {
 		<c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }"
 			var="num">
 			<li class="pagination_button ${param.pageNum == num ? 'selected' : ''}"
-               onclick="changeColor(this, ${num}); return isNumber(${num})"><a href="${num }" class="button">${num }</a></li>
+               onclick="changeColor(this, ${num}); return isNumber(${num})"></li>
+               <a href="list-admin?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->

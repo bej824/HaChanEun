@@ -1,5 +1,6 @@
 package com.food.searcher.service;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.LocalSpecialityVO;
+import com.food.searcher.domain.MemberVO;
+import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RecipeViewListVO;
@@ -41,6 +44,12 @@ public class RecipeServiceImple implements RecipeService {
 
 	@Autowired
 	private RecipeViewMapper recipeViewMapper;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private RecipeLikesService likesService;
 
 	@Transactional(value = "transactionManager")
 	@Override
@@ -74,14 +83,10 @@ public class RecipeServiceImple implements RecipeService {
 		log.info("getBoardById()");
 		log.info("recipeId : " + recipeId);
 		RecipeVO recipeVO = recipeMapper.selectOne(recipeId);
-		log.info("recipeVO : " + recipeVO);
 		List<AttachVO> list = attachMapper.selectByBoardId(recipeId);
-		log.info("list" + list);
 
 		List<AttachVO> attachList = list.stream().collect(Collectors.toList());
-		log.info("attachList : " + attachList);
 		recipeVO.setAttachList(attachList);
-		log.info("attachList 추가 recipeVO : " + recipeVO);
 
 		// memberId가 있을 경우, 조회 기록 삽입
 		if (memberId != null && memberId != "nouser") {
@@ -182,9 +187,29 @@ public class RecipeServiceImple implements RecipeService {
 	}
 
 	@Override
-	public List<LocalSpecialityVO> getAllMap() {
-		log.info("getAllMap()");
-		return localMapper.selectAll().stream().collect(Collectors.toList());
+	public String localWord() {
+		List<LocalSpecialityVO> localList = localMapper.selectAll().stream().collect(Collectors.toList());
+		String str = "";
+		for (LocalSpecialityVO vo : localList) {
+			str += vo.getLocalTitle() + " ";
+		}
+		return str;
+	}
+
+	@Override
+	public MemberVO memberInfo(Principal principal) {
+		if (principal != null) {
+			return memberService.getMemberById(principal.getName());
+		}
+		return null;
+	}
+
+	@Override
+	public RecipeLikesVO memberLike(int recipeId, Principal principal) {
+		if (principal != null) {
+			return likesService.getMemberLikes(recipeId, principal.getName());
+		}
+		return null;
 	}
 
 }

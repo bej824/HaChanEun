@@ -64,7 +64,7 @@ li {
 <a id="testLink" href="http://localhost:8080/searcher/cart/list/test1">테스트용 장바구니 이동</a>
 
 <br>
-<sec:authorize access="hasRole('ROLE_SELLER')">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 <a href="/searcher/item/list-admin" class="button">관리자 페이지로 이동</a>
 </sec:authorize>
 </div>
@@ -82,7 +82,7 @@ li {
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
-			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}'">
+			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">

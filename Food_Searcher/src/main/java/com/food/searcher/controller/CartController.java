@@ -1,5 +1,6 @@
 package com.food.searcher.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.CartVO;
 import com.food.searcher.domain.DirectOrderVO;
-import com.food.searcher.domain.ItemVO;
+import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.service.CartService;
 import com.food.searcher.service.DirectOrderService;
-import com.food.searcher.service.ItemService;
+import com.food.searcher.service.ItemAttachService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -36,6 +37,9 @@ public class CartController {
 	@Autowired
 	private DirectOrderService directOrderService;
 	
+	@Autowired
+	private ItemAttachService attachService;
+	
 	@GetMapping("/list/{memberId}")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
 		log.info("cartList()");
@@ -43,6 +47,13 @@ public class CartController {
 		log.info(cartVO);
 		model.addAttribute("cartVO", cartVO);
 		
+		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
+		for(CartVO vo : cartVO) {
+			List<ItemAttachVO> attachVO = attachService.getItemById(vo.getItemId());
+			log.info(attachVO);
+			list.addAll(attachVO);
+		}
+		model.addAttribute("attachVO", list);
 		return "cart/list";
 	}
 	

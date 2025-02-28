@@ -26,7 +26,19 @@
 		</thead>
 		<tbody>
             <tr>
-                <td>(썸네일)</td>	
+                <td>
+                <c:forEach var="attachVO" items="${attachVO}">
+				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    			  attachVO.attachExtension eq 'jpeg' or 
+				    			  attachVO.attachExtension eq 'png' or 
+				    			  attachVO.attachExtension eq 'gif'}">
+				        <div class="image_item">
+				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
+					        <img width="150px" height="150px" 
+					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+				        </div>
+				    </c:if>
+				</c:forEach></td>	
                 <td>${itemVO.itemName } </td>
                 <td>
                     <button class="minusBtn">-</button>

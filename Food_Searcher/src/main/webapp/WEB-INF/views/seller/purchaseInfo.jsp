@@ -4,14 +4,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${directOrderVO.memberId }회원 거래 내역</title>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-
-<div>
-		<p>구매 번호 : ${directOrderVO.orderId }</p> 
-	</div>
+	<h2>[${directOrderVO.memberId }]회원의 ${itemVO.itemName }구매 내역</h2>
+	<div><p></p></div>
+	<c:forEach var="attachVO" items="${attachVO}">
+		<c:if test="${attachVO.attachExtension eq 'jpg' or 
+				    attachVO.attachExtension eq 'jpeg' or 
+				    attachVO.attachExtension eq 'png' or 
+				    attachVO.attachExtension eq 'gif'}">
+			<div class="image_item">
+				<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
+				<img width="150px" height="150px" 
+					 src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+			</div>
+		</c:if>
+	</c:forEach>
 	<div>
 		<p>구매한 회원 : ${directOrderVO.memberId }</p> 
 	</div>

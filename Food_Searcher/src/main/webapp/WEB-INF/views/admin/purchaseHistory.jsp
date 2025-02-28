@@ -21,7 +21,7 @@
 		</thead>
 		<tbody>
 		<c:forEach var="DirectOrderList" items="${allList }">
-			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderList.orderId}'">
+			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderList.orderId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 				<td>${DirectOrderList.memberId }</td>
 				<td style="text-align: right;">${DirectOrderList.totalCount }</td>
 				<td><fmt:formatNumber value="${DirectOrderList.totalPrice}" pattern="###,###,###"/>원</td>
