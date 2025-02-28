@@ -31,4 +31,6 @@ public interface ItemMapper {
 	int selectStatusTotalCount(Pagination pagination);
 	int itemAmount(@Param("itemAmount") int itemAmount, @Param("itemId") int itemId);
 	int updateStatus(ItemVO itemVO);
+	
+	List<ItemVO> selectSellerItem(String memberId);
 }
