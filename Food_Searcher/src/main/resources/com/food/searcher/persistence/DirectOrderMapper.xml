@@ -30,25 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        TOTAL_PRICE,
 	        DELIVERY_ADDRESS
 	    ) VALUES (
-	        #{orderId}, 
-	        #{memberId}, 
-	        #{itemId},
-	        #{totalCount},
-	        #{totalPrice}, 
-	        #{deliveryAddress}
-	    )
-	</insert>
-	
-	<insert id="cartInsert">
-	    INSERT INTO DIRECT_ORDER(
-	        ORDER_ID,
-	        MEMBER_ID,
-	        ITEM_ID,
-	        TOTAL_COUNT,
-	        TOTAL_PRICE,
-	        DELIVERY_ADDRESS
-	    ) VALUES (
-	        #{orderId}, 
+	        #{orderId} || LPAD(TO_CHAR(order_seq.NEXTVAL), 4, '0'), 
 	        #{memberId}, 
 	        #{itemId},
 	        #{totalCount},
@@ -201,7 +183,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="sellerList" resultMap="orderResultMap">
-		SELECT * FROM DIRECT_ORDER d
+		SELECT 
+		    d.*, 
+		    i.*, 
+		    ROW_NUMBER() OVER (ORDER BY d.ORDER_ID DESC) AS order_rank
+		FROM DIRECT_ORDER d
 		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 		WHERE i.member_id = #{memberId}
 	</select>

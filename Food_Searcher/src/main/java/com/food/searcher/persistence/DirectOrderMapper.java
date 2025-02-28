@@ -19,7 +19,6 @@ public interface DirectOrderMapper {
 	int selectTotalCount(Pagination pagination);
 	int selectMemberTotalCount(String memberId);
 	int insert(DirectOrderVO directOrderVO);
-	int cartInsert(DirectOrderVO directOrderVO);
 	int cancel(@Param("orderId") String orderId);
 	int refundReady(@Param("orderId") String orderId);
 	int refund(@Param("refundReason") String refundReason, @Param("refundContent") String refundContent, @Param("orderId") String orderId);

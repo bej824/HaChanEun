@@ -60,7 +60,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public int orderPurchase(DirectOrderVO directOrderVO) {
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		directOrderVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId());
+		directOrderVO.setOrderId(now.format(formatter));
 		
 		if(directOrderVO.getCouponActiveId() != 0) {
 			CouponActiveVO couponActiveVO = new CouponActiveVO();
@@ -80,6 +80,24 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		int itemAmount = itemVO.getItemAmount() - directOrderVO.getTotalCount();
 		int item = itemMapper.itemAmount(itemAmount, directOrderVO.getItemId());
 		log.info(item + "행 업데이트 완료");
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public int cartPurchase(DirectOrderVO directOrderVO) {
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		directOrderVO.setOrderId(now.format(formatter));
+		
+		log.info("cartInsert()");
+		log.info(directOrderVO);
+		int result = orderPurchase(directOrderVO);
+		
+		List<CartVO> cartVO = cartMapper.cartOrder(directOrderVO.getMemberId());
+		for(CartVO vo : cartVO) {
+			cartMapper.cartDelete(vo.getCartId());
+		}
 		return result;
 	}
 	
@@ -104,7 +122,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info(item + "행 업데이트 완료");
 		return result;
 	}
-	
+
 	@Override
 	public int refundReady(String orderId) {
 		log.info("환불 하기");
@@ -153,28 +171,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public List<DirectOrderVO> getPagingBoards(Pagination pagination) {
 		return directOrderMapper.selectListByPagination(pagination);
 	}
-
-	@Override
-	public int cartPurchase(DirectOrderVO directOrderVO) {
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		directOrderVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId() + directOrderVO.getOrderCount());
-		
-		log.info("cartInsert()");
-		log.info(directOrderVO);
-		int result = directOrderMapper.cartInsert(directOrderVO);
-		log.info(result + "행 추가 완료");
-		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
-		int itemAmount = itemVO.getItemAmount() - directOrderVO.getTotalCount();
-		int item = itemMapper.itemAmount(itemAmount, directOrderVO.getItemId());
-		log.info(item + "행 업데이트 완료");
-		
-		List<CartVO> cartVO = cartMapper.cartOrder(directOrderVO.getMemberId());
-		for(CartVO vo : cartVO) {
-			cartMapper.cartDelete(vo.getCartId());
-		}
-		return result;
-	}
+	
 
 	@Override
 	public int getTotalCount(Pagination pagination) {
@@ -196,7 +193,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	      int totalCost = 0;
 	      
 	      for(int i = 0; i < list.size(); i++) {
-	         //totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
+	         totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
 	      }
 	      
 	      acount.put(memberId, totalCost - activeVO.getCouponPrice());

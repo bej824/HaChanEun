@@ -167,6 +167,10 @@ public class ItemController {
 		log.info("orderGET()");
 		ItemVO itemVO = itemService.getItemById(itemId);
 		model.addAttribute("itemVO", itemVO);
+		if(itemId.equals(itemVO.getItemId())) {
+			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			model.addAttribute("attachVO", attachVO);
+		}
 	}
 	
 	@PostMapping("/order")
@@ -198,6 +202,8 @@ public class ItemController {
 		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		model.addAttribute("itemVO", itemVO);
+		List<ItemAttachVO> attachVO = attachService.getItemById(itemVO.getItemId());
+		model.addAttribute("attachVO", attachVO);
 		model.addAttribute("directOrderVO", directOrderVO);
 	}
 	

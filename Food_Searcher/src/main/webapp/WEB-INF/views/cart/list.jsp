@@ -49,7 +49,15 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                 <td id="btnCheck">
                 <input type="checkbox" class="checkBox" onchange="isChecked(this);">
                 </td> <!-- 선택 버튼 -->
-                <td>(썸네일)${CartVO.cartChecked }</td>	
+                <td>
+                <c:forEach var="attachVO" items="${attachVO}">
+                	<c:if test="${CartVO.itemId eq attachVO.itemId }">
+                		<a href="../../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
+					        <img width="150px" height="150px" 
+					        src="../../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+                	</c:if>
+                </c:forEach>
+                </td>	
                 <td>${CartVO.itemName } </td>
                 <td>
                     <button class="minusBtn">-</button>
@@ -119,26 +127,38 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 		
 		$("#postcode, #address, #detailaddress").on("input", updateOutput);
 		
-		$(".plusBtn, .minusBtn").on("click", function () {
+		$(".plusBtn").on("click", function () {
 		    let row = $(this).closest("tr"); // 현재 버튼이 속한 tr
 		    let quantity = parseInt(row.find(".itemAmount").val()); // 현재 수량
 		    let cartId = row.find(".cartId").val();
 		    let itemPrice = parseInt(row.find(".itemPrice").val());
 	
-		    // 증가 또는 감소 로직 결정
-		    let isIncrease = $(this).hasClass("plusBtn"); // 버튼이 plusBtn인지 확인
-		    if (isIncrease) {
-		        quantity += 1;
-		    } else {
-		        if (quantity > 1) {
-		            quantity -= 1;
-		        } else {
-		            alert("최소 수량입니다.");
-		            return;
-		        }
-		    }
+		    quantity += 1;
+		    cartinfo(row, quantity, cartId, itemPrice);
+		});
+		
+		$(".minusBtn").on("click", function () {
+		    let row = $(this).closest("tr"); // 현재 버튼이 속한 tr
+		    let quantity = parseInt(row.find(".itemAmount").val()); // 현재 수량
+		    let cartId = row.find(".cartId").val();
+		    let itemPrice = parseInt(row.find(".itemPrice").val());
 	
-		    row.find(".itemAmount").val(quantity); // 변경된 수량 업데이트
+		    quantity -= 1;
+		    cartinfo(row, quantity, cartId, itemPrice);
+		});
+		
+		$(".itemAmount").on("click", function(){
+			let row = $(this).closest("tr");
+			let quantity = parseInt(row.find(".itemAmount").val());
+			let cartId = row.find(".cartId").val();
+		    let itemPrice = parseInt(row.find(".itemPrice").val()); 
+		    
+		    cartinfo(row, quantity, cartId, itemPrice);
+		})
+
+		function cartinfo(row, quantity, cartId, itemPrice){
+
+			row.find(".itemAmount").val(quantity); // 변경된 수량 업데이트
 	
 		    let itemTotalPrice = itemPrice * quantity;
 		    let cartAmount = quantity.toString();
@@ -156,13 +176,12 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 		                let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
 		                row.find(".itemTotalPrice").text(textContent);
 		                row.find(".itemTotalPrice").val(itemTotalPrice);
-		                alert(isIncrease ? "수량 증가됨" : "수량 감소됨");
 		            } else {
 		                alert("변경 실패");
 		            }
 		        },
 		    }); // end ajax
-		});
+		}
 
 	    $('.delBtn').on('click', function(){
 			 let cartId =  $(this).closest('tr').find('.cartId').val();

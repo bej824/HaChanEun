@@ -8,10 +8,6 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-
-<div>
-		<p>구매 번호 : ${directOrderVO.orderId }</p> 
-	</div>
 	<div>
 		<p>구매한 회원 : ${directOrderVO.memberId }</p> 
 	</div>
@@ -60,7 +56,7 @@
 		<button id="refundOK" class="button">환불 승인</button>
 	</c:if>
 	
-	<button onclick="window.location.href='purchaseHistory'" class="button">뒤로가기</button>
+	<button onclick="window.location.href='purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
 
 </body>
 </html>
