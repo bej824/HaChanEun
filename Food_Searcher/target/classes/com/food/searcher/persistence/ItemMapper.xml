@@ -142,4 +142,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ITEM_ID = #{itemId}
 	</update>
 	
+	<select id="selectSellerItem" resultMap="itemResultMap">
+		SELECT * FROM ITEM WHERE MEMBER_ID = #{memberId} ORDER BY ITEM_ID DESC
+	</select>
+	
 </mapper>

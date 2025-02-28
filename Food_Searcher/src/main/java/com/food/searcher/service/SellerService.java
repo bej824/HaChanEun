@@ -22,5 +22,6 @@ public interface SellerService {
 	DirectOrderVO purchaseInfo(String orderId);
 	
 	ItemVO purchaseItemInfo(String orderId);
-
+	
+	List<ItemVO> selectSellerItem(String memberId);
 }

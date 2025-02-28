@@ -70,13 +70,10 @@
 			                alert("변경 실패");
 			            }
 			        },
-			    }); // end ajax
+			    });
 			
 		})
 		
-		
-		
-	
 		function itemList(){
 		
 			$.ajax({
@@ -97,7 +94,7 @@
 		    	  			} else if(itemList.itemStatus == 1) {
 		    	  				itemStatus = "판매 중"
 		    	  			} else if(itemList.itemStatus == 2) {
-		    	  				itemStatus = "판매자 판매 중단"
+		    	  				itemStatus = "판매 중지"
 		    	  			}
 		    	  		}
 		    	  		

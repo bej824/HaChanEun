@@ -9,6 +9,7 @@
 <body>
 <%@ include file ="../header.jsp" %>
 <div id="area">
+<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 
 <h1>상품 관리</h1>
 
@@ -30,13 +31,69 @@
 	<script>
 	
 	$(document).ready(function(){
+		var itemStatus = null;
+		itemList();
+		
+		$('table tbody').on('click', '.permission', function(){
+			let permission = $(this).html();
+			let row = $(this).closest("tr");
+			let itemId = parseInt(row.find("td:first").text(), 10);
 			
-			itemList();
+			if(permission == "판매 중"){
+				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
+				console.log("1>2");
+				if(result) {
+					itemStatus = 2;
+					row.find(".permission").html("판매 중지");
+					alert("변경 완료 : 판매 중지");
+				}
+				
+			} else if(permission == "판매 허가 요청") {
+				let result = confirm("해당 물품의 판매를 중단하시겠습니까?");
+				console.log("0>2", result)
+				if(result) {
+					itemStatus = 2;
+					row.find(".permission").html("판매 중지");
+					alert("변경 완료 : 판매 중지");
+				}
+				
+			} else if(permission == "판매 중지") {
+				let result = confirm("해당 물품의 판매 중지를 취소하시겠습니까?");
+				console.log("2>0");
+				if(result) {
+					itemStatus = 0;
+					row.find(".permission").html("판매 허가 요청");
+					alert("변경 완료 : 판매 허가 요청");
+				} 
+			} else {
+				console.log("취소");
+			}
+			
+				$.ajax({
+			        type: "PUT",
+			        url: "../seller/status/" + itemId,
+			        headers: {
+			            "Content-Type": "application/json",
+			        },
+			        data: JSON.stringify(itemStatus),
+			        success: function (result) {
+			            console.log(result);
+			            if (result == 1) {
+			            } else {
+			                alert("변경 실패");
+			            }
+			        },
+			    });
+			})
+		
 		function itemList(){
+			let memberId = $("#memberId").val();
+			console.log(memberId);
 			
 			$.ajax({
-		    	type: 'GET',
-		    	url: 'itemList',
+		    	type: "GET",
+		    	url: "../seller/status/" + memberId,
+		    	
 		    	data: {},
 		    	success: function(result) {
 		    	  	let tbody = $('table tbody');
@@ -52,11 +109,10 @@
 		    	  			} else if(itemList.itemStatus == 1) {
 		    	  				itemStatus = "판매 중"
 		    	  			} else if(itemList.itemStatus == 2) {
-		    	  				itemStatus = "판매자 판매 중단"
+		    	  				itemStatus = "판매 중지"
 		    	  			}
 		    	  		}
 		    	  		
-		            	
 		                let row = 
 		                	'<tr>'
 		                    + '<td>' + itemList.itemId + '</td>'

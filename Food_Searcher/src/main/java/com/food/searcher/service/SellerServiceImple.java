@@ -9,6 +9,7 @@ import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.DirectOrderMapper;
+import com.food.searcher.persistence.ItemMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -27,6 +28,9 @@ public class SellerServiceImple implements SellerService {
 	
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	ItemMapper itemMapper;
 	
 	@Override
 	public int SellerCreate(String memberId) {
@@ -58,6 +62,12 @@ public class SellerServiceImple implements SellerService {
 	public ItemVO purchaseItemInfo(String orderId) {
 		DirectOrderVO directOrderVO = purchaseInfo(orderId);
 		return itemService.getItemById(directOrderVO.getItemId());
+	}
+
+	@Override
+	public List<ItemVO> selectSellerItem(String memberId) {
+		log.info("selectSellerItem()");
+		return itemMapper.selectSellerItem(memberId);
 	}
 
 }
