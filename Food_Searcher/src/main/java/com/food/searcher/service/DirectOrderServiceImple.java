@@ -32,6 +32,9 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	private CouponActiveService couponActiveService;
 	
 	@Autowired
+	private UtilityService utilityService;
+	
+	@Autowired
 	private ItemMapper itemMapper;
 	
 	@Autowired

@@ -67,12 +67,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN DISCOUNT_COUPON
 		ON COUPON_ACTIVE.COUPON_ID = DISCOUNT_COUPON.COUPON_ID
 		WHERE 1=1
-		<if test="memberId != null and memberId != ''">
+		<if test="memberId != '' and memberId != null">
 			AND COUPON_ACTIVE.MEMBER_ID = #{memberId}
 		</if>
-		<if test="itemId != 0 and itemId != ''">
+		<if test="itemId != 0 and itemId != null">
 			AND (COUPON_ACTIVE.ITEM_ID = #{itemId} OR COUPON_ACTIVE.ITEM_ID = 0)
 		</if>
+	</select>
+	
+	<select id="selectCouponPriceByCouponActiveId" resultType="Integer">
+		SELECT DISCOUNT_COUPON.COUPON_PRICE
+		FROM DISCOUNT_COUPON
+		LEFT JOIN COUPON_ACTIVE
+		ON COUPON_ACTIVE.COUPON_ID = DISCOUNT_COUPON.COUPON_ID
+		WHERE COUPON_ACTIVE.COUPON_ACTIVE_ID = #{couponActiveId}
+		AND COUPON_ACTIVE.MEMBER_ID = #{memberId}
+		AND COUPON_ACTIVE.COUPON_USE_DATE IS NULL
+		AND COUPON_ACTIVE.COUPON_EXPIRE_DATE &gt;= SYSDATE
 	</select>
 	
 	<update id="updateCouponActiveByCouponActiveId">

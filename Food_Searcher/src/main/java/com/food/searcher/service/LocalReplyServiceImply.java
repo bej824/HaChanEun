@@ -30,21 +30,15 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	@Override
 	public int createReply(int localId, String memberId, String replyContent) {
 		int result = 0;
-		log.info("createReply()");
-		log.info("localId : " +  localId);
-		log.info("memberId : " + memberId);
-		log.info("replyContent : " + replyContent);
 		
 		result = localReplyMapper.insertLocalReply(localId, memberId, replyContent);
 		localMapper.localReplyCountUp(localId);
-		log.info(result);
 		return result;
 	}
 	
 	@Transactional
 	@Override
 	public List<LocalReplyVO> getAllReply(int localId) {
-		log.info("getAllReply()");
 		List<LocalReplyVO> list = localReplyMapper.selectListByLocalId(localId);
 		for(int i = 0; i < list.size(); i++) {
 			int replyId = list.get(i).getReplyId();
@@ -58,14 +52,12 @@ public class LocalReplyServiceImply implements LocalReplyService {
 	@Transactional
 	@Override
 	public int updateReply(int replyId, String replyContent) {
-		log.info("updateReply()");
 		return localReplyMapper.update(replyId, replyContent);
 	}
 	
 	@Transactional
 	@Override
 	public int deleteReply(int localId, int replyId) {
-		log.info("deleteReply()");
 		int result = 0;
 		int commentId = 0;
 		
