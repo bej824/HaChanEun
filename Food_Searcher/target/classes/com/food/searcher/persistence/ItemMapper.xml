@@ -9,141 +9,139 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="com.food.searcher.domain.ItemVO"
 		id="itemResultMap">
-		
+
 		<id property="itemId" column="ITEM_ID" />
 		<result property="storeId" column="STORE_ID" />
 		<result property="itemPrice" column="ITEM_PRICE" />
 		<result property="itemContent" column="ITEM_CONTENT" />
-		<result property="itemTag" column="ITEM_TAG" />
 		<result property="itemAmount" column="ITEM_AMOUNT" />
 		<result property="itemDate" column="ITEM_DATE" jdbcType="DATE" />
-		<result property="itemLike" column="ITEM_LIKE" />
-		<result property="itemName" column="ITEM_NAME" jdbcType="VARCHAR" />
 		<result property="memberId" column="MEMBER_ID" />
+
+		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="subCtg" column="SUB_CTG" />
+		<result property="origin" column="ORIGIN" />
+		<result property="itemName" column="ITEM_NAME"
+			jdbcType="VARCHAR" />
 		<result property="itemStatus" column="ITEM_STATUS" />
+		<result property="itemLikes" column="ITME_LIKES" />
 	</resultMap>
-	
-	<insert id="insert">
-		INSERT INTO ITEM (
-		ITEM_ID,
-		ITEM_NAME, 
-		ITEM_PRICE,
-		ITEM_CONTENT, 
-		ITEM_TAG, 
-		ITEM_AMOUNT, 
-		MEMBER_ID)
-		VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice}, #{itemContent}, #{itemTag}, #{itemAmount}, #{memberId})		
+
+	<insert id="itemInsert">
+		INSERT INTO ITEM
+		(ITEM_ID
+		,ITEM_NAME
+		,ITEM_PRICE
+		,ITEM_CONTENT
+		,ITEM_AMOUNT
+		,MEMBER_ID
+		)VALUES
+		(ITEM_SEQ.NEXTVAL
+		,#{itemName}
+		,#{itemPrice}
+		,#{itemContent}
+		,#{itemAmount}
+		,#{memberId}
+		)
 	</insert>
-	
-	<select id="selectAll" resultMap="itemResultMap">
-		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
-	</select>
-	
-	<select id="selectStatus" resultMap="itemResultMap">
-		SELECT * FROM ITEM WHERE ITEM_STATUS = #{itemStatus} ORDER BY ITEM_ID DESC
-	</select>
-	
-	<select id="selectListAll" resultMap="itemResultMap">
-		SELECT * FROM ITEM ORDER BY ITEM_ID DESC	
-	</select>
-	
-	<select id="selectOne" resultMap="itemResultMap">
-		SELECT * FROM ITEM WHERE ITEM_ID = #{itemId}
-	</select>
-	
-	<select id="selectListByMemberId" resultMap="itemResultMap">
-		SELECT ITEM.*, 
-		FIRST_REPEAT_COUPON.*
-		FROM ITEM
-		LEFT JOIN FIRST_REPEAT_COUPON
-		ON ITEM.MEMBER_ID = FIRST_REPEAT_COUPON.SELLER_ID
-		WHERE MEMBER_ID = #{memberId}
-	</select>
-	
-	<update id="itemAmount">
-		UPDATE ITEM SET ITEM_AMOUNT = #{itemAmount}
-		WHERE ITEM_ID = #{itemId}
-	</update>
-	
-	<delete id="delete">
-		DELETE FROM ITEM WHERE ITEM_ID = #{itemId}
-	</delete>
-	
+
+	<insert id="itemCtgInsert">
+		INSERT INTO ITEM_CTG
+		(ITEM_ID
+		,MAIN_CTG
+		,SUB_CTG
+		,ORIGIN
+		,ITEM_NAME
+		,ITEM_PRICE
+		,ITEM_STATUS
+		,ITME_LIKES
+		)VALUES
+		(ITEM_SEQ.CURRVAL
+		,#{mainCtg}
+		,#{subCtg}
+		,#{origin}
+		,#{itemName}
+		,#{itemPrice}
+		,0
+		,#{itemLikes}
+		)
+	</insert>
+
 	<select id="selectAllByPagination" resultMap="itemResultMap">
-	<!-- 페이지네이션 -->
-	SELECT * FROM
-	(
-		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
-		FROM ITEM
-		   
-			) 
-			WHERE RN BETWEEN #{start} AND #{end}
+		<!-- 페이지네이션 -->
+		SELECT * FROM
+		(
+		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
+		FROM
+		ITEM_CTG
+
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
-	
-	<select id="selectStatusByPagination" resultMap="itemResultMap" parameterType="map">
-	<!-- 페이지네이션 -->
-	SELECT * FROM
-	(
-		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM.*
-		FROM ITEM
-		WHERE ITEM_STATUS = 1
-		<choose>
-				<when test="type == 'ITEM_NAME'.toString()">
-					AND ITEM_NAME LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'ITEM_CONTENT'.toString()">
-					AND ITEM_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'ITEM_TAG'.toString()">
-					AND ITEM_TAG LIKE '%'||#{keyword}||'%'
-				</when>
-		</choose>
-			) 
-			WHERE RN BETWEEN #{start} AND #{end}
+
+	<select id="selectStatusByPagination" resultMap="itemResultMap"
+		parameterType="map">
+		<!-- 페이지네이션 -->
+		SELECT * FROM
+		(
+		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
+		FROM
+		ITEM_CTG
+		WHERE 1=1
+		<if test="memberId != null and memberId != ''">
+			AND MEMBER_ID = #{memberId}
+		</if>
+		<if test="itemStatus != null and itemStatus != 0">
+			AND ITEM_STATUS = #{itemStatus}
+		</if>
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
-	
+
 	<select id="selectTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM ITEM
+		SELECT COUNT(*) TOTAL_COUNT
+		FROM ITEM_CTG
+		WHERE 1=1
+		<if test="itemStatus != null and itemStatus != 0">
+			AND ITEM_STATUS = #{itemStatus}
+		</if>
 	</select>
-	
-	<select id="selectStatusTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = 1
-		<choose>
-				<when test="type == 'ITEM_NAME'.toString()">
-					AND ITEM_NAME LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'ITEM_CONTENT'.toString()">
-					AND ITEM_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'ITEM_TAG'.toString()">
-					AND ITEM_TAG LIKE '%'||#{keyword}||'%'
-				</when>
-		</choose>
+
+	<select id="selectOne" resultMap="itemResultMap">
+		SELECT a.*, b.*
+		FROM ITEM a
+		LEFT
+		JOIN ITEM_CTG b
+		ON a.ITEM_ID = b.ITEM_ID
+		WHERE a.ITEM_ID = #{itemId}
 	</select>
-	
-	<select id="selectTotalCountByStatus" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM ITEM WHERE ITEM_STATUS = #{itemStatus}
-	</select>
-	
+
 	<update id="update">
-	UPDATE ITEM SET
+		UPDATE ITEM SET
 		ITEM_NAME = #{itemName},
-		ITEM_PRICE = #{itemPrice},
-		ITEM_CONTENT = #{itemContent}, 
-		ITEM_TAG = #{itemTag}, 
-		ITEM_AMOUNT = #{itemAmount}, 
-		ITEM_STATUS = #{itemStatus}
+		ITEM_PRICE =
+		#{itemPrice},
+		ITEM_CONTENT = #{itemContent},
+		ITEM_TAG = #{itemTag},
 		WHERE ITEM_ID = #{itemId}
 	</update>
-	
+
+	<update id="updateItemAmount">
+		UPDATE ITEM
+		SET ITEM_AMOUNT = #{itemAmount}
+		WHERE
+		ITEM_ID = #{itemId}
+	</update>
+
 	<update id="updateStatus">
 		UPDATE ITEM
 		SET ITEM_STATUS = #{itemStatus}
-		WHERE ITEM_ID = #{itemId}
+		WHERE
+		ITEM_ID = #{itemId}
 	</update>
-	
-	<select id="selectSellerItem" resultMap="itemResultMap">
-		SELECT * FROM ITEM WHERE MEMBER_ID = #{memberId} ORDER BY ITEM_ID DESC
-	</select>
-	
+
+	<delete id="delete">
+		DELETE FROM ITEM WHERE ITEM_ID = #{itemId}
+	</delete>
+
 </mapper>

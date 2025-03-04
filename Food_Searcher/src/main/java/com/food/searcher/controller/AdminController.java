@@ -45,21 +45,21 @@ public class AdminController {
 	
 	@GetMapping("/adminPage")
 	public void adminPageGET() {
-		log.info("adminPageGET()");
 
 	}
 	
 	@GetMapping("/itemManagement")
 	public void itemManagementGET() {
-		log.info("itemManagementGET()");
 	}
 	
 	@ResponseBody
 	@GetMapping("/itemList")
-	public List<ItemVO> itemListGET() {
-		log.info("itemListGET()");
+	public List<ItemVO> itemListGET(Pagination pagination) {
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		adminService.getTotalCount(pagination);
 		
-		return adminService.itemGetAll();
+		return adminService.itemGetAll(pagination);
 	}
 	
 	@ResponseBody
@@ -67,7 +67,6 @@ public class AdminController {
 	public int roleUpdatePOST(
 					 @RequestParam("memberId") String memberId
 					,@RequestParam("roleName") String roleName) {
-		log.info("roleUpdatePOST()");
 		
 		return adminService.createRole(memberId, roleName);
 	} // end roleUpdatePOST
@@ -86,7 +85,6 @@ public class AdminController {
 	@GetMapping("/purchaseInfo")
 	public void purchaseInfo(Model model, String orderId) {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
-		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		model.addAttribute("itemVO", itemVO);
 		model.addAttribute("directOrderVO", directOrderVO);
@@ -94,11 +92,9 @@ public class AdminController {
 	
 	@PutMapping("/updateStatus/{itemId}")
 	public ResponseEntity<Integer> updateStatus(@PathVariable("itemId") Integer itemId, 
-												@RequestBody Integer itemStatus) { 
-		log.info("itemId : " + itemId);
-		log.info("itemStatus : " + itemStatus);
-		int result = itemService.updateStatus(itemId, itemStatus);
-		return new ResponseEntity<Integer> (result, HttpStatus.OK);
+												@RequestBody Integer itemStatus) {
+		
+		return new ResponseEntity<Integer> (adminService.updateItemStatus(itemId, itemStatus), HttpStatus.OK);
 	}
 
 }

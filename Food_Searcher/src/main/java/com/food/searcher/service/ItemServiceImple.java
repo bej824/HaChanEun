@@ -1,5 +1,6 @@
 package com.food.searcher.service;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,80 +31,74 @@ public class ItemServiceImple implements ItemService {
 	@Autowired
 	ItemAttachMapper attachMapper;
 
-	@Transactional(value = "transactionManager")
+	@Autowired
+	UtilityService utilityService;
+
+	@Transactional(value = "transactionManager", rollbackFor = Exception.class)
 	@Override
 	public int createItem(ItemVO itemVO) {
-		log.info("createItem()");
-		log.info("ItemVO : " + itemVO);
-		int itemResult = itemMapper.insert(itemVO);
-		log.info(itemResult + "행 상품 등록");
 
+		int result = 0;
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
-		int insertAttachResult = 0;
-		for (ItemAttachVO attachVO : attachList) {
-			attachVO.setItemId(getAllItem().get(0).getItemId()); // 수정 필요 전체 리스트를 가져와야 함
-			insertAttachResult += attachMapper.insert(attachVO);
+
+		try {
+			itemMapper.itemInsert(itemVO);
+			itemMapper.itemCtgInsert(itemVO);
+			for (ItemAttachVO attachVO : attachList) {
+				attachMapper.insert(attachVO);
+			}
+			result = 1;
+
+		} catch (Exception e) {
+			log.error("상품 생성 중 오류 발생", e);
 		}
-		log.info(insertAttachResult + "행 파일 정보 등록");
-		return itemResult;
+
+		return result;
 	}
 	
+	@Transactional
 	@Override
-	public int deleteItem(int itemId) {
-		log.info("deleteItem()");
-		return itemMapper.delete(itemId);
-	}
-	
-   @Override
-   public int getTotalCount(Pagination pagination) {
-      return itemMapper.selectTotalCount(pagination);
-   }
-
-	@Override
-	public List<ItemVO> getAllItem() {
-		log.info("getAllItem()");
-		List<ItemVO> list = itemMapper.selectAll();
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
+	public int getTotalCount(Pagination pagination) {
+		int itemStatus = 0;
+		return itemMapper.selectTotalCount(pagination, itemStatus);
 	}
 
+	@Transactional
 	@Override
 	public List<ItemVO> getPagingAllItems(Pagination pagination) {
-		log.info("getPagingItems()");
-		List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
-		log.info(list);
+		int itemStatus = 100; // pull 후 컨트롤러에서 받는 걸로 수정
+
+		String memberId = utilityService.checkRoleSeller();
+		List<ItemVO> list = itemMapper.selectAllByPagination(pagination, itemStatus, memberId);
 		return list.stream().collect(Collectors.toList());
 	}
 
-	@Override
-	public List<ItemVO> getItemByStatus(int itemStatus) {
-		log.info("getItemByStatus()");
-		List<ItemVO> list = itemMapper.selectStatus(itemStatus);
-		log.info(list);
-		return list.stream().collect(Collectors.toList());
-	}
-
+	// pull 후 삭제, 컨트롤러에서 에러뜬 곳들 수정 예정
 	@Override
 	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
-		log.info("getPagingStatusItems()");
-		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
-		log.info(pagination);
-		log.info(list);
+		int itemStatus = 100;
+		String memberId = null;
+		List<ItemVO> list = itemMapper.selectAllByPagination(pagination, itemStatus, memberId);
 		return list.stream().collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public ItemVO getItemById(int itemId) {
-		log.info("getItemById()");
-		log.info("itemId : " + itemId);
 		ItemVO itemVO = itemMapper.selectOne(itemId);
 		return itemVO;
+	}
+	
+	@Transactional
+	@Override
+	public int getStatusTotalCount(Pagination pagination) {
+		int itemStatus = 100;
+		return itemMapper.selectTotalCount(pagination, itemStatus);
 	}
 
 	@Transactional(value = "transactionManager")
 	@Override
 	public int updateItem(ItemVO itemVO) {
-		log.info("updateItem()");
 		int updateItem = itemMapper.update(itemVO);
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
@@ -115,26 +110,29 @@ public class ItemServiceImple implements ItemService {
 		for (ItemAttachVO attachVO : attachList) {
 			attachVO.setItemId(itemVO.getItemId());
 			insertAttachResult += attachMapper.insert(attachVO);
-			log.info("attachVO" + attachVO);
 		}
 		log.info(insertAttachResult + "행 파일 정보 등록");
 		return updateItem;
 	}
-
+	
+	@Transactional
 	@Override
-	public int getStatusTotalCount(Pagination pagination) {
-		return itemMapper.selectStatusTotalCount(pagination);
+	public int updateItemStatus(int itemId, int itemStatus) {
+
+		return itemMapper.updateStatus(itemId, itemStatus);
 	}
 	
+	@Transactional
 	@Override
-	public int updateStatus(int itemId, int itemStatus) {
-		log.info("updateStatus()");
-		ItemVO itemVO = new ItemVO();
-		itemVO.setItemId(itemId);
-		itemVO.setItemStatus(itemStatus);
+	public int updateItemAmount(int itemId, int itemAmount) {
 		
-		return itemMapper.updateStatus(itemVO);
+		return itemMapper.updateItemAmount(itemId, itemAmount);
 	}
 
+	@Transactional
+	@Override
+	public int deleteItem(int itemId) {
+		return itemMapper.delete(itemId);
+	}
 
 } // end ItemServiceImple
