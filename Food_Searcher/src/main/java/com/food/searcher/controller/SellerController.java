@@ -105,4 +105,10 @@ public class SellerController {
 		model.addAttribute("directOrderVO", sellerService.purchaseInfo(orderId));
 		model.addAttribute("itemVO", sellerService.purchaseItemInfo(orderId));
 	}
+	
+/*	@PatchMapping("/updateAmount")
+	public void updateAmount() {
+	
+	}
+*/
 }
