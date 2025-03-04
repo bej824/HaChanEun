@@ -13,18 +13,21 @@ public interface CouponActiveService {
 	 * 발급 쿠폰 확인(couponActive)
 	 * @param memberId 회원 입장에서의 확인 시 자동 기입.
 	 * @param itemId 상품 구매할 때 사용 가능한 쿠폰 확인 시 자동 기입.
-	 * 1. 운영자가 현재 발급된 쿠폰을 모두 확인할 수 있음.
-	 * 2. 회원이 확인할 경우 memberId가 자동 입력되어 회원에게 발급된 쿠폰만 확인 가능.
-	 * 3. 상품 구매 시 확인할 때는 사용 가능한, 사용처인 곳과 사용처 지정이 되어있지 않은 쿠폰만 확인 가능.
 	 */
 	List<CouponActiveVO> selectCouponActive(String memberId, int itemId);
 	
 	/**
+	 * 사용 요청된 쿠폰의 가격 확인
+	 * @param CouponActiveId
+	 * @param memberId(principal.getName())
+	 * @return
+	 */
+	Integer selectCouponActiveByCouponPrice(int couponActiveId, String memberId);
+	
+	/**
+	 * 구매 시 쿠폰 사용 시 db내 사용 처리
 	 * @param couponActiveVO
 	 * 쿠폰 사용(couponActiveMapper.updateCouponActiveByOrderId(orderId))
-	 * 1. 상품 구매 시 쿠폰이 사용되었다면 couponActiveId를 통해 확인.
-	 * 2. couponUseDate, itemId, orderId를 기입.
-	 * couponActiveVO couponActiveId, couponUseDate, itemId, orderId가 들어있어야함.
 	 */
 	int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO);
 	

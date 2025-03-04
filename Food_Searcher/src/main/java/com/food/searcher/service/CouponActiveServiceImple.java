@@ -51,6 +51,14 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	
 	@Transactional
 	@Override
+	public Integer selectCouponActiveByCouponPrice(int couponActiveId, String memberId) {
+		log.info("selectCouponActiveByCouponPrice()");
+		
+		return couponActiveMapper.selectCouponPriceByCouponActiveId(couponActiveId, memberId);
+	}
+	
+	@Transactional
+	@Override
 	public int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO) {
 		log.info("updateCouponActiveByCouponActiveId()");
 		int result = 0;
@@ -63,6 +71,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		return result;
 	}
 	
+	@Transactional
 	@Override
 	public int updateCouponActiveByOrderId(String orderId) {
 		log.info("updateCouponActiveByOrderId()");

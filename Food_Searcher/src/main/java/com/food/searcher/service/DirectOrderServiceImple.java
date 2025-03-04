@@ -32,6 +32,9 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	private CouponActiveService couponActiveService;
 	
 	@Autowired
+	private UtilityService utilityService;
+	
+	@Autowired
 	private ItemMapper itemMapper;
 	
 	@Autowired
@@ -190,7 +193,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	      int totalCost = 0;
 	      
 	      for(int i = 0; i < list.size(); i++) {
-	         //totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
+	         totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
 	      }
 	      
 	      acount.put(memberId, totalCost - activeVO.getCouponPrice());
