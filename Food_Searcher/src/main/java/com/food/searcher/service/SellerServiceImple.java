@@ -10,6 +10,7 @@ import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ItemMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -63,11 +64,17 @@ public class SellerServiceImple implements SellerService {
 		DirectOrderVO directOrderVO = purchaseInfo(orderId);
 		return itemService.getItemById(directOrderVO.getItemId());
 	}
+	
+	@Override
+	public int getTotalCount(Pagination pagination) {
+		
+		return itemService.getStatusTotalCount(pagination);
+	}
 
 	@Override
-	public List<ItemVO> selectSellerItem(String memberId) {
+	public List<ItemVO> selectSellerItem(Pagination pagination) {
 		log.info("selectSellerItem()");
-		return itemMapper.selectSellerItem(memberId);
+		return itemService.getPagingAllItems(null);
 	}
 
 }

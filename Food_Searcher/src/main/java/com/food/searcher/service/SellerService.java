@@ -5,6 +5,7 @@ import java.util.List;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
+import com.food.searcher.util.Pagination;
 
 public interface SellerService {
 	
@@ -23,5 +24,11 @@ public interface SellerService {
 	
 	ItemVO purchaseItemInfo(String orderId);
 	
-	List<ItemVO> selectSellerItem(String memberId);
+	/**
+	 * @param pagination
+	 * @return 사이트에 올라온 상품 총 갯수
+	 */
+	int getTotalCount(Pagination pagination);
+	
+	List<ItemVO> selectSellerItem(Pagination pagination);
 }

@@ -32,6 +32,14 @@ pageEncoding="UTF-8"%>
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
 }
+
+*:disabled {
+	width:80%;
+	height:60%;
+	background-color: #f9f9f9;
+}
+
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -97,10 +105,21 @@ pageEncoding="UTF-8"%>
 		<button class="plusBtn">+</button>
 		<br><br>
 		
-		<c:if test="${itemVO.itemAmount > 0}">
+		<c:choose>
+		<c:when test="${itemVO.itemStatus == 2}">
+		<input type="button" value="판매가 중단된 상품입니다." disabled />
+		</c:when>
+		
+		<c:when test="${itemVO.itemAmount == 0}">
+		<input type="button" value="Sold out" disabled />
+		</c:when>
+		
+		<c:when test="${itemVO.itemAmount > 0}">
 		<button id="btnCart" class="button">장바구니 담기</button><br>
     	<button type="button" onclick="window.location.href='order?itemId=${itemVO.itemId}&count=' + $('.itemAmount').val()" id="btnBuy" class="button">바로 구매</button>
-		</c:if>
+		</c:when>
+		
+		</c:choose>
 	</sec:authorize>
 	
     <input type="hidden" id="memberId" value=<sec:authentication property="name" />>

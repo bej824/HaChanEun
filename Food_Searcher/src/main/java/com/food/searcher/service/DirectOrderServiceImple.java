@@ -78,7 +78,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info(result + "행 추가 완료");
 		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
 		int itemAmount = itemVO.getItemAmount() - directOrderVO.getTotalCount();
-		int item = itemMapper.itemAmount(itemAmount, directOrderVO.getItemId());
+		int item = itemMapper.updateItemAmount(itemAmount, directOrderVO.getItemId());
 		log.info(item + "행 업데이트 완료");
 		return result;
 	}
@@ -118,7 +118,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
 		int itemAmount = itemVO.getItemAmount() + directOrderVO.getTotalCount();
-		int item = itemMapper.itemAmount(itemAmount, directOrderVO.getItemId());
+		int item = itemMapper.updateItemAmount(itemAmount, directOrderVO.getItemId());
 		log.info(item + "행 업데이트 완료");
 		return result;
 	}

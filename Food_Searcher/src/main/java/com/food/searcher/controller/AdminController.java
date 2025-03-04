@@ -54,10 +54,14 @@ public class AdminController {
 	
 	@ResponseBody
 	@GetMapping("/itemList")
-	public List<ItemVO> itemListGET(Pagination pagination) {
+	public List<ItemVO> itemListGET(
+			Pagination pagination,
+			Model model) {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		adminService.getTotalCount(pagination);
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return adminService.itemGetAll(pagination);
 	}
