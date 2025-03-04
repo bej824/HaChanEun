@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
-import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ItemMapper;
+import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
 
@@ -48,9 +48,9 @@ public class SellerServiceImple implements SellerService {
 	}
 	
 	@Override
-	public List<DirectOrderVO> purchaseHistory(String memberId) {
+	public List<DirectOrderVO> purchaseHistory(String memberId, Pagination pagination) {
 		
-		return directOrderService.sellerList(memberId);
+		return directOrderService.sellerList(memberId, pagination);
 	}
 
 	@Override
@@ -68,6 +68,11 @@ public class SellerServiceImple implements SellerService {
 	public List<ItemVO> selectSellerItem(String memberId) {
 		log.info("selectSellerItem()");
 		return itemMapper.selectSellerItem(memberId);
+	}
+
+	@Override
+	public int totalCount(String memberId, Pagination pagination) {
+		return directOrderService.getSellerTotalCount(memberId, pagination);
 	}
 
 }

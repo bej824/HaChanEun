@@ -7,12 +7,13 @@ import com.food.searcher.util.Pagination;
 
 public interface DirectOrderService {
 	List<DirectOrderVO> getAllOrder();
-	List<DirectOrderVO> sellerList(String memberId);
+	List<DirectOrderVO> sellerList(String memberId, Pagination pagination);
 	List<DirectOrderVO> getOrder(String memberId);
 	List<DirectOrderVO> getPagingBoards(Pagination pagination);
 	List<DirectOrderVO> getPagingmemberList(String memberId, Pagination pagination);
 	DirectOrderVO getselectOne(String orderId);
 	int getTotalCount(Pagination pagination);
+	int getSellerTotalCount(String memberId, Pagination pagination);
 	int getMemberTotalCount(String memberId);
 	int orderPurchase(DirectOrderVO directOrderVO);
 	int cartPurchase(DirectOrderVO directOrderVO);

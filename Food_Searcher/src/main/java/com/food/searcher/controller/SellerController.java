@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
-import com.food.searcher.persistence.DirectOrderMapper;
-import com.food.searcher.service.AdminService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.service.SellerService;
+import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
@@ -96,8 +94,11 @@ public class SellerController {
 	@GetMapping("/purchaseHistory")
 	public void purchaseHistoryGET(Model model, Principal principal, Pagination pagination) {
 		log.info("purchaseHistoryGET()");
-		
-		model.addAttribute("directOrderVO", sellerService.purchaseHistory(principal.getName()));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(sellerService.totalCount(principal.getName(), pagination));
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("directOrderVO", sellerService.purchaseHistory(principal.getName(), pagination));
 	}
 	
 	@GetMapping("/purchaseInfo")

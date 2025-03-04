@@ -12,11 +12,12 @@ import com.food.searcher.util.Pagination;
 public interface DirectOrderMapper {
 	List<DirectOrderVO> selectAll();
 	List<DirectOrderVO> selectMember(String memberId);
-	List<DirectOrderVO> sellerList(String memberId);
+	List<DirectOrderVO> sellerList(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	List<DirectOrderVO> selectListByPagination(Pagination pagination);
 	List<DirectOrderVO> memberList(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	DirectOrderVO selectOne(String orderId);
 	int selectTotalCount(Pagination pagination);
+	int sellerTotalCount(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	int selectMemberTotalCount(String memberId);
 	int insert(DirectOrderVO directOrderVO);
 	int cancel(@Param("orderId") String orderId);

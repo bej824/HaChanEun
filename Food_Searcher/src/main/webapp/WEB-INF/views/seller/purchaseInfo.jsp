@@ -177,7 +177,7 @@
 		});
 	</script>
 	
-	<button onclick="window.location.href='purchaseHistory'" class="button">뒤로가기</button>
+	<button onclick="window.location.href='purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
 
 </body>
 </html>

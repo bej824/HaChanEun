@@ -102,10 +102,15 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	}
 	
 	@Override
-	public List<DirectOrderVO> sellerList(String memberId) {
+	public List<DirectOrderVO> sellerList(String memberId, Pagination pagination) {
 		log.info("sellerList()");
 		
-		return directOrderMapper.sellerList(memberId);
+		return directOrderMapper.sellerList(memberId, pagination);
+	}
+	
+	@Override
+	public int getSellerTotalCount(String memberId, Pagination pagination) {
+		return directOrderMapper.sellerTotalCount(memberId, pagination);
 	}
 
 	@Transactional(value = "transactionManager")

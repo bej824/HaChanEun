@@ -332,6 +332,8 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
  		}
 	     
 	}); // document
+	
+	let hasCheckedAddress = false;
 	    
 	    $('#order').click(function() {
 	        $('tbody tr').each(function(index) {
@@ -357,6 +359,12 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	            let orderCount = index;
 	            console.log(orderCount);
 	            
+	            if (!deliveryAddress && !hasCheckedAddress) {
+                    alert('배송 주소를 입력해주세요.');
+                    hasCheckedAddress = true;
+                    return;  // 비어 있으면 AJAX 요청을 하지 않음
+                }
+	            
 	            let checked = $(this).find('.cartChecked').val();
 	            console.log("cartChecked : " + checked);
 	            if(checked == 1) {
@@ -375,7 +383,10 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                         orderCount : orderCount
                     }),
                     success: function(result) {
-                        alert('구매 완료되었습니다.');
+                    	if(!hasCheckedAddress) {
+                    		alert('구매 완료되었습니다.');
+                    		hasCheckedAddress = true;
+                    	}
                         window.location.href = 'http://localhost:8080/searcher/item/list';
                     }
                 });

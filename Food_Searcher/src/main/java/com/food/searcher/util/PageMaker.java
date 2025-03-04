@@ -73,7 +73,7 @@ public class PageMaker {
 		if (getStartNum() <= 1) {
 			return false;
 		} else {
-			return true;
+			return pagination.getPageNum() > 1;
 		}
 	} // end isPrev()
 	
@@ -83,7 +83,7 @@ public class PageMaker {
 		if (getEndNum() >= calcTotalPageNum()) {
 			return false;
 		} else {
-			return true;
+			return pagination.getPageNum() < calcTotalPageNum();
 		}
 	} // end isNext()
 	
