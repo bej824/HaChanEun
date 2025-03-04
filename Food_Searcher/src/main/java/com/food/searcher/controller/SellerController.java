@@ -53,10 +53,18 @@ public class SellerController {
 	
 	@ResponseBody
 	@GetMapping("/status/{memberId}")
-	public List<ItemVO> listStatusGET(@PathVariable("memberId") String memberId) {
+	public List<ItemVO> listStatusGET(
+			Pagination pagination,
+			Model model) {
 		log.info("listStatusGET()");
 		
-		return sellerService.selectSellerItem(memberId); 
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		sellerService.getTotalCount(pagination);
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return sellerService.selectSellerItem(pagination); 
 	}
 	
 	@ResponseBody
@@ -65,7 +73,7 @@ public class SellerController {
 												@RequestBody Integer itemStatus) { 
 		log.info("itemId : " + itemId);
 		log.info("itemStatus : " + itemStatus);
-		int result = itemService.updateStatus(itemId, itemStatus);
+		int result = itemService.updateItemStatus(itemId, itemStatus);
 		return new ResponseEntity<Integer> (result, HttpStatus.OK);
 	}
 	
@@ -106,4 +114,10 @@ public class SellerController {
 		model.addAttribute("directOrderVO", sellerService.purchaseInfo(orderId));
 		model.addAttribute("itemVO", sellerService.purchaseItemInfo(orderId));
 	}
+	
+/*	@PatchMapping("/updateAmount")
+	public void updateAmount() {
+	
+	}
+*/
 }

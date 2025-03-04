@@ -3,6 +3,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+
+
+</style>
+
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Base.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Cart.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/attach.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Detail.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Reply.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/image.css">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -16,9 +33,8 @@
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 5%">상품 번호</th>
 				<th style="width: 10%">상품 명</th>
-				<th style="width: 10%">판매자</th>
+				<th style="width: 10%">수량</th>
 				<th style="width: 10%">분류</th>
 				<th style="width: 10%">가격</th>
 				<th style="width: 10%">상태</th>
@@ -31,44 +47,46 @@
 	<script>
 	
 	$(document).ready(function(){
-		var itemStatus = null;
 		itemList();
 		
 		$('table tbody').on('click', '.permission', function(){
 			let permission = $(this).html();
 			let row = $(this).closest("tr");
-			let itemId = parseInt(row.find("td:first").text(), 10);
+			let itemId = row.find(".itemId").val();
 			
 			if(permission == "판매 중"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
-				console.log("1>2");
+				console.log("100>200");
 				if(result) {
-					itemStatus = 2;
+					itemStatus = 200;
+					updateItemStatus();
 					row.find(".permission").html("판매 중지");
 					alert("변경 완료 : 판매 중지");
 				}
 				
 			} else if(permission == "판매 허가 요청") {
 				let result = confirm("해당 물품의 판매를 중단하시겠습니까?");
-				console.log("0>2", result)
+				console.log("300>200")
 				if(result) {
-					itemStatus = 2;
+					itemStatus = 200;
+					updateItemStatus();
 					row.find(".permission").html("판매 중지");
 					alert("변경 완료 : 판매 중지");
 				}
 				
 			} else if(permission == "판매 중지") {
 				let result = confirm("해당 물품의 판매 중지를 취소하시겠습니까?");
-				console.log("2>0");
+				console.log("200>300");
 				if(result) {
-					itemStatus = 0;
+					itemStatus = 300;
+					updateItemStatus();
 					row.find(".permission").html("판매 허가 요청");
 					alert("변경 완료 : 판매 허가 요청");
 				} 
-			} else {
-				console.log("취소");
 			}
 			
+			function updateItemStatus(){
+				
 				$.ajax({
 			        type: "PUT",
 			        url: "../seller/status/" + itemId,
@@ -84,7 +102,9 @@
 			            }
 			        },
 			    });
-			})
+			};
+			
+		});
 		
 		function itemList(){
 			let memberId = $("#memberId").val();
@@ -104,26 +124,26 @@
 		    	  		if(itemList.itemAmount == 0) {
 		    	  			itemStatus = "품절"
 		    	  		} else {
-		    	  			if(itemList.itemStatus == 0) {
+		    	  			if(itemList.itemStatus == 300) {
 		    	  				itemStatus = "판매 허가 요청"
-		    	  			} else if(itemList.itemStatus == 1) {
+		    	  			} else if(itemList.itemStatus == 100) {
 		    	  				itemStatus = "판매 중"
-		    	  			} else if(itemList.itemStatus == 2) {
+		    	  			} else if(itemList.itemStatus == 200) {
 		    	  				itemStatus = "판매 중지"
 		    	  			}
 		    	  		}
 		    	  		
 		                let row = 
 		                	'<tr>'
-		                    + '<td>' + itemList.itemId + '</td>'
 		                    + '<td>' + itemList.itemName + '</td>'
-	                		+ '<td>' + itemList.memberId + '</td>'
+		                    + '<td><input type="text" size="3"  value="' + itemList.itemAmount + '"><button>입력</button></td>'
 		                    + '<td>' + itemList.itemTag + '</td>'
 		                    + '<td>' + itemList.itemPrice + '</td>'
 		                    + '<td> <a class=permission>' + itemStatus + '</a> </td>'
+		                    + '<input type="hidden" class="itemId" value="' + itemList.itemId + '">'
 		                    + '</tr>';
 		                    
-		          		tbody.append(row); // 새로운 데이터 행 추가
+		          		tbody.append(row); // 새로운 데이터 행 추가	
 		      		})
 		    	}
 		    

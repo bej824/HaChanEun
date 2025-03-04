@@ -17,16 +17,22 @@ import lombok.ToString;
 
 public class ItemVO {
 	private int itemId;
+	
 	private int storeId;
-	private int itemPrice;
 	private String itemContent;
-	private String itemTag;
 	private int itemAmount;
 	private Date itemDate;
-	private int itemLike;
-	private String itemName;
 	private String memberId;
+	
+	private String itemTag;
+	
+	private String mainCtg;
+	private String subCtg;
+	private String origin;
+	private String itemName;
+	private int itemPrice;
 	private int itemStatus;
+	private int itemLikes;
 	
 	private List<ItemAttachVO> attachList;
 	private int itemCount;

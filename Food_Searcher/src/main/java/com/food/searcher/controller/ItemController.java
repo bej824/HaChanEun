@@ -46,10 +46,6 @@ public class ItemController {
 					 @RequestParam(required = false) String keyword,
 					 @RequestParam(value="pageNum", defaultValue = "1") int pageNum,
 				     Pagination pagination) {
-		log.info("statusListGET()");
-		log.info("pageNum = " + pageNum);
-		log.info("keyword = " + keyword);
-		log.info("type = " + type);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
@@ -58,37 +54,32 @@ public class ItemController {
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);
-			log.info("itemList : " + itemList);
 		} else {
-			log.info("검색 결과 없음");
 			return "returnPage";
 		}
 		
-		log.info(itemList.size());
 		
 		List<ItemAttachVO> attachVO = attachService.getSelectAll();
-		log.info("이미지 : " + attachVO);
 		model.addAttribute("attachVO", attachVO);
 		model.addAttribute("itemList", itemList);
 
-		log.info(pageMaker);
 	    model.addAttribute("pageMaker", pageMaker);
 	    
 	    return "/item/list";
 	}
 	
 	@GetMapping("/list-admin")
-	public String listAdmin(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum, Pagination pagination) {
-		log.info("listAdminGET()");
+	public String listAdmin(
+			Model model, 
+			@RequestParam(value="pageNum", defaultValue = "1") int pageNum,
+			Pagination pagination) {
 
 		List<ItemVO> itemList = itemService.getPagingAllItems(pagination);
-		log.info("itemList : " + itemList);
 		
 		PageMaker pageMaker = new PageMaker(); // PageMaker 객체 생성
 		pageMaker.setPagination(pagination); // pagination 객체 적용
 		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
 		
-		log.info(pageMaker);
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("itemList", itemList);
 		
@@ -97,28 +88,25 @@ public class ItemController {
 	
 	@GetMapping("/register")
 	public void register() {
-		log.info("registerGET()");
 	}
 	
 	@PostMapping("/register")	
-	public String itemPOST (ItemVO itemVO, Principal principal) {
-		log.info("registerPost()");
-		log.info("itemVO = " + itemVO.toString());
-		log.info("principal = " + principal.getName());
+	public String itemPOST (
+			ItemVO itemVO,
+			Principal principal) {
 		
 		itemVO.setMemberId(principal.getName());
 		int result = itemService.createItem(itemVO);
 		
-		log.info(result + "행 등록");
 		return "redirect:/item/list";		
 	}
 	
 	@GetMapping("/detail")
-	public void detail(Model model, Integer itemId) {
-		log.info("itemId = " + itemId);
+	public void detail(
+			Model model,
+			Integer itemId) {
 		
 		ItemVO itemVO = itemService.getItemById(itemId);
-		log.info("ItemVO = " + itemVO);
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
@@ -128,9 +116,9 @@ public class ItemController {
 	}
 	
 	@GetMapping("/modify")
-	public void modifyGET(Model model, Integer itemId) {
-		log.info("modifyGET()");
-		log.info("itemId = " + itemId);
+	public void modifyGET(
+			Model model,
+			Integer itemId) {
 		ItemVO itemVO = itemService.getItemById(itemId);
 		
 		if(itemId.equals(itemVO.getItemId())) {
@@ -163,7 +151,9 @@ public class ItemController {
 	}
 
 	@GetMapping("/order")
-	public void orderGet (Model model, Integer itemId) {
+	public void orderGet (
+			Model model,
+			Integer itemId) {
 		log.info("orderGET()");
 		ItemVO itemVO = itemService.getItemById(itemId);
 		model.addAttribute("itemVO", itemVO);
@@ -182,7 +172,10 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseHistory")
-	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
+	public void purchaseHistory(
+			Model model,
+			Principal principal,
+			Pagination pagination) {
 		log.info("purchaseHistory()");
 		
 		PageMaker pageMaker = new PageMaker();
@@ -197,9 +190,10 @@ public class ItemController {
 	}
 	
 	@GetMapping("/purchaseInfo")
-	public void purchaseInfo(Model model, String orderId) {
+	public void purchaseInfo(
+			Model model,
+			String orderId) {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
-		log.info("info : " + directOrderVO);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		model.addAttribute("itemVO", itemVO);
 		List<ItemAttachVO> attachVO = attachService.getItemById(itemVO.getItemId());

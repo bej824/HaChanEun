@@ -10,27 +10,29 @@ import com.food.searcher.util.Pagination;
 
 @Mapper
 public interface ItemMapper {
-	int insert(ItemVO itemVO);
-	List<ItemVO> selectList(int itemStatus);
-	List<ItemVO> selectListAll();
-	List<ItemVO> selectListByPagination(Pagination pagination);
+	int itemInsert(ItemVO itemVO);
+	int itemCtgInsert(ItemVO itemVO);
 	
-	List<ItemVO> selectAll();
-	List<ItemVO> selectAllByPagination(Pagination pagination); // 전체 게시글 페이징 처리
+	List<ItemVO> selectAllByPagination(
+			 	@Param("pagination") Pagination pagination,
+			 	@Param("itemStatus") int itemStatus,
+			 	@Param("memberId") String memberId); // 전체 게시글 페이징 처리
 	
-	List<ItemVO> selectStatus(int itemStatus);
-	List<ItemVO> selectStatusByPagination(Pagination pagination);
+	int selectTotalCount(
+				@Param("pagination") Pagination pagination,
+				@Param("itemStatus") int itemStatus);
 	
 	ItemVO selectOne(int itemId);
 	
 	int update(ItemVO itemVO);
+	
+	int updateItemAmount(
+			@Param("itemId") int itemId,
+			@Param("itemAmount") int itemAmount);
+	
+	int updateStatus(
+			@Param("itemId") int itemId,
+			@Param("itemStatus") int itemStatus);
+	
 	int delete(int itemId);
-	
-	int selectTotalCountByStatus(Pagination pagination);
-	int selectTotalCount(Pagination pagination);
-	int selectStatusTotalCount(Pagination pagination);
-	int itemAmount(@Param("itemAmount") int itemAmount, @Param("itemId") int itemId);
-	int updateStatus(ItemVO itemVO);
-	
-	List<ItemVO> selectSellerItem(String memberId);
 }
