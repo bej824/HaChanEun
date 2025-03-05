@@ -164,8 +164,9 @@ public class ItemController {
 	}
 	
 	@PostMapping("/order")
-	public String order (@RequestBody DirectOrderVO directOrderVO) {
+	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
 		log.info(directOrderVO);
+		directOrderVO.setMemberId(principal.getName());
 		int result = directOrderService.orderPurchase(directOrderVO);
 		log.info(result);
 		return "redirect:/item/purchaseHistory";

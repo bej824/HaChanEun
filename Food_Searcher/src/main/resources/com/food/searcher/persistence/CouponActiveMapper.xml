@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,ITEM_NAME
 		,ORDER_ID
 		) VALUES
-		(COUPON_ACTIVE_SEQ.NEXTVAL
+		(#{couponActiveId} || LPAD(COUPON_ACTIVE_SEQ.NEXTVAL, 4, '0')
 		,#{memberId}
 		,#{couponId}
 		,#{couponName}
@@ -52,45 +52,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectCouponActive" resultMap="couponActiveMap">
-		SELECT 	 COUPON_ACTIVE.COUPON_ACTIVE_ID
-				,COUPON_ACTIVE.MEMBER_ID
-				,COUPON_ACTIVE.COUPON_ID
-				,COUPON_ACTIVE.COUPON_NAME
-				,COUPON_ACTIVE.COUPON_ISSUED_DATE
-				,COUPON_ACTIVE.COUPON_EXPIRE_DATE
-				,COUPON_ACTIVE.COUPON_USE_DATE
-				,COUPON_ACTIVE.ITEM_ID
-				,COUPON_ACTIVE.ITEM_NAME
-				,DISCOUNT_COUPON.COUPON_PRICE
-				,DISCOUNT_COUPON.COUPON_USE_CONDITION
-		FROM COUPON_ACTIVE
-		LEFT JOIN DISCOUNT_COUPON
-		ON COUPON_ACTIVE.COUPON_ID = DISCOUNT_COUPON.COUPON_ID
-		WHERE 1=1
+		SELECT 	 a.COUPON_ACTIVE_ID
+				,a.MEMBER_ID
+				,a.COUPON_ID
+				,a.COUPON_NAME
+				,a.COUPON_ISSUED_DATE
+				,a.COUPON_EXPIRE_DATE
+				,a.COUPON_USE_DATE
+				,a.ITEM_ID
+				,a.ITEM_NAME
+				,d.COUPON_PRICE
+				,d.COUPON_USE_CONDITION
+		FROM COUPON_ACTIVE a 
+		LEFT JOIN DISCOUNT_COUPON d
+		ON a.COUPON_ID = d.COUPON_ID
+		WHERE a.COUPON_USE_DATE IS NULL
+		AND a.COUPON_EXPIRE_DATE &gt;= SYSDATE
 		<if test="memberId != '' and memberId != null">
-			AND COUPON_ACTIVE.MEMBER_ID = #{memberId}
+			AND a.MEMBER_ID = #{memberId}
 		</if>
 		<if test="itemId != 0 and itemId != null">
-			AND (COUPON_ACTIVE.ITEM_ID = #{itemId} OR COUPON_ACTIVE.ITEM_ID = 0)
+			AND (a.ITEM_ID = #{itemId} OR a.ITEM_ID = 0)
 		</if>
 	</select>
 	
 	<select id="selectCouponPriceByCouponActiveId" resultType="Integer">
-		SELECT DISCOUNT_COUPON.COUPON_PRICE
-		FROM DISCOUNT_COUPON
-		LEFT JOIN COUPON_ACTIVE
-		ON COUPON_ACTIVE.COUPON_ID = DISCOUNT_COUPON.COUPON_ID
-		WHERE COUPON_ACTIVE.COUPON_ACTIVE_ID = #{couponActiveId}
-		AND COUPON_ACTIVE.MEMBER_ID = #{memberId}
-		AND COUPON_ACTIVE.COUPON_USE_DATE IS NULL
-		AND COUPON_ACTIVE.COUPON_EXPIRE_DATE &gt;= SYSDATE
+		SELECT d.COUPON_PRICE
+		FROM DISCOUNT_COUPON d
+		LEFT JOIN COUPON_ACTIVE a
+		ON a.COUPON_ID = d.COUPON_ID
+		WHERE a.COUPON_ACTIVE_ID = #{couponActiveId}
+		AND a.MEMBER_ID = #{memberId}
+		AND a.COUPON_USE_DATE IS NULL
+		AND a.COUPON_EXPIRE_DATE &gt;= SYSDATE
 	</select>
 	
 	<update id="updateCouponActiveByCouponActiveId">
 		UPDATE COUPON_ACTIVE
 		SET COUPON_USE_DATE = #{couponUseDate}
 		,ITEM_ID = #{itemId}
-		,ORDER_ID = #{orderId}
+		,ORDER_ID = #{orderId} || LPAD(TO_CHAR(order_seq.CURRVAL), 4, '0')
 		WHERE COUPON_ACTIVE_ID = #{couponActiveId}
 	</update>
 	
@@ -106,5 +107,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND COUPON_USE_DATE IS NOT NULL
 		AND COUPON_EXPIRE_DATE >= SYSDATE
 	</update>
+	
+	<delete id="deleteCouponActiveByOrderId">
+		DELETE
+		FROM COUPON_ACTIVE
+		WHERE COUPON_EXPIRE_DATE &lt; SYSDATE
+	</delete>
 	
 </mapper>

@@ -21,6 +21,8 @@ public interface CouponActiveMapper {
 
 	int updateCouponActiveByOrderId(String orderId);
 	
-	Integer selectCouponPriceByCouponActiveId(int CouponActiveId, String memberId);
+	int deleteCouponActiveByOrderId();
+	
+	Integer selectCouponPriceByCouponActiveId(String CouponActiveId, String memberId);
 
 }

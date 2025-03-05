@@ -15,9 +15,6 @@
 	<p>쿠폰 발급일 : ${couponActiveVO.couponIssuedDate }</p>
 	<p>쿠폰 만료일 : ${couponActiveVO.couponExpireDate }</p>
 	
-	<p>상품 아이디 : ${couponActiveVO.itemId }</p>
-	<p>상품 이름 : ${couponActiveVO.itemName}</p>
-	
 	<input type="text" id="memberId" name="memberId">
 	
 	<div id="tableContainer" class="table-container" style="display: none;">

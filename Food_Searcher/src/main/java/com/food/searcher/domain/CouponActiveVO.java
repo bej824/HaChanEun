@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class CouponActiveVO {
 	
-	private int couponActiveId; // 쿠폰 발급 고유 넘버
+	private String couponActiveId; // 쿠폰 발급 고유 넘버
 	private String memberId; // 발급받은 memberId
 	private int couponId; // 쿠폰 Id
 	private String couponName; // 쿠폰 이름

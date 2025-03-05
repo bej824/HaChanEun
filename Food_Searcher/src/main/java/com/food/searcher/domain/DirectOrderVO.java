@@ -29,5 +29,5 @@ public class DirectOrderVO {
 	private String deliveryCompany;
 	private String invoiceNumber;
 	private int orderCount;
-	private int couponActiveId;
+	private String couponActiveId;
 }

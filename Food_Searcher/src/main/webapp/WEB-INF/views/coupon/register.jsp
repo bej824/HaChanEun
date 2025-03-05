@@ -13,13 +13,6 @@
 		<input type="text" id="couponName" name="couponName" placeholder="쿠폰 이름 입력">
 		<div id="nameMsg" class="message" style="color: red;">쿠폰 이름을 입력해주세요!</div>
 		<br>
-		
-		<p>발급 주체</p>
-		<select id="couponIssuer" name="couponIssuer">
-			<option value="">발급 제한 없음</option>
-			<option value="ROLE_ADMIN">사이트</option>
-			<option value="ROLE_SELLER">판매자</option>
-		</select>
 
 		<p>할인 가격</p>
 		<input type="text" id="couponPrice" name="couponPrice" placeholder="할인가격을 입력해주세요.">원
@@ -76,12 +69,6 @@
 					console.log(couponName);
 				}
 					
-			})
-			
-			$('#couponIssuer').change(function(){
-				let couponIssuer = $(this).val();
-				console.log(couponIssuer);
-				
 			})
 			
 			$('#couponPrice').change(function(){
@@ -145,7 +132,6 @@
 			
 			$('#btn_insert').click(function(){
 				let couponName = $('#couponName').val();
-				let couponIssuer = $('#couponIssuer').val();
 				let couponPrice = $('#couponPrice').val();
 				let couponEvent = $('#couponEvent').val();
 				let couponContent = $('#couponContent').val();
@@ -166,7 +152,6 @@
 					    type: 'POST',
 					    url: 'register',
 					    data: { couponName: couponName,
-					    	couponIssuer: couponIssuer,
 					    	couponPrice: couponPrice,
 					    	couponEvent: couponEvent,
 					    	couponUseCondition: couponUseCondition,

@@ -130,8 +130,6 @@
   	    	  	console.log("수량 : " + count);
   	    	  	let itemPrice = ${itemVO.itemPrice};
   	    	  	console.log("아이템 가격 : " + itemPrice);
-    			let memberId = '<sec:authentication property="name" />';
-    			console.log("memberId : " + memberId);
     			console.log("총 금액 : " + totalPrice);
     			let deliveryAddress = $("#deleveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
@@ -143,6 +141,10 @@
                     return;  // 비어 있으면 AJAX 요청을 하지 않음
                 }
     			
+    			if(couponActiveId == null) {
+    				couponActiveId = 0;
+    			}
+    			
     			$.ajax({
     			    url : 'order?itemId=' + itemId + '&count=' + count,
     			    type : 'POST',
@@ -150,7 +152,6 @@
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
     			    data : JSON.stringify({
-    			        memberId : memberId,
     			        itemId : itemId,
     			        totalCount : count,
     			        totalPrice : totalPrice,
