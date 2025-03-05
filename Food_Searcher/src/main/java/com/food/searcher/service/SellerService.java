@@ -31,6 +31,9 @@ public interface SellerService {
 	 * @return 사이트에 올라온 상품 총 갯수
 	 */
 	int getTotalCount(Pagination pagination);
+
+	List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination);
+
+	List<ItemVO> selectSellerItem(String memberId);
 	
-	List<ItemVO> selectSellerItem(Pagination pagination);
 }

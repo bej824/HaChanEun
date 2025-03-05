@@ -116,8 +116,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.ITEM_ID = #{itemId}
 	</select>
 	
-	<select id="selectSellerItem" resultMap="itemResultMap">
-      SELECT * FROM ITEM WHERE MEMBER_ID = #{memberId} ORDER BY ITEM_ID DESC
+	<select id="selectSellerItem" resultMap="itemResultMap"
+      parameterType="map">
+		SELECT a.*, b.*
+		FROM ITEM a
+		LEFT JOIN ITEM_CTG b
+		ON a.ITEM_ID = b.ITEM_ID
+		WHERE a.MEMBER_ID = #{memberId}
   	</select>
 
 	<update id="update">

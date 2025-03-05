@@ -294,7 +294,6 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 	<div id="list">
         <ul>
             <li><a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a></li>
-            <li><a class="headerNavi" href="/searcher/market/list" >전통시장</a></li>
             <li><a class="headerNavi" href="/searcher/local/list" >특산품</a></li>
             <li><a class="headerNavi" href="/searcher/item/list">상품</a></li>
         </ul>

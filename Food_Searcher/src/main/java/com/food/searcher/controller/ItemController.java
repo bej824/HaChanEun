@@ -51,7 +51,9 @@ public class ItemController {
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getStatusTotalCount(pagination));
 		
-		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
+		int itemStatus = 100;
+		List<ItemVO> itemList = itemService.getPagingStatusItems(itemStatus, pagination);
+		
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);
 		} else {

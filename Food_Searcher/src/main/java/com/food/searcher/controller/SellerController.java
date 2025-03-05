@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,6 +48,15 @@ public class SellerController {
 		log.info("statusGET()");
 		String memberId = principal.getName();
 		log.info("접속자 아이디 : " + memberId);
+		List<ItemVO> itemList = sellerService.selectSellerItem(memberId);
+				
+		if(!itemList.isEmpty()) {
+			model.addAttribute("itemList", itemList);
+		} else {
+			return "returnPage";
+		}
+		
+		model.addAttribute(itemList);
 		
 		return "seller/status"; 
 	}
@@ -54,26 +64,36 @@ public class SellerController {
 	@ResponseBody
 	@GetMapping("/status/{memberId}")
 	public List<ItemVO> listStatusGET(
-			Pagination pagination,
+			@PathVariable("memberId") String memberId,
 			Model model) {
 		log.info("listStatusGET()");
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setPagination(pagination);
-		sellerService.getTotalCount(pagination);
+//		PageMaker pageMaker = new PageMaker();
+//		pageMaker.setPagination(pagination);
+//		sellerService.getTotalCount(pagination);
+//		
+//		model.addAttribute("pageMaker", pageMaker);
 		
-		model.addAttribute("pageMaker", pageMaker);
-		
-		return sellerService.selectSellerItem(pagination); 
+		return sellerService.selectSellerItem(memberId);
 	}
 	
 	@ResponseBody
 	@PutMapping("/status/{itemId}")
-	public ResponseEntity<Integer> updateStatus(@PathVariable("itemId") Integer itemId, 
-												@RequestBody Integer itemStatus) { 
+	public ResponseEntity<Integer> updateStatus(@PathVariable("itemId") int itemId, 
+												@RequestBody int itemStatus) { 
 		log.info("itemId : " + itemId);
 		log.info("itemStatus : " + itemStatus);
 		int result = itemService.updateItemStatus(itemId, itemStatus);
+		return new ResponseEntity<Integer> (result, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@PatchMapping("/status/{itemId}/{itemAmount}")
+	public ResponseEntity<Integer> updateAmount (@PathVariable("itemAmount") int itemAmount, 
+												 @PathVariable("itemId") int itemId) { 
+		log.info("itemId : " + itemId);
+		log.info("itemAmount : " + itemAmount);
+		int result = itemService.updateItemAmount(itemId, itemAmount);
 		return new ResponseEntity<Integer> (result, HttpStatus.OK);
 	}
 	

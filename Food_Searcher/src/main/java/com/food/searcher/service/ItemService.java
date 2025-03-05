@@ -9,7 +9,8 @@ public interface ItemService {
    int createItem(ItemVO itemVO);
    
    List<ItemVO> getPagingAllItems(Pagination pagination);
-   List<ItemVO> getPagingStatusItems(Pagination pagination);
+   List<ItemVO> getPagingStatusItems(int itemStatus, Pagination pagination);
+   List<ItemVO> selectSellerItem(String memberId);
    int getTotalCount(Pagination pagination);
    int getStatusTotalCount(Pagination pagination);
    

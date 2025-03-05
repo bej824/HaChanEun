@@ -71,9 +71,15 @@ public class SellerServiceImple implements SellerService {
 	}
 
 	@Override
-	public List<ItemVO> selectSellerItem(Pagination pagination) {
+	public List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination) {
 		log.info("selectSellerItem()");
-		return itemService.getPagingAllItems(null);
+		return itemService.getPagingStatusItems(itemStatus, pagination);
+	}
+	
+	@Override
+	public List<ItemVO> selectSellerItem(String memberId) {
+		log.info("selectSellerItem()");
+		return itemService.selectSellerItem(memberId);
 	}
 
 	@Override

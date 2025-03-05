@@ -22,9 +22,18 @@ public interface ItemMapper {
 				@Param("pagination") Pagination pagination,
 				@Param("itemStatus") int itemStatus);
 	
-	List<ItemVO> selectSellerItem(String memberId);
-	
 	ItemVO selectOne(int itemId);
+	
+	List<ItemVO> selectStatusByPagination(
+		 	@Param("pagination") Pagination pagination,
+		 	@Param("itemStatus") int itemStatus,
+		 	@Param("memberId") String memberId); // 전체 게시글 페이징 처리
+	
+	List<ItemVO> selectSellerItem (
+			@Param("memberId") String memberId
+			
+			);
+
 	
 	int update(ItemVO itemVO);
 	

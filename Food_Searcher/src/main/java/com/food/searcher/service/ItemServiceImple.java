@@ -75,13 +75,18 @@ public class ItemServiceImple implements ItemService {
 
 	// pull 후 삭제, 컨트롤러에서 에러뜬 곳들 수정 예정
 	@Override
-	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
-		int itemStatus = 100;
+	public List<ItemVO> getPagingStatusItems(int itemStatus, Pagination pagination) {
 		String memberId = null;
-		List<ItemVO> list = itemMapper.selectAllByPagination(pagination, itemStatus, memberId);
+		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination, itemStatus, memberId);
 		return list.stream().collect(Collectors.toList());
 	}
-
+	
+	public List<ItemVO> selectSellerItem(String memberId) {
+		List<ItemVO> list = itemMapper.selectSellerItem(memberId);
+		return list;
+	}
+	
+	
 	@Transactional
 	@Override
 	public ItemVO getItemById(int itemId) {
@@ -123,11 +128,16 @@ public class ItemServiceImple implements ItemService {
 	}
 	
 	@Transactional
-	@Override
-	public int updateItemAmount(int itemId, int itemAmount) {
-		
-		return itemMapper.updateItemAmount(itemId, itemAmount);
-	}
+	   @Override
+	   public int updateItemAmount(int itemId, int itemAmount) {
+	      
+	      if(itemAmount < 0) {
+	         log.error("아이템 수량이 음수입니다. itemId: {}, itemAmount: {}");
+	         return 0;
+	      } else {
+	         return itemMapper.updateItemAmount(itemId, itemAmount);
+	      }
+	   }
 
 	@Transactional
 	@Override

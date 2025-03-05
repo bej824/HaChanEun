@@ -4,10 +4,10 @@
 <html>
 <head>
 <style>
-
-
+.button {
+	margin : 5px;
+}
 </style>
-
 <link rel="stylesheet" type="text/css"
 href="${pageContext.request.contextPath}/resources/css/Base.css">
 <link rel="stylesheet" type="text/css"
@@ -34,53 +34,81 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 		<thead>
 			<tr>
 				<th style="width: 10%">상품 명</th>
-				<th style="width: 10%">수량</th>
 				<th style="width: 10%">분류</th>
 				<th style="width: 10%">가격</th>
 				<th style="width: 10%">상태</th>
+				<th style="width: 10%">수량</th>
+				<th style="width: 10%"></th>
 			</tr>
 		</thead>
 		<tbody>
+		<c:forEach var="ItemVO" items="${itemList}">
+			<tr>
+				<td>${ItemVO.itemName }</td>
+				<td>${ItemVO.mainCtg}</td>
+				<td>${ItemVO.itemPrice}</td>
+				<td class="itemStatus" data-status="${ItemVO.itemStatus}">
+				    <c:choose>
+				        <c:when test="${ItemVO.itemStatus == 0}">전체 보기</c:when>
+				        <c:when test="${ItemVO.itemStatus == 100}">판매 중</c:when>
+				        <c:when test="${ItemVO.itemStatus == 200}">판매 중지</c:when>
+				        <c:when test="${ItemVO.itemStatus == 300}">판매 허가 요청</c:when>
+	  				</c:choose>
+				<input type="hidden" value="${ItemVO.itemId }" class="itemId">
+				</td>
+				<td class="itemAmount" data-amount="${ItemVO.itemAmount }">
+					${ItemVO.itemAmount }
+				</td>
+				<td>
+					<input type="text" size=3 id="increasedAmount">
+					<button id="plusBtn" class="button">증가</button></td>
+			</tr>
+		</c:forEach>
 		</tbody>
 	</table>
 	
 	<script>
 	
 	$(document).ready(function(){
-		itemList();
 		
-		$('table tbody').on('click', '.permission', function(){
-			let permission = $(this).html();
+		$('.itemStatus').on('click', function(){
+			let permission = $(this).data("status");
 			let row = $(this).closest("tr");
 			let itemId = row.find(".itemId").val();
 			
-			if(permission == "판매 중"){
+			if(permission == "100"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
 				console.log("100>200");
+				
 				if(result) {
+					$(this).data("status", 200);
 					itemStatus = 200;
 					updateItemStatus();
-					row.find(".permission").html("판매 중지");
+					row.find(".itemStatus").html("판매 중지");
 					alert("변경 완료 : 판매 중지");
 				}
 				
-			} else if(permission == "판매 허가 요청") {
+			} else if(permission == "300") {
 				let result = confirm("해당 물품의 판매를 중단하시겠습니까?");
 				console.log("300>200")
+				
 				if(result) {
+					$(this).data("status", 200);
 					itemStatus = 200;
 					updateItemStatus();
-					row.find(".permission").html("판매 중지");
+					row.find(".itemStatus").html("판매 중지");
 					alert("변경 완료 : 판매 중지");
 				}
 				
-			} else if(permission == "판매 중지") {
+			} else if(permission == "200") {
 				let result = confirm("해당 물품의 판매 중지를 취소하시겠습니까?");
 				console.log("200>300");
+				
 				if(result) {
+					$(this).data("status", 300);
 					itemStatus = 300;
 					updateItemStatus();
-					row.find(".permission").html("판매 허가 요청");
+					row.find(".itemStatus").html("판매 허가 요청");
 					alert("변경 완료 : 판매 허가 요청");
 				} 
 			}
@@ -97,6 +125,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			        success: function (result) {
 			            console.log(result);
 			            if (result == 1) {
+			            	 location.reload(true);
 			            } else {
 			                alert("변경 실패");
 			            }
@@ -105,51 +134,38 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			};
 			
 		});
-		
-		function itemList(){
-			let memberId = $("#memberId").val();
-			console.log(memberId);
+	
+		$('#plusBtn').on('click', function(){
+			let row = $(this).closest("tr");
+			let itemAmount = parseInt(row.find(".itemAmount").data("amount"), 10);
+			let increasedAmount = parseInt(row.find("#increasedAmount").val(), 10);
+			let itemId = parseInt(row.find(".itemId").val(), 10);
+			
+			console.log("수량 : " + itemAmount, " | 증가될 수량 : " + increasedAmount, "상품 번호 : " + itemId);
+			
+			itemAmount = itemAmount + increasedAmount;
+			
+			console.log("증가된 수량 : " + itemAmount);
 			
 			$.ajax({
-		    	type: "GET",
-		    	url: "../seller/status/" + memberId,
-		    	
-		    	data: {},
-		    	success: function(result) {
-		    	  	let tbody = $('table tbody');
-		          	tbody.empty(); // 기존 테이블 내용 비우기
-		    	  	result.forEach(function(itemList) {
-		    	  		let itemStatus = "";
-		    	  		
-		    	  		if(itemList.itemAmount == 0) {
-		    	  			itemStatus = "품절"
-		    	  		} else {
-		    	  			if(itemList.itemStatus == 300) {
-		    	  				itemStatus = "판매 허가 요청"
-		    	  			} else if(itemList.itemStatus == 100) {
-		    	  				itemStatus = "판매 중"
-		    	  			} else if(itemList.itemStatus == 200) {
-		    	  				itemStatus = "판매 중지"
-		    	  			}
-		    	  		}
-		    	  		
-		                let row = 
-		                	'<tr>'
-		                    + '<td>' + itemList.itemName + '</td>'
-		                    + '<td><input type="text" size="3"  value="' + itemList.itemAmount + '"><button>입력</button></td>'
-		                    + '<td>' + itemList.itemTag + '</td>'
-		                    + '<td>' + itemList.itemPrice + '</td>'
-		                    + '<td> <a class=permission>' + itemStatus + '</a> </td>'
-		                    + '<input type="hidden" class="itemId" value="' + itemList.itemId + '">'
-		                    + '</tr>';
-		                    
-		          		tbody.append(row); // 새로운 데이터 행 추가	
-		      		})
-		    	}
-		    
-		  	});
-		
-		}
+		        type: "PATCH",
+		        url: "../seller/status/" + itemId + "/" + itemAmount,
+		        headers: {
+		            "Content-Type": "application/json",
+		        },
+		        data: JSON.stringify(itemId, itemAmount),
+		        success: function (result) {
+		            console.log(result);
+		            if (result == 1) {
+		            	 location.reload(true);
+		            } else {
+		                alert("변경 실패");
+		            }
+		        },
+		    });
+			
+			
+		});
 	});
 	</script>
 
