@@ -11,10 +11,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="couponHistoryId" column="COUPON_HISTORY_ID" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="couponId" column="COUPON_ID" />
-		<result property="couponName" column="COUPON_NAME" />
-		<result property="couponIssuedDate" column="COUPON_ISSUEDDATE" />
-		<result property="couponUsed" column="COUPON_USED" />
-
+		<result property="couponIssuedDate" column="COUPON_ISSUED_DATE" />
+		<result property="couponUseDate" column="COUPON_USE_DATE" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="settled" column="SETTLED" />
 	</resultMap>
+	
+	<insert id="insertCouponHistory">
+		INSERT INTO COUPON_HISTORY
+		(COUPON_HISTORY_ID
+		,MEMBER_ID
+		,COUPON_ID
+		,COUPON_ISSUED_DATE
+		,ITEM_ID
+		) SELECT 
+		 COUPON_ACTIVE_ID
+		,MEMBER_ID
+		,COUPON_ID
+		,COUPON_USE_DATE
+		,ITEM_ID
+		FROM COUPON_ACTIVE
+		WHERE COUPON_EXPIRE_DATE &lt; SYSDATE;
+		OR (COUPON_USE_DATE IS NOT NULL AND COUPON_USE_DATE &lt; SYSDATE - 7);
+	</insert>
 	
 </mapper>

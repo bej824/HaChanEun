@@ -16,10 +16,13 @@ import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.domain.MemberVO;
+import com.food.searcher.persistence.CouponHistoryMapper;
 import com.food.searcher.service.CouponActiveService;
+import com.food.searcher.service.CouponHistoryService;
 import com.food.searcher.service.DiscountCouponService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
+import com.food.searcher.service.UtilityService;
 import com.food.searcher.util.RandomUtil;
 
 import lombok.extern.log4j.Log4j;
@@ -38,9 +41,15 @@ public class MemberCouponTask {
 	CouponActiveService couponActiveService;
 	
 	@Autowired
+	CouponHistoryService couponHistoryService;
+	
+	@Autowired
+	UtilityService utilityService;
+	
+	@Autowired
 	RandomUtil randomUtil;
 	
-	@Scheduled(cron = "0 0 0 * * *") // 매일 00:00 마다 실행 
+	@Scheduled(cron = "0 47 9 * * *") // 매일 00:00 마다 실행 
 	public void couponEvent() {
 		
 		LocalDate now = LocalDate.now();
@@ -50,20 +59,21 @@ public class MemberCouponTask {
 		List<DiscountCouponVO> todayBirthCouponList = 
 				discountCouponService.selectCoupon("COUPON_EVENT", "memberDateOfBirth");
 		
-		
 		List<MemberVO> todayBirthMemberList = 
 				memberService.searchId(null, null, null, today, null);
 		
 		createCouponActiveBatch(todayBirthCouponList, todayBirthMemberList);
 		
-		log.info("오늘의 MBTI는 " + randomUtil.getTodayMBTI() + "입니다.");
-		List<DiscountCouponVO> todayMBTICoupon = 
-				discountCouponService.selectCoupon("COUPON_EVENT", "memberMBTI");
+		if(randomUtil.getTodayMBTI() != null) {
+			log.info("오늘의 MBTI는 " + randomUtil.getTodayMBTI() + "입니다.");
+			List<DiscountCouponVO> todayMBTICoupon = 
+					discountCouponService.selectCoupon("COUPON_EVENT", "memberMBTI");
+			List<MemberVO> todayMBTIMembersList = 
+					memberService.searchId(null, null, null, 0, randomUtil.getTodayMBTI());
+			createCouponActiveBatch(todayMBTICoupon, todayMBTIMembersList);
+		}
 		
-		List<MemberVO> todayMBTIMembersList = 
-				memberService.searchId(null, null, null, 0, randomUtil.getTodayMBTI());
-		
-		createCouponActiveBatch(todayMBTICoupon, todayMBTIMembersList);
+		couponActiveService.deleteCouponActiveByOrderId();
 		
 	} // end couponEvent()
 	
@@ -73,6 +83,7 @@ public class MemberCouponTask {
 		for(int i = 0; i < couponList.size(); i++) {
 			CouponActiveVO couponActiveVO = new CouponActiveVO();
 			couponActiveVO.setCouponId(couponList.get(i).getCouponId());
+			couponActiveVO.setCouponActiveId(utilityService.sysDate());
 			couponActiveVO = couponActiveService.setCouponInfo(couponActiveVO);
 			
 			for(int j = 0; j < memberList.size(); j++) {

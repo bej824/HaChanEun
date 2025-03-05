@@ -10,8 +10,6 @@
 <body>
 
 	<p>쿠폰 이름 : ${discountCouponVO.couponName }</p>
-		
-	<p>발급 주체 : ${discountCouponVO.couponIssuer }</p>
 
 	<p>할인 가격</p>
 	<input type="text" id="couponPrice" name="couponPrice" placeholder="${discountCouponVO.couponPrice }">원
