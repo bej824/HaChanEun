@@ -101,6 +101,7 @@ li {
 		</c:if>
 	</ul>
 	
+	<%@ include file="relation.jsp"%>
 	
 <script type="text/javascript">
 	

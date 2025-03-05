@@ -18,7 +18,9 @@ public interface SellerService {
 	
 	List<DiscountCouponVO> selectSellerCoupon();
 	
-	List<DirectOrderVO> purchaseHistory(String memberId);
+	List<DirectOrderVO> purchaseHistory(String memberId, Pagination pagination);
+	
+	int totalCount(String memberId, Pagination pagination);
 	
 	DirectOrderVO purchaseInfo(String orderId);
 	

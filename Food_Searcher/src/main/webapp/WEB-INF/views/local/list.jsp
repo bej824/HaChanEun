@@ -37,17 +37,6 @@ table {
     width: 100%; /* 테이블 너비 100%로 설정하여 컨테이너에 맞게 확장 */
 }
 
-/* 테이블 컨테이너 */
-.table-container {
-	border-top: 2px solid black;
-    width: 100%; /* 테이블이 컨테이너의 전체 너비를 차지하게 설정 */
-    height: 455px; /* 원하는 높이 설정 */
-    overflow-y: auto; /* 수직 방향으로 스크롤 추가 */
-    margin-left: 10; /* 자동 왼쪽 여백 설정 */
-    margin-right: auto; /* 자동 오른쪽 여백 설정 */
-    border-radius: 10px; /* 테두리를 둥글게 설정 */
-}
-
 /* 테이블 헤더 고정 */
 thead {
     position: sticky;
