@@ -22,6 +22,8 @@ public interface ItemMapper {
 				@Param("pagination") Pagination pagination,
 				@Param("itemStatus") int itemStatus);
 	
+	List<ItemVO> selectSellerItem(String memberId);
+	
 	ItemVO selectOne(int itemId);
 	
 	int update(ItemVO itemVO);
