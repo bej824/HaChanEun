@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 20px;        /* 아이템 간의 간격 */
+        
+    }
+</style>
 <title>Insert title here</title>
   <style>
     .quick-scroll {
@@ -35,30 +43,30 @@
   </style>
 </head>
 <body>
-	<p>연관 상품(item/detail 에 들어갈 예정)</p>
+	<hr>
+	<p>${itemVO.itemName } 연관 상품</p>
 	<div class="item-container">
 	<c:if test="${pageMaker.isPrev() }">
 			<li class="pagination_button"><a href="${pageMaker.pagination.pageNum - 1}"
 				class="button">이전</a></li>
 		</c:if>
-		<c:forEach var="itemVO" items="${itemList}">
-			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
-				<input type="hidden" value="${itemVO.itemStatus }" >
-				<c:forEach var="attachVO" items="${attachVO}">
-					<c:if test="${itemVO.itemId eq attachVO.itemId}">
+		<c:forEach var="itemList" items="${itemList}">
+		<c:if test="${itemVO.itemName != itemList.itemName }">
+			<div class="item" onclick="window.location.href='detail?itemId=${itemList.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
+				<input type="hidden" value="${itemList.itemStatus }" >
+				<c:forEach var="attachAll" items="${attachAll}">
+					<c:if test="${itemList.itemId eq attachAll.itemId}">
 						<div class="image_item">
 						        <img width="200px" height="120px" 
-						        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" />
+						        src="../images/get?attachId=${attachAll.attachId }&attachExtension=${attachAll.attachExtension}" />
 						</div>
 					</c:if>
 				</c:forEach>
 					<p>상품명 : ${itemVO.itemName }</p>
-					<p>상품번호 : ${itemVO.itemId }</p>
-					<p>분류 : ${itemVO.itemTag }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원
-							&nbsp;&nbsp;&nbsp; 상태 : ${itemVO.itemStatus }</p>
+					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					
 			</div>
+		</c:if>
 		</c:forEach>
 		<c:if test="${pageMaker.isNext() }">
 			<li class="pagination_button"><a href="${pageMaker.pagination.pageNum + 1}"

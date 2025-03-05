@@ -74,9 +74,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
 		FROM
 		ITEM_CTG
-
+		<choose>
+			<when test="pagination.type == 'ITEM_NAME'">
+				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_CONTENT'">
+				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_TAG'">
+				WHERE MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+		</choose>
 		)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
+	
+	<select id="selectAllCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT
+		FROM ITEM_CTG
 	</select>
 
 	<select id="selectStatusByPagination" resultMap="itemResultMap"
@@ -105,6 +120,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="itemStatus != null and itemStatus != 0">
 			AND ITEM_STATUS = #{itemStatus}
 		</if>
+		<choose>
+			<when test="pagination.type == 'ITEM_NAME'">
+				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_CONTENT'">
+				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_TAG'">
+				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+		</choose>
 	</select>
 
 	<select id="selectOne" resultMap="itemResultMap">
@@ -116,6 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.ITEM_ID = #{itemId}
 	</select>
 	
+<<<<<<< HEAD
 	<select id="selectSellerItem" resultMap="itemResultMap"
       parameterType="map">
 		SELECT a.*, b.*
@@ -123,8 +150,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN ITEM_CTG b
 		ON a.ITEM_ID = b.ITEM_ID
 		WHERE a.MEMBER_ID = #{memberId}
+=======
+	<select id="selectCategoryList" resultMap="itemResultMap">
+		SELECT * FROM ITEM_CTG WHERE MAIN_CTG = #{mainCtg} ORDER BY ITEM_ID DESC
+	</select>
+	<select id="selectSellerItem" resultMap="itemResultMap">
+      SELECT * FROM ITEM WHERE MEMBER_ID = #{memberId} ORDER BY ITEM_ID DESC
+>>>>>>> 15f2c6b948688320340ae7345f16d1ec8c428215
   	</select>
-
+  	
 	<update id="update">
 		UPDATE ITEM SET
 		ITEM_NAME = #{itemName},
@@ -143,7 +177,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<update id="updateStatus">
-		UPDATE ITEM
+		UPDATE ITEM_CTG
 		SET ITEM_STATUS = #{itemStatus}
 		WHERE
 		ITEM_ID = #{itemId}

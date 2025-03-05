@@ -1,8 +1,10 @@
 package com.food.searcher.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.food.searcher.domain.CouponActiveVO;
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 
 public interface CouponActiveService {
@@ -11,7 +13,7 @@ public interface CouponActiveService {
 	
 	/**
 	 * 발급 쿠폰 확인(couponActive)
-	 * @param memberId 회원 입장에서의 확인 시 자동 기입.
+	 * @param memberId 로그인 회원 id 기입.
 	 * @param itemId 상품 구매할 때 사용 가능한 쿠폰 확인 시 자동 기입.
 	 */
 	List<CouponActiveVO> selectCouponActive(String memberId, int itemId);
@@ -22,7 +24,7 @@ public interface CouponActiveService {
 	 * @param memberId(principal.getName())
 	 * @return
 	 */
-	Integer selectCouponActiveByCouponPrice(int couponActiveId, String memberId);
+	Integer selectCouponActiveByCouponPrice(DirectOrderVO directOrderVO, LocalDateTime now);
 	
 	/**
 	 * 구매 시 쿠폰 사용 시 db내 사용 처리
@@ -42,6 +44,13 @@ public interface CouponActiveService {
 	 */
 	int updateCouponActiveByOrderId(String orderId);
 	
+	
+	/**
+	 * @param orderId
+	 * @return 성공 1, 삭제 0
+	 */
+	void deleteCouponActiveByOrderId();
+	
 	/**
 	 * @param couponActiveVO
 	 * 1. 쿠폰 발급 시 발급일, 만료일 기입
@@ -49,7 +58,5 @@ public interface CouponActiveService {
 	 * 3. 사용처 제한이 없을 시 itemId = 0으로 기입되며, itemName = null로 기입
 	 */
 	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
-	
-	
 
 }

@@ -106,15 +106,25 @@ public class ItemController {
 	@GetMapping("/detail")
 	public void detail(
 			Model model,
-			Integer itemId) {
+			Integer itemId,
+			Pagination pagination) {
 		
 		ItemVO itemVO = itemService.getItemById(itemId);
+		log.info(itemVO);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setPageCount(1);
+		
+		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getMainCtg(), pagination);
+		model.addAttribute("itemList", itemList);
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
-			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			List<ItemAttachVO> attachVO = attachService.getItemById(itemVO.getItemId());
 			model.addAttribute("attachVO", attachVO);
 		}
+		List<ItemAttachVO> attachAll = attachService.getSelectAll();
+		model.addAttribute("attachAll", attachAll);
 	}
 	
 	@GetMapping("/modify")
@@ -166,8 +176,9 @@ public class ItemController {
 	}
 	
 	@PostMapping("/order")
-	public String order (@RequestBody DirectOrderVO directOrderVO) {
+	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
 		log.info(directOrderVO);
+		directOrderVO.setMemberId(principal.getName());
 		int result = directOrderService.orderPurchase(directOrderVO);
 		log.info(result);
 		return "redirect:/item/purchaseHistory";

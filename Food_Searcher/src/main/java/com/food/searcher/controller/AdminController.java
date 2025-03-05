@@ -1,7 +1,6 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.food.searcher.domain.CartVO;
-import com.food.searcher.domain.DirectOrderVO;
-import com.food.searcher.domain.ItemVO;
 import com.food.searcher.service.AdminService;
-import com.food.searcher.service.DirectOrderService;
-import com.food.searcher.service.ItemService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -37,33 +31,22 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
-	@Autowired
-	private DirectOrderService directOrderService;
-	
-	@Autowired
-	private ItemService itemService;
-	
 	@GetMapping("/adminPage")
 	public void adminPageGET() {
 
 	}
 	
 	@GetMapping("/itemManagement")
-	public void itemManagementGET() {
-	}
-	
-	@ResponseBody
-	@GetMapping("/itemList")
-	public List<ItemVO> itemListGET(
-			Pagination pagination,
+	public void itemManagementGET(Pagination pagination,
 			Model model) {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		adminService.getTotalCount(pagination);
+		pageMaker.setTotalCount(adminService.getTotalCount(pagination));
 		
+		model.addAttribute("itemList", adminService.itemGetAll(pagination));
 		model.addAttribute("pageMaker", pageMaker);
-		
-		return adminService.itemGetAll(pagination);
+		log.info(pageMaker);
+		log.info(pageMaker.getStartNum());
 	}
 	
 	@ResponseBody
@@ -79,25 +62,21 @@ public class AdminController {
 	public void purchaseHistory(Model model, Principal principal, Pagination pagination) {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(directOrderService.getTotalCount(pagination));
-		List<DirectOrderVO> allList = directOrderService.getPagingBoards(pagination);
+		pageMaker.setTotalCount(adminService.totalCount(pagination));
 		
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("allList", allList);
+		model.addAttribute("allList", adminService.orderList(pagination));
 	}
 	
 	@GetMapping("/purchaseInfo")
 	public void purchaseInfo(Model model, String orderId) {
-		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
-		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
-		model.addAttribute("itemVO", itemVO);
-		model.addAttribute("directOrderVO", directOrderVO);
+		model.addAttribute("itemVO", adminService.getItemById(adminService.getselectOne(orderId).getItemId()));
+		model.addAttribute("directOrderVO", adminService.getselectOne(orderId));
 	}
 	
 	@PutMapping("/updateStatus/{itemId}")
 	public ResponseEntity<Integer> updateStatus(@PathVariable("itemId") Integer itemId, 
 												@RequestBody Integer itemStatus) {
-		
 		return new ResponseEntity<Integer> (adminService.updateItemStatus(itemId, itemStatus), HttpStatus.OK);
 	}
 

@@ -15,8 +15,6 @@
 	
 	<p>할인가격 : ${discountCouponVO.couponPrice } 원</p>
 	
-	<p id="couponIssuer"></p>
-	
 	<p>사용조건 : ${discountCouponVO.couponUseCondition }원 이상 구매 시 사용 가능</p>
 	
 	<p>쿠폰 사용 기한 : ${discountCouponVO.couponExpirationDate }일 </p>
@@ -57,9 +55,13 @@
 				
 			console.log("쿠폰 아이디 : " + couponId);
 			
+			if(couponEvent == 'oneTime') {
 			let result = confirm(couponName + "를 발급하시겠습니까?");
 			if(result) {
 				window.location.href = "activeRegister?itemId= " + ${itemId} + "&couponId=" + ${discountCouponVO.couponId };
+			}
+			} else {
+				alert("해당 쿠폰은 수동 발급할 수 없습니다.");
 			}
 				
 		})
@@ -101,12 +103,6 @@
 				$('#couponEvent').html('쿠폰 발급 주기 : 생일');
 			} else if('${discountCouponVO.couponEvent }' == 'memberMBTI') {
 				$('#couponEvent').html('쿠폰 발급 주기 : 오늘의 mbti');
-			}
-			
-			if('${discountCouponVO.couponIssuer }' == 'ROLE_ADMIN') {
-				$('#couponIssuer').html('발급자 : 사이트');
-			} else if('${discountCouponVO.couponIssuer }' == 'ROLE_SELLER') {
-				$('#couponIssuer').html('발급자 : 판매자');
 			}
 			
 			

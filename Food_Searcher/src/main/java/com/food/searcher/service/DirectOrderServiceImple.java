@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,23 +24,23 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class DirectOrderServiceImple implements DirectOrderService{
+public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Autowired
 	private DirectOrderMapper directOrderMapper;
-	
+
 	@Autowired
 	private CouponActiveService couponActiveService;
-	
+
 	@Autowired
 	private UtilityService utilityService;
-	
+
 	@Autowired
-	private ItemMapper itemMapper;
-	
+	private ItemService itemService;
+
 	@Autowired
 	private CartMapper cartMapper;
-	
+
 	@Override
 	public List<DirectOrderVO> getAllOrder() {
 		return directOrderMapper.selectAll();
@@ -49,7 +50,7 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public List<DirectOrderVO> getOrder(String memberId) {
 		return directOrderMapper.selectMember(memberId);
 	}
-	
+
 	@Override
 	public DirectOrderVO getselectOne(String itemId) {
 		return directOrderMapper.selectOne(itemId);
@@ -58,56 +59,65 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	@Transactional(value = "transactionManager")
 	@Override
 	public int orderPurchase(DirectOrderVO directOrderVO) {
+		log.info("insert()");
+
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		directOrderVO.setOrderId(now.format(formatter));
+
+		log.info(directOrderVO);
+
+		List<ItemVO> list = new ArrayList<>();
+		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+		itemVO.setItemCount(directOrderVO.getTotalCount());
+		list.add(itemVO);
 		
-		if(directOrderVO.getCouponActiveId() != 0) {
-			CouponActiveVO couponActiveVO = new CouponActiveVO();
-			couponActiveVO.setCouponActiveId(directOrderVO.getCouponActiveId());
-			couponActiveVO.setMemberId(directOrderVO.getMemberId());
-			couponActiveVO.setOrderId(now.format(formatter) + directOrderVO.getMemberId());
-			couponActiveVO.setItemId(directOrderVO.getItemId());
-			couponActiveVO.setCouponUseDate(now);
-			couponActiveService.updateCouponActiveByCouponActiveId(couponActiveVO);
+		if(list.get(0).getItemAmount() - directOrderVO.getTotalCount() >= 0) {
+			itemService.updateItemAmount(
+					directOrderVO.getItemId()
+					,list.get(0).getItemAmount() - directOrderVO.getTotalCount());
+		} else {
+			log.warn(list.get(0).getItemId() + " " + list.get(0).getItemName() + "의 재고가 부족합니다.");
+			return 0;
 		}
 		
-		log.info("insert()");
-		log.info(directOrderVO);
-		int result = directOrderMapper.insert(directOrderVO);
-		log.info(result + "행 추가 완료");
-		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
-		int itemAmount = itemVO.getItemAmount() - directOrderVO.getTotalCount();
-		int item = itemMapper.updateItemAmount(itemAmount, directOrderVO.getItemId());
-		log.info(item + "행 업데이트 완료");
-		return result;
+		Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
+
+		Map<String, Integer> totalPrice = calculateTotalPrice(
+				 list
+				,discountPrice
+				,directOrderVO.getMemberId());
+		
+		directOrderVO.setTotalPrice(totalPrice.get(directOrderVO.getMemberId()));
+
+		return directOrderMapper.insert(directOrderVO);
 	}
-	
+
 	@Transactional
 	@Override
 	public int cartPurchase(DirectOrderVO directOrderVO) {
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		directOrderVO.setOrderId(now.format(formatter));
-		
+
 		log.info("cartInsert()");
 		log.info(directOrderVO);
 		int result = orderPurchase(directOrderVO);
-		
+
 		List<CartVO> cartVO = cartMapper.cartOrder(directOrderVO.getMemberId());
-		for(CartVO vo : cartVO) {
+		for (CartVO vo : cartVO) {
 			cartMapper.cartDelete(vo.getCartId());
 		}
 		return result;
 	}
-	
+
 	@Override
 	public List<DirectOrderVO> sellerList(String memberId, Pagination pagination) {
 		log.info("sellerList()");
-		
+
 		return directOrderMapper.sellerList(memberId, pagination);
 	}
-	
+
 	@Override
 	public int getSellerTotalCount(String memberId, Pagination pagination) {
 		return directOrderMapper.sellerTotalCount(memberId, pagination);
@@ -121,10 +131,10 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info(result + "행 업데이트 완료");
 		couponActiveService.updateCouponActiveByOrderId(orderId);
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
-		ItemVO itemVO = itemMapper.selectOne(directOrderVO.getItemId());
-		int itemAmount = itemVO.getItemAmount() + directOrderVO.getTotalCount();
-		int item = itemMapper.updateItemAmount(itemAmount, directOrderVO.getItemId());
-		log.info(item + "행 업데이트 완료");
+
+		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+		itemService.updateItemAmount(itemVO.getItemAmount() - directOrderVO.getTotalCount(), directOrderVO.getItemId());
+
 		return result;
 	}
 
@@ -133,50 +143,49 @@ public class DirectOrderServiceImple implements DirectOrderService{
 		log.info("환불 하기");
 		return directOrderMapper.refundReady(orderId);
 	}
-	
+
 	@Override
 	public int refund(String refundReason, String refundContent, String orderId) {
 		log.info("환불 신청");
 		return directOrderMapper.refund(refundReason, refundContent, orderId);
 	}
-	
+
 	@Transactional
 	@Override
 	public int refundOK(String orderId) {
 		log.info("환불 승인");
-		
+
 		int result = directOrderMapper.refundOK(orderId);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			couponActiveService.updateCouponActiveByOrderId(orderId);
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public int deliveryReady(String deliveryCompany, String invoiceNumber, String orderId) {
 		log.info("배송 준비중");
 		return directOrderMapper.deliveryReady(deliveryCompany, invoiceNumber, orderId);
 	}
-	
+
 	@Override
 	public int delivering(String orderId) {
 		log.info("배송 중");
 		return directOrderMapper.delivering(orderId);
 	}
-	
+
 	@Override
 	public int deliveryCompleted(String orderId) {
 		log.info("배송 완료");
 		return directOrderMapper.deliveryCompleted(orderId);
 	}
-	
+
 	@Override
 	public List<DirectOrderVO> getPagingBoards(Pagination pagination) {
 		return directOrderMapper.selectListByPagination(pagination);
 	}
-	
 
 	@Override
 	public int getTotalCount(Pagination pagination) {
@@ -192,18 +201,21 @@ public class DirectOrderServiceImple implements DirectOrderService{
 	public int getMemberTotalCount(String memberId) {
 		return directOrderMapper.selectMemberTotalCount(memberId);
 	}
-	
-	  public Map<String, Integer> calculateTotalPrice(List<ItemVO> list, CouponActiveVO activeVO, String memberId) {
-	      Map<String, Integer> acount = new HashMap<String, Integer>();
-	      int totalCost = 0;
-	      
-	      for(int i = 0; i < list.size(); i++) {
-	         totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
-	      }
-	      
-	      acount.put(memberId, totalCost - activeVO.getCouponPrice());
-	      
-	      return acount;
-	   }
+
+	public Map<String, Integer> calculateTotalPrice(
+			 List<ItemVO> list
+			,Integer discountPrice
+			,String memberId) {
+		Map<String, Integer> acount = new HashMap<String, Integer>();
+		int totalCost = 0;
+
+		for (int i = 0; i < list.size(); i++) {
+			totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
+		}
+
+		acount.put(memberId, totalCost - discountPrice);
+
+		return acount;
+	}
 
 }

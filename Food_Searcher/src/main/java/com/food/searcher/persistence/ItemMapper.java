@@ -18,6 +18,10 @@ public interface ItemMapper {
 			 	@Param("itemStatus") int itemStatus,
 			 	@Param("memberId") String memberId); // 전체 게시글 페이징 처리
 	
+	int selectAllCount(Pagination pagination);
+	
+	List<ItemVO> selectCategoryList(@Param("mainCtg") String mainCtg, @Param("pagination") Pagination pagination);
+	
 	int selectTotalCount(
 				@Param("pagination") Pagination pagination,
 				@Param("itemStatus") int itemStatus);

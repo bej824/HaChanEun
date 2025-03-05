@@ -13,9 +13,8 @@
 	
 	<select id="searchBy" name="searchBy">
 		<option value="0">쿠폰 이름</option>
-		<option value="1">발급자</option>
-		<option value="2">쿠폰 가격</option>
-		<option value="3">쿠폰 제한</option>
+		<option value="1">쿠폰 가격</option>
+		<option value="2">쿠폰 제한</option>
 	</select>
 	<input id="searchText"> <button id="btn_search" class="button">검색</button>
 	<button id="btn_clear" class="button">검색어 지우기</button>
@@ -25,7 +24,6 @@
 		<thead>
 			<tr>
 				<th style="width: 16.67%">쿠폰 이름</th>
-				<th style="width: 16.67%">발급자</th>
 				<th style="width: 20%">쿠폰 가격</th>
 				<th style="width: 20%">쿠폰 제한</th>
 				<th style="width: 20%">쿠폰 사용 기한</th>
@@ -53,7 +51,7 @@
 		$('#btn_search').click(function(){
 			let searchBy = $('#searchBy').val();
 			let searchText = $('#searchText').val().trim();
-			let searchByList = ["COUPON_NAME", "COUPON_ISSUER", "COUPON_PRICE", "COUPON_USE_CONDITION"];
+			let searchByList = ["COUPON_NAME", "COUPON_PRICE", "COUPON_USE_CONDITION"];
 			
 			if(searchText == '') {
 				couponManagement('', '');
@@ -67,12 +65,6 @@
 					alert("해당 검색 필터로는 숫자만 입력 가능합니다!");
 					return;
 				}
-			} else if(searchBy == "COUPON_ISSUER") {
-				if(searchText == "운영자") {
-					searchText = 'ROLE_ADMIN';
-	    		  } else if(searchText == "판매자") {
-	    			  searchText = 'ROLE_SELLER';
-	    		  }
 			}
 			
 			if(searchBy == '') {
@@ -151,19 +143,12 @@
 	    		  } else {
 	    			  event = coupon.couponEvent;
 	    		  }
-	    		  
-	    		  if(coupon.couponIssuer == 'ROLE_ADMIN') {
-	    			  issuer = "운영자";
-	    		  } else if(coupon.couponIssuer == 'ROLE_SELLER') {
-	    			  issuer = "판매자";
-	    		  }
 	            	
 	                let row = 
 	                	'<tr onclick="window.location.href=\'detail?itemId='
 	                	+ ${itemId }
 	                	+ '&couponId=' + coupon.couponId + '\'">'
 	                    + '<td>' + coupon.couponName + '</td>'
-	                    + '<td>' + issuer + '</td>'
 	                    + '<td>' + coupon.couponPrice + "원" + '</td>'
 	                    + '<td>' + coupon.couponUseCondition + "원" + '</td>'
               		+ '<td>' + coupon.couponExpirationDate + "일" + '</td>'
