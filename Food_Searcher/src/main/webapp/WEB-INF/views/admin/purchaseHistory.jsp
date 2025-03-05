@@ -58,7 +58,7 @@
 			<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
 			    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
 			        <li class="pagination_button">
-			            <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${num}">${num}</a>
+			            <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
 			        </li>
 			    </c:forEach>
 			</c:if>
@@ -103,6 +103,22 @@
 	            keyword.style.display = "none";  // 'DELIVERY_DATE' 이외의 타입에서는 필터 숨기기
 	        }
 	    }
+	    
+	    window.onload = function() {
+		    // 새로고침이 감지된 경우
+		    if (sessionStorage.getItem("reloaded")) {
+		
+		        // URL에서 검색어 제거
+		        window.history.replaceState({}, document.title, window.location.pathname);
+		
+		        // 새로고침 플래그 삭제
+		        sessionStorage.removeItem("reloaded");
+		    }
+		};
+		
+		window.addEventListener("beforeunload", function() {
+		    sessionStorage.setItem("reloaded", "true");
+		});
 	</script>
 </body>
 </html>

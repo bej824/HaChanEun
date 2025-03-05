@@ -128,6 +128,8 @@ pageEncoding="UTF-8"%>
     
 	</div>	
 	
+	<%@ include file="relation.jsp"%>
+	
 	<br><br>	
 	<script type="text/javascript">
 	

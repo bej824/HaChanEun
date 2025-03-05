@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -20,6 +21,9 @@ public class AdminServiceImple implements AdminService {
 	@Autowired
 	ItemService itemService;
 	
+	@Autowired
+	private DirectOrderService directOrderService;
+	
 	@Override
 	public int createRole(String memberId, String RoleName) {
 	
@@ -29,7 +33,7 @@ public class AdminServiceImple implements AdminService {
 	@Override
 	public int getTotalCount(Pagination pagination) {
 		
-		return itemService.getStatusTotalCount(pagination);
+		return itemService.getTotalCount(pagination);
 	}
 	
 	@Override
@@ -42,6 +46,26 @@ public class AdminServiceImple implements AdminService {
 	public int updateItemStatus(int itemId, int itemStatus) {
 		
 		return itemService.updateItemStatus(itemId, itemStatus);
+	}
+
+	@Override
+	public ItemVO getItemById(int itemId) {
+		return itemService.getItemById(itemId);
+	}
+
+	@Override
+	public int totalCount(Pagination pagination) {
+		return directOrderService.getTotalCount(pagination);
+	}
+
+	@Override
+	public List<DirectOrderVO> orderList(Pagination pagination) {
+		return directOrderService.getPagingBoards(pagination);
+	}
+
+	@Override
+	public DirectOrderVO getselectOne(String orderId) {
+		return directOrderService.getselectOne(orderId);
 	}
 
 }

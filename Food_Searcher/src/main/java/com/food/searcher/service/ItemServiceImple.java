@@ -59,8 +59,7 @@ public class ItemServiceImple implements ItemService {
 	@Transactional
 	@Override
 	public int getTotalCount(Pagination pagination) {
-		int itemStatus = 0;
-		return itemMapper.selectTotalCount(pagination, itemStatus);
+		return itemMapper.selectAllCount(pagination);
 	}
 
 	@Transactional
@@ -133,6 +132,11 @@ public class ItemServiceImple implements ItemService {
 	@Override
 	public int deleteItem(int itemId) {
 		return itemMapper.delete(itemId);
+	}
+
+	@Override
+	public List<ItemVO> getSelectCategoryList(String mainCtg, Pagination pagination) {
+		return itemMapper.selectCategoryList(mainCtg, pagination);
 	}
 
 } // end ItemServiceImple

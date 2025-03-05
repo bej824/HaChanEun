@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -26,5 +27,12 @@ public interface AdminService {
 	List<ItemVO> itemGetAll(Pagination pagination);
 	
 	int updateItemStatus(int itemId, int itemStatus);
+	
+	ItemVO getItemById(int itemId);
 
+	int totalCount(Pagination pagination);
+	
+	List<DirectOrderVO> orderList(Pagination pagination);
+	
+	DirectOrderVO getselectOne(String orderId);
 }

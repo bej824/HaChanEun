@@ -10,6 +10,8 @@ public interface ItemService {
    
    List<ItemVO> getPagingAllItems(Pagination pagination);
    List<ItemVO> getPagingStatusItems(Pagination pagination);
+   List<ItemVO> getSelectCategoryList(String mainCtg, Pagination pagination);
+   
    int getTotalCount(Pagination pagination);
    int getStatusTotalCount(Pagination pagination);
    
