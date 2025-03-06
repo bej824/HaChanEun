@@ -22,6 +22,8 @@ public interface SellerService {
 	
 	int totalCount(String memberId, Pagination pagination);
 	
+	int updateItemStatus(int itemId, int itemStatus);
+	
 	DirectOrderVO purchaseInfo(String orderId);
 	
 	ItemVO purchaseItemInfo(String orderId);

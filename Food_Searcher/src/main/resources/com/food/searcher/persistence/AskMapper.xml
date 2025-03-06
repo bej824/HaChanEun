@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.AskMapper">
+
+	<resultMap type="com.food.searcher.domain.AskVO" id="askResultMap">
+
+		<id property="askId" column="ASK_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="askContent" column="ASK_CONTENT" />
+		<result property="askDate"
+			column="ASK_DATE" jdbcType="DATE" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO ASK(
+			ASK_ID,
+			MEMBER_ID,
+			ITEM_ID,
+			ASK_CONTENT
+			) VALUES (
+			#{askId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(ask_seq.NEXTVAL), 4, '0'),
+			#{memberId},
+			#{itemId},
+			#{askContent}
+			)
+			
+	</insert>
+
+	
+	<select id="select" resultMap="askResultMap">
+		SELECT * FROM ASK WHERE ITEM_ID = #{itemId}
+	</select>
+	
+	<update id="update">
+		UPDATE ASK SET
+			ASK_CONTENT = #{askContent}
+			,ASK_DATE = #{askDate}
+			WHERE ASK_ID = #{askId}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM ASK WHERE ASK_ID = #{askId}
+	</delete>
+	
+</mapper>

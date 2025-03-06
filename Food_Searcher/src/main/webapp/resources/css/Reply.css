@@ -1,10 +1,11 @@
-.reply_item {
+.reply_item, .ask_item {
 	  display: block;
       width: 100%;
       height: 100%;
       border-style: solid hidden hidden hidden;
       border-color: grey; /* 색 ? */
       border-width: thin;
+      margin : 10px;
 }
 
 .no-reply {
@@ -12,6 +13,11 @@
     font-size: 16px;
     color: gray;
     padding: 10px;
+}
+
+.userInfo {
+	margin : 3px;
+	
 }
 
 

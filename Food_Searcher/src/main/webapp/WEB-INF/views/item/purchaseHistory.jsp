@@ -19,6 +19,7 @@
 				<th style="width: 30%">주소</th>
 				<th style="width: 9%">배송 상태</th>
 				<th style="width: 15%">결제일</th>
+				<th style="width: 7%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,6 +32,7 @@
 				<td>${DirectOrderVO.deliveryStatus }</td>
 				<fmt:formatDate value="${DirectOrderVO.deliveryDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>
 				<td>${deliveryDate }</td>
+				<td><button>리뷰 작성</button></td>
 			</tr>
 		</c:forEach>
 		</tbody>

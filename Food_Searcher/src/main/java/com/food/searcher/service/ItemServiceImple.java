@@ -119,10 +119,8 @@ public class ItemServiceImple implements ItemService {
 		return updateItem;
 	}
 	
-	@Transactional
 	@Override
 	public int updateItemStatus(int itemId, int itemStatus) {
-
 		return itemMapper.updateStatus(itemId, itemStatus);
 	}
 	
