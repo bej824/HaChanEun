@@ -61,13 +61,15 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				</td>
 				<td>
 					<input type="text" size=3 id="increasedAmount">
-					<button id="plusBtn" class="button">증가</button></td>
+					<button class="plusBtn">증가</button></td>
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
+	<br>
 	
-	<script>
+	
+	<script type="text/javascript">
 	
 	$(document).ready(function(){
 		
@@ -75,6 +77,8 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			let permission = $(this).data("status");
 			let row = $(this).closest("tr");
 			let itemId = row.find(".itemId").val();
+			
+			console.log(permission, itemId);
 			
 			if(permission == "100"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
@@ -125,7 +129,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			        success: function (result) {
 			            console.log(result);
 			            if (result == 1) {
-			            	 location.reload(true);
 			            } else {
 			                alert("변경 실패");
 			            }
@@ -135,11 +138,11 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			
 		});
 	
-		$('#plusBtn').on('click', function(){
+		$('.plusBtn').on('click', function(){
 			let row = $(this).closest("tr");
 			let itemAmount = parseInt(row.find(".itemAmount").data("amount"), 10);
 			let increasedAmount = parseInt(row.find("#increasedAmount").val(), 10);
-			let itemId = parseInt(row.find(".itemId").val(), 10);
+			let itemId = row.find(".itemId").val();
 			
 			console.log("수량 : " + itemAmount, " | 증가될 수량 : " + increasedAmount, "상품 번호 : " + itemId);
 			

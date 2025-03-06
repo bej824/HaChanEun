@@ -21,32 +21,23 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach var="itemList" items="${itemList }">
+		<c:forEach var="ItemVO" items="${itemList}">
 			<tr>
-				<td>${itemList.itemName }</td>
-				<td>${itemList.mainCtg }</td>
-				<td>${itemList.subCtg }</td>
-				<td>${itemList.itemPrice }</td>
-				<td id="status">
+				<td>${ItemVO.itemName }</td>
+				<td>${ItemVO.mainCtg}</td>
+				<td>${ItemVO.subCtg }</td>
+				<td>${ItemVO.itemPrice}</td>
+				<td class="itemStatus" data-status="${ItemVO.itemStatus}">
 				    <c:choose>
-				        <c:when test="${itemList.itemStatus == 100}">
-				            <span class="permission" data-status="100" onclick="changeStatus(${itemList.itemId}, 100)">판매 중</span>
-				        </c:when>
-				        <c:when test="${itemList.itemStatus == 200}">
-				            <span class="permission" data-status="200">판매 중지</span>
-				        </c:when>
-				        <c:when test="${itemList.itemStatus == 300}">
-				            <span class="permission" data-status="300" onclick="changeStatus(${itemList.itemId}, 300)">판매 허가 요청</span>
-				        </c:when>
-				        <c:otherwise>
-				            <span class="permission" onclick="changeStatus(${itemList.itemId}, 0)">상태 미정</span>
-				        </c:otherwise>
-				    </c:choose>
-			<input type="hidden" class="itemId" value="${itemList.itemId }">
+				        <c:when test="${ItemVO.itemStatus == 0}">전체 보기</c:when>
+				        <c:when test="${ItemVO.itemStatus == 100}">판매 중</c:when>
+				        <c:when test="${ItemVO.itemStatus == 200}">판매 중지</c:when>
+				        <c:when test="${ItemVO.itemStatus == 300}">판매 허가 요청</c:when>
+	  				</c:choose>
+				<input type="hidden" value="${ItemVO.itemId }" class="itemId">
 				</td>
-
 			</tr>
-			</c:forEach>
+		</c:forEach>
 		</tbody>
 	</table>
 	<br>
@@ -70,76 +61,74 @@
 	
 	<script type="text/javascript">
 	
-	function changeStatus(itemId, currentStatus) {
-	    let itemStatus;
-	    console.log("currentStatus" + currentStatus);
-
-	    // 상태에 따른 변경 처리
-	    if (currentStatus === 300) { // 판매 중
-	    	let result = confirm("해당 물품의 판매를 허가 하시겠습니까?");
-			if(result) {
-				itemStatus = 100;
-				$.ajax({
-			        type: "PUT",
-			        url: "../admin/updateStatus/" + itemId,
-			        headers: {
-			            "Content-Type": "application/json",
-			        },
-			        data: JSON.stringify(itemStatus),
-			        success: function (result) {
-			            console.log(result);
-			            if (result == 1) {
-			            	location.reload();
-			            } else {
-			                alert("변경 실패");
-			            }
-			        },
-			    });
-			}
-				alert("변경 완료");
-				return;
-	    } else if (currentStatus === 100) { // 판매 허가 요청
-	    	let result = confirm("해당 물품의 판매 허가를 취소하시겠습니까?");
-			if(result) {
-				itemStatus = 300;
-				$.ajax({
-			        type: "PUT",
-			        url: "../admin/updateStatus/" + itemId,
-			        headers: {
-			            "Content-Type": "application/json",
-			        },
-			        data: JSON.stringify(itemStatus),
-			        success: function (result) {
-			            console.log(result);
-			            if (result == 1) {
-			            	location.reload();
-			            } else {
-			                alert("변경 실패");
-			            }
-			        },
-			    });
-			}
-				alert("변경 완료");
-				return;
-	    } else {
-	        alert("이 상태는 변경할 수 없습니다.");
-	        return;
-	    }
-	}
-	
 	$(document).ready(function(){
 		
-
-		
-		$('table tbody').on('click', '.permission', function(){
-			let row = $(this).closest("tr");  // 클릭된 .permission을 포함하는 행을 찾음
-	        let itemId = row.find('.itemId').val(); // .itemId input의 값
-	        let itemStatus = $(this).data('status');
-	        console.log("itemId : " + itemId);
-	        console.log("itemStatus : " + itemStatus);
+		$('.itemStatus').on('click', function(){
 			
-			changeStatus(itemId, itemStatus);
-		});
+			let permission = $(this).data("status");
+			let row = $(this).closest("tr");
+			let itemId = row.find(".itemId").val();
+			
+			console.log(permission, itemId);
+			
+			if(permission == "100"){
+				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
+				
+				if(result) {
+					$(this).data("status", 300);
+					itemStatus = 300;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 허가 요청");
+					alert("변경 완료 : 판매 허가 요청");
+				}
+			
+			} else if(permission == "300") {
+				let result = confirm("해당 물품의 판매를 허가하시겠습니까?");
+				
+				if(result) {
+					$(this).data("status", 100);
+					itemStatus = 100;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 중");
+					alert("변경 완료 : 판매 중");
+				}
+			} else if(permission == "200") {
+				alert("변경할 수 없는 상태입니다.");
+				
+			} else if(permission == "0") {
+				let result = confirm("해당 물품의 상태를 변경하시겠습니까?");
+				
+				if(result) {
+					$(this).data("status", 300);
+					itemStatus = 300;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 허가 요청");
+					alert("변경 완료 : 판매 허가 요청");
+				}
+				
+			}
+				
+				function updateItemStatus(){
+					
+					$.ajax({
+				        type: "PUT",
+				        url: "../admin/updateStatus/" + itemId,
+				        headers: {
+				            "Content-Type": "application/json",
+				        },
+				        data: JSON.stringify(itemStatus),
+				        success: function (result) {
+				            console.log(result);
+				            if (result == 1) {
+				            	 location.reload(true);
+				            } else {
+				                alert("변경 실패");
+				            }
+				        },
+				    });
+				};
+			});
+			
 		
 		function roleUpdate() {
 			let memberId = document.getElementById("memberId").value;

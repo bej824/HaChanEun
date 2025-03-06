@@ -72,7 +72,7 @@ public class SellerServiceImple implements SellerService {
 
 	@Override
 	public List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination) {
-		log.info("selectSellerItem()");
+		log.info("selectStatusByPagination()");
 		return itemService.getPagingStatusItems(itemStatus, pagination);
 	}
 	
@@ -87,4 +87,10 @@ public class SellerServiceImple implements SellerService {
 		return directOrderService.getSellerTotalCount(memberId, pagination);
 	}
 
+	@Override
+	public int updateItemStatus(int itemId, int itemStatus) {
+		log.info("itemId : " + itemId);
+		log.info("itemStatus : " + itemStatus);
+		return itemService.updateItemStatus(itemId, itemStatus);
+	}
 }
