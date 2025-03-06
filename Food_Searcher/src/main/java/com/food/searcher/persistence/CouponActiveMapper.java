@@ -23,6 +23,8 @@ public interface CouponActiveMapper {
 	
 	int deleteCouponActiveByOrderId();
 	
-	Integer selectCouponPriceByCouponActiveId(String CouponActiveId, String memberId);
+	Integer selectCouponPriceByCouponActiveId(
+			 @Param("couponActiveId") String couponActiveId
+			,@Param("memberId") String memberId);
 
 }

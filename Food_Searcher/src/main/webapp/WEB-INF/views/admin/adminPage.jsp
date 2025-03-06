@@ -19,6 +19,9 @@
 <button class="button" onclick="couponList()">쿠폰 목록</button>
 <br><a href="purchaseHistory" class="button">회원 전체 거래 내역</a>
 
+<br>
+<button class="button" id="financialManagement">재무 관리</button>
+
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -53,6 +56,10 @@
 		
 		$('#itemManagement').click(function(){
 			window.location.href = "itemManagement";
+		})
+		
+		$('#financialManagement').click(function(){
+			window.location.href = "financialManagement";
 		})
 		
 		function roleUpdate(memberId) {

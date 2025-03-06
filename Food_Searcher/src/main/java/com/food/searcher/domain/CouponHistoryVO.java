@@ -1,6 +1,9 @@
 package com.food.searcher.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.food.searcher.util.Pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +21,13 @@ public class CouponHistoryVO {
 	private int couponHistoryId;
 	private String memberId;
 	private int couponId;
-	private int couponIssuedDate;
+	private LocalDate couponIssuedDate;
 	private LocalDateTime couponUseDate;
 	private int itemId;
 	private int settled;
+	
+	private String sellerId;
+	private String itemName;
+	private String couponPrice;
 
 }

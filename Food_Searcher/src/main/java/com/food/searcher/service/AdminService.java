@@ -2,37 +2,34 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import com.food.searcher.domain.CouponHistoryVO;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
 public interface AdminService {
 	
-	/**
-	 * @param memberId
-	 * @param RoleName
-	 * @return 성공 1, 실패 0
-	 */
+
 	int createRole(String memberId, String RoleName);
 	
-	/**
-	 * @param pagination
-	 * @return 사이트에 올라온 상품 총 갯수
-	 */
+	int totalCount(Pagination pagination);
+	
 	int getTotalCount(Pagination pagination);
 	
-	/**
-	 * @return 현재 사이트에서 판매되고 있는 모든 상품
-	 */
 	List<ItemVO> itemGetAll(Pagination pagination);
+	
+	ItemVO getItemById(int itemId);
+	
+	DirectOrderVO getselectOne(String orderId);
+	
+	int couponHistoryCount();
+	
+	List<CouponHistoryVO> couponHistoryGet(Pagination pagination);
+	
+	List<CouponHistoryVO> couponHistoryBySellerId(String SellerId);
 	
 	int updateItemStatus(int itemId, int itemStatus);
 	
-	ItemVO getItemById(int itemId);
-
-	int totalCount(Pagination pagination);
-	
 	List<DirectOrderVO> orderList(Pagination pagination);
 	
-	DirectOrderVO getselectOne(String orderId);
 }

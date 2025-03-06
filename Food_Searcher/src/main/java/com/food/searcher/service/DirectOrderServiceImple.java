@@ -89,8 +89,14 @@ public class DirectOrderServiceImple implements DirectOrderService {
 				,directOrderVO.getMemberId());
 		
 		directOrderVO.setTotalPrice(totalPrice.get(directOrderVO.getMemberId()));
+		
+		int result = directOrderMapper.insert(directOrderVO);
+		
+		if(discountPrice != 0) {
+			couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
+		}
 
-		return directOrderMapper.insert(directOrderVO);
+		return result;
 	}
 
 	@Transactional
@@ -129,11 +135,11 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		log.info("cancel()");
 		int result = directOrderMapper.cancel(orderId);
 		log.info(result + "행 업데이트 완료");
-		couponActiveService.updateCouponActiveByOrderId(orderId);
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		itemService.updateItemAmount(itemVO.getItemAmount() - directOrderVO.getTotalCount(), directOrderVO.getItemId());
+		couponActiveService.updateCouponActiveByOrderId(orderId);
 
 		return result;
 	}
@@ -208,12 +214,18 @@ public class DirectOrderServiceImple implements DirectOrderService {
 			,String memberId) {
 		Map<String, Integer> acount = new HashMap<String, Integer>();
 		int totalCost = 0;
+		int totalPrice = 0;
 
 		for (int i = 0; i < list.size(); i++) {
 			totalCost += list.get(i).getItemPrice() * list.get(i).getItemCount();
 		}
+		
+		totalPrice = totalCost - discountPrice;
+		if(totalPrice < 0) {
+			totalPrice = 0;
+		}
 
-		acount.put(memberId, totalCost - discountPrice);
+		acount.put(memberId, totalPrice);
 
 		return acount;
 	}

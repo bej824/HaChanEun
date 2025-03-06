@@ -58,5 +58,7 @@ public interface CouponActiveService {
 	 * 3. 사용처 제한이 없을 시 itemId = 0으로 기입되며, itemName = null로 기입
 	 */
 	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
+	
+	int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice);
 
 }

@@ -15,6 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="couponUseDate" column="COUPON_USE_DATE" />
 		<result property="itemId" column="ITEM_ID" />
 		<result property="settled" column="SETTLED" />
+		
+		<result property="sellerId" column="SELLER_ID"/>
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="couponPrice" column="COUPON_PRICE" />
 	</resultMap>
 	
 	<insert id="insertCouponHistory">
@@ -23,16 +27,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,MEMBER_ID
 		,COUPON_ID
 		,COUPON_ISSUED_DATE
+		,COUPON_USE_DATE
 		,ITEM_ID
 		) SELECT 
 		 COUPON_ACTIVE_ID
 		,MEMBER_ID
 		,COUPON_ID
+		,COUPON_ISSUED_DATE
 		,COUPON_USE_DATE
 		,ITEM_ID
 		FROM COUPON_ACTIVE
-		WHERE COUPON_EXPIRE_DATE &lt; SYSDATE;
-		OR (COUPON_USE_DATE IS NOT NULL AND COUPON_USE_DATE &lt; SYSDATE - 7);
+		WHERE COUPON_EXPIRE_DATE &lt; SYSDATE
+		OR (COUPON_USE_DATE IS NOT NULL AND COUPON_USE_DATE &lt; SYSDATE - 7)
 	</insert>
+	
+	<select id="selectAllCount" resultType="Integer">
+		SELECT COUNT(*) TOTAL_COUNT
+		FROM COUPON_HISTORY
+	</select>
+	
+	<select id="selectCouponHistoryByPagination" resultMap="couponHistoryMap">
+		
+		SELECT * FROM
+		(
+		SELECT ROW_NUMBER() OVER(ORDER BY COUPON_HISTORY_ID DESC) AS RN
+		,h.*
+		,d.COUPON_PRICE
+		,i.MEMBER_ID AS SELLER_ID
+		,c.ITEM_NAME
+		,c.ITEM_PRICE
+		FROM
+		COUPON_HISTORY h
+		LEFT JOIN DISCOUNT_COUPON d
+		ON h.COUPON_ID = d.COUPON_ID
+		LEFT JOIN ITEM i
+		ON h.ITEM_ID = i.ITEM_ID
+		LEFT JOIN ITEM_CTG c
+		ON h.ITEM_ID = c.ITEM_ID
+		<choose>
+			<when test="pagination.type == 'MEMBER_ID'">
+				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+		</choose>
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
+	
+	<select id="selectCouponHistoryBySellerId" resultMap="couponHistoryMap">
+		SELECT
+		 h.SETTLED
+		,d.COUPON_PRICE
+		,i.MEMBER_ID AS SELLER_ID
+		FROM
+		COUPON_HISTORY h
+		LEFT JOIN DISCOUNT_COUPON d
+		ON h.COUPON_ID = d.COUPON_ID
+		LEFT JOIN ITEM i
+		ON h.ITEM_ID = i.ITEM_ID
+		WHERE 1=1
+		<if test="sellerId != null and sellerId != ''">
+			AND i.MEMBER_ID = #{sellerId}
+		</if>
+	</select>
 	
 </mapper>

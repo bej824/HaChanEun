@@ -68,18 +68,12 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		String couponActiveId = directOrderVO.getCouponActiveId();
 		String memberId = directOrderVO.getMemberId();
 		
-		if(!directOrderVO.getCouponActiveId().equals("0")) {
+		if(!couponActiveId.equals("0") || !couponActiveId.equals(null)) {
 			discountPrice = couponActiveMapper.selectCouponPriceByCouponActiveId(
 					 couponActiveId
 					,memberId);
 			
 			discountPrice = (discountPrice == null) ? 0 : discountPrice;
-		}
-		
-		if(discountPrice > 0) {
-			applyCoupon(directOrderVO, now, discountPrice);				
-		} else {
-			return 0;
 		}
 		
 		return discountPrice;
@@ -92,7 +86,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		try {
 			result = couponActiveMapper.updateCouponActiveByCouponActiveId(couponActiveVO);
 		} catch (Exception e) {
-			log.info(couponActiveVO.getOrderId() + " 처리 중 에러" + e);
+			log.info(couponActiveVO.getOrderId() + " 구매 쿠폰 처리 중 에러\n" + e);
 		}
 		
 		return result;
@@ -104,9 +98,10 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		int result = 0;
 		
 		try {
-			result = couponActiveMapper.updateCouponActiveByOrderId(orderId);
+			couponActiveMapper.updateCouponActiveByOrderId(orderId);
+			result = 1;
 		} catch (Exception e) {
-			log.info(orderId + " 처리 중 에러" + e);
+			log.info(orderId + " 환불 쿠폰 처리 중 에러\n" + e);
 			throw e;
 		}
 		
@@ -145,7 +140,8 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	} // end setCouponInfo()
 	
 	@Transactional
-	private int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice) {
+	@Override
+	public int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice) {
 		
 		CouponActiveVO couponActiveVO = new CouponActiveVO();
 		couponActiveVO.setCouponActiveId(directOrderVO.getCouponActiveId());

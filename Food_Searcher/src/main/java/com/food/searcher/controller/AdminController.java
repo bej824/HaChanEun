@@ -1,12 +1,12 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.CouponHistoryVO;
 import com.food.searcher.service.AdminService;
+import com.food.searcher.service.CouponHistoryService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -45,8 +47,33 @@ public class AdminController {
 		
 		model.addAttribute("itemList", adminService.itemGetAll(pagination));
 		model.addAttribute("pageMaker", pageMaker);
-		log.info(pageMaker);
-		log.info(pageMaker.getStartNum());
+	}
+	
+	@GetMapping("/financialManagement")
+	public void financialManagementGET(
+			@RequestParam(required = false) String sellerId
+			,@RequestParam(required = false) String type
+			,@RequestParam(required = false) String keyword
+			,@RequestParam(value="pageNum", defaultValue = "1") int pageNum
+		    ,Pagination pagination
+		    ,Model model) {
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		List<CouponHistoryVO> list = adminService.couponHistoryBySellerId(sellerId);
+		pageMaker.setTotalCount(list.size());
+		
+		model.addAttribute("couponHistory", adminService.couponHistoryGet(pagination));
+		model.addAttribute("selltedList", list);
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	@ResponseBody
+	@PutMapping("/couponHistory")
+	public List<CouponHistoryVO> couponHistoryPUT(String sellerId){
+		
+		return adminService.couponHistoryBySellerId(sellerId);
 	}
 	
 	@ResponseBody

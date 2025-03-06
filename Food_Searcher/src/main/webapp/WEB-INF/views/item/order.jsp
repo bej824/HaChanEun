@@ -50,7 +50,9 @@
             </tr>
 		</tbody>
 	</table>
-	<div id="costCasting"></div>
+	<p>총합 가격 : <span id="totalCost"></span> 원</p>
+	<p>할인 가격 : -<span id="discountPrice"></span> 원</p>
+	<p>합계 : <span id="totalPrice"></span> 원</p>
 	
 	<br>
 	<select name="couponSelect" id="couponSelect">
@@ -154,7 +156,6 @@
     			    data : JSON.stringify({
     			        itemId : itemId,
     			        totalCount : count,
-    			        totalPrice : totalPrice,
     			        deliveryAddress : deliveryAddress,
     			        couponActiveId : couponActiveId
     			    }),
@@ -214,12 +215,13 @@
     	    	
     	    	itemCount.val(count);
     	    	
-    	    	if(discountPrice != 0) {
-    	    	 	costCasting.html("<s>총 가격 : " + totalCost + "원</s>" 
-    	    	 				+ "<br> 쿠폰 할인 : " + totalPrice + "원");
-    	    	} else {
-    	    		costCasting.html("총 가격 : " + totalCost + "원");
+    	    	if(totalPrice < 0) {
+    	    		totalPrice = 0;
     	    	}
+    	    	
+    	    	$("#totalCost").text(totalCost);
+	    	   	$("#discountPrice").text(discountPrice);
+	    	    $("#totalPrice").text(totalPrice.toLocaleString());
     		}
     		
     		function updateOutput() {

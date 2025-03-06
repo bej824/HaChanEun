@@ -8,9 +8,6 @@ public interface DiscountCouponService {
 	
 	/**
 	 * @param couponListVO
-	 * if(couponEvent.equal("FIRST_ORDER_COUPON" || "REPEAT_ORDER_COUPON")
-	 * @return firstRepeatCouponMapper.insertCoupon(discountCouponVO)
-	 * else
 	 * @return discountCouponMapper.insertCoupon(discountCouponVO)
 	 */
 	int createCoupon(DiscountCouponVO couponListVO);
@@ -35,13 +32,6 @@ public interface DiscountCouponService {
 	 * @return couponId의 상세한 정보값
 	 */
 	DiscountCouponVO selectOneCoupon(int couponId);
-	
-	/**
-	 * @param memberId 로그인한 사람의 아이디
-	 * @param itemId 현재 존재하는 상품칸
-	 * @return 첫구매 혹은 재구매 쿠폰
-	 */
-	List<DiscountCouponVO> selectFRCouponByitemId(String memberId, int itemId);
 	
 	/**
 	 * @param 수정하고 싶은 정보가 담긴 discountCouponVO

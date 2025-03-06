@@ -23,7 +23,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO DISCOUNT_COUPON(
 		 COUPON_ID
 		,COUPON_NAME
-		,COUPON_ISSUER
 		,COUPON_CONTENT
 		,COUPON_PRICE
 		,COUPON_USE_CONDITION
@@ -32,7 +31,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) VALUES (
 		 DISCOUNT_COUPON_SEQ.NEXTVAL
 		,#{couponName}
-		,#{couponIssuer}
 		,#{couponContent}
 		,#{couponPrice}
 		,#{couponUseCondition}
