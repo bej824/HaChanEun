@@ -335,66 +335,62 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	
 	let hasCheckedAddress = false;
 	    
-	    $('#order').click(function() {
-	        $('tbody tr').each(function(index) {
-	            // 각 tr 태그 내의 hidden input 값들을 가져옴
-	            let memberId = $(this).find('.memberId').val();
-	            console.log("memberId : " + memberId);
+	$('#order').click(function() {
+	    // tr 태그 내의 데이터들을 배열로 수집
+	    let orderData = [];
+	    let deliveryAddress = $("#deleveryAddress").val();
 
-	            let itemId = $(this).find('.itemId').val();
-	            console.log("itemId : " + itemId);
+	    // 주소가 비어 있으면 경고
+	    if (!deliveryAddress && !hasCheckedAddress) {
+	        alert('배송 주소를 입력해주세요.');
+	        hasCheckedAddress = true;
+	        return;
+	    }
 
-	            let totalCount = $(this).find('.itemAmount').val();
-	            console.log("구매 수량 : " + totalCount);
+	    $('tbody tr').each(function(index) {
+	        let memberId = $(this).find('.memberId').val();
+	        let itemId = $(this).find('.itemId').val();
+	        let totalCount = $(this).find('.itemAmount').val();
+	        let itemPrice = $(this).find('.itemPrice').val();
+	        let totalPrice = itemPrice * totalCount;
+	        let checked = $(this).find('.cartChecked').val();
 
-	            let itemPrice = $(this).find('.itemPrice').val();
-	            console.log("아이템 가격 : " + itemPrice);
-
-	            let totalPrice = $(this).find('.itemPrice').val() * totalCount;
-	            console.log("총 가격 : " + totalPrice);
-
-	            let deliveryAddress = $("#deleveryAddress").val();
-	            console.log("주소 : " + deliveryAddress);
-	            
-	            let orderCount = index;
-	            console.log(orderCount);
-	            
-	            if (!deliveryAddress && !hasCheckedAddress) {
-                    alert('배송 주소를 입력해주세요.');
-                    hasCheckedAddress = true;
-                    return;  // 비어 있으면 AJAX 요청을 하지 않음
-                }
-	            
-	            let checked = $(this).find('.cartChecked').val();
-	            console.log("cartChecked : " + checked);
-	            if(checked == 1) {
-	            $.ajax({
-                    url: 'order',
-                    type: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' // json content-type 설정
-                    },
-                    data: JSON.stringify({
-                        memberId: memberId,
-                        itemId: itemId,
-                        totalCount: totalCount,
-                        totalPrice: totalPrice,
-                        deliveryAddress: deliveryAddress,
-                        orderCount : orderCount
-                    }),
-                    success: function(result) {
-                    	if(!hasCheckedAddress) {
-                    		alert('구매 완료되었습니다.');
-                    		hasCheckedAddress = true;
-                    	}
-                        window.location.href = 'http://localhost:8080/searcher/item/list';
-                    }
-                });
-	            }
-	        });
-	        
-	        
+	        // 체크된 아이템만 배열에 추가
+	        if (checked == 1) {
+	            orderData.push({
+	                memberId: memberId,
+	                itemId: itemId,
+	                totalCount: totalCount,
+	                totalPrice: totalPrice,
+	                deliveryAddress: deliveryAddress,
+	                orderCount: index
+	            });
+	        }
 	    });
+
+	    // 배열이 비어 있으면 종료
+	    if (orderData.length === 0) {
+	        return;
+	    }
+
+	    // 데이터 한 번에 전송
+	    $.ajax({
+	        url: 'order',
+	        type: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json' // json content-type 설정
+	        },
+	        data: JSON.stringify(orderData), // 배열을 JSON으로 변환하여 전송
+	        success: function(result) {
+	            if (!hasCheckedAddress) {
+	                alert('구매 완료되었습니다.');
+	                hasCheckedAddress = true;
+	            }
+	            window.location.href = 'http://localhost:8080/searcher/item/list';
+	        }
+	    });
+	});
+
 	    
 	    function isChecked(checkbox) {
     	    if (checkbox.checked) {

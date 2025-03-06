@@ -66,28 +66,6 @@ li {
 			</c:forEach>
 		</tbody>
 	</table> <br>
-
-	<a href="market/list" class="button">전통시장</a>
-	<table border="1">
-	<thead>
-		<tr>
-			<th style="width: 60px">번호</th>
-			<th style="width: 600px">제목</th>
-			<th style="width: 120px">지역</th>
-			<th style="width: 40px">댓글 수</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:forEach var="MarketVO" items="${marketList }">
-			<tr onclick="window.location.href='market/detail?marketId=${MarketVO.marketId}'">
-			<td>${MarketVO.marketId }</td>
-			<td>${MarketVO.marketTitle }</td>
-			<td>${MarketVO.marketLocal }</td>
-			<td>${MarketVO.marketReplyCount }</td>
-			</tr>
-		</c:forEach>
-	</tbody>
-	</table>
 	<br>
 		
 	<a href="local/list" class="button">특산품</a>

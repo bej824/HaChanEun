@@ -1,6 +1,7 @@
 package com.food.searcher.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +31,6 @@ public class DirectOrderVO {
 	private String invoiceNumber;
 	private int orderCount;
 	private String couponActiveId;
+	
+	private List<ItemListVO> itemList;
 }

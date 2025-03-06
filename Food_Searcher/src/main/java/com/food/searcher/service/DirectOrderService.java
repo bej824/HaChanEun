@@ -16,7 +16,7 @@ public interface DirectOrderService {
 	int getSellerTotalCount(String memberId, Pagination pagination);
 	int getMemberTotalCount(String memberId);
 	int orderPurchase(DirectOrderVO directOrderVO);
-	int cartPurchase(DirectOrderVO directOrderVO);
+	int cartPurchase(List<DirectOrderVO> directOrderVO);
 	int cancel(String orderId);
 	int refundReady(String orderId);
 	int refund(String refundReason, String refundContent, String orderId);
@@ -30,4 +30,5 @@ public interface DirectOrderService {
 	 * @return
 	 */
 	int deliveryCompleted(String orderId);
+	
 }

@@ -1,23 +1,21 @@
 package com.food.searcher.domain;
 
-import java.util.Date;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-
-public class MarketCommentVO {
-	
-	private int marketCommentId;
-	private int marketReplyId;
+public class ItemListVO {
+	private String orderId;
 	private String memberId;
-	private String marketCommentContent;
-	private Date commentDateCreated;
-
+	private int itemId;
+	private int totalCount;
+	private int totalPrice;
+	private String deliveryAddress;
 }

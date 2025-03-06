@@ -61,9 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				
 				.antMatchers(	 "/admin/**"
 								,"/local/register"
-								,"/local/modify"
-								,"/market/register"
-								,"/market/modify").access("hasRole('ROLE_ADMIN')")
+								,"/local/modify").access("hasRole('ROLE_ADMIN')")
 				
 				;
 				
