@@ -151,7 +151,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.MEMBER_ID = #{memberId}
 	</select>
 	<select id="selectCategoryList" resultMap="itemResultMap">
-		SELECT * FROM ITEM_CTG WHERE MAIN_CTG = #{mainCtg} ORDER BY ITEM_ID DESC
+		SELECT * FROM ITEM_CTG WHERE MAIN_CTG = #{mainCtg} AND ITEM_STATUS = 100 ORDER BY ITEM_ID DESC
 	</select>
   	
 	<update id="update">

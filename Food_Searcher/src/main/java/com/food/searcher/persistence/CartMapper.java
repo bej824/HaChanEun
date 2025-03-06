@@ -10,6 +10,7 @@ import com.food.searcher.domain.CartVO;
 @Mapper
 public interface CartMapper {
 	int insert(CartVO cartVO);
+	List<CartVO> cartAll();
 	List<CartVO> selectOne(String memberId);
 	List<CartVO> cartOrder(String memberId);
 	int delete(int cartId);

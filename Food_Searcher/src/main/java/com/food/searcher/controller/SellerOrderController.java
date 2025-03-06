@@ -54,7 +54,7 @@ public class SellerOrderController {
 	
 	@PutMapping("/delivering/{orderId}")
 	public ResponseEntity<Integer> delivering(@PathVariable("orderId") String orderId) {
-	    return new ResponseEntity<Integer>(directOrderService.deliveryCompleted(orderId), HttpStatus.OK);
+	    return new ResponseEntity<Integer>(directOrderService.delivering(orderId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/completed/{orderId}")

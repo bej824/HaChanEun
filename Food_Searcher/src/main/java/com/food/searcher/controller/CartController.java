@@ -58,7 +58,7 @@ public class CartController {
 	}
 	
 	@PostMapping("/list/{memberId}")
-	public String cartOrder(@RequestBody DirectOrderVO directOrderVO) {
+	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
 		int result = directOrderService.cartPurchase(directOrderVO);
 		log.info(result);
 		return "cart/list";

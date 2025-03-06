@@ -62,9 +62,7 @@ public class HomeController {
 	@GetMapping("/home")
 	public void main(Model model, Pagination pagination) {
 		log.info("home()");
-		log.info("pagination" + pagination);
 		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
-		log.info("페이징 : " + recipeList);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
@@ -74,7 +72,6 @@ public class HomeController {
 		model.addAttribute("recipeList", recipeList);
 		
 		List<LocalSpecialityVO> localList = localService.getPagingSpeciality(pagination);
-		log.info(localList);
 		
 		model.addAttribute("localList", localList);
 	}

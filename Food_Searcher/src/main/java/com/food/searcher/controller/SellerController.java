@@ -83,8 +83,7 @@ public class SellerController {
 												@RequestBody int itemStatus) { 
 		log.info("itemId : " + itemId);
 		log.info("itemStatus : " + itemStatus);
-		int result = itemService.updateItemStatus(itemId, itemStatus);
-		return new ResponseEntity<Integer> (result, HttpStatus.OK);
+		return new ResponseEntity<Integer> (sellerService.updateItemStatus(itemId, itemStatus), HttpStatus.OK);
 	}
 	
 	@ResponseBody
@@ -93,8 +92,7 @@ public class SellerController {
 												 @PathVariable("itemId") int itemId) { 
 		log.info("itemId : " + itemId);
 		log.info("itemAmount : " + itemAmount);
-		int result = itemService.updateItemAmount(itemId, itemAmount);
-		return new ResponseEntity<Integer> (result, HttpStatus.OK);
+		return new ResponseEntity<Integer> (itemService.updateItemAmount(itemId, itemAmount), HttpStatus.OK);
 	}
 	
 	@GetMapping("management")

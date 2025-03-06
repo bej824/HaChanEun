@@ -26,6 +26,7 @@ public class CartVO {
 	private String itemName;
 	private int itemPrice;
 	private int itemAmount;
+	private int itemStatus;
 	
 	private int totalPrice;
 	

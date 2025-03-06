@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.food.searcher.domain.CartVO;
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.ItemListVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.CartMapper;
 import com.food.searcher.persistence.DirectOrderMapper;
@@ -101,21 +102,41 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Transactional
 	@Override
-	public int cartPurchase(DirectOrderVO directOrderVO) {
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		directOrderVO.setOrderId(now.format(formatter));
-
-		log.info("cartInsert()");
-		log.info(directOrderVO);
-		int result = orderPurchase(directOrderVO);
-
-		List<CartVO> cartVO = cartMapper.cartOrder(directOrderVO.getMemberId());
-		for (CartVO vo : cartVO) {
-			cartMapper.cartDelete(vo.getCartId());
-		}
-		return result;
+	public int cartPurchase(List<DirectOrderVO> directOrderVO) {
+	    
+	    log.info("cartInsert()");
+	    log.info(directOrderVO);
+	    List<ItemListVO> itemList = new ArrayList<>();
+	    for (DirectOrderVO vo : directOrderVO) {
+	    	LocalDateTime now = LocalDateTime.now();
+	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+	    	vo.setOrderId(now.format(formatter));
+	    	
+	    	List<CartVO> cartVO = cartMapper.cartOrder(vo.getMemberId());
+	    	
+	    	
+		    for (CartVO cartOne : cartVO) {
+		    	ItemListVO item = new ItemListVO();
+		    	item.setOrderId(now.format(formatter));
+		    	item.setMemberId(vo.getMemberId());
+		        item.setItemId(cartOne.getItemId());
+		        item.setTotalPrice(cartOne.getItemPrice() * cartOne.getCartAmount());
+		        item.setTotalCount(cartOne.getCartAmount());
+		        item.setDeliveryAddress(vo.getDeliveryAddress());
+		        itemList.add(item);
+		    }
+		    
+		    log.info("directOrderVO" + vo);
+		    directOrderMapper.insert(vo);
+		    
+		    for (CartVO cartDelete : cartVO) {
+		        cartMapper.cartDelete(cartDelete.getCartId());
+		    }
+	    }
+	    
+	    return 1;
 	}
+
 
 	@Override
 	public List<DirectOrderVO> sellerList(String memberId, Pagination pagination) {

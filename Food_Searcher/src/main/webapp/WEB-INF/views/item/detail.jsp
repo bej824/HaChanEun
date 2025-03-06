@@ -10,6 +10,7 @@ pageEncoding="UTF-8"%>
 <link rel="stylesheet"
 	href="../resources/css/Base.css">
 <style>
+
 .buy {
 	background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
@@ -39,6 +40,21 @@ pageEncoding="UTF-8"%>
 	background-color: #f9f9f9;
 }
 
+.askArea {
+	width:70%;
+	display:flex;
+	flex-wrap: wrap;
+}
+
+.ask {
+    flex: 1; /* 동일한 너비를 차지하도록 설정 */
+    border-width: 3px 1px 1px 1px;
+    background-color: #f9f9f9;
+    border-style: solid;
+    border-color: #dddddd;
+    padding: 10px;
+    text-align: center;
+}
 
 </style>
 
@@ -130,7 +146,19 @@ pageEncoding="UTF-8"%>
 	
 	<%@ include file="relation.jsp"%>
 	
-	<br><br>	
+	
+	<br><br>
+	
+	<div class="askArea">
+		<div class="ask">상품 문의</div>
+			
+	   	<div class="ask">상품평</div>
+	</div>
+	
+	<div class="askDiv">
+	<%@ include file="../ask/list.jsp"%>
+	</div>
+	
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -143,6 +171,14 @@ pageEncoding="UTF-8"%>
 	});	 
 	
 	$(document).ready(function() {
+		$(".askDiv").hide();
+		
+		$(".ask").on("click", function(){
+	        // 클릭한 요소가 "상품 문의"일 경우만 토글
+	        if ($(this).text().trim() === "상품 문의") {
+	            $(".askDiv").toggle();
+	        }
+		});
 		
 		$('#deleteItem').click(function() {
 			// 게시글 삭제 클릭 시
