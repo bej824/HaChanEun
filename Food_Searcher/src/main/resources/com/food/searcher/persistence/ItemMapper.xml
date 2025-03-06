@@ -153,9 +153,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectCategoryList" resultMap="itemResultMap">
 		SELECT * FROM ITEM_CTG WHERE MAIN_CTG = #{mainCtg} ORDER BY ITEM_ID DESC
 	</select>
-	<select id="selectSellerItem" resultMap="itemResultMap">
-      SELECT * FROM ITEM WHERE MEMBER_ID = #{memberId} ORDER BY ITEM_ID DESC
-  	</select>
   	
 	<update id="update">
 		UPDATE ITEM SET

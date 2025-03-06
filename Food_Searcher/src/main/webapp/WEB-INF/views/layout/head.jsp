@@ -6,7 +6,6 @@
 <%@ page import="java.io.*, java.util.*"%>
 <%@ page import="javax.servlet.http.*, javax.servlet.*"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="com.food.searcher.domain.MarketVO" %>
 <%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*"%>
 <%@ page import="com.food.searcher.domain.RecipeReplyVO" %>
 <%@page import="com.food.searcher.domain.RecipeVO"%>

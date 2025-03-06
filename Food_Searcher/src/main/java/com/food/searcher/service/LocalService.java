@@ -14,6 +14,5 @@ public interface LocalService {
 	List<String> getDistrictByLocal(String localLocal);
 	LocalSpecialityVO getSpecialityByLocalId(int localId);
 	int updateSpeciality(LocalSpecialityVO localSpecialityVO);
-	int deleteSpeciality(int localId);
 
 }
