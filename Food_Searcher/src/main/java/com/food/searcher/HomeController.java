@@ -70,10 +70,6 @@ public class HomeController {
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
-		
-		List<LocalSpecialityVO> localList = localService.getPagingSpeciality(pagination);
-		
-		model.addAttribute("localList", localList);
 	}
 	
 }

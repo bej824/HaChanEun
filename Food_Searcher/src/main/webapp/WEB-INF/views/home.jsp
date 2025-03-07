@@ -65,29 +65,6 @@ li {
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table> <br>
-	<br>
-		
-	<a href="local/list" class="button">특산품</a>
-	<table border="1">
-	<thead>
-		<tr>
-			<th style="width: 60px">번호</th>
-			<th style="width: 600px">특산품</th>
-			<th style="width: 120px">지역</th>
-			<th style="width: 40px">댓글수</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:forEach var="localSpecialityVO" items="${localList }">
-			<tr onclick="window.location.href='local/detail?localId=${localSpecialityVO.localId }'">
-			<td>${localSpecialityVO.localId }</td>
-			<td>${localSpecialityVO.localTitle }</td>
-			<td>${localSpecialityVO.localLocal} ${localSpecialityVO.localDistrict }</td>
-			<td>${localSpecialityVO.replyCount }</td>
-			</tr>
-		</c:forEach>
-	</tbody>
 	</table>
 	
 	</div>

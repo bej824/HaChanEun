@@ -95,10 +95,14 @@
 		<p>가격 : <input type="text" name="itemPrice" placeholder="가격 입력"
 				maxlength="30" value="${itemVO.itemPrice }" required> 원</p>
 		
-		<p>분류 :  <input type="text" name="itemTag" placeholder="태그 입력"
-				maxlength="30" value="${itemVO.itemTag }" required> 원</p>
-		
-		
+		<p>분류 : 
+		<select name="mainCtg" id="mainCtg">
+		</select>
+		<select name="subCtg" id="subCtg">
+		</select>
+		<input type="text" name="subCtg" id="subCtg"
+		placeholder="세부 분류를 입력해주세요.">
+				
 		<p>판매자 : ${itemVO.memberId } </p>
 		
 		<span>판매 상태 :
