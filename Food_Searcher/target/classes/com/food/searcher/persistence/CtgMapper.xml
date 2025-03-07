@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.CtgMapper">
+
+	<resultMap type="com.food.searcher.domain.CtgVO"
+		id="ctgMap">
+
+		<id property="ctgId" column="CTG_ID" />
+		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="subCtg" column="SUB_CTG" />
+	</resultMap>
+	
+	<insert id="insertCtg">
+	
+	INSERT INTO CTG
+	(CTG_ID
+	,MAIN_CTG
+	,SUB_CTG
+	) VALUES 
+	(CTG_SEQ.NEXTVAL
+	#{mainCtg}
+	#{subCtg}
+	)
+	
+	</insert>
+	
+	<select id="selectCtg" resultMap="ctgMap">
+	
+	SELECT *
+	FROM CTG
+	WHERE 1=1
+	<if test="mainCtg != null and mainCtg != ''">
+		AND MAIN_CTG = #{mainCtg}
+	</if>
+	<if test="subCtg != null and subCtg != ''">
+		AND SUB_CTG = #{subCtg}
+	</if>
+	
+	</select>
+	
+	<update id="updateCtg">
+	
+	UPDATE CTG
+	SET MAIN_CTG = #{mainCtg}
+	,SUB_CTG = #{subCtg}
+	WHERE CTG_ID = #{ctgId}
+	
+	</update>
+	
+</mapper>
