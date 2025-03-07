@@ -1,9 +1,6 @@
 package com.food.searcher.service;
 
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +35,15 @@ public class ItemServiceImple implements ItemService {
 	@Override
 	public int createItem(ItemVO itemVO) {
 
-		int result = 0;
+		int result = itemMapper.itemInsert(itemVO);
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
 
-		try {
-			itemMapper.itemInsert(itemVO);
-			itemMapper.itemCtgInsert(itemVO);
+		itemMapper.itemCtgInsert(itemVO);
 			for (ItemAttachVO attachVO : attachList) {
 				attachMapper.insert(attachVO);
 			}
 			result = 1;
 
-		} catch (Exception e) {
-			log.error("상품 생성 중 오류 발생", e);
-		}
 
 		return result;
 	}

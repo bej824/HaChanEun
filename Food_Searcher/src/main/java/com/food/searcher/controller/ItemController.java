@@ -162,7 +162,7 @@ public class ItemController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName()));
+		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName(), pagination));
 		log.info(pageMaker);
 		List<DirectOrderVO> directOrderVO = directOrderService.getPagingmemberList(principal.getName(), pagination);
 		log.info("directOrderVO" + directOrderVO);

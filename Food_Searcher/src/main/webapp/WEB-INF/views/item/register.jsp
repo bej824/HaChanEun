@@ -62,6 +62,7 @@
 	</select>
 	<input type="text" name="othersubCtg" id="othersubCtg"
 	placeholder="세부 분류를 입력해주세요.">
+	<p>원산지 : <input id="origin" name="origin"></p>
 	</div>
 	
 	
@@ -107,6 +108,8 @@
 
     $(document).ready(function() {
     	let ctg = [];
+		// 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
+		let blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i;
     	
         // regsiterForm 데이터 전송
         $('#registerBoard').click(function(e) {
@@ -140,6 +143,7 @@
                 success: function(response) {
                     // 요청이 성공하면 처리할 코드 (예: 성공 메시지 표시)
                     console.log('폼 제출 성공');
+
                     alert("등록이 완료되었습니다.");
                     window.location.href = "../item/list";
                 },
@@ -150,8 +154,6 @@
             });
         });
     
-			// 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
-			let blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i;
 
 			// 파일 전송 form validation
 			$("#uploads").submit(function(event) {
