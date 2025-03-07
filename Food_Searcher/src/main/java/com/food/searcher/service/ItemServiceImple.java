@@ -65,18 +65,15 @@ public class ItemServiceImple implements ItemService {
 	@Transactional
 	@Override
 	public List<ItemVO> getPagingAllItems(Pagination pagination) {
-		int itemStatus = 100; // pull 후 컨트롤러에서 받는 걸로 수정
 
-		String memberId = utilityService.checkRoleSeller();
-		List<ItemVO> list = itemMapper.selectAllByPagination(pagination, itemStatus, memberId);
+		List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
 		return list.stream().collect(Collectors.toList());
 	}
 
 	// pull 후 삭제, 컨트롤러에서 에러뜬 곳들 수정 예정
 	@Override
-	public List<ItemVO> getPagingStatusItems(int itemStatus, Pagination pagination) {
-		String memberId = null;
-		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination, itemStatus, memberId);
+	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
+		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
 		return list.stream().collect(Collectors.toList());
 	}
 	

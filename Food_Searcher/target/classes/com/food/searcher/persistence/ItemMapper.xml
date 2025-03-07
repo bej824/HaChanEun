@@ -69,22 +69,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectAllByPagination" resultMap="itemResultMap">
 		<!-- 페이지네이션 -->
+		<!-- 관리자 페이지 리스트에 사용 -->
 		SELECT * FROM
 		(
 		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
 		FROM
-		ITEM_CTG
-		<choose>
-			<when test="pagination.type == 'ITEM_NAME'">
-				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
-			</when>
-			<when test="pagination.type == 'ITEM_CONTENT'">
-				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
-			</when>
-			<when test="pagination.type == 'ITEM_TAG'">
-				WHERE MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</when>
-		</choose>
+		ITEM_CTG 
 		)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -97,18 +87,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectStatusByPagination" resultMap="itemResultMap"
 		parameterType="map">
 		<!-- 페이지네이션 -->
+		<!-- 상품 리스트에 사용 -->
 		SELECT * FROM
 		(
 		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
 		FROM
 		ITEM_CTG
-		WHERE 1=1
-		<if test="memberId != null and memberId != ''">
-			AND MEMBER_ID = #{memberId}
-		</if>
-		<if test="itemStatus != null and itemStatus != 0">
-			AND ITEM_STATUS = #{itemStatus}
-		</if>
+		WHERE 1=1 AND ITEM_STATUS = 100
+		<choose>
+			<when test="pagination.type == 'ITEM_NAME'">
+				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_CONTENT'">
+				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'ITEM_TAG'">
+				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+		</choose>
 		)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -125,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
 			</when>
 			<when test="pagination.type == 'ITEM_CONTENT'">
-				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
 			</when>
 			<when test="pagination.type == 'ITEM_TAG'">
 				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
@@ -151,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.MEMBER_ID = #{memberId}
 	</select>
 	<select id="selectCategoryList" resultMap="itemResultMap">
-		SELECT * FROM ITEM_CTG WHERE MAIN_CTG = #{mainCtg} AND ITEM_STATUS = 100 ORDER BY ITEM_ID DESC
+		SELECT * FROM ITEM_CTG WHERE SUB_CTG = #{subCtg} AND ITEM_STATUS = 100 ORDER BY ITEM_ID DESC
 	</select>
   	
 	<update id="update">

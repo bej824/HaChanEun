@@ -70,11 +70,11 @@ public class SellerServiceImple implements SellerService {
 		return itemService.getStatusTotalCount(pagination);
 	}
 
-	@Override
-	public List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination) {
-		log.info("selectStatusByPagination()");
-		return itemService.getPagingStatusItems(itemStatus, pagination);
-	}
+//	@Override
+//	public List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination) {
+//		log.info("selectStatusByPagination()");
+//		return itemService.getPagingStatusItems(itemStatus, pagination);
+//	}
 	
 	@Override
 	public List<ItemVO> selectSellerItem(String memberId) {
