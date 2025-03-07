@@ -49,10 +49,21 @@
 	</div>
 	
 	<div>
-	<p>태그 : 
-	<input type="text" id="itemTag" name="itemTag" placeholder="태그 입력"
-	maxlength="100" required></p>
+	<p>분류 : 
+	<select name="mainCtg" id="mainCtg">
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	</select>
+	<select name="subCtg" id="subCtg">
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	</select>
+	<input type="text" name="othersubCtg" id="othersubCtg"
+	placeholder="세부 분류를 입력해주세요.">
 	</div>
+	
 	
 	<div>
 	<p>상품 설명 : </p>
@@ -95,6 +106,8 @@
     });
 
     $(document).ready(function() {
+    	let ctg = [];
+    	
         // regsiterForm 데이터 전송
         $('#registerBoard').click(function(e) {
             e.preventDefault();  // 기본 폼 제출 동작을 막음
@@ -136,11 +149,7 @@
                 }
             });
         });
-    });
-	</script>
-
-	<script>
-		$(document).ready(function() {
+    
 			// 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
 			let blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i;
 
@@ -168,6 +177,49 @@
 					event.preventDefault();
 				}
 			});
+			
+			$('#othersubCtg').hide();
+			
+			$('#mainCtg').change(function(){
+				let mainCtg = $(this).val();
+				console.log(mainCtg);
+			});
+			
+			$('#subCtg').change(function(){
+				let subCtg = $(this).val();
+				console.log(subCtg);
+			});
+			
+			function callCtg() {
+				
+				$.ajax({
+					type : 'GET',
+					url : 'callCtg',
+					data : {},
+					success : function(result) {
+					
+					result.forEach(function(list){
+					ctg.push(list);
+						});
+					}
+				})
+			}
+			
+			function mainCtg() {
+				let mainCtgOption = $('#mainCtg');
+				let mainCtgValue = [];
+				mainCtgList = ctg.filter(function(result) {
+				    return result.mainCtg != mainCtg;
+				});
+				
+				mainCtgList.forEach(function(list){
+					
+				})
+				
+			}
+			
+			
+			
 		});
 		
 		function goBack() {

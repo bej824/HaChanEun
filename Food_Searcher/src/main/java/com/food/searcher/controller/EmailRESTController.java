@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 //import com.food.searcher.util.EmailAuthUtil;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.food.searcher.util.EmailAuthUtil;
 
 import lombok.extern.log4j.Log4j;
 
-@Controller
+@RestController
 @RequestMapping("/access")
 @Log4j
 public class EmailRESTController {
