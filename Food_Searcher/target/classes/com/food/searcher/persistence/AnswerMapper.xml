@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.AnswerMapper">
+
+	<resultMap type="com.food.searcher.domain.AnswerVO" id="answerResultMap">
+
+		<id property="answerId" column="ANSWER_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="askId" column="ASK_ID" />
+		<result property="answerContent" column="ANSWER_CONTENT" />
+		<result property="answerDate"
+			column="ANSWER_DATE" jdbcType="DATE" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO ANSWER(
+			ANSWER_ID,
+			MEMBER_ID,
+			ASK_ID,
+			ASK_CONTENT
+			) VALUES (
+			#{answerId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(ask_seq.NEXTVAL), 4, '0'),
+			#{memberId},
+			#{askId},
+			#{answerContent}
+			)
+			
+	</insert>
+
+	
+	<select id="select" resultMap="answerResultMap">
+		SELECT * FROM ANSWER WHERE ASK_ID = #{askId} ORDER BY ANSWER_ID
+	</select>
+	
+	<update id="update">
+		UPDATE ASK SET
+			ANSWER_CONTENT = #{answerContent}
+			WHERE ANSWER_ID = #{answerId}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM ANSWER WHERE ANSWER_ID = #{answerId}
+	</delete>
+	
+	
+	
+</mapper>

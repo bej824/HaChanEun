@@ -35,15 +35,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM ASK WHERE ITEM_ID = #{itemId}
 	</select>
 	
+	<select id="countTodayAsk" resultType="int">
+	    SELECT COUNT(*)
+	    FROM ASK
+	    WHERE MEMBER_ID = #{memberId}
+	    AND ITEM_ID = #{itemId}
+	    AND TRUNC(ASK_DATE) = TRUNC(SYSDATE)
+	</select>
+	
 	<update id="update">
 		UPDATE ASK SET
 			ASK_CONTENT = #{askContent}
-			,ASK_DATE = #{askDate}
 			WHERE ASK_ID = #{askId}
 	</update>
 	
 	<delete id="delete">
 		DELETE FROM ASK WHERE ASK_ID = #{askId}
 	</delete>
+	
+	
 	
 </mapper>

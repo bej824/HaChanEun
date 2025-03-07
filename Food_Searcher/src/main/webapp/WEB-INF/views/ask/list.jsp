@@ -32,10 +32,12 @@ pageEncoding="UTF-8"%>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	<h2>상품 문의</h2>
 	
-	<span class="info">구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</span><br>
-	<span class="info">상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</span><br>
-	<div class="ask_item">
+	<div class="info">
+	<span>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</span><br>
+	<span>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</span><br>
+	</div>
 	
+	<div class="askBox">
 		<br>
 			<sec:authorize access="isAnonymous()">
 			* 문의를 작성하려면 로그인 해주세요.
@@ -48,6 +50,8 @@ pageEncoding="UTF-8"%>
   	 			<button id="askAdd" class="button">문의 작성</button>
 			</sec:authorize>
 	</div>
+	
+	<div class="ask_item"></div>
 		
 <script type="text/javascript">
 $(document).ajaxSend(function(e, xhr, opt){
@@ -61,6 +65,7 @@ $(document).ajaxSend(function(e, xhr, opt){
 	
 $(document).ready(function(){
 	getAllAsk();
+	console.log("게시글 ID : " + $('#itemId').val());
 	
 	$("#askAdd").on("click", function() {
 		let itemId = $('#itemId').val();
@@ -86,12 +91,15 @@ $(document).ready(function(){
 				'Content-Type' : 'application/json' // json content-type 설정
 			}, 
 			data : JSON.stringify(obj), 
-			success : function(result) {
-				console.log(result);
+			success : function(response) {
+				console.log(response);
 				if(result == 1) {
 					alert('문의가 입력되었습니다.');
 					getAllAsk();
 					$(".askContent").val("");
+				} else {
+					error: function (xhr) {
+			        alert(xhr.responseText); // "하루에 한 번만 문의를 작성할 수 있습니다."
 				}
 			}
 		}); // end ajax
@@ -128,21 +136,125 @@ $(document).ready(function(){
 							list +=
 							  '<div class="ask_item" value="' + this.askId + '">'
 							  + '<div class="userInfo">'
+							  + '<input type="hidden" id="askId" value="'+ this.askId +'">'
 							  + '<span class="memberId">' + this.memberId + '&nbsp' + '</span>'
 							  + '<span class="askDate">' + askDate + '&nbsp' + '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp' + '</span>'
 							  + '</div>' // end userInfo
+							  + '<button class="btn_update"' + disabled + ' > 수정 </button>' + '&nbsp'
+							  + '<button class="btn_delete"' + disabled + ' > 삭제 </button>'
 							  + '<div class="askContent">' + this.askContent + "</div>"
 							  list += "</div>"; // end ask_item
 						});
 						$(".ask_item").html(list);
 					}
-				}); // <-- .getJSON() 닫는 괄호 추가
-			} // <-- getAllAsk() 닫는 중괄호 추가
+				});
+			}
+			
+		// 모달창 띄우기
+		$(document).on("click", ".btn_update", function(){
+			$(".replyModal").attr("style", "display:block;");
+			var askId = $(this).closest('.ask_item').find('#askId').val();   // 댓글 Id 가져오기
+			var askContent = $(this).closest('.ask_item').find(".askContent").text(); // 원본 댓글 내용 가져오기
+			
+			console.log("askId : " + askId, ", askContent : " + askContent);
+			
+			 $("#modal_repCon").val(askContent);
+			 $("#modalReplyId").val(askId);
+			 
+			});
+			
+			// 수정 버튼을 클릭하면 선택된 댓글 수정
+		$(".modal_modify_btn").on("click", function(){
+			console.log(this);
+				
+			let askId = $("#modalReplyId").val();
+			let askContent = $("#modal_repCon").val();
+							
+			console.log("수정된 댓글 번호 : " + askId + ", 수정된 댓글 내용 : " + askContent);
+				
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : '../ask/' + askId,
+					headers : {
+						'Content-Type' : 'application/json' 
+					},
+					data : askContent,
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('문의가 수정되었습니다.');
+							getAllAsk();
+							 $(".replyModal").attr("style", "display:none;");
+							 console.log("modified");
+							 modified.innerHTML = '(수정됨)';
+						} else {
+							alert('문의 수정 실패');
+						}
+					}
+					});
+			}); // end modal_modify_btn	
+			
+		$(".modal_cancle").click(function(){	
+		  	$(".replyModal").attr("style", "display:none;");
+		});
 			
 			
+		$('.ask_item').on('click', '.btn_delete', function(){
+			console.log(this);
+			let askId = $(this).closest('.ask_item').find('#askId').val();
+			let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
+			
+			if(deleteConfirm) {
+			
+			$.ajax({
+				type : 'DELETE', 
+				url : '../ask/delete/' + askId,
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				success : function(result) {
+					console.log(result);
+					if(result == 1) {
+						alert('댓글 삭제 성공!');
+						getAllAsk();
+					} else {
+						alert('댓글 삭제 실패')
+						}
+					}
+				});
+				
+			}
+		}); // end btn_delete
+		
+		
+			
+			
+		
 		}); // end document
 	
 </script>
+
+<!-- 수정 모달 -->
+<div class="replyModal">
+
+ <div class="modalContent">
+  <input type="hidden" id="modalReplyId">  
+  <div>
+   <textarea id="modal_repCon" name="modal_repCon"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="modal_modify_btn">수정</button>
+   <button type="button" class="modal_cancle">취소</button>
+  </div>
+  
+ </div>
+
+ <div class="modalBackground"></div>
+ 
+</div>
 	
 </body>
 </html>

@@ -6,21 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.food.searcher.domain.AskVO;
 import com.food.searcher.service.AskService;
 
 import lombok.extern.log4j.Log4j;
 
-@Controller
+@RestController
 @RequestMapping("/ask")
 @Log4j
 
@@ -30,7 +31,7 @@ public class AskController {
 	private AskService askService;
 	
 	@GetMapping("/list/{itemId}")
-	public ResponseEntity<List<AskVO>> askGET(@PathVariable("itemId") int itemId, Model model)	{
+	public ResponseEntity<List<AskVO>> askGET(@PathVariable("itemId") long itemId, Model model)	{
 		List<AskVO> askVO = askService.getAsk(itemId);
 		model.addAttribute("askVO", askVO);
 		log.info(askVO);
@@ -43,26 +44,50 @@ public class AskController {
 		
 	}
 	
-	@ResponseBody
 	@PostMapping
-	public ResponseEntity<Integer> askPOST(@RequestBody AskVO askVO, Principal principal) {
-		log.info("askVO : " + askVO);		
-		askVO.setMemberId(principal.getName());
-		int result = askService.createAsk(askVO);
-		return new ResponseEntity<Integer>(result, HttpStatus.OK);
-	}
+	public ResponseEntity<String> askPOST(@RequestBody AskVO askVO, Principal principal) {
+		log.info("askPOST()");
+		// 현재 로그인한 사용자 ID 설정
+	    askVO.setMemberId(principal.getName());
+	        // 오늘 이미 해당 아이템에 대한 문의를 작성했는지 확인
+	        boolean canWrite = askService.canWriteAsk(askVO.getMemberId(), askVO.getItemId());
+	        
+	        if (!canWrite) {
+	            return ResponseEntity.badRequest().body("하루에 한 번만 문의를 작성할 수 있습니다.");
+	        }
+	        // 문의 등록
+	        askService.createAsk(askVO);
+	        return ResponseEntity.ok("문의가 등록되었습니다.");
+	        
+	    }
+
 
 	
-	@PostMapping("/modify")
-	public String modifyPOST(AskVO askVO, Principal principal) {
+	@PutMapping("/{askId}")
+	public ResponseEntity<Integer> modifyPOST(@PathVariable("askId") long askId, 
+							 @RequestBody String askContent) {
 		log.info("modifyPOST()");
-		askVO.setMemberId(principal.getName());
-
-		int result = askService.updateAsk(askVO);
+		
+		log.info("=======");
+		log.info(askContent);
+		log.info(askId);
+		log.info("=======");
+		int result = askService.updateAsk(askId, askContent);
 		log.info(result + "행 수정");
 
-		return "redirect:/ask/list";
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
+	
+	@DeleteMapping("/delete/{askId}") 
+	   public ResponseEntity<Integer> deleteReply(
+			   @PathVariable("askId") long askId) {
+	      log.info("deleteReply()");
+	      log.info("askId : " + askId);
+	      
+	      int result = askService.deleteAsk(askId);
+	      
+	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	   } // 댓글 삭제
 
 	
 	
