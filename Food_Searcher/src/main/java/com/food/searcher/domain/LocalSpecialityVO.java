@@ -18,6 +18,7 @@ public class LocalSpecialityVO {
 	private String localDistrict;
 	private String localTitle;
 	private String localContent;
-	private int replyCount;
+	private String mainCtg;
+	private String subCtg;
 
 }

@@ -5,17 +5,17 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.food.searcher.domain.CtgVO;
+import com.food.searcher.domain.FoodCtgVO;
 
 @Mapper
-public interface CtgMapper {
+public interface FoodCtgMapper {
 	
-	int insertCtg(CtgVO ctgVO);
+	int insertFoodCtg(FoodCtgVO foodctgVO);
 	
-	List<CtgVO> selectCtg(
+	List<FoodCtgVO> selectFoodCtg(
 			 @Param("mainCtg") String mainCtg
 			,@Param("subCtg") String subCtg);
 	
-	int updateCtg(CtgVO ctgVO);
+	int updateFoodCtg(FoodCtgVO foodctgVO);
 
 }

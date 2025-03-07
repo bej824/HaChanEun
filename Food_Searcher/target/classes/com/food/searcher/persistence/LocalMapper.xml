@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="localDistrict" column="LOCAL_DISTRICT" />
 		<result property="localTitle" column="LOCAL_TITLE" />
 		<result property="localContent" column="LOCAL_CONTENT" />
-		<result property="replyCount" column="REPLY_COUNT" />
+		<result property="localCtg" column="LOCAL_CTG" />
 
 	</resultMap>
 	
@@ -24,14 +24,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ,LOCAL_DISTRICT
 		 ,LOCAL_TITLE
 		 ,LOCAL_CONTENT
-		 ,REPLY_COUNT
 		 ) VALUES (
 		  LOCALSPECIALITY_SEQ.NEXTVAL
 		 ,#{localLocal}
 		 ,#{localDistrict}
 		 ,#{localTitle}
 		 ,#{localContent}
-		 ,0
 		 )
 	</insert>
 
@@ -47,6 +45,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="localTitle != null and localTitle != ''">
         	AND LOCAL_TITLE LIKE #{localTitle}
+    	</if>
+    	<if test="localCtg != null and localCtg != ''">
+    		AND LOCAL_CTG = #{localCtg}
     	</if>
 		ORDER BY LOCAL_ID ASC
 	</select>
@@ -92,17 +93,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
 	</delete>
-	
-	<select id="localReplyCountUp">
-	UPDATE LOCAL_SPECIALITY
-	SET REPLY_COUNT = REPLY_COUNT + 1
-	WHERE LOCAL_ID = #{localId}
-	</select>
-	
-	<select id="localReplyCountDown">
-	UPDATE LOCAL_SPECIALITY
-	SET REPLY_COUNT = REPLY_COUNT - #{countDown}
-	WHERE LOCAL_ID = #{localId}
-	</select>
 
 </mapper>

@@ -118,6 +118,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</when>
 			</choose>	
 	</select>
+	
+	<select id="foodRecommendation" resultMap="recipeResultMap">
+		SELECT a.RECIPE_ID, a.RECIPE_FOOD, a.RECIPE_TITLE
+		FROM
+		RECIPE a
+		LEFT JOIN RECIPE_VIEWS b
+		ON a.RECIPE_ID = b.RECIPE_ID
+		WHERE a.INGREDIENT = #{ingredient}
+		ORDER BY (b.VIEWS + a.LIKES_COUNT * 3 - a.DISLIKES_COUNT) DESC
+		LIMIT 5
+	</select>
 
 	<update id="updateReplyCount">
 		UPDATE RECIPE
