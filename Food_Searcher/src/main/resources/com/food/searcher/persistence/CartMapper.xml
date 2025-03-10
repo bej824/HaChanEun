@@ -40,10 +40,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.CART_CHECKED,
             b.ITEM_NAME,
             b.ITEM_PRICE,
-            b.ITEM_AMOUNT,
-            b.ITEM_STATUS
+            b.ITEM_AMOUNT
         FROM CART a
-        LEFT OUTER JOIN ITEM b
+        LEFT OUTER JOIN ITEM_CTG b
         ON a.ITEM_ID = b.ITEM_ID
         WHERE a.MEMBER_ID = #{memberId}
 	</select>
@@ -59,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             b.ITEM_PRICE,
             b.ITEM_AMOUNT
         FROM CART a
-        LEFT OUTER JOIN ITEM b
+        LEFT OUTER JOIN ITEM_CTG b
         ON a.ITEM_ID = b.ITEM_ID
         WHERE a.MEMBER_ID = #{memberId} and a.CART_CHECKED = 1
 	</select>

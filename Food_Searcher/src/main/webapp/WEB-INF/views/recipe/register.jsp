@@ -150,9 +150,7 @@ textarea.ingredient {
             });
         });
     });
-	</script>
-
-	<script>
+    
 		$(document).ready(function() {
 			// 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
 			let blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i;

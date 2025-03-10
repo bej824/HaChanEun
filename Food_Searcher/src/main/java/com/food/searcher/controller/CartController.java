@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.food.searcher.domain.CartVO;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
+import com.food.searcher.domain.MemberVO;
 import com.food.searcher.service.CartService;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
+import com.food.searcher.service.MemberService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -40,12 +42,17 @@ public class CartController {
 	@Autowired
 	private ItemAttachService attachService;
 	
+	@Autowired
+	private MemberService memberService;
+	
 	@GetMapping("/list/{memberId}")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
 		log.info("cartList()");
 		List<CartVO> cartVO = cartService.getCartById(memberId);
 		log.info(cartVO);
 		model.addAttribute("cartVO", cartVO);
+		MemberVO member = memberService.getMemberById(memberId);
+		model.addAttribute("member", member);
 		
 		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
 		for(CartVO vo : cartVO) {
