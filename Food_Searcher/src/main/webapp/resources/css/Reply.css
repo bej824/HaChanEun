@@ -5,7 +5,19 @@
       border-style: solid hidden hidden hidden;
       border-color: grey; /* 색 ? */
       border-width: thin;
-      margin : 10px;
+}
+
+.ask_item {
+	padding : 10px;
+}
+
+.askBox {
+	background-color: #f9f9f9;
+}
+
+.askDiv {
+	width: 70%;
+	padding: 10px;
 }
 
 .no-reply {
@@ -28,6 +40,40 @@
       border-style: solid hidden hidden hidden;
       border-width: thin;
 }
+
+ .answer_list {
+ 	left: 10px;
+	width: 100%;
+	max-width: 600px; /* 댓글 창의 최대 너비 */
+	margin: 10px;
+	padding: 10px; /* 패딩을 조정해서 더 컴팩트하게 */
+	box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+	border-style: solid hidden hidden hidden;
+    border-width: thin;
+    border-color:#d2d2d2;
+ }
+ 
+ .askLabel {
+ 	left: 2px;
+    background-color: #8c8c8c;
+    margin:10px;
+    padding:5px;
+    top:10px;
+    color: white;
+    width:35px;
+    height:25px;
+ }
+ 
+ .answerLabel {
+ 	left: 2px;
+    background-color: #1EA4FF;
+    margin:10px;
+    padding:5px;
+    top:10px;
+    color: white;
+    width:35px;
+    height:25px;
+ }
 
 .replyContentAdd {
 	font-size:16px;
@@ -109,7 +155,7 @@ button:hover {
 }
 
 .button, .btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add, .btn_commentAdd, #button,
-.btn_commentupdate, .btn_commentdelete {
+.btn_commentupdate, .btn_commentdelete, .btn_answer, .addAnswer, .btn_answerUpdate, .btn_answerDelete {
 	background-color: #04AA6D;
 	color:white;
    font-size:14px;
@@ -117,6 +163,7 @@ button:hover {
    margin:10px 0;
    border:1px solid #ccc; 
 }
+
 
 .btn_commentList{
    background-color: #04AA6D;
@@ -148,7 +195,8 @@ button:hover {
    border:1px solid #ccc; 
 }
 
-.btn_update:disabled, .btn_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled, .btn_commentdelete:disabled {
+.btn_update:disabled, .btn_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled,
+.btn_commentdelete:disabled, .btn_answerUpdate:disabled, .btn_answerDelete:disabled {
     display: none;
 }	
 
@@ -180,3 +228,9 @@ div.modalModifyContent { position:fixed; top:20%; left:calc(50% - 250px); width:
 div.modalModifyContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
 div.modalModifyContent button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
 div.modalModifyContent button.modify_comment_cancle { margin-left:20px; }
+
+div.answerModal { position:relative; z-index:1; display:none; }
+div.answerModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.answerModalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
+div.answerModalContent button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.answerModalContent button.answer_cancle { margin-left:20px; }

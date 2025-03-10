@@ -1,6 +1,7 @@
 package com.food.searcher.domain;
 
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +13,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
-public class AskVO {
-	private long askId;
+public class AnswerVO {
+	private long answerId;
 	private String memberId;
-	private long itemId;
-	private String askContent;
-	private Date askDate;
+	private long askId;
+	private String answerContent;
+	private Date answerDate;
 	
 }

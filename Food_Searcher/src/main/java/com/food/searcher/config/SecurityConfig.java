@@ -3,6 +3,7 @@ package com.food.searcher.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,7 @@ import lombok.extern.log4j.Log4j;
 // prePostEnabled = true : 
 // 		@PreAuthorize 및 @PostAuthorize와 같은 표현식을 메서드 수준에서 사용할 수 있게 설정
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
 	// 비밀번호 암호화를 위한 BCryptPasswordEncoder를 빈으로 생성
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -57,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								,"/item/order"
 								,"/seller/authenticate").access("hasRole('ROLE_MEMBER')")
 		
-				.antMatchers(	 "/seller/**").access("hasRole('ROLE_SELLER')")
+				.antMatchers(	 "/seller/**"
+								,"/ask/answer-post/{askId}").access("hasRole('ROLE_SELLER')")
 				
 				.antMatchers(	 "/admin/**"
 								,"/local/register"
@@ -115,5 +117,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public CharacterEncodingFilter encodingFilter() {
 		return new CharacterEncodingFilter("UTF-8");
 	}
+	
 
 }

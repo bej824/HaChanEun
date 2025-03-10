@@ -21,25 +21,42 @@ public class AskServiceImple implements AskService {
 	
 	@Override
 	public int createAsk(AskVO askVO) {
-		return askMapper.insert(askVO);
+		 if (!canWriteAsk(askVO.getMemberId(), askVO.getItemId())) {
+	            throw new IllegalStateException("하루에 한 번만 문의를 작성할 수 있습니다.");
+	        }else {
+	        	return askMapper.insert(askVO);
+	        }
 	}
 	
 	@Override
-	public List<AskVO> getAsk(int itemId) {
+	public List<AskVO> getAsk(long itemId) {
 		List<AskVO> askVO = askMapper.select(itemId);
 		return askVO;
 	}
 
 	@Override
-	public int updateAsk(AskVO askVO) {
+	public int updateAsk(long askId, String askContent) {
+		log.info("updateAsk");
+		AskVO askVO = new AskVO();
+		askVO.setAskContent(askContent);
+		askVO.setAskId(askId);
 		return askMapper.update(askVO);
 	}
 
 	@Override
-	public int deleteAsk(int askId) {
+	public int deleteAsk(long askId) {
 		return askMapper.delete(askId);
 	}
-
 	
+	@Override
+	public boolean canWriteAsk(String memberId, long itemId) {
+	        // 오늘 작성된 댓글이 있는지 확인
+			AskVO askVO = new AskVO();
+			askVO.setMemberId(memberId);
+			askVO.setItemId(itemId);
+	        int result = askMapper.countTodayAsk(askVO);
+	        return result == 0; // 0이면 작성 가능, 1 이상이면 불가능
+	    }
+
 	
 }
