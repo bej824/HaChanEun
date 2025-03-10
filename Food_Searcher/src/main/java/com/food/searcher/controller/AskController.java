@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -34,48 +35,39 @@ public class AskController {
 	public ResponseEntity<List<AskVO>> askGET(@PathVariable("itemId") long itemId, Model model)	{
 		List<AskVO> askVO = askService.getAsk(itemId);
 		model.addAttribute("askVO", askVO);
-		log.info(askVO);
 		
 		return new ResponseEntity<List<AskVO>>(askVO, HttpStatus.OK);
 	}
 	
 	@GetMapping("/register")
 	public void register() {
-		
 	}
 	
 	@PostMapping
 	public ResponseEntity<String> askPOST(@RequestBody AskVO askVO, Principal principal) {
 		log.info("askPOST()");
-		// 현재 로그인한 사용자 ID 설정
+		HttpHeaders resHeaders = new HttpHeaders();
+        resHeaders.add("Content-Type", "application/json;charset=UTF-8");
 	    askVO.setMemberId(principal.getName());
-	        // 오늘 이미 해당 아이템에 대한 문의를 작성했는지 확인
+	        // 오늘 이미 해당 상품에 대한 문의를 작성했는지 확인
 	        boolean canWrite = askService.canWriteAsk(askVO.getMemberId(), askVO.getItemId());
 	        
 	        if (!canWrite) {
-	            return ResponseEntity.badRequest().body("하루에 한 번만 문의를 작성할 수 있습니다.");
+	        	log.info("400 return");
+	            return ResponseEntity.badRequest().body("문의는 하루에 한 번만 작성 가능합니다.");
 	        }
 	        // 문의 등록
 	        askService.createAsk(askVO);
+	        log.info("200 return");
 	        return ResponseEntity.ok("문의가 등록되었습니다.");
 	        
 	    }
-
-
 	
 	@PutMapping("/{askId}")
 	public ResponseEntity<Integer> modifyPOST(@PathVariable("askId") long askId, 
-							 @RequestBody String askContent) {
-		log.info("modifyPOST()");
-		
-		log.info("=======");
-		log.info(askContent);
-		log.info(askId);
-		log.info("=======");
-		int result = askService.updateAsk(askId, askContent);
-		log.info(result + "행 수정");
+											  @RequestBody String askContent) {
 
-		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		return new ResponseEntity<Integer>(askService.updateAsk(askId, askContent), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{askId}") 
@@ -88,8 +80,6 @@ public class AskController {
 	      
 	      return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	   } // 댓글 삭제
-
-	
 	
 	
 } // end controller

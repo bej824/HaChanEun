@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ANSWER_ID,
 			MEMBER_ID,
 			ASK_ID,
-			ASK_CONTENT
+			ANSWER_CONTENT
 			) VALUES (
 			#{answerId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(ask_seq.NEXTVAL), 4, '0'),
 			#{memberId},
@@ -29,8 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 			
 	</insert>
-
-	
+		
 	<select id="select" resultMap="answerResultMap">
 		SELECT * FROM ANSWER WHERE ASK_ID = #{askId} ORDER BY ANSWER_ID
 	</select>

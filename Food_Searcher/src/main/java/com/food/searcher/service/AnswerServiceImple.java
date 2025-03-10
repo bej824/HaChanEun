@@ -22,7 +22,16 @@ public class AnswerServiceImple implements AnswerService {
 	@Override
 	public int createAnswer(AnswerVO answerVO) {
 		log.info("createAnswer()");
-		return answerMapper.insert(answerVO);
+		long askId = answerVO.getAskId();
+		List<AnswerVO> list = answerMapper.select(askId);
+		
+		if(list.isEmpty()) {
+			return answerMapper.insert(answerVO);
+		} else {
+			log.info("답변은 문의당 한 번만 작성 가능합니다.");
+			return 0;
+		}
+		
 	}
 
 	@Override
