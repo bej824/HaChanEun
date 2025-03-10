@@ -66,6 +66,9 @@
 	<c:if test="${directOrderVO.deliveryStatus eq '상품 준비중'}">
 		<button id="cancel" class="button">결제 취소</button>
 	</c:if>
+	<c:if test="${directOrderVO.deliveryStatus eq '배송 준비중'}">
+		<button id="cancel" class="button">결제 취소</button>
+	</c:if>
 	<c:set var="authenticatedUser" value="${pageContext.request.userPrincipal.name}" />
 	<c:set var="now" value="<%=new java.util.Date() %>" />
 	<c:if test="${directOrderVO.deliveryStatus eq '배송 완료' && directOrderVO.deliveryRefund >= now  && directOrderVO.memberId eq authenticatedUser }">

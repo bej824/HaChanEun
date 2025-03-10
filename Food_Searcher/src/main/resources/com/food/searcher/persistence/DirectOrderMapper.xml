@@ -173,6 +173,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    FROM DIRECT_ORDER d
 		    JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 			WHERE d.member_id = #{memberId} 
+			<choose>
+				<when test="pagination.type == 'DELIVERY_STATUS'">
+				<choose>
+					<when test="pagination.keyword == '상품 준비중'">
+						AND DELIVERY_STATUS LIKE '%상품 준비중%'
+					</when>
+					<when test="pagination.keyword == '배송 준비중'">
+						AND DELIVERY_STATUS LIKE '%배송 준비중%'
+					</when>
+					<when test="pagination.keyword == '배송 중'">
+						AND DELIVERY_STATUS LIKE '%배송 중%'
+					</when>
+					<when test="pagination.keyword == '배송 완료'">
+						AND DELIVERY_STATUS LIKE '%배송 완료%'
+					</when>
+					<when test="pagination.keyword == '환불 신청'">
+						AND DELIVERY_STATUS LIKE '%환불 신청%'
+					</when>
+					<when test="pagination.keyword == '환불 승인'">
+						AND DELIVERY_STATUS LIKE '%환불 승인%'
+					</when>
+					<when test="pagination.keyword == '환불 완료'">
+						AND DELIVERY_STATUS LIKE '%환불 완료%'
+					</when>
+					<when test="pagination.keyword == '결제 취소'">
+						AND DELIVERY_STATUS LIKE '%결제 취소%'
+					</when>
+				</choose>
+				</when>
+				<when test="pagination.type == 'DELIVERY_DATE'">
+                <choose>
+                    <when test="pagination.keyword == '1일'">
+                        AND DELIVERY_DATE > SYSDATE - 1
+                    </when>
+                    <when test="pagination.keyword == '1주일'">
+                        AND DELIVERY_DATE > SYSDATE - 7
+                    </when>
+                    <when test="pagination.keyword == '1달'">
+                        AND DELIVERY_DATE > SYSDATE - 30
+                    </when>
+                    <when test="pagination.keyword == '3달'">
+                        AND DELIVERY_DATE > SYSDATE - 90
+                    </when>
+                    <when test="pagination.keyword == '6달'">
+                        AND DELIVERY_DATE > SYSDATE - 180
+                    </when>
+                    <when test="pagination.keyword == '1년'">
+                        AND DELIVERY_DATE > SYSDATE - 365
+                    </when>
+                    <otherwise>
+                        <!-- Optional: Add default condition here if needed -->
+                    </otherwise>
+                </choose>
+            	</when>
+			</choose>
 			)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -180,6 +235,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemberTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER
 		WHERE MEMBER_ID = #{memberId}
+		<choose>
+				<when test="pagination.type == 'DELIVERY_STATUS'">
+				<choose>
+					<when test="pagination.keyword == '상품 준비중'">
+						AND DELIVERY_STATUS LIKE '%상품 준비중%'
+					</when>
+					<when test="pagination.keyword == '배송 준비중'">
+						AND DELIVERY_STATUS LIKE '%배송 준비중%'
+					</when>
+					<when test="pagination.keyword == '배송 중'">
+						AND DELIVERY_STATUS LIKE '%배송 중%'
+					</when>
+					<when test="pagination.keyword == '배송 완료'">
+						AND DELIVERY_STATUS LIKE '%배송 완료%'
+					</when>
+					<when test="pagination.keyword == '환불 신청'">
+						AND DELIVERY_STATUS LIKE '%환불 신청%'
+					</when>
+					<when test="pagination.keyword == '환불 승인'">
+						AND DELIVERY_STATUS LIKE '%환불 승인%'
+					</when>
+					<when test="pagination.keyword == '환불 완료'">
+						AND DELIVERY_STATUS LIKE '%환불 완료%'
+					</when>
+					<when test="pagination.keyword == '결제 취소'">
+						AND DELIVERY_STATUS LIKE '%결제 취소%'
+					</when>
+				</choose>
+				</when>
+				<when test="pagination.type == 'DELIVERY_DATE'">
+                <choose>
+                    <when test="pagination.keyword == '1일'">
+                        AND DELIVERY_DATE > SYSDATE - 1
+                    </when>
+                    <when test="pagination.keyword == '1주일'">
+                        AND DELIVERY_DATE > SYSDATE - 7
+                    </when>
+                    <when test="pagination.keyword == '1달'">
+                        AND DELIVERY_DATE > SYSDATE - 30
+                    </when>
+                    <when test="pagination.keyword == '3달'">
+                        AND DELIVERY_DATE > SYSDATE - 90
+                    </when>
+                    <when test="pagination.keyword == '6달'">
+                        AND DELIVERY_DATE > SYSDATE - 180
+                    </when>
+                    <when test="pagination.keyword == '1년'">
+                        AND DELIVERY_DATE > SYSDATE - 365
+                    </when>
+                    <otherwise>
+                        <!-- Optional: Add default condition here if needed -->
+                    </otherwise>
+                </choose>
+            	</when>
+			</choose>
 	</select>
 	
 	<select id="sellerList" resultMap="orderResultMap">
@@ -324,7 +434,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<update id="cancel">
-		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '결제 취소' WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '상품 준비중'
+		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '결제 취소' WHERE ORDER_ID = #{orderId} AND (DELIVERY_STATUS = '상품 준비중' OR DELIVERY_STATUS = '배송 준비중')
 	</update>
 	
 	<update id="refundReady">

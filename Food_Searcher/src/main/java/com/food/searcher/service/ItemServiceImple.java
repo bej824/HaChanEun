@@ -1,9 +1,6 @@
 package com.food.searcher.service;
 
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +35,15 @@ public class ItemServiceImple implements ItemService {
 	@Override
 	public int createItem(ItemVO itemVO) {
 
-		int result = 0;
+		int result = itemMapper.itemInsert(itemVO);
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
 
-		try {
-			itemMapper.itemInsert(itemVO);
-			itemMapper.itemCtgInsert(itemVO);
+		itemMapper.itemCtgInsert(itemVO);
 			for (ItemAttachVO attachVO : attachList) {
 				attachMapper.insert(attachVO);
 			}
 			result = 1;
 
-		} catch (Exception e) {
-			log.error("상품 생성 중 오류 발생", e);
-		}
 
 		return result;
 	}
@@ -65,18 +57,15 @@ public class ItemServiceImple implements ItemService {
 	@Transactional
 	@Override
 	public List<ItemVO> getPagingAllItems(Pagination pagination) {
-		int itemStatus = 100; // pull 후 컨트롤러에서 받는 걸로 수정
 
-		String memberId = utilityService.checkRoleSeller();
-		List<ItemVO> list = itemMapper.selectAllByPagination(pagination, itemStatus, memberId);
+		List<ItemVO> list = itemMapper.selectAllByPagination(pagination);
 		return list.stream().collect(Collectors.toList());
 	}
 
 	// pull 후 삭제, 컨트롤러에서 에러뜬 곳들 수정 예정
 	@Override
-	public List<ItemVO> getPagingStatusItems(int itemStatus, Pagination pagination) {
-		String memberId = null;
-		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination, itemStatus, memberId);
+	public List<ItemVO> getPagingStatusItems(Pagination pagination) {
+		List<ItemVO> list = itemMapper.selectStatusByPagination(pagination);
 		return list.stream().collect(Collectors.toList());
 	}
 	

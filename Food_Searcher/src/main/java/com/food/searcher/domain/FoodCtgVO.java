@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CtgVO {
+public class FoodCtgVO {
 	
 	private int ctgId;
 	private String mainCtg;

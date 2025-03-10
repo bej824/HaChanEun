@@ -21,6 +21,4 @@ public interface LocalMapper {
 	LocalSpecialityVO selectByLocalId(@Param("localId") int localId);// 특산품 상세 정보
 	int update(LocalSpecialityVO localSpecialityVO); // 특산품 수정
 	int delete(@Param("localId") int localId); // 특산품 삭제
-	void localReplyCountUp(@Param("localId") int localId); // 댓글 카운트 업
-	void localReplyCountDown(@Param("localId") int localId, @Param("countDown") int countDown); // 댓글 카운트 다운
-}
+	}

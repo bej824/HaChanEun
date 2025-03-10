@@ -53,10 +53,6 @@ li {
 <h1>상품 리스트</h1>
 
 <div class="testDiv">
-<sec:authorize access="hasRole('ROLE_SELLER')">
-<a href="/searcher/item/register" class="button">상품 등록</a>  
-</sec:authorize>
-<br>
 <sec:authorize access="hasRole('ROLE_MEMBER')">
 <a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
@@ -71,7 +67,7 @@ li {
 				<option value="ITEM_TAG">상품 태그</option>
 			</select>
 			<input type="text" name="keyword">
-			<button class="button"> 검색 </button>
+			<button class="button"> 검색 </button><br>
 	</form>
 <hr>
 		<div class="item-container">
@@ -123,6 +119,8 @@ li {
 				class="button">다음</a></li>
 		</c:if>
 	</ul>
+	
+	<input type="hidden" id="newbutton">
 
 	
 <script type="text/javascript">
@@ -158,10 +156,10 @@ li {
 	}); // end on()
 	
 	$("#searchForm button").on("click", function(e){
-		var searchForm = $("#searchForm");
+		let searchForm = $("#searchForm");
 		e.preventDefault(); // a 태그 이벤트 방지
 		
-		var keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
+		let keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
 		console.log(keywordVal);
 		if(keywordVal == '') {
 			alert('검색 내용을 입력하세요.');
@@ -170,11 +168,44 @@ li {
 		
 		let pageNum = 1; // 검색 후 1페이지로 고정
 		// 현재 페이지 사이즈값 저장
-		 
+		
+		localStorage.setItem('buttonCreated', 'true');
+		
 		// 페이지 번호를 input name='pageNum' 값으로 적용
 		searchForm.find("input[name='pageNum']").val(pageNum);
 		searchForm.submit(); // form 전송
 	}); // end on()
+	
+	$(document).ready(function() {
+	    // 로컬 스토리지에서 'buttonCreated' 상태 가져오기
+	    let buttonCreated = localStorage.getItem('buttonCreated');
+
+	    // 'buttonCreated' 값이 true일 경우에만 새 버튼을 추가
+	    if (buttonCreated === 'true') {
+	        let searchForm = $("#searchForm");
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const keyword = urlParams.get('keyword');
+	        console.log(decodeURIComponent(keyword));
+	        
+	        // 새로운 버튼을 동적으로 생성
+	        let newButton = $('<button>')
+	            .text('쿠팡')
+	            .attr('type', 'button')
+	            .addClass('button')
+	            .on('click', function() {
+	                alert(keyword+' 이동합니다!');
+	                let url = 'https://www.coupang.com/np/search?component=&q=' + encodeURIComponent(keyword);
+                    window.open(url, '_blank');
+	            });
+
+	        // 새 버튼을 폼에 추가
+	        searchForm.append(newButton);
+
+	        // 버튼을 생성한 상태를 로컬 스토리지에서 삭제
+	        localStorage.removeItem('buttonCreated');
+	    }
+	});
+
 	
 </script>	
 </div> <!-- area -->

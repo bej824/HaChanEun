@@ -225,8 +225,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	}
 
 	@Override
-	public int getMemberTotalCount(String memberId) {
-		return directOrderMapper.selectMemberTotalCount(memberId);
+	public int getMemberTotalCount(String memberId, Pagination pagination) {
+		return directOrderMapper.selectMemberTotalCount(memberId, pagination);
 	}
 
 	public Map<String, Integer> calculateTotalPrice(

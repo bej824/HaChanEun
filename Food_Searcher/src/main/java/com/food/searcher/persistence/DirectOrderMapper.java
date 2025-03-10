@@ -18,7 +18,7 @@ public interface DirectOrderMapper {
 	DirectOrderVO selectOne(String orderId);
 	int selectTotalCount(Pagination pagination);
 	int sellerTotalCount(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
-	int selectMemberTotalCount(String memberId);
+	int selectMemberTotalCount(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	int insert(DirectOrderVO directOrderVO);
 	int cancel(@Param("orderId") String orderId);
 	int refundReady(@Param("orderId") String orderId);

@@ -34,7 +34,7 @@ public interface SellerService {
 	 */
 	int getTotalCount(Pagination pagination);
 
-	List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination);
+//	List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination);
 
 	List<ItemVO> selectSellerItem(String memberId);
 	

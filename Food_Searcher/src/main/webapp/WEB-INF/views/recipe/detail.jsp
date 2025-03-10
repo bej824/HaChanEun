@@ -189,10 +189,11 @@ textarea {
 	                $button.on('click', function () {
 	                    console.log('클릭된 단어:', word);
 	                    if (local.includes(word)) {
-	                        let url = 'http://localhost:8080/searcher/local/list?localLocal=&localDistrict=&localTitle=' + encodeURIComponent(word);
+	                    	localStorage.setItem('buttonCreated', 'true');
+	                        let url = 'http://localhost:8080/searcher/item/list?pageNum=1&type=ITEM_NAME&keyword=' + encodeURIComponent(word);
 	                        console.log('local/map?localTitle=' + word);
-	                        console.log('https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + word);
-	                        window.open(url, '_blank');
+	                        console.log('http://localhost:8080/searcher/local/list?localLocal=&localDistrict=&localTitle=' + word);
+	                        window.open(url, '_self');
 	                    } else {
 	                        let url = 'https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + encodeURIComponent(word);
 	                        window.open(url, '_blank');

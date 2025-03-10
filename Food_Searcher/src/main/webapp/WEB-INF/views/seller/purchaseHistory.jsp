@@ -51,7 +51,7 @@
 			<!-- 이전 버튼 생성을 위한 조건문 -->
 			<c:if test="${pageMaker.isPrev() }">
 			    <li class="pagination_button">
-			        <a href="purchaseHistory?pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
+			        <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
 			    </li>
 			</c:if>
 			
@@ -59,7 +59,7 @@
 			<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
 			    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
 			        <li class="pagination_button">
-			            <a href="purchaseHistory?pageNum=${num}">${num}</a>
+			            <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
 			        </li>
 			    </c:forEach>
 			</c:if>
@@ -67,7 +67,7 @@
 			<!-- 다음 버튼 생성을 위한 조건문 -->
 			<c:if test="${pageMaker.isNext() }">
 			    <li class="pagination_button">
-			        <a href="purchaseHistory?pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
+			        <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
 			    </li>
 			</c:if>		
 		</ul>

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,51 +40,20 @@ public class ItemController {
 	private ItemAttachService attachService;
 	
 	@GetMapping("/list")
-	public String list(Model model,
-				     @RequestParam(required = false) String type,
-					 @RequestParam(required = false) String keyword,
-					 @RequestParam(value="pageNum", defaultValue = "1") int pageNum,
-				     Pagination pagination) {
+	public String list(Model model, Pagination pagination) {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getStatusTotalCount(pagination));
 		
-		int itemStatus = 100;
-		List<ItemVO> itemList = itemService.getPagingStatusItems(itemStatus, pagination);
-		
-		if(!itemList.isEmpty()) {
-			model.addAttribute("itemList", itemList);
-		} else {
-			return "returnPage";
-		}
-		
+		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		
 		List<ItemAttachVO> attachVO = attachService.getSelectAll();
 		model.addAttribute("attachVO", attachVO);
 		model.addAttribute("itemList", itemList);
-
 	    model.addAttribute("pageMaker", pageMaker);
 	    
 	    return "/item/list";
-	}
-	
-	@GetMapping("/list-admin")
-	public String listAdmin(
-			Model model, 
-			@RequestParam(value="pageNum", defaultValue = "1") int pageNum,
-			Pagination pagination) {
-
-		List<ItemVO> itemList = itemService.getPagingAllItems(pagination);
-		
-		PageMaker pageMaker = new PageMaker(); // PageMaker 객체 생성
-		pageMaker.setPagination(pagination); // pagination 객체 적용
-		pageMaker.setTotalCount(itemService.getTotalCount(pagination));
-		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("itemList", itemList);
-		
-		return "/item/list-admin";
 	}
 	
 	@GetMapping("/register")
@@ -99,6 +67,7 @@ public class ItemController {
 		
 		itemVO.setMemberId(principal.getName());
 		int result = itemService.createItem(itemVO);
+		log.info(result);
 		
 		return "redirect:/item/list";		
 	}
@@ -115,7 +84,7 @@ public class ItemController {
 		pageMaker.setPagination(pagination);
 		pageMaker.setPageCount(1);
 		
-		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getMainCtg(), pagination);
+		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getSubCtg(), pagination);
 		model.addAttribute("itemList", itemList);
 		
 		model.addAttribute("itemVO", itemVO);
@@ -193,7 +162,7 @@ public class ItemController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName()));
+		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName(), pagination));
 		log.info(pageMaker);
 		List<DirectOrderVO> directOrderVO = directOrderService.getPagingmemberList(principal.getName(), pagination);
 		log.info("directOrderVO" + directOrderVO);

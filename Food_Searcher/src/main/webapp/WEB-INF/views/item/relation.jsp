@@ -62,8 +62,8 @@
 						</div>
 					</c:if>
 				</c:forEach>
-					<p>상품명 : ${itemVO.itemName }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+					<p>상품명 : ${itemList.itemName }</p>
+					<p>가격 : <fmt:formatNumber value="${itemList.itemPrice}" pattern="###,###,###"/>원</p>
 					
 			</div>
 		</c:if>

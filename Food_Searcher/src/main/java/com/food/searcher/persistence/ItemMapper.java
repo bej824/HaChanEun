@@ -14,13 +14,11 @@ public interface ItemMapper {
 	int itemCtgInsert(ItemVO itemVO);
 	
 	List<ItemVO> selectAllByPagination(
-			 	@Param("pagination") Pagination pagination,
-			 	@Param("itemStatus") int itemStatus,
-			 	@Param("memberId") String memberId); // 전체 게시글 페이징 처리
+			 	@Param("pagination") Pagination pagination); // 전체 게시글 페이징 처리
 	
 	int selectAllCount(Pagination pagination);
 	
-	List<ItemVO> selectCategoryList(@Param("mainCtg") String mainCtg, @Param("pagination") Pagination pagination);
+	List<ItemVO> selectCategoryList(@Param("subCtg") String subCtg, @Param("pagination") Pagination pagination);
 	
 	int selectTotalCount(
 				@Param("pagination") Pagination pagination,
@@ -29,9 +27,7 @@ public interface ItemMapper {
 	ItemVO selectOne(int itemId);
 	
 	List<ItemVO> selectStatusByPagination(
-		 	@Param("pagination") Pagination pagination,
-		 	@Param("itemStatus") int itemStatus,
-		 	@Param("memberId") String memberId); // 전체 게시글 페이징 처리
+		 	@Param("pagination") Pagination pagination); // 전체 게시글 페이징 처리
 	
 	List<ItemVO> selectSellerItem (
 			@Param("memberId") String memberId
