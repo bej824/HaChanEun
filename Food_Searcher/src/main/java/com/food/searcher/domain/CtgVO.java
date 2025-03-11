@@ -1,7 +1,6 @@
 package com.food.searcher.domain;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +13,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FoodCtgVO {
+public class CtgVO {
 	
-	private int ctgId;
+	private String memberId;
 	private String mainCtg;
-	private String subCtg;
+	private int ctgViewCount;
+	private Date updateDate;
 
 }

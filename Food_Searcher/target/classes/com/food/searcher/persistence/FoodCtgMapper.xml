@@ -5,11 +5,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.food.searcher.persistence.FoodCtgMapper">
 
-	<resultMap type="com.food.searcher.domain.FoodCtgVO"
-		id="foodCtgMap">
+	<resultMap type="com.food.searcher.domain.CtgVO"
+		id="ctgMap">
 
-		<id property="ctgId" column="CTG_ID" />
+		<id property="memberId" column="MEMBER_ID" />
 		<result property="mainCtg" column="MAIN_CTG" />
+
 	</resultMap>
 	
 	<insert id="insertFoodCtg">
@@ -24,31 +25,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 	
-	<select id="selectFoodCtg" resultMap="foodCtgMap">
+	<select id="selectFoodCtg" resultMap="ctgMap">
 	SELECT DISTINCT 
-	 i.MAIN_CTG
-	,i.SUB_CTG
-	,l.MAIN_CTG
-	,l.SUB_CTG
-	FROM FOOD_CTG f
-	INNER JOIN ITEM i
-	ON f.MAIN_CTG = i.MAIN_CTG
-	INNER JOIN LOCAL_SPECIALITY l
-	on f.MAIN_CTG = l.MAIN_CTG
+	MAIN_CTG
+	FROM FOOD_CTG
 	WHERE 1=1
-	<if test="mainCtg != null and mainCtg != ''">
-		AND f.MAIN_CTG = #{mainCtg}
+	<if test="ctgId != 0 and ctg != ''">
+		AND CTG_ID = #{ctgId}
 	</if>
-	AND NOT (i.MAIN_CTG = l.MAIN_CTG AND i.SUB_CTG = l.SUB_CTG)
+	<if test="mainCtg != null and mainCtg != ''">
+		AND MAIN_CTG = #{mainCtg}
+	</if>
 	
 	</select>
-	
-	<update id="updateFoodCtg">
-	
-	UPDATE CTG
-	SET MAIN_CTG = #{mainCtg}
-	WHERE CTG_ID = #{ctgId}
-	
-	</update>
 	
 </mapper>

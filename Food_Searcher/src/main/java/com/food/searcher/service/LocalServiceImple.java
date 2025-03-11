@@ -21,6 +21,12 @@ public class LocalServiceImple implements LocalService {
 	@Autowired
 	private LocalMapper localMapper;
 	
+	@Autowired
+	private CtgViewsCountService ctgViewsCountService;
+	
+	@Autowired
+	private UtilityService utilityService;
+	
 	@Transactional
 	@Override
 	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
@@ -30,13 +36,20 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.insertSepeciality(localSpecialityVO);
 	}
 	
+	@Transactional
 	@Override
-	public List<LocalSpecialityVO> getAllSpeciality(String localLocal, String localDistrict, String localTitle) {
+	public List<LocalSpecialityVO> getAllSpeciality(
+			String localLocal,
+			String localDistrict,
+			String localTitle,
+			String mainCtg,
+			String subCtg) {
 		log.info("getAllSpeciality()");
 		
-		return localMapper.selectList(localLocal, localDistrict, localTitle);
+		return localMapper.selectList(localLocal, localDistrict, localTitle, mainCtg, subCtg);
 	}
 	
+	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getPagingSpeciality(Pagination pagination) {
 		log.info("getPagingSpeciality()");
@@ -44,17 +57,20 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.selectListByPagination(pagination);
 	}
 	
+	@Transactional
 	@Override
 	public List<String> getDistrictByLocal(String localLocal) {
 		log.info("getDistrictByLocal()");
 		return localMapper.selectDistrict(localLocal);
 	}
 	
+	@Transactional
 	@Override
 	public LocalSpecialityVO getSpecialityByLocalId(int localId) {
 		log.info("getSpecialityByLocalId()");
-				
+		
 		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
+		specialityViewLog(localSpecialityVO.getMainCtg());
 		
 		return localSpecialityVO;
 	}
@@ -66,6 +82,14 @@ public class LocalServiceImple implements LocalService {
 		
 		return localMapper.update(localSpecialityVO);
 	}
-
+	
+	public void specialityViewLog(String mainCtg) {
+		log.info("specialityViewLog()");
+		
+		String memberId = utilityService.loginMember();
+		if(memberId != null) {
+			ctgViewsCountService.countCtgViewCount(memberId, mainCtg);
+		}
+	}
 
 }
