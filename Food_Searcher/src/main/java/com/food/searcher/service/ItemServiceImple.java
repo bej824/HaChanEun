@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.food.searcher.domain.FoodCtgVO;
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.ItemAttachMapper;
@@ -139,7 +139,7 @@ public class ItemServiceImple implements ItemService {
 	}
 
 	@Override
-	public List<FoodCtgVO> mainCtgList() {
+	public List<CtgVO> mainCtgList() {
 		return itemMapper.mainCtgList();
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.util.Pagination;
@@ -20,9 +21,6 @@ public class LocalServiceImple implements LocalService {
 	
 	@Autowired
 	private LocalMapper localMapper;
-	
-	@Autowired
-	private CtgViewsCountService ctgViewsCountService;
 	
 	@Autowired
 	private UtilityService utilityService;
@@ -70,9 +68,16 @@ public class LocalServiceImple implements LocalService {
 		log.info("getSpecialityByLocalId()");
 		
 		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
-		specialityViewLog(localSpecialityVO.getMainCtg());
+		specialityViewLog(localId);
 		
 		return localSpecialityVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<CtgVO> getViews() {
+		
+		return localMapper.selectViews();
 	}
 	
 	@Transactional
@@ -83,13 +88,11 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.update(localSpecialityVO);
 	}
 	
-	public void specialityViewLog(String mainCtg) {
+	public void specialityViewLog(int localId) {
 		log.info("specialityViewLog()");
 		
 		String memberId = utilityService.loginMember();
-		if(memberId != null) {
-			ctgViewsCountService.countCtgViewCount(memberId, mainCtg);
-		}
+		localMapper.insertViews(memberId, localId);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.util.Pagination;
 
@@ -41,6 +42,8 @@ public interface LocalMapper {
 	LocalSpecialityVO selectByLocalId(
 			@Param("localId") int localId
 			);// 특산품 상세 정보
+	
+	List<CtgVO> selectViews();
 	
 	int update(
 			LocalSpecialityVO localSpecialityVO

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.util.Pagination;
 
@@ -28,6 +29,8 @@ public interface LocalService {
 	
 	LocalSpecialityVO getSpecialityByLocalId(
 			int localId);
+	
+	List<CtgVO> getViews();
 	
 	int updateSpeciality(
 			LocalSpecialityVO localSpecialityVO);

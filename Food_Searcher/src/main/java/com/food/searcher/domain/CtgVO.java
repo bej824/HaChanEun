@@ -19,5 +19,7 @@ public class CtgVO {
 	private String mainCtg;
 	private int ctgViewCount;
 	private Date updateDate;
+	
+	private int localId;
 
 }

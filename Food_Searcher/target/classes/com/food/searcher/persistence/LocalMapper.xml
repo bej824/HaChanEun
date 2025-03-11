@@ -16,8 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="mainCtg" column="MAIN_CTG" />
 		<result property="subCtg" column="SUB_CTG" />
 		
+	</resultMap>
+	
+	<resultMap type="com.food.searcher.domain.CtgVO" id="viewsMap">
 		<result property="memberId" column="MEMBER_ID" />
-
+		<result property="localId" column="LOCAL_ID" />
+		
 	</resultMap>
 	
 	<insert id ="insertSepeciality">
@@ -113,6 +117,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * 
 		FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
+	</select>
+	
+	<select id="selectViews" resultMap="viewsMap">
+		SELECT v.MEMBER_ID, l.MAIN_CTG
+		FROM SPECIALITY_VIEWS v
+		LEFT JOIN LOCAL_SPECIALITY l
+		ON v.LOCAL_ID = l.LOCAL_ID
 	</select>
 	
 	<update id="update">

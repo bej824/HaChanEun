@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.food.searcher.domain.FoodCtgVO;
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -37,7 +37,7 @@ public interface ItemMapper {
 			
 			);
 
-	List<FoodCtgVO> mainCtgList();
+	List<CtgVO> mainCtgList();
 	
 	int update(ItemVO itemVO);
 	int ctgUpdate(ItemVO itemVO);
