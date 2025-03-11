@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
+import com.food.searcher.domain.MemberVO;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
+import com.food.searcher.service.MemberService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -39,6 +41,9 @@ public class ItemController {
 	@Autowired
 	private ItemAttachService attachService;
 	
+	@Autowired
+	private MemberService memberService;
+	
 	@GetMapping("/list")
 	public String list(Model model, Pagination pagination) {
 		
@@ -57,7 +62,8 @@ public class ItemController {
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(Model model) {
+		model.addAttribute("ctgList", itemService.mainCtgList());
 	}
 	
 	@PostMapping("/register")	
@@ -101,6 +107,7 @@ public class ItemController {
 			Model model,
 			Integer itemId) {
 		ItemVO itemVO = itemService.getItemById(itemId);
+		model.addAttribute("ctgList", itemService.mainCtgList());
 		
 		if(itemId.equals(itemVO.getItemId())) {
 			model.addAttribute("itemVO", itemVO);
@@ -134,8 +141,10 @@ public class ItemController {
 	@GetMapping("/order")
 	public void orderGet (
 			Model model,
-			Integer itemId) {
+			Integer itemId, Principal principal) {
 		log.info("orderGET()");
+		MemberVO member = memberService.getMemberById(principal.getName());
+		model.addAttribute("member", member);
 		ItemVO itemVO = itemService.getItemById(itemId);
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
@@ -147,6 +156,7 @@ public class ItemController {
 	@PostMapping("/order")
 	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
 		log.info(directOrderVO);
+		
 		directOrderVO.setMemberId(principal.getName());
 		int result = directOrderService.orderPurchase(directOrderVO);
 		log.info(result);

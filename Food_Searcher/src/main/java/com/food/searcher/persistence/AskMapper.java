@@ -8,8 +8,9 @@ import com.food.searcher.domain.AskVO;
 
 @Mapper
 public interface AskMapper {
+	List<AskVO> select(long itemId);
 	int insert(AskVO askVO);
-	List<AskVO> select(int itemId);
 	int update(AskVO askVO);
-	int delete(int askId);
+	int delete(long askId);
+	int countTodayAsk(AskVO askVO);
 }

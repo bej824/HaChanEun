@@ -51,7 +51,7 @@
 				class="button">이전</a></li>
 		</c:if>
 		<c:forEach var="itemList" items="${itemList}">
-		<c:if test="${itemVO.itemName != itemList.itemName }">
+		<c:if test="${itemVO.itemId != itemList.itemId }">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemList.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 				<input type="hidden" value="${itemList.itemStatus }" >
 				<c:forEach var="attachAll" items="${attachAll}">

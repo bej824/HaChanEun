@@ -6,7 +6,8 @@ import com.food.searcher.domain.AskVO;
 
 public interface AskService {
 	int createAsk(AskVO askVO);
-	List<AskVO> getAsk(int itemId);
-	int updateAsk(AskVO askVO);
-	int deleteAsk(int askId);
+	List<AskVO> getAsk(long itemId);
+	int updateAsk(long askId, String askContent);
+	int deleteAsk(long askId);
+	boolean canWriteAsk(String memberId, long itemId);
 }

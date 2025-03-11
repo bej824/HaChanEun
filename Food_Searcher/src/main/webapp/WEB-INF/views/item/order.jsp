@@ -137,6 +137,8 @@
     			console.log("주소 : " + deleveryAddress);
     			let couponSelect = $('#couponSelect').val();
     			let couponActiveId = couponActive[couponSelect].couponActiveId;
+    			let memberAmount = ${member.amountHeld};
+    			console.log("보유 금액 : " + memberAmount);
     			
     			if (!deliveryAddress) {
                     alert('배송 주소를 입력해주세요.');
@@ -146,7 +148,7 @@
     			if(couponActiveId == null) {
     				couponActiveId = 0;
     			}
-    			
+    			if(memberAmount >= totalPrice) {
     			$.ajax({
     			    url : 'order?itemId=' + itemId + '&count=' + count,
     			    type : 'POST',
@@ -160,11 +162,15 @@
     			        couponActiveId : couponActiveId
     			    }),
     			    success : function(result) {
-    			    	console.log(result);
+    			    	
     			            alert('결제 성공');
-    			            window.location.href = 'list';
+    			            window.location.href = 'list';    			    		
+    			    	
     			    }
     			});
+    			} else {
+		    		alert('보유 금액이 구매하려는 금액보다 적습니다.');
+		    	}
     		});
     		
     		$('#itemCount').change(function() {

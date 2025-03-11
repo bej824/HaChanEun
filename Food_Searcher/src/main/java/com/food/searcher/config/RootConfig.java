@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -100,6 +101,11 @@ public class RootConfig {
 	    @Bean
 	    public RandomUtil randomUtil() {
 	    	return new RandomUtil();
+	    }
+	    
+	    @Bean
+	    public RestTemplate restTemplate() {
+	        return new RestTemplate();
 	    }
 	
 } // end RootConfig

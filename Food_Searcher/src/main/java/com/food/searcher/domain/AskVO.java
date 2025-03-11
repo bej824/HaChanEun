@@ -14,9 +14,9 @@ import lombok.ToString;
 @ToString
 
 public class AskVO {
-	private int askId;
+	private long askId;
 	private String memberId;
-	private int itemId;
+	private long itemId;
 	private String askContent;
 	private Date askDate;
 	

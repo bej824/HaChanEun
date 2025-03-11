@@ -179,7 +179,8 @@ textarea {
 	            $wordSpan.addClass('clickable-word');  // 클릭 가능한 클래스 추가
 	            $wordSpan.text(word);
 	
-	            if (word != '') {
+	            if (word != '' && word != ' ') {
+	            	console.log("word : " + word);
 	                // 버튼 생성
 	                let $button = $('<button></button>');  
 	                $button.text('구매');  // 버튼에 표시될 텍스트

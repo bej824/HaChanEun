@@ -19,6 +19,7 @@ import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.CartMapper;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ItemMapper;
+import com.food.searcher.persistence.MemberMapper;
 import com.food.searcher.util.Pagination;
 
 import lombok.extern.log4j.Log4j;
@@ -41,6 +42,9 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Autowired
 	private CartMapper cartMapper;
+	
+	@Autowired
+	private MemberMapper memberMapper;
 
 	@Override
 	public List<DirectOrderVO> getAllOrder() {
@@ -61,7 +65,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	@Override
 	public int orderPurchase(DirectOrderVO directOrderVO) {
 		log.info("insert()");
-
+		
+		String memberId = directOrderVO.getMemberId();
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		directOrderVO.setOrderId(now.format(formatter));
@@ -90,14 +95,20 @@ public class DirectOrderServiceImple implements DirectOrderService {
 				,directOrderVO.getMemberId());
 		
 		directOrderVO.setTotalPrice(totalPrice.get(directOrderVO.getMemberId()));
+		int amountHeld = totalPrice.get(memberId);
 		
-		int result = directOrderMapper.insert(directOrderVO);
+		if(memberMapper.selectMemberByMemberId(memberId).getAmountHeld() >= amountHeld) {
+		directOrderMapper.insert(directOrderVO);
+		memberMapper.updateAmountHeld(memberId, -amountHeld);
 		
 		if(discountPrice != 0) {
 			couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
 		}
-
-		return result;
+		
+		return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	@Transactional
@@ -106,28 +117,18 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	    
 	    log.info("cartInsert()");
 	    log.info(directOrderVO);
-	    List<ItemListVO> itemList = new ArrayList<>();
 	    for (DirectOrderVO vo : directOrderVO) {
 	    	LocalDateTime now = LocalDateTime.now();
 	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 	    	vo.setOrderId(now.format(formatter));
 	    	
 	    	List<CartVO> cartVO = cartMapper.cartOrder(vo.getMemberId());
-	    	
-	    	
-		    for (CartVO cartOne : cartVO) {
-		    	ItemListVO item = new ItemListVO();
-		    	item.setOrderId(now.format(formatter));
-		    	item.setMemberId(vo.getMemberId());
-		        item.setItemId(cartOne.getItemId());
-		        item.setTotalPrice(cartOne.getItemPrice() * cartOne.getCartAmount());
-		        item.setTotalCount(cartOne.getCartAmount());
-		        item.setDeliveryAddress(vo.getDeliveryAddress());
-		        itemList.add(item);
-		    }
 		    
 		    log.info("directOrderVO" + vo);
 		    directOrderMapper.insert(vo);
+		    String memberId = vo.getMemberId();
+		    int amountHeld = vo.getTotalPrice();
+		    memberMapper.updateAmountHeld(memberId, -amountHeld);
 		    
 		    for (CartVO cartDelete : cartVO) {
 		        cartMapper.cartDelete(cartDelete.getCartId());
@@ -157,7 +158,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		int result = directOrderMapper.cancel(orderId);
 		log.info(result + "행 업데이트 완료");
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
-
+		
+		memberMapper.updateAmountHeld(directOrderVO.getMemberId(), directOrderVO.getTotalPrice());
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		itemService.updateItemAmount(itemVO.getItemAmount() - directOrderVO.getTotalCount(), directOrderVO.getItemId());
 		couponActiveService.updateCouponActiveByOrderId(orderId);
@@ -182,6 +184,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	public int refundOK(String orderId) {
 		log.info("환불 승인");
 
+		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
+		memberMapper.updateAmountHeld(directOrderVO.getMemberId(), directOrderVO.getTotalPrice());
 		int result = directOrderMapper.refundOK(orderId);
 
 		if (result == 1) {

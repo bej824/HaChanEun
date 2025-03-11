@@ -82,17 +82,15 @@
 		<input type="radio" name="emailAgree" value="yes">예
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
-	
 	<br>
+	<p>보유 금액 : ${memberVO.amountHeld }원</p>
+	
 	<button id="btn_memberCoupon" class="button">쿠폰함</button>
 	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
 	<a href="../item/purchaseHistory" class="button">구매 내역</a>
 	<br>
-
-	<br>
 	<button id="btn_update" class="button">수정하기</button>
 	<button id="btn_pwUpdate" class="button">비밀번호 변경</button>
-	<br>
 	<br>
 	<button id="btn_inactive" class="button">회원탈퇴</button>
 

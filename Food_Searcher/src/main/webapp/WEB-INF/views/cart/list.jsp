@@ -339,6 +339,9 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	    // tr 태그 내의 데이터들을 배열로 수집
 	    let orderData = [];
 	    let deliveryAddress = $("#deleveryAddress").val();
+	    let memberAmount = ${member.amountHeld};
+		console.log("보유 금액 : " + memberAmount);
+	    let memberPrice = 0;
 
 	    // 주소가 비어 있으면 경고
 	    if (!deliveryAddress && !hasCheckedAddress) {
@@ -362,17 +365,20 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	                itemId: itemId,
 	                totalCount: totalCount,
 	                totalPrice: totalPrice,
-	                deliveryAddress: deliveryAddress,
-	                orderCount: index
+	                deliveryAddress: deliveryAddress
 	            });
+	            memberPrice += totalPrice;
 	        }
+	        
 	    });
+	    console.log("토탈 : " + memberPrice);
 
 	    // 배열이 비어 있으면 종료
 	    if (orderData.length === 0) {
 	        return;
 	    }
 
+	    if(memberAmount >= memberPrice) {
 	    // 데이터 한 번에 전송
 	    $.ajax({
 	        url: 'order',
@@ -389,6 +395,9 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	            window.location.href = 'http://localhost:8080/searcher/item/list';
 	        }
 	    });
+	} else {
+		alert('보유 금액이 구매하려는 금액보다 적습니다.');
+	}
 	});
 
 	    
