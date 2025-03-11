@@ -80,7 +80,7 @@
 	<c:if test="${directOrderVO.deliveryStatus eq '환불 신청'}">
 		<p>환불 사유 : ${directOrderVO.refundReason }</p>
 		<p>내용</p>
-		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea>
+		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea><br>
 		<button id="refundOK" class="button">환불 승인</button>
 	</c:if>
 	

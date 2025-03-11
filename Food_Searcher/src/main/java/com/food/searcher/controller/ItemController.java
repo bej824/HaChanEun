@@ -62,7 +62,8 @@ public class ItemController {
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(Model model) {
+		model.addAttribute("ctgList", itemService.mainCtgList());
 	}
 	
 	@PostMapping("/register")	
@@ -106,6 +107,7 @@ public class ItemController {
 			Model model,
 			Integer itemId) {
 		ItemVO itemVO = itemService.getItemById(itemId);
+		model.addAttribute("ctgList", itemService.mainCtgList());
 		
 		if(itemId.equals(itemVO.getItemId())) {
 			model.addAttribute("itemVO", itemVO);

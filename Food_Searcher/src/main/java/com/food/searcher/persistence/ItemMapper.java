@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.food.searcher.domain.FoodCtgVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -20,6 +21,8 @@ public interface ItemMapper {
 	
 	List<ItemVO> selectCategoryList(@Param("subCtg") String subCtg, @Param("pagination") Pagination pagination);
 	
+	List<ItemVO> selectAllList();
+	
 	int selectTotalCount(
 				@Param("pagination") Pagination pagination,
 				@Param("itemStatus") int itemStatus);
@@ -34,8 +37,10 @@ public interface ItemMapper {
 			
 			);
 
+	List<FoodCtgVO> mainCtgList();
 	
 	int update(ItemVO itemVO);
+	int ctgUpdate(ItemVO itemVO);
 	
 	int updateItemAmount(
 			@Param("itemId") int itemId,

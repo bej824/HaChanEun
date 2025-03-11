@@ -11,10 +11,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RecipeViewListVO {
-	private int viewsNo;
-	private int recipeId;
+public class RecipeCategoryViewsVO {
 	private String memberId;
 	private String category;
-	private RecipeViewsVO views;
+	private int views;
 }

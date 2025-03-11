@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j;
 
 @Component
 @Log4j
-public class RecipeViewsTask {
+public class ViewsTask {
 	
 	@Autowired
 	private RecipeViewMapper recipeViewMapper;
@@ -19,11 +19,10 @@ public class RecipeViewsTask {
 	public void viewsCount() {
 		log.info("조회수 확인");
 		
-		int updateCount = recipeViewMapper.updateViews();
-		log.info(updateCount + "행 업데이트");
-		int inputCount = recipeViewMapper.insertViews();
-		log.info(inputCount + "행 추가");
-		int deleteinfo = recipeViewMapper.delete();
-		log.info(deleteinfo + "행 삭제");
+		recipeViewMapper.updateViews();
+		recipeViewMapper.insertViews();
+		recipeViewMapper.updateCategoryViews();
+		recipeViewMapper.insertCategoryViews();
+		recipeViewMapper.delete();
 	}
 }
