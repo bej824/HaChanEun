@@ -52,4 +52,8 @@ public interface LocalMapper {
 	int delete(
 			@Param("localId") int localId
 			); // 특산품 삭제
-	}
+	
+	int deleteView();
+
+}
+

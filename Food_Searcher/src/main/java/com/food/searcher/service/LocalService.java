@@ -1,9 +1,6 @@
 package com.food.searcher.service;
 
 import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
 
 import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.LocalSpecialityVO;
@@ -34,5 +31,7 @@ public interface LocalService {
 	
 	int updateSpeciality(
 			LocalSpecialityVO localSpecialityVO);
+	
+	int deleteView();
 
 }

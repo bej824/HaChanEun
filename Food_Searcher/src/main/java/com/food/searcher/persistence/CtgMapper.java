@@ -8,13 +8,13 @@ import org.apache.ibatis.annotations.Param;
 import com.food.searcher.domain.CtgVO;
 
 @Mapper
-public interface FoodCtgMapper {
+public interface CtgMapper {
 	
-	int insertFoodCtg(CtgVO foodctgVO);
+	int insertCtg(CtgVO foodctgVO);
 	
-	List<CtgVO> selectFoodCtg(
+	List<CtgVO> selectCtg(
 			 @Param("mainCtg") String mainCtg);
 	
-	int updateFoodCtg(CtgVO foodctgVO);
+	int updateCtg(CtgVO foodctgVO);
 
 }

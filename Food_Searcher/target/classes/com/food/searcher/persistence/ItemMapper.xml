@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemStatus" column="ITEM_STATUS" />
 		<result property="itemLikes" column="ITME_LIKES" />
 	</resultMap>
-	<resultMap type="com.food.searcher.domain.FoodCtgVO" id="ctgResultMap">
+	<resultMap type="com.food.searcher.domain.CtgVO" id="ctgResultMap">
 		<id property="ctgId" column="CTG_ID" />
 		<result property="mainCtg" column="MAIN_CTG" />
 		<result property="subCtg" column="SUB_CTG" />

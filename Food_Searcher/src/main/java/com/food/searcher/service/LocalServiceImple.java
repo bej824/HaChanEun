@@ -1,8 +1,6 @@
 package com.food.searcher.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,11 +86,18 @@ public class LocalServiceImple implements LocalService {
 		return localMapper.update(localSpecialityVO);
 	}
 	
+	@Override
+	public int deleteView() {
+		
+		return localMapper.deleteView();
+	}
+	
 	public void specialityViewLog(int localId) {
 		log.info("specialityViewLog()");
 		
 		String memberId = utilityService.loginMember();
-		localMapper.insertViews(memberId, localId);
+		if(memberId != null) {
+			localMapper.insertViews(memberId, localId);
+		}
 	}
-
 }
