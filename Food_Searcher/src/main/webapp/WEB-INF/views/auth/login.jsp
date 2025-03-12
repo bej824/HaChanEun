@@ -28,17 +28,6 @@
 	<c:if test="${not empty errorMsg }">
     	<script>alert('${errorMsg }');</script>
 	</c:if>
-	
-    <sec:authorize access="isAuthenticated()">
-    <form id="logout" action="../auth/logout" method="POST">
-        <!-- CSRF 토큰 -->
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-    </form>
-    <script>
-    alert("로그아웃되었습니다.");
-    document.getElementById('logout').submit();
-    </script>
-	</sec:authorize>
 
 </body>
 </html>

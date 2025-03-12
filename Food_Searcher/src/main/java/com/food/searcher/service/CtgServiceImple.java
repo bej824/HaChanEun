@@ -5,23 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.food.searcher.domain.CtgVO;
-import com.food.searcher.persistence.FoodCtgMapper;
+import com.food.searcher.persistence.CtgMapper;
 
-public class FoodCtgServiceImple implements FoodCtgService {
+public class CtgServiceImple implements CtgService {
 	
 	@Autowired
-	FoodCtgMapper foodCtgMapper;
+	CtgMapper CtgMapper;
 	
 	@Override
 	public int createCtg(CtgVO foodCtgVO) {
 		
-		return foodCtgMapper.insertFoodCtg(foodCtgVO);
+		return CtgMapper.insertCtg(foodCtgVO);
 	}
 	
 	@Override
 	public List<CtgVO> selectCtg(String mainCtg) {
 		
-		return foodCtgMapper.selectFoodCtg(mainCtg);			
+		return CtgMapper.selectCtg(mainCtg);			
 	}
 
 }

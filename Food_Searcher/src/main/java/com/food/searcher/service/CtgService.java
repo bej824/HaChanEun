@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.food.searcher.domain.CtgVO;
 
-public interface FoodCtgService {
+public interface CtgService {
 	
 	int createCtg(CtgVO foodCtvVO);
 	

@@ -1,9 +1,17 @@
 package com.food.searcher.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import com.food.searcher.domain.ApproveResponse;
+import com.food.searcher.domain.ReadyResponse;
 
 import lombok.extern.log4j.Log4j;
 
@@ -13,70 +21,94 @@ public class KakaoPayService {
 
     @Autowired
     private RestTemplate restTemplate;
+    
+    @Autowired
+    private UtilityService utilityService;
+    
+    private static final String KAKAO_PAY_API_ID = 
+    		"547A4302DD26F48890C0";
+    
+    private static final String KAKAO_PAY_API_URL_READY = 
+    		"https://open-api.kakaopay.com/online/v1/payment/ready";
+    
+    private static final String KAKAO_PAY_API_URL_APPROVE = 
+    		"https://open-api.kakaopay.com/online/v1/payment/approve";
+    
+    private static final String REST_API_KEY = 
+    		"DEVA6E616D5501C801CA7AD571A156C1E6413A42"; // 카카오 개발자 사이트에서 받은 REST API 키
 
-    private static final String KAKAO_PAY_API_URL = "https://kapi.kakao.com/v1/payment/ready";
-    private static final String REST_API_KEY = "8c6c98ec9612e8d3b4936d3ba36b726b"; // 카카오 개발자 사이트에서 받은 REST API 키
+    // 카카오페이 결제창 연결
+    public ReadyResponse payReady(int orderId, String itemName, int totalPrice) {
+    
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("cid", KAKAO_PAY_API_ID);                                // 가맹점 코드(테스트용)
+        parameters.put("partner_order_id", String.valueOf(orderId));            // 주문번호
+        parameters.put("partner_user_id", utilityService.loginMember());        // 회원 아이디
+        parameters.put("item_name", itemName);                                  // 상품명
+        parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
+        parameters.put("total_amount", String.valueOf(totalPrice));             // 상품 총액
+        parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
+        parameters.put("approval_url", "http://localhost/pay/completed"); 		// 결제 성공 시 URL
+        parameters.put("cancel_url", "http://localhost/pay/cancel");      		// 결제 취소 시 URL
+        parameters.put("fail_url", "http://localhost/pay/fail");          		// 결제 실패 시 URL
 
-    // 카카오페이 결제 준비 API 호출
-    public String preparePayment() {
-        // 결제 준비 API 요청 파라미터 설정
-        String requestBody = "cid=TC0ONETIME" // 가맹점 코드
-                            + "&partner_order_id=1234" // 가맹점 주문 번호
-                            + "&partner_user_id=abcd1234" // 가맹점 사용자 ID
-                            + "&item_name=테스트 상품" // 상품명
-                            + "&quantity=1"  // 상품 수량
-                            + "&total_amount=1000"  // 총 결제 금액
-                            + "&tax_free_amount=0"  // 면세 금액
-                            + "&approval_url=localhost:8080/searcher/kakaoPay/success" // 결제 승인 후 리디렉션 URL
-                            + "&cancel_url=localhost:8080/searcher/kakaoPay/cancel"  // 결제 취소 후 리디렉션 URL
-                            + "&fail_url=localhost:8080/searcher/kakaoPay/fail";  // 결제 실패 후 리디렉션 URL
+        // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
-        log.info("requestBody : " + requestBody);
-        
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + REST_API_KEY);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        log.info("headers : " + headers);
-
-        // 요청 엔티티 생성
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        log.info("entity : " + entity);
-
-        // API 호출 (POST 요청, 응답은 String 형태로 받음)
-        String responseBody = restTemplate.postForObject(KAKAO_PAY_API_URL, entity, String.class);
-        log.info("response : " + responseBody);
-
-        // 응답에서 결제 승인 페이지 URL 추출
-        String redirectUrl = extractRedirectUrl(responseBody);
-
-        // 결제 승인 페이지 URL 반환
-        return redirectUrl;
+        // RestTemplate
+        // : Rest 방식 API를 호출할 수 있는 Spring 내장 클래스
+        //   REST API 호출 이후 응답을 받을 때까지 기다리는 동기 방식 (json, xml 응답)
+        // RestTemplate의 postForEntity : POST 요청을 보내고 ResponseEntity로 결과를 반환받는 메소드
+        try {
+            ResponseEntity<ReadyResponse> responseEntity = restTemplate.postForEntity(
+                KAKAO_PAY_API_URL_READY,
+                requestEntity,
+                ReadyResponse.class
+            );
+            log.info("결제준비 응답객체: " + responseEntity.getBody());
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("카카오페이 결제 준비 실패: " + e.getMessage());
+            throw new RuntimeException("카카오페이 결제 준비 실패");
+        }
     }
 
+    // 카카오페이 결제 승인
+    // 사용자가 결제 수단을 선택하고 비밀번호를 입력해 결제 인증을 완료한 뒤,
+    // 최종적으로 결제 완료 처리를 하는 단계
+    public ApproveResponse payApprove(String tid, String pgToken, int orderId) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("cid", KAKAO_PAY_API_ID);              					// 가맹점 코드(테스트용)
+        parameters.put("tid", tid);                       						// 결제 고유번호
+        parameters.put("partner_order_id", String.valueOf(orderId)); 			// 주문번호
+        parameters.put("partner_user_id", utilityService.loginMember());    	// 회원 아이디
+        parameters.put("pg_token", pgToken);              						// 결제승인 요청을 인증하는 토큰
 
-    // 응답에서 결제 승인 페이지 URL 추출
-    private String extractRedirectUrl(String responseBody) {
-        // 응답 본문에서 "next_redirect_pc_url"을 추출
-        // 이 부분은 JSON 파싱을 위해 라이브러리(Jackson 등)을 사용하는 것이 좋습니다
-        // 예시로 간단히 substring으로 처리
-        int startIdx = responseBody.indexOf("next_redirect_pc_url\":\"") + 23;
-        int endIdx = responseBody.indexOf("\"", startIdx);
-        return responseBody.substring(startIdx, endIdx);
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+
+        RestTemplate template = new RestTemplate();
+        ApproveResponse approveResponse = template.postForObject(
+        		 KAKAO_PAY_API_URL_APPROVE
+        		,requestEntity
+        		,ApproveResponse.class);
+        log.info("결제승인 응답객체: " + approveResponse);
+
+        return approveResponse;
     }
     
-    public String approvePayment(String pgToken) {
-        String requestBody = "cid=TC0ONETIME&tid=1234567890&partner_order_id=1234&partner_user_id=abcd1234&pg_token=" + pgToken;
-
+//    public int payCancle() {
+//    	PaymentCancelRequest request = new PaymentCancelRequest();
+//    	request.setTid("exampleTid");
+//    	request.setCancelAmount(10000);    	
+//    }
+    
+    // 카카오페이 측에 요청 시 헤더부에 필요한 값
+    private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK " + REST_API_KEY);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization", REST_API_KEY);
+        headers.set("Content-type", "application/json");
 
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<String> response = restTemplate.exchange("https://kapi.kakao.com/v1/payment/approve", HttpMethod.POST, entity, String.class);
-
-        return response.getBody();
+        return headers;
     }
 
 }

@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.food.searcher.persistence.FoodCtgMapper">
+<mapper namespace="com.food.searcher.persistence.CtgMapper">
 
 	<resultMap type="com.food.searcher.domain.CtgVO"
 		id="ctgMap">
@@ -13,9 +13,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</resultMap>
 	
-	<insert id="insertFoodCtg">
+	<insert id="insertCtg">
 	
-	INSERT INTO FOOD_CTG
+	INSERT INTO CTG
 	(CTG_ID
 	,MAIN_CTG
 	) VALUES 
@@ -25,10 +25,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 	
-	<select id="selectFoodCtg" resultMap="ctgMap">
+	<select id="selectCtg" resultMap="ctgMap">
 	SELECT DISTINCT 
 	MAIN_CTG
-	FROM FOOD_CTG
+	FROM CTG
 	WHERE 1=1
 	<if test="ctgId != 0 and ctg != ''">
 		AND CTG_ID = #{ctgId}

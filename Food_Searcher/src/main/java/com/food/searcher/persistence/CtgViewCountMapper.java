@@ -20,8 +20,6 @@ public interface CtgViewCountMapper {
 			@Param("memberId") String memberId,
 			@Param("mainCtg") String mainCtg);
 	
-	int updateCtgViewCount(
-			@Param("memberId") String memberId,
-			@Param("mainCtg") String mainCtg);
+	int updateCtgViewCount();
 
 }

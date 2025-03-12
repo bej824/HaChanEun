@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.food.searcher.domain.ApproveResponse;
+import com.food.searcher.domain.ReadyResponse;
 import com.food.searcher.service.KakaoPayService;
+import com.food.searcher.util.SessionUtils;
 
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/kakaoPay")
+@RequestMapping("/pay")
 @Log4j
 public class KakaoPayController {
 
@@ -21,23 +24,26 @@ public class KakaoPayController {
 
     // 카카오페이 결제 페이지로 리디렉션
     @GetMapping("/prepare")
-    public RedirectView preparePayment() {
+    public ReadyResponse preparePayment(int orderId, String itemName, int totalPrice) {
     	log.info("prepare");
         // 결제 준비 API 호출
-        String redirectUrl = kakaoPayService.preparePayment();
-        log.info(redirectUrl);
+    	ReadyResponse readyResponse = kakaoPayService.payReady(orderId, itemName, totalPrice);
+        log.info(readyResponse);
 
         // 결제 페이지로 리디렉션
-        return new RedirectView(redirectUrl);
+        return readyResponse;
     }
     
     @GetMapping("/success")
-    public String success(@RequestParam String pg_token) {
+    public String success(@RequestParam String pg_token, int orderId) {
+    	
+    	String tid = SessionUtils.getStringAttributeValue("tid");
         // 결제 승인 처리 API 호출
-        String approvalResult = kakaoPayService.approvePayment(pg_token);
+        ApproveResponse approvalResult = kakaoPayService.payApprove(tid, pg_token, orderId);
+        log.info(approvalResult);
         
         // 결제 승인 결과 반환
-        return approvalResult;
+        return "redirect:/pay/completed";
     }
 }
 

@@ -138,5 +138,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
 	</delete>
+	
+	<delete id="deleteView">
+		DELETE FROM SPECIALITY_VIEWS
+	</delete>
 
 </mapper>
