@@ -51,9 +51,9 @@
 	<div>
 	<p>분류 : 
 	<select name="mainCtg" id="mainCtg">
-		<c:forEach var="ctgList" items="${ctgList}">
-		<option>${ctgList.mainCtg }</option>
-		</c:forEach>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
 	</select>
 	<select name="subCtg" id="subCtg">
 		<option>1</option>

@@ -19,7 +19,7 @@ public interface ItemMapper {
 	
 	int selectAllCount(Pagination pagination);
 	
-	List<ItemVO> selectCategoryList(@Param("subCtg") String subCtg, @Param("pagination") Pagination pagination);
+	List<ItemVO> selectCategoryList(@Param("subCtg") String subCtg, @Param("itemId") int itemId, @Param("pagination") Pagination pagination);
 	
 	List<ItemVO> selectAllList();
 	

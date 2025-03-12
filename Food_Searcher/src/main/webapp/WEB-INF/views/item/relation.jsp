@@ -47,11 +47,10 @@
 	<p>${itemVO.itemName } 연관 상품</p>
 	<div class="item-container">
 	<c:if test="${pageMaker.isPrev() }">
-			<li class="pagination_button"><a href="${pageMaker.pagination.pageNum - 1}"
+			<li class="pagination_button"><a href="detail?itemId=${itemVO.itemId}&pageNum=${pageMaker.pagination.pageNum - 1}"
 				class="button">이전</a></li>
 		</c:if>
 		<c:forEach var="itemList" items="${itemList}">
-		<c:if test="${itemVO.itemId != itemList.itemId }">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemList.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 				<input type="hidden" value="${itemList.itemStatus }" >
 				<c:forEach var="attachAll" items="${attachAll}">
@@ -66,10 +65,9 @@
 					<p>가격 : <fmt:formatNumber value="${itemList.itemPrice}" pattern="###,###,###"/>원</p>
 					
 			</div>
-		</c:if>
 		</c:forEach>
 		<c:if test="${pageMaker.isNext() }">
-			<li class="pagination_button"><a href="${pageMaker.pagination.pageNum + 1}"
+			<li class="pagination_button"><a href="detail?itemId=${itemVO.itemId}&pageNum=${pageMaker.pagination.pageNum + 1}"
 				class="button">다음</a></li>
 		</c:if>
 	</div>

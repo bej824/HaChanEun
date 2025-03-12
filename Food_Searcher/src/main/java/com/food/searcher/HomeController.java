@@ -1,5 +1,6 @@
 package com.food.searcher;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.service.LocalService;
+import com.food.searcher.service.MemberService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -37,6 +39,9 @@ public class HomeController {
 	
 	@Autowired
 	private LocalService localService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	MemberVO memberVO = null;
 	
@@ -60,7 +65,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/home")
-	public void main(Model model, Pagination pagination) {
+	public void main(Model model, Pagination pagination, Principal principal) {
 		log.info("home()");
 		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		
@@ -70,6 +75,11 @@ public class HomeController {
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
+		
+		if(principal != null) {
+		String memberId = principal.getName();
+		model.addAttribute("memberVO", memberService.getMemberById(memberId));
+		}
 	}
 	
 }

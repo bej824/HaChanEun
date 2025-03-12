@@ -134,8 +134,8 @@ public class ItemServiceImple implements ItemService {
 	}
 
 	@Override
-	public List<ItemVO> getSelectCategoryList(String mainCtg, Pagination pagination) {
-		return itemMapper.selectCategoryList(mainCtg, pagination);
+	public List<ItemVO> getSelectCategoryList(String mainCtg, int itemId, Pagination pagination) {
+		return itemMapper.selectCategoryList(mainCtg, itemId, pagination);
 	}
 
 	@Override

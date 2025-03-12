@@ -84,10 +84,15 @@ public class DirectOrderServiceImple implements DirectOrderService {
 					,list.get(0).getItemAmount() - directOrderVO.getTotalCount());
 		} else {
 			log.warn(list.get(0).getItemId() + " " + list.get(0).getItemName() + "의 재고가 부족합니다.");
-			return 0;
+			return 401;
+		}
+		
+		if(itemVO.getItemStatus() != 100) {
+			return 402;
 		}
 		
 		Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
+		
 
 		Map<String, Integer> totalPrice = calculateTotalPrice(
 				 list
@@ -102,12 +107,14 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		memberMapper.updateAmountHeld(memberId, -amountHeld);
 		
 		if(discountPrice != 0) {
-			couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
+			int couponUseInfo = couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
+			if(couponUseInfo != 1) {
+				return 403;
+			}
 		}
-		
 		return 1;
 		} else {
-			return 0;
+			return 404;
 		}
 	}
 
@@ -117,6 +124,10 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	    
 	    log.info("cartInsert()");
 	    log.info(directOrderVO);
+	    Integer discountPrice = 0;
+	    
+	    int amountHeld = 0;
+	    String memberId = null;
 	    for (DirectOrderVO vo : directOrderVO) {
 	    	LocalDateTime now = LocalDateTime.now();
 	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -126,16 +137,20 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		    
 		    log.info("directOrderVO" + vo);
 		    directOrderMapper.insert(vo);
-		    String memberId = vo.getMemberId();
-		    int amountHeld = vo.getTotalPrice();
-		    memberMapper.updateAmountHeld(memberId, -amountHeld);
+		    memberId = vo.getMemberId();
+		    amountHeld += vo.getTotalPrice();
 		    
 		    for (CartVO cartDelete : cartVO) {
 		        cartMapper.cartDelete(cartDelete.getCartId());
 		    }
 	    }
 	    
+	    if(memberMapper.selectMemberByMemberId(memberId).getAmountHeld() >= amountHeld) {
+	    memberMapper.updateAmountHeld(memberId, -amountHeld);
 	    return 1;
+	    } else {
+			return 404;
+		}
 	}
 
 
@@ -253,6 +268,15 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		acount.put(memberId, totalPrice);
 
 		return acount;
+	}
+
+	@Override
+	public int orderCancel() {
+		List<DirectOrderVO> directOrderVO = directOrderMapper.orderCancelList();
+		for (DirectOrderVO vo : directOrderVO) {
+			memberMapper.updateAmountHeld(vo.getMemberId(), vo.getTotalPrice());
+		}
+		return directOrderMapper.orderCancel();
 	}
 
 }

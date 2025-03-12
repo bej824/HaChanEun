@@ -13,26 +13,30 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th style="width: 8%">회원Id</th>
+				<th style="width: 8%">상품명</th>
 				<th style="width: 5%">수량</th>
 				<th style="width: 8%">결제 금액</th>
 				<th style="width: 30%">주소</th>
 				<th style="width: 9%">배송 상태</th>
 				<th style="width: 15%">결제일</th>
-				<th style="width: 7%"></th>
+				<th style="width: 7%">리뷰</th>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach var="DirectOrderVO" items="${directOrderVO }">
 			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderVO.orderId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
-				<td>${DirectOrderVO.memberId }</td>
+				<td>${DirectOrderVO.itemName }</td>
 				<td style="text-align: right;">${DirectOrderVO.totalCount }</td>
 				<td><fmt:formatNumber value="${DirectOrderVO.totalPrice}" pattern="###,###,###"/>원</td>
 				<td>${DirectOrderVO.deliveryAddress }</td>
 				<td>${DirectOrderVO.deliveryStatus }</td>
 				<fmt:formatDate value="${DirectOrderVO.deliveryDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>
 				<td>${deliveryDate }</td>
-				<td onclick="event.stopPropagation()"><button>리뷰 작성</button></td>
+				<td onclick="event.stopPropagation()">
+				<c:if test="${DirectOrderVO.deliveryStatus == '배송 완료' || DirectOrderVO.deliveryStatus == '환불 완료'}">
+				<button>리뷰 작성</button>
+				</c:if>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
@@ -62,7 +66,7 @@
 			<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
 			    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
 			        <li class="pagination_button">
-			            <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${num}">${num}</a>
+			            <a href="purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
 			        </li>
 			    </c:forEach>
 			</c:if>
@@ -95,7 +99,7 @@
 	                keyword.appendChild(option);
 	            });
 	        } else if (type === "DELIVERY_STATUS") {
-	        	let options = ["상품 준비중", "배송 준비중", "배송 중", "배송 완료", "환불 신청", "환불 승인", "환불 완료", "결제 취소"];
+	        	let options = ["상품 준비중", "배송 준비중", "배송 중", "배송 완료", "환불 신청", "환불 승인", "환불 완료", "결제 취소", "주문 취소"];
 	        	keyword.style.display = "inline-block";  // 추가 필터 보이기
 	            options.forEach(function(optionText) {
 	                let option = document.createElement("option");

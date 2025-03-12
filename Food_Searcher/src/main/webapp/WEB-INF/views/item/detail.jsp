@@ -94,7 +94,7 @@ pageEncoding="UTF-8"%>
 	
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button" id="listBoard">글 목록</button>
+	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}'" class="button" id="listBoard">글 목록</button>
 	<br>
 	
 	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
