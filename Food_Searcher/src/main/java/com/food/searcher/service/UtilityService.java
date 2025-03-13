@@ -16,7 +16,7 @@ public class UtilityService {
 	/**
 	 * @return 현재시간(yyyyMMddHHmmss)
 	 */
-	public String sysDate() {
+	public String now() {
 		
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 	}

@@ -18,6 +18,7 @@ public class ApproveResponse {
 	    private String item_name;           // 상품 이름
 	    private String item_code;           // 상품 코드
 	    private int quantity;               // 상품 수량
+	    private int total_amount;
 	    private String created_at;          // 결제 준비 요청 시각
 	    private String approved_at;         // 결제 승인 시각
 	    private String payload;             // 결제 승인 요청에 대해 저장한 값, 요청 시 전달된 내용
