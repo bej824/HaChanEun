@@ -13,8 +13,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="localDistrict" column="LOCAL_DISTRICT" />
 		<result property="localTitle" column="LOCAL_TITLE" />
 		<result property="localContent" column="LOCAL_CONTENT" />
-		<result property="localCtg" column="LOCAL_CTG" />
-
+		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="subCtg" column="SUB_CTG" />
+		
+	</resultMap>
+	
+	<resultMap type="com.food.searcher.domain.CtgVO" id="viewsMap">
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="localId" column="LOCAL_ID" />
+		
 	</resultMap>
 	
 	<insert id ="insertSepeciality">
@@ -24,18 +31,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ,LOCAL_DISTRICT
 		 ,LOCAL_TITLE
 		 ,LOCAL_CONTENT
+		 ,MAIN_CTG
+		 ,SUB_CTG
 		 ) VALUES (
 		  LOCALSPECIALITY_SEQ.NEXTVAL
 		 ,#{localLocal}
 		 ,#{localDistrict}
 		 ,#{localTitle}
 		 ,#{localContent}
+		 ,#{mainCtg}
+		 ,#{subCtg}
 		 )
+	</insert>
+	
+	<insert id="insertViews">
+		MERGE INTO SPECIALITY_VIEWS DB
+		USING (
+			SELECT
+			 #{memberId} AS MEMBER_ID
+			,#{localId} AS LOCAL_ID
+			FROM DUAL
+		) INPUT
+		ON (
+			DB.MEMBER_ID = INPUT.MEMBER_ID 
+			AND 
+			DB.LOCAL_ID = INPUT.LOCAL_ID
+		)
+		WHEN NOT MATCHED THEN 
+    	INSERT (
+    		 MEMBER_ID
+    		,LOCAL_ID
+    	)
+    	VALUES (
+    		 INPUT.MEMBER_ID
+    		,INPUT.LOCAL_ID
+    	)
 	</insert>
 
 	<select id="selectList" resultMap="localResultMap">
 		<!-- 특산품 조회 검색어가 null이거나 ''이면 무시됨 -->
-		SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT
+		SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE
 		FROM LOCAL_SPECIALITY WHERE 1 = 1
 		<if test="localLocal != null and localLocal != ''">
 			AND LOCAL_LOCAL = #{localLocal}
@@ -46,10 +81,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="localTitle != null and localTitle != ''">
         	AND LOCAL_TITLE LIKE #{localTitle}
     	</if>
-    	<if test="localCtg != null and localCtg != ''">
-    		AND LOCAL_CTG = #{localCtg}
+    	<if test="mainCtg != null and mainCtg != ''">
+    		AND MAIN_CTG = #{mainCtg}
     	</if>
-		ORDER BY LOCAL_ID ASC
+    	<if test="subCtg != null and subCtg != ''">
+    		AND SUB_CTG = #{subCtg}
+    	</if>
+		ORDER BY LOCAL_LOCAL ASC
 	</select>
 	
 	<select id="selectAll" resultMap="localResultMap">
@@ -58,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectListByPagination" resultMap="localResultMap">
 	<!-- 페이지네이션 -->
-	SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT FROM
+	SELECT LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE FROM
 	(
 		SELECT ROW_NUMBER() OVER(ORDER BY LOCAL_ID ASC) AS RN,
 		LOCAL_ID, LOCAL_LOCAL, LOCAL_DISTRICT, LOCAL_TITLE, REPLY_COUNT
@@ -81,6 +119,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE LOCAL_ID = #{localId}
 	</select>
 	
+	<select id="selectViews" resultMap="viewsMap">
+		SELECT v.MEMBER_ID, l.MAIN_CTG
+		FROM SPECIALITY_VIEWS v
+		LEFT JOIN LOCAL_SPECIALITY l
+		ON v.LOCAL_ID = l.LOCAL_ID
+	</select>
+	
 	<update id="update">
 		<!-- 상세 게시글 수정 -->
 		UPDATE LOCAL_SPECIALITY
@@ -92,6 +137,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 상세 게시글 삭제 -->
 		DELETE FROM LOCAL_SPECIALITY
 		WHERE LOCAL_ID = #{localId}
+	</delete>
+	
+	<delete id="deleteView">
+		DELETE FROM SPECIALITY_VIEWS
 	</delete>
 
 </mapper>

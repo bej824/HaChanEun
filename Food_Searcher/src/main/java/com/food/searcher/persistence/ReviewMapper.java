@@ -10,6 +10,7 @@ import com.food.searcher.domain.ReviewVO;
 public interface ReviewMapper {
 	int insert(ReviewVO reviewVO);
 	List<ReviewVO> selectAll(long itemId);
+	ReviewVO selectOne(long itemId);
 	int update(ReviewVO reviewVO);
 	int delete(long reviewId);
 	

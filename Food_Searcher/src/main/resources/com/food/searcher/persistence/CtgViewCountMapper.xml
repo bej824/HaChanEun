@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.CtgViewCountMapper">
+
+	<resultMap type="com.food.searcher.domain.CtgVO"
+		id="ctgMap">
+
+		<id property="memberId" column="MEMBER_ID" />
+		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="CTG_VIEW_COUNT" column="ctgViewCount" />
+		<result property="UPDATE_DATE" column="updateDate" />
+
+	</resultMap>
+	
+	<insert id="insertCtgViewCount">
+		INSERT INTO CTG_VIEW_COUNT (
+			 MEMBER_ID
+			,MAIN_CTG
+			,CTG_VIEW_COUNT
+			,UPDATE_DATE
+			) VALUES (
+			 #{memberId}
+        	,#{mainCtg}
+        	,1
+        	,SYSDATE
+			)
+	</insert>
+	
+	<select id="countCtgViewCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM CTG_VIEW_COUNT
+		WHERE MEMBER_ID = #{memberId}
+		AND MAIN_CTG = #{mainCtg}
+	</select>
+	
+	<select id="selectCtgViewCount" resultMap="ctgMap">
+		SELECT *
+		FROM CTG_VIEW_COUNT
+		WHERE 1=1
+		<if test="memberId != null and memberId != ''">
+			MEMBER_ID = #{memberId}
+		</if>
+		<if test="mainCtg != null and mainCtg != ''">
+			MAIN_CTG = #{mainCtg}
+		</if>
+	</select>
+	
+	<update id="updateCtgViewCount">
+		MERGE INTO CTG_VIEW_COUNT DB
+		USING (
+			SELECT
+			 v.MEMBER_ID
+			,l.MAIN_CTG
+            ,COUNT(*) AS VIEW_COUNT
+			FROM SPECIALITY_VIEWS v
+			LEFT JOIN LOCAL_SPECIALITY l
+			ON v.LOCAL_ID = l.LOCAL_ID
+            GROUP BY v.MEMBER_ID, l.MAIN_CTG
+		) INPUT
+		ON (
+			DB.MEMBER_ID = INPUT.MEMBER_ID 
+			AND 
+			DB.MAIN_CTG = INPUT.MAIN_CTG
+		)
+		WHEN NOT MATCHED THEN 
+    	INSERT (
+    		 MEMBER_ID
+			,MAIN_CTG
+			,CTG_VIEW_COUNT
+			,UPDATE_DATE
+    	)
+    	VALUES (
+    		 INPUT.MEMBER_ID
+    		,INPUT.MAIN_CTG
+    		,INPUT.VIEW_COUNT
+    		,SYSDATE
+    	)
+    	WHEN MATCHED THEN
+    	UPDATE
+    	SET  CTG_VIEW_COUNT = CTG_VIEW_COUNT + INPUT.VIEW_COUNT
+    		,UPDATE_DATE = SYSDATE
+    	WHERE 	MEMBER_ID = INPUT.MEMBER_ID
+    	AND		MAIN_CTG = INPUT.MAIN_CTG
+    	
+	</update>
+
+</mapper>

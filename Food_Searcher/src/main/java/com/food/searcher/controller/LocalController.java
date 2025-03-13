@@ -56,12 +56,20 @@ public class LocalController {
 	@ResponseBody
 	@GetMapping("localUpdate")
 	public List<LocalSpecialityVO> localUpdateGET(
-			@RequestParam("localLocal") String localLocal,
-			@RequestParam("localDistrict") String localDistrict,
-			@RequestParam("localTitle") String localTitle) {
+			@RequestParam(value="localLocal", required = false) String localLocal,
+			@RequestParam(value="localDistrict", required = false) String localDistrict,
+			@RequestParam(value="localTitle", required = false) String localTitle,
+			@RequestParam(value="mainCtg", required = false) String mainCtg,
+			@RequestParam(value="subCtg", required = false) String subCtg) {
 		log.info("localUpdateGET()");
 		
-		List<LocalSpecialityVO> SpecialityList = localService.getAllSpeciality(localLocal, localDistrict, localTitle);
+		List<LocalSpecialityVO> SpecialityList = 
+				localService.getAllSpeciality(
+						localLocal,
+						localDistrict,
+						localTitle,
+						mainCtg,
+						subCtg);
 		return SpecialityList;
 	}
 	

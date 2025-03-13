@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.AskVO;
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.ItemAttachMapper;
@@ -40,14 +41,14 @@ public class ItemServiceImple implements ItemService {
 	public int createItem(ItemVO itemVO) {
 
 		int result = itemMapper.itemInsert(itemVO);
+		log.info(itemVO);
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
 
 		itemMapper.itemCtgInsert(itemVO);
 			for (ItemAttachVO attachVO : attachList) {
+				attachVO.setItemId(selectAllList().get(0).getItemId());
 				attachMapper.insert(attachVO);
 			}
-			result = 1;
-
 
 		return result;
 	}
@@ -97,6 +98,7 @@ public class ItemServiceImple implements ItemService {
 	@Override
 	public int updateItem(ItemVO itemVO) {
 		int updateItem = itemMapper.update(itemVO);
+		itemMapper.ctgUpdate(itemVO);
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
 
@@ -144,8 +146,19 @@ public class ItemServiceImple implements ItemService {
 	}
 
 	@Override
-	public List<ItemVO> getSelectCategoryList(String mainCtg, Pagination pagination) {
-		return itemMapper.selectCategoryList(mainCtg, pagination);
+	public List<ItemVO> getSelectCategoryList(String mainCtg, int itemId, Pagination pagination) {
+		return itemMapper.selectCategoryList(mainCtg, itemId, pagination);
+	}
+
+	@Override
+	public List<CtgVO> mainCtgList() {
+		return itemMapper.mainCtgList();
+	}
+
+	@Override
+	public List<ItemVO> selectAllList() {
+		// TODO Auto-generated method stub
+		return itemMapper.selectAllList().stream().collect(Collectors.toList());
 	}
 
 } // end ItemServiceImple

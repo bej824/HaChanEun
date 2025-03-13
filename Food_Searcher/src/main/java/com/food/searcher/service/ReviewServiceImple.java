@@ -26,8 +26,17 @@ public class ReviewServiceImple implements ReviewService {
 
 	@Override
 	public List<ReviewVO> getAll(long itemId) {
+		log.info("getReviewAll()");
 		List<ReviewVO> vo = reviewMapper.selectAll(itemId);
 		return vo;
+	}
+	
+	@Override
+	public ReviewVO getReview(long itemId) {
+		log.info("getReviewOne");
+		ReviewVO reviewVO = reviewMapper.selectOne(itemId);
+		
+		return reviewVO;
 	}
 
 	@Override

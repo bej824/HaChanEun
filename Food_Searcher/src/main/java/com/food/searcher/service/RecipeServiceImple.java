@@ -97,6 +97,8 @@ public class RecipeServiceImple implements RecipeService {
 			Map<String, Object> params = new HashMap<>();
 			params.put("recipeId", recipeId);
 			params.put("memberId", memberId);
+			params.put("category", recipeVO.getCategory());
+			log.info(params);
 
 			// 데이터가 없으면 바로 insert를 진행
 			if (viewList == null || viewList.isEmpty()) {

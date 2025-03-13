@@ -332,10 +332,8 @@ $(document).ready(function(){
 		function getAllAsk() {
 		    let itemId = $('#itemId').val();
 		    let memberId = $('#memberId').val();
-		    let url = '../ask/list/' + itemId;
+		    let url = '../product/ask/' + itemId;
 		    let role = $('#role').val();
-		    
-		    console.log("답글 로그 || itemId : " + itemId, "memberId : " + memberId);
 		    
 		    $.getJSON(url, function(data) {
 		        console.log(data);

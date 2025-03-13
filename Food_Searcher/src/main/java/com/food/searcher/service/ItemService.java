@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -11,12 +12,14 @@ public interface ItemService {
    List<ItemVO> getPagingAllItems(Pagination pagination);
    List<ItemVO> getPagingStatusItems(Pagination pagination);
    List<ItemVO> selectSellerItem(String memberId);
-   List<ItemVO> getSelectCategoryList(String mainCtg, Pagination pagination);
+   List<ItemVO> getSelectCategoryList(String mainCtg, int itemId, Pagination pagination);
+   List<ItemVO> selectAllList();
    
    int getTotalCount(Pagination pagination);
    int getStatusTotalCount(Pagination pagination);
    
    ItemVO getItemById(int itemId);
+   List<CtgVO> mainCtgList();
    
    int updateItem(ItemVO itemVO);
    int updateItemStatus(int itemId, int itemStatus);

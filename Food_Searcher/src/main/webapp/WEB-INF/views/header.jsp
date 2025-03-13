@@ -274,12 +274,12 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 		</sec:authorize>
 		<div class="myPage">
     	<sec:authorize access="hasRole('ROLE_MEMBER') && !hasRole('ROLE_SELLER')">
-        	<a href="/searcher/auth/login">로그아웃</a> <br>
+        	<a href="/searcher/auth/logout">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a> <br>
         	<a href="/searcher/seller/authenticate">판매자등록</a>
         </sec:authorize>
         <sec:authorize access="hasRole('ROLE_SELLER')">
-        	<a href="/searcher/auth/login">로그아웃</a> <br>
+        	<a href="/searcher/auth/logout">로그아웃</a> <br>
         	<a href="/searcher/access/memberPage">마이페이지</a> <br>
         	<a href="/searcher/seller/management">관리페이지</a>
         </sec:authorize>

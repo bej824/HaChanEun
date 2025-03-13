@@ -8,17 +8,23 @@ import org.springframework.stereotype.Component;
 
 import com.food.searcher.domain.CartVO;
 import com.food.searcher.persistence.CartMapper;
+import com.food.searcher.service.DirectOrderService;
 
 import lombok.extern.log4j.Log4j;
 
 @Component
 @Log4j
-public class CartStatusTask {
+public class ItemStatusTask {
 	@Autowired
 	CartMapper cartMapper;
 	
-	@Scheduled(cron = "0 0 12 * * *")
-	public void cartDelete() {
+	@Autowired
+	DirectOrderService directOrderService;
+	
+	@Scheduled(cron = "0 38 16 * * *")
+	public void StatusChange() {
+		directOrderService.orderCancel();
+		
 		List<CartVO> cartVO = cartMapper.cartAll();
 		for(CartVO vo : cartVO) {
 			if(vo.getItemStatus() != 100) {

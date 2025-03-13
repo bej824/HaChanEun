@@ -31,4 +31,6 @@ public interface DirectOrderService {
 	 */
 	int deliveryCompleted(String orderId);
 	
+	int orderCancel();
+	
 }

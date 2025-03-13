@@ -49,7 +49,7 @@ public class MemberCouponTask {
 	@Autowired
 	RandomUtil randomUtil;
 	
-	@Scheduled(cron = "0 47 9 * * *") // 매일 00:00 마다 실행 
+	@Scheduled(cron = "0 0 16 * * *") // 매일 00:00 마다 실행 
 	public void couponEvent() {
 		
 		LocalDate now = LocalDate.now();

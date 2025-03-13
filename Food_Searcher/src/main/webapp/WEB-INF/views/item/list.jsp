@@ -59,12 +59,14 @@ li {
 <br>
 </div>
 
+<a href="../product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
+
 	<form id="searchForm" method="get" action="list">
 			<input type="hidden" name="pageNum">
 			<select name="type">
 				<option value="ITEM_NAME">상품명</option>
-				<option value="ITEM_CONTENT">상품 설명</option>
-				<option value="ITEM_TAG">상품 태그</option>
+				<option value="MAIN_CTG">메인 태그</option>
+				<option value="SUB_CTG">서브 태그</option>
 			</select>
 			<input type="text" name="keyword">
 			<button class="button"> 검색 </button><br>

@@ -14,31 +14,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="reviewDate"
 			column="REVIEW_DATE" jdbcType="DATE" />
 		<result property="reviewLove" column="REVIEW_LOVE" />
-		<result property="likesCount" column="LIKES_COUNT"/>	
+		<result property="likesCount" column="LIKES_COUNT"/>
+		<result	property="itemName" column="ITEM_NAME" />
+		<result property="itemContent" column="ITEM_CONTENT" />
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO REVIEW(
-		REVIEW_ID
-		,MEMBER_ID
-		,ITEM_ID
-		,REVIEW_CONTENT
-		,REVIEW_LOVE
-		,REVIEW_DATE
-		,LIKES_COUNT
-		) VALUE (
-		#{reviewId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(review_seq.NEXTVAL), 4, '0'),
-		,#{memberId}
-		,#{itemId}
-		,#{reviewContent}
-		,#{reviewLove}
-		,#{reviewDate}
-		,#{likesCount}
-		)
-	</insert>
+    INSERT INTO REVIEW(
+        REVIEW_ID,
+        MEMBER_ID,
+        ITEM_ID,
+        REVIEW_CONTENT,
+        REVIEW_LOVE,
+        LIKES_COUNT
+  		) VALUES (
+        #{reviewId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(review_seq.NEXTVAL), 4, '0'),
+        #{memberId},
+        #{itemId},
+        #{reviewContent},
+        #{reviewLove},
+        #{likesCount}
+   		)
+</insert>
+
 	
 	<select id="selectAll" resultMap="reviewResultMap">
 		SELECT * FROM REVIEW WHERE ITEM_ID = #{itemId}
 	</select>
-	
+
+	<select id="selectOne" resultMap="reviewResultMap">
+		SELECT i.ITEM_NAME, i.ITEM_CONTENT, i.ITEM_ID
+		FROM item i
+		WHERE i.ITEM_ID = #{itemId}
+	</select>
 </mapper>

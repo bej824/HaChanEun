@@ -75,7 +75,9 @@
 		<p>환불 가능일 : <fmt:formatDate value="${directOrderVO.deliveryRefund }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>${deliveryDate } </p>
 		<button id="refundReady" class="button">환불 하기</button>
 	</c:if>
-
+	<c:if test="${directOrderVO.deliveryStatus eq '주문 취소' }">
+		<p>해당 상품은 내부 사정에 의해 판매가 중단되었습니다.</p>
+	</c:if>
 
 	<script type="text/javascript">
 		console.log('<sec:authentication property="name" />');

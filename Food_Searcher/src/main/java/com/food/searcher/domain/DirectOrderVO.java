@@ -32,7 +32,7 @@ public class DirectOrderVO {
 	private int orderCount;
 	private String couponActiveId;
 
-	private String itemName; // join
+	private String itemName;
 	
 	private List<ItemListVO> itemList;
 }
