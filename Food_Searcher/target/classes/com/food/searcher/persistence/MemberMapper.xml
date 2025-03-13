@@ -54,8 +54,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectMemberByMemberId" resultMap="memberResultMap">
-		SELECT * FROM MEMBER
-		WHERE MEMBER_ID = #{memberId}
+		SELECT
+			 m.MEMBER_ID
+			,m.PASSWORD 
+			,m.MEMBER_NAME
+			,m.EMAIL
+			,m.EMAIL_AGREE
+			,m.MEMBER_DATE_OF_BIRTH
+			,m.MEMBER_GENDER
+			,m.MEMBER_MBTI
+			,m.MEMBER_STATUS
+			,a.AMOUNT_HELD
+		FROM MEMBER m
+		LEFT JOIN MEMBER_AMOUNT a
+		ON m.MEMBER_ID = a.MEMBER_ID
+		WHERE m.MEMBER_ID = #{memberId}
 	</select>
 	
 	<select id ="countMemberById" resultType="Integer">
