@@ -24,7 +24,6 @@
 		const monthDay = parseInt(memberDateOfBirth.slice(4, 8), 10);
 		
 		age.innerHTML = nowyear - year;
-		console.log(nowDate);
 		   		
 		if (120 <= monthDay && monthDay <= 218) {
 			constellation.innerHTML = "물병자리";

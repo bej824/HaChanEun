@@ -45,6 +45,27 @@ public class MemberController {
 		log.info("memberCouponGET()");
 	}
 	
+	@GetMapping("tolUp")
+	public void tolUpGet() {
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("/tolUpPOST")
+	public int tolUpPOST(
+			@RequestParam("amount") int amountHeld
+			) {
+		
+		return memberService.updateAmountHeld(0, amountHeld);
+	}
+	
+	@ResponseBody
+	@GetMapping("/amountHeld")
+	public int amountHeldGET() {
+		
+		return memberService.selectAmountHeld();
+	}
+	
 	// 이메일 인증 호출
 	@GetMapping("/registerEmail")
 	public void rigisterEmailGET(
@@ -147,7 +168,6 @@ public class MemberController {
 	}
 	
 	// 로그인 후 멤버페이지에서의 정보수정
-	@Transactional
 	@ResponseBody
 	@PostMapping("/update")
 	public int updatePOST(
@@ -166,7 +186,6 @@ public class MemberController {
 	
 	
 	// email 변경. 인증 관련 요소이기에 컨트롤러만 별도로 빼놓음
-	@Transactional
 	@ResponseBody
 	@PostMapping("/emailUpdate")
 	public int emailUpdatePOST(
@@ -184,7 +203,6 @@ public class MemberController {
 	
 	// inactive : 비활성화 계정 / active : 활성화 계정
 	// 계정 활성, 비활성 관련 요소이기에 컨트롤러만 별도로 빼놓음
-	@Transactional
 	@ResponseBody
 	@PostMapping("/statusUpdate")
 	public int statusUpdatePOST(
@@ -266,7 +284,6 @@ public class MemberController {
 	}
 	
 	// 비밀번호 변경
-	@Transactional
 	@ResponseBody
 	@PostMapping("/pwUpdate")
 	public int pwUpdatePOST(
