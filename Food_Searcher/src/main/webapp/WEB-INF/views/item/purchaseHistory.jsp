@@ -13,7 +13,7 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th style="width: 8%">회원Id</th>
+				<th style="width: 8%">상품명</th>
 				<th style="width: 5%">수량</th>
 				<th style="width: 8%">결제 금액</th>
 				<th style="width: 30%">주소</th>
@@ -25,14 +25,14 @@
 		<tbody>
 		<c:forEach var="DirectOrderVO" items="${directOrderVO }">
 			<tr onclick="window.location.href='purchaseInfo?orderId=${DirectOrderVO.orderId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
-				<td>${DirectOrderVO.memberId }</td>
+				<td>${DirectOrderVO.itemName }<input type="hidden" value="${DirectOrderVO.memberId }"></td>
 				<td style="text-align: right;">${DirectOrderVO.totalCount }</td>
 				<td><fmt:formatNumber value="${DirectOrderVO.totalPrice}" pattern="###,###,###"/>원</td>
 				<td>${DirectOrderVO.deliveryAddress }</td>
 				<td>${DirectOrderVO.deliveryStatus }</td>
 				<fmt:formatDate value="${DirectOrderVO.deliveryDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>
 				<td>${deliveryDate }</td>
-				<td onclick="event.stopPropagation()"><button>리뷰 작성</button></td>
+				<td onclick="../product/reviewRegister?"><button>리뷰 작성</button></td>
 			</tr>
 		</c:forEach>
 		</tbody>

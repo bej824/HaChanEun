@@ -42,15 +42,15 @@ pageEncoding="UTF-8"%>
 	<span>구매한 상품의 취소/반품은 구매내역에서 신청 가능합니다.</span><br>
 	<span>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</span><br>
 	</div>
-	
+	<br>
 	<sec:authorize access="isAnonymous()">
-					* 문의를 작성하려면 로그인 해주세요.
-					</sec:authorize>
+		* 문의를 작성하려면 로그인 해주세요.
+	</sec:authorize>
 					
-					<sec:authorize access="isAuthenticated()">
-		  	 			<input type="text" name="askContent" class="askContent" placeholder="문의 내용을 입력하세요." required><br>
-		  	 			<button id="askAdd" class="button">문의 작성</button>
-					</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+		  	<input type="text" name="askContent" class="askContent" placeholder="문의 내용을 입력하세요." required><br>
+		  	<button id="askAdd" class="button">문의 작성</button>
+	</sec:authorize>
 	
 	<div class="askBox">
 		<div id="asks">
@@ -96,7 +96,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 			type : 'POST',
-			url : '../ask',
+			url : '../product',
 			headers : { // 헤더 정보
 				'Content-Type' : 'application/json; charset=UTF-8' // json content-type 설정
 			}, 
@@ -116,8 +116,8 @@ $(document).ready(function(){
 		// 모달창 띄우기
 		$(document).on("click", ".btn_update", function(){
 			$(".replyModal").attr("style", "display:block;");
-			var askId = $(this).closest('.ask_item').find('#askId').val();   // 댓글 Id 가져오기
-			var askContent = $(this).closest('.ask_item').find(".askContent").text(); // 원본 댓글 내용 가져오기
+			let askId = $(this).closest('.ask_item').find('#askId').val();   // 댓글 Id 가져오기
+			let askContent = $(this).closest('.ask_item').find(".askContent").text(); // 원본 댓글 내용 가져오기
 			
 			console.log("askId : " + askId, ", askContent : " + askContent);
 			
@@ -138,7 +138,7 @@ $(document).ready(function(){
 				// ajax 요청
 				$.ajax({
 					type : 'PUT', 
-					url : '../ask/' + askId,
+					url : '../product/' + askId,
 					headers : {
 						'Content-Type' : 'application/json' 
 					},
@@ -168,6 +168,12 @@ $(document).ready(function(){
 			$("#answerContent").val("");
 		  	$(".answerModal").attr("style", "display:none;");
 		});
+		
+		$(".answer_modify_cancle").click(function(){	
+			let answerModifyContent = $('#answerModifyContent').val();
+			$("#answerModifyContent").val("");
+		  	$(".answerModifyModal").attr("style", "display:none;");
+		});
 			
 		$('#asks').on('click', '.btn_delete', function(){
 			console.log(this);
@@ -178,7 +184,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				type : 'DELETE', 
-				url : '../ask/delete/' + askId,
+				url : '../product/delete/' + askId,
 				headers : {
 					'Content-Type' : 'application/json'
 				},
@@ -197,9 +203,9 @@ $(document).ready(function(){
 			}
 		}); // end btn_delete
 		
-		$(document).on("click", '.addAnswer', function(){
+		$(document).on("click", '.addAnswer', function(){ // 답변 작성 모달
 			$(".answerModal").attr("style", "display:block;");
-			let askId = $(this).closest('.ask_item').find('#askId').val();   // 댓글 Id 가져오기
+			let askId = $(this).closest('.ask_item').find('#askId').val();
 			
 			console.log("askId : " + askId);
 			
@@ -226,7 +232,7 @@ $(document).ready(function(){
 				// ajax 요청
 				$.ajax({
 					type : 'POST', 
-					url : '../ask/answer-post/' + askId,
+					url : '../product/answer-post/' + askId,
 					headers : {
 						'Content-Type' : 'application/json' 
 					},
@@ -238,11 +244,57 @@ $(document).ready(function(){
 							 $(".answerModal").attr("style", "display:none;");
 							 console.log("modified");
 							 $("#answerContent").val("");
+							 location.reload(true);
 							}, 
 							error:function(xhr) {
 								alert("답변은 문의당 한 번만 작성 가능합니다.");							
 						}
 				});
+			});
+		
+		// 모달창 띄우기
+		$(document).on("click", ".btn_answerUpdate", function(){
+			$(".answerModifyModal").attr("style", "display:block;");
+			let answerId = $(this).closest('.ask_item').find('#answerId').val();   // 댓글 Id 가져오기
+			let answerContent = $(this).closest('.ask_item').find(".answerContent").text(); // 원본 댓글 내용 가져오기
+			
+			console.log("answerId : " + answerId, ", answerContent : " + answerContent);
+			
+			 $("#answerModifyContent").val(answerContent);
+			 $("#modifyAnswerId").val(answerId);
+			 
+			});
+			
+			// 수정 버튼을 클릭하면 선택된 댓글 수정
+		$(".answer_modify_btn").on("click", function(){
+			console.log(this);
+				
+			let answerId = $("#modifyAnswerId").val();
+			let answerContent = $("#answerModifyContent").val();
+							
+			console.log("수정된 댓글 번호 : " + answerId + ", 수정된 댓글 내용 : " + answerContent);
+				
+				// ajax 요청
+				$.ajax({
+					type : 'PUT', 
+					url : '../product/answer-modify/' + answerId,
+					headers : {
+						'Content-Type' : 'application/json' 
+					},
+					data : answerContent,
+					success : function(result) {
+						console.log(result);
+						if(result == 1) {
+							alert('문의가 수정되었습니다.');
+							getAllAsk();
+							 $(".answerModifyModal").attr("style", "display:none;");
+							 console.log("modified");
+							 location.reload(true);
+						} else {
+							alert('문의 수정 실패');
+						}
+					}
+					});
 			});
 		
 		$('#asks').on('click', '.btn_answerDelete', function(){
@@ -254,7 +306,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				type : 'DELETE', 
-				url : '../ask/answer-delete/' + answerId,
+				url : '../product/answer-delete/' + answerId,
 				headers : {
 					'Content-Type' : 'application/json'
 				},
@@ -326,7 +378,7 @@ $(document).ready(function(){
 		                let askItem = $(this);
 		                let askId = askItem.find('#askId').val();
 		                let answerDiv = askItem.find('.answer_list');
-		                let url = '../ask/answer/' + askId;
+		                let url = '../product/answer/' + askId;
 		                
 		                $.getJSON(url, function(data) {
 		                    let answers = '';
@@ -338,7 +390,7 @@ $(document).ready(function(){
 		                        answers += '<div class="answer_item" value="' + this.answerId + '">'
 		                                  + '<div class="userInfo">'
 		                                  + '<input type="hidden" id="answerId" value="' + this.answerId + '">'
-		                                  + '<p>└</p><span class="answerLabel">답변</span>'
+		                                  + '<span>└</span><span class="answerLabel">답변</span>'
 		                                  + '<span class="memberId">' + this.memberId + '&nbsp</span>'
 		                                  + '<span class="answerDate">' + answerDate + '&nbsp</span>'
 		                                  + '<button class="btn_answerUpdate" ' + disabled + '> 수정 </button>'
@@ -389,6 +441,23 @@ $(document).ready(function(){
   <div>
    <button type="button" class="answer_add_btn">입력</button>
    <button type="button" class="answer_cancle">취소</button>
+  </div>
+  </div>
+  <div class="modalBackground"></div>
+  
+ </div> <!-- modal -->
+ 
+ <div class="answerModifyModal">
+ 
+ <div class="answerModify">
+  <input type="hidden" id="modifyAnswerId">  
+  <div>
+   <textarea id="answerModifyContent" name="answerModifyContent"></textarea>
+  </div>
+  
+  <div>
+   <button type="button" class="answer_modify_btn">수정</button>
+   <button type="button" class="answer_modify_cancle">취소</button>
   </div>
   </div>
   <div class="modalBackground"></div>

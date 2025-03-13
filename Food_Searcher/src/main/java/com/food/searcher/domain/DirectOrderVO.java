@@ -31,6 +31,8 @@ public class DirectOrderVO {
 	private String invoiceNumber;
 	private int orderCount;
 	private String couponActiveId;
+
+	private String itemName; // join
 	
 	private List<ItemListVO> itemList;
 }

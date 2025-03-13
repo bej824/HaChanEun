@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.ReviewMapper">
+
+	<resultMap type="com.food.searcher.domain.ReviewVO" id="reviewResultMap">
+
+		<id property="reviewId" column="REVIEW_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="reviewContent" column="REVIEW_CONTENT" />
+		<result property="reviewDate"
+			column="REVIEW_DATE" jdbcType="DATE" />
+		<result property="reviewLove" column="REVIEW_LOVE" />
+		<result property="likesCount" column="LIKES_COUNT"/>	
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO REVIEW(
+		REVIEW_ID
+		,MEMBER_ID
+		,ITEM_ID
+		,REVIEW_CONTENT
+		,REVIEW_LOVE
+		,REVIEW_DATE
+		,LIKES_COUNT
+		) VALUE (
+		#{reviewId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(review_seq.NEXTVAL), 4, '0'),
+		,#{memberId}
+		,#{itemId}
+		,#{reviewContent}
+		,#{reviewLove}
+		,#{reviewDate}
+		,#{likesCount}
+		)
+	</insert>
+	
+	<select id="selectAll" resultMap="reviewResultMap">
+		SELECT * FROM REVIEW WHERE ITEM_ID = #{itemId}
+	</select>
+	
+</mapper>

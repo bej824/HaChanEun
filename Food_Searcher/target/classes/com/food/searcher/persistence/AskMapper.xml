@@ -53,6 +53,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM ASK WHERE ASK_ID = #{askId}
 	</delete>
 	
+	<delete id="deleteByitem">
+		DELETE FROM ASK
+		WHERE ITEM_ID = #{itemId}
+	</delete>
+	
 	
 	
 </mapper>
