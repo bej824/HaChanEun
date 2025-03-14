@@ -23,7 +23,7 @@ import com.food.searcher.service.AnswerService;
 import lombok.extern.log4j.Log4j;
 
 @RestController
-@RequestMapping("/ask")
+@RequestMapping("/product")
 @Log4j
 public class AnswerController {
 	
@@ -56,12 +56,9 @@ public class AnswerController {
 	
 	@PutMapping("/answer-modify/{answerId}")
 	public ResponseEntity<Integer> updateAnswer(@PathVariable("answerId") long answerId,
-												 @RequestBody String answerContent) {
-		log.info("updateAnswer()");
-		log.info("answerId = " + answerId);
-		int result = answerService.updateAnswer(answerId, answerContent);
-		log.info("수정 : " + result);
-		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+												@RequestBody String answerContent) {
+		
+		return new ResponseEntity<Integer>(answerService.updateAnswer(answerId, answerContent), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/answer-delete/{answerId}")

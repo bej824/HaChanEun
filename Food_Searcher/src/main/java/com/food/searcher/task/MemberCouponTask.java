@@ -49,7 +49,7 @@ public class MemberCouponTask {
 	@Autowired
 	RandomUtil randomUtil;
 	
-	@Scheduled(cron = "0 47 9 * * *") // 매일 00:00 마다 실행 
+	@Scheduled(cron = "0 0 16 * * *") // 매일 00:00 마다 실행 
 	public void couponEvent() {
 		
 		LocalDate now = LocalDate.now();
@@ -83,7 +83,7 @@ public class MemberCouponTask {
 		for(int i = 0; i < couponList.size(); i++) {
 			CouponActiveVO couponActiveVO = new CouponActiveVO();
 			couponActiveVO.setCouponId(couponList.get(i).getCouponId());
-			couponActiveVO.setCouponActiveId(utilityService.sysDate());
+			couponActiveVO.setCouponActiveId(utilityService.now());
 			couponActiveVO = couponActiveService.setCouponInfo(couponActiveVO);
 			
 			for(int j = 0; j < memberList.size(); j++) {

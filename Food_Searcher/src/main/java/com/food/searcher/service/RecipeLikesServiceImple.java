@@ -32,10 +32,10 @@ public class RecipeLikesServiceImple implements RecipeLikesService {
 		int result = likesMapper.insert(recipeLikesVO);
 		log.info(result + "행 추가");
 		if (recipeLikesVO.getMemberLike() == 1) {
-			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), 1);
+			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
 			log.info(updateResult + "행 좋아요 카운트 증가");
 		} else if (recipeLikesVO.getMemberLike() == 2) {
-			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), 1);
+			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
 			log.info(updateResult + "행 싫어요 카운트 증가");
 		}
 		return result;
@@ -59,27 +59,27 @@ public class RecipeLikesServiceImple implements RecipeLikesService {
 		if (recipeLikesVO.getMemberLike() == 0) {
 			log.info("0 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 1) {
-				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
 				log.info(updateResult + "행 좋아요 카운트 감소");
 			} else if (previousLikeStatus == 2) {
-				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
 				log.info(updateResult + "행 싫어요 카운트 감소");
 			}
 		} else if (recipeLikesVO.getMemberLike() == 1) {
 			log.info("1 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 2) {
-				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
 				log.info(updateResult + "행 싫어요 카운트 감소");
 			}
-			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), 1);
+			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
 			log.info(updateResult + "행 좋아요 카운트 증가");
 		} else if (recipeLikesVO.getMemberLike() == 2) {
 			log.info("2 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 1) {
-				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeBoardId(), -1);
+				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
 				log.info(updateResult + "행 좋아요 카운트 감소");
 			}
-			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeBoardId(), 1);
+			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
 			log.info(updateResult + "행 싫어요 카운트 증가");
 		}
 		return result;

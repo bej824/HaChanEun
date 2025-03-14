@@ -107,6 +107,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<when test="type == 'RECIPE_FOOD'.toString()">
 					WHERE RECIPE_FOOD LIKE '%'||#{keyword}||'%'
 				</when>
+				<when test="type == 'CATEGORY'.toString()">
+					WHERE CATEGORY LIKE '%'||#{keyword}||'%'
+				</when>
 				<when test="type == 'RECIPE_CONTENT'.toString()">
 					WHERE RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
 				</when>

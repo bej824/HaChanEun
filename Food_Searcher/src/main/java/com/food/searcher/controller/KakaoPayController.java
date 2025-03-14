@@ -2,42 +2,81 @@ package com.food.searcher.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.food.searcher.domain.ApproveResponse;
+import com.food.searcher.domain.ReadyResponse;
 import com.food.searcher.service.KakaoPayService;
+import com.food.searcher.util.SessionUtils;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/kakaoPay")
+@RequiredArgsConstructor
+@RequestMapping("/pay")
 @Log4j
 public class KakaoPayController {
 
     @Autowired
     private KakaoPayService kakaoPayService;
-
-    // 카카오페이 결제 페이지로 리디렉션
+    
     @GetMapping("/prepare")
-    public RedirectView preparePayment() {
-    	log.info("prepare");
-        // 결제 준비 API 호출
-        String redirectUrl = kakaoPayService.preparePayment();
-        log.info(redirectUrl);
-
-        // 결제 페이지로 리디렉션
-        return new RedirectView(redirectUrl);
+    public void main() {
+    	
     }
     
-    @GetMapping("/success")
-    public String success(@RequestParam String pg_token) {
+    @GetMapping("/ready")
+    public void ready() {
+    	
+    }
+
+    // 카카오페이 결제 페이지로 리디렉션
+    @ResponseBody
+    @PostMapping("/ready")
+    public ReadyResponse preparePayment(@RequestBody ApproveResponse approve, Model model) {
+    	log.info("ready()");
+    	log.info(approve);
+        // 결제 준비 API 호출
+    	
+    	String orderId = approve.getPartner_order_id();
+    	String itemName = approve.getItem_name();
+    	int totalPrice = approve.getTotal_amount();
+    	log.info(orderId);
+    	log.info(itemName);
+    	
+    	// 카카오 결제 준비하기
+    	ReadyResponse readyResponse = kakaoPayService.payReady(orderId, itemName, totalPrice);
+    	// 세션에 결제 고유번호(tid) 저장
+        SessionUtils.addAttribute("tid", readyResponse.getTid());
+        SessionUtils.addAttribute("partner_order_id", orderId);
+        log.info(readyResponse);
+        model.addAttribute("response", readyResponse);
+        
+        readyResponse.getNext_redirect_pc_url();
+
+        // 결제 페이지로 리디렉션
+        return readyResponse;
+    }
+    
+    @GetMapping("/completed")
+    public String success(@RequestParam("pg_token") String pg_token) {
+    	log.info("completed");
+    	String tid = SessionUtils.getStringAttributeValue("tid");
+    	String orderId = SessionUtils.getStringAttributeValue("partner_order_id");
         // 결제 승인 처리 API 호출
-        String approvalResult = kakaoPayService.approvePayment(pg_token);
+        ApproveResponse approvalResult = kakaoPayService.payApprove(tid, pg_token, orderId);
+        log.info(approvalResult);
         
         // 결제 승인 결과 반환
-        return approvalResult;
+        return "redirect:/pay/completed?pg_token="+pg_token;
     }
 }
 

@@ -49,7 +49,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 			couponActiveVO.setItemName("");
 		}
 		
-		couponActiveVO.setCouponActiveId(utilityService.sysDate());
+		couponActiveVO.setCouponActiveId(utilityService.now());
 		return couponActiveMapper.insertCouponActive(couponActiveVO);
 	}
 	

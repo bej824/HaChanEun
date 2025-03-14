@@ -15,6 +15,7 @@ public interface DirectOrderMapper {
 	List<DirectOrderVO> sellerList(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	List<DirectOrderVO> selectListByPagination(Pagination pagination);
 	List<DirectOrderVO> memberList(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
+	List<DirectOrderVO> orderCancelList();
 	DirectOrderVO selectOne(String orderId);
 	int selectTotalCount(Pagination pagination);
 	int sellerTotalCount(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
@@ -27,4 +28,5 @@ public interface DirectOrderMapper {
 	int deliveryReady(@Param("deliveryCompany") String deliveryCompany, @Param("invoiceNumber") String invoiceNumber, @Param("orderId") String orderId);
 	int delivering(@Param("orderId") String orderId);
 	int deliveryCompleted(@Param("orderId") String orderId);
+	int orderCancel();
 }

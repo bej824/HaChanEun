@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.CouponHistoryVO;
 import com.food.searcher.service.AdminService;
-import com.food.searcher.service.CouponHistoryService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 

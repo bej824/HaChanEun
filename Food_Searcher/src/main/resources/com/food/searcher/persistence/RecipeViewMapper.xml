@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="viewsNo" column="VIEWS_NO" />
 		<result property="recipeId" column="RECIPE_ID" />
 		<result property="memberId" column="MEMBER_ID" />
+		<result property="category" column="CATEGORY" />
 		
 	<association property="views" javaType="com.food.searcher.domain.RecipeViewsVO">
 		<id property="recipeId" column="RECIPE_ID_2" />
@@ -18,10 +19,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="recipeId" column="RECIPE_ID" />
 		<result property="views" column="VIEWS" />
 	</resultMap>
+	<resultMap type="com.food.searcher.domain.RecipeCategoryViewsVO" id="categoryViewsMap">
+		<id property="memberId" column="MEMBER_ID" />
+		<result property="category" column="CATEGORY" />
+		<result property="views" column="VIEWS" />
+	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO RECIPE_VIEW_LIST (VIEWS_NO, RECIPE_ID, MEMBER_ID)
-		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId})
+		INSERT INTO RECIPE_VIEW_LIST (VIEWS_NO, RECIPE_ID, MEMBER_ID, CATEGORY)
+		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId}, #{category} )
 	</insert>
 	
 	<insert id="insertViews">
@@ -34,6 +40,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM RECIPE_VIEWS rv 
 			WHERE rv.RECIPE_ID = RECIPE_VIEW_LIST.RECIPE_ID
 		)
+	</insert>
+	
+	<insert id="insertCategoryViews">
+		INSERT INTO RECIPE_CATEGORY_VIEWS (MEMBER_ID, CATEGORY, VIEWS)
+	    SELECT MEMBER_ID, CATEGORY, COUNT(*) AS VIEWS
+	    FROM RECIPE_VIEW_LIST
+	    WHERE NOT EXISTS (
+	        SELECT 1
+	        FROM RECIPE_CATEGORY_VIEWS rcv
+	        WHERE rcv.MEMBER_ID = RECIPE_VIEW_LIST.MEMBER_ID
+	          AND rcv.CATEGORY = RECIPE_VIEW_LIST.CATEGORY
+	    )
+	    GROUP BY MEMBER_ID, CATEGORY
 	</insert>
 	
 	<select id="selectAll" resultMap="recipeResultMap">
@@ -50,6 +69,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT COUNT(*)
 			FROM RECIPE_VIEW_LIST
 			WHERE RECIPE_VIEW_LIST.RECIPE_ID= RECIPE_VIEWS.RECIPE_ID
+		)
+	</update>
+	
+	<update id="updateCategoryViews">
+		UPDATE RECIPE_CATEGORY_VIEWS
+		SET RECIPE_CATEGORY_VIEWS.VIEWS = COALESCE(RECIPE_CATEGORY_VIEWS.VIEWS, 0) + (
+			SELECT COUNT(*)
+			FROM RECIPE_VIEW_LIST
+			WHERE RECIPE_VIEW_LIST.MEMBER_ID = RECIPE_CATEGORY_VIEWS.MEMBER_ID 
+			AND RECIPE_VIEW_LIST.CATEGORY = RECIPE_CATEGORY_VIEWS.CATEGORY
 		)
 	</update>
 	

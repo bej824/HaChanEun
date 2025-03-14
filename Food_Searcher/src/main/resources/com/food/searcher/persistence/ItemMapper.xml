@@ -26,21 +26,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemStatus" column="ITEM_STATUS" />
 		<result property="itemLikes" column="ITME_LIKES" />
 	</resultMap>
+	<resultMap type="com.food.searcher.domain.CtgVO" id="ctgResultMap">
+		<id property="ctgId" column="CTG_ID" />
+		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="subCtg" column="SUB_CTG" />
+	</resultMap>
 
 	<insert id="itemInsert">
 		INSERT INTO ITEM
 		(ITEM_ID
 		,ITEM_NAME
-		,ITEM_PRICE
 		,ITEM_CONTENT
-		,ITEM_AMOUNT
 		,MEMBER_ID
 		)VALUES
 		(ITEM_SEQ.NEXTVAL
 		,#{itemName}
-		,#{itemPrice}
 		,#{itemContent}
-		,#{itemAmount}
 		,#{memberId}
 		)
 	</insert>
@@ -53,7 +54,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,ORIGIN
 		,ITEM_NAME
 		,ITEM_PRICE
-		,ITEM_STATUS
 		,ITME_LIKES
 		)VALUES
 		(ITEM_SEQ.CURRVAL
@@ -62,7 +62,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,#{origin}
 		,#{itemName}
 		,#{itemPrice}
-		,0
 		,#{itemLikes}
 		)
 	</insert>
@@ -79,9 +78,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
 	
+	<select id="selectAllList" resultMap="itemResultMap">
+		SELECT * FROM ITEM ORDER BY ITEM_ID DESC
+	</select>
+	
 	<select id="selectAllCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT
 		FROM ITEM_CTG
+	</select>
+	
+	<select id="mainCtgList" resultMap="ctgResultMap">
+		SELECT * FROM FOOD_CTG
 	</select>
 
 	<select id="selectStatusByPagination" resultMap="itemResultMap"
@@ -98,11 +105,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="pagination.type == 'ITEM_NAME'">
 				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
 			</when>
-			<when test="pagination.type == 'ITEM_CONTENT'">
-				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</when>
-			<when test="pagination.type == 'ITEM_TAG'">
+			<when test="pagination.type == 'MAIN_CTG'">
 				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'SUB_CTG'">
+				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
 			</when>
 		</choose>
 		)
@@ -120,11 +127,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="pagination.type == 'ITEM_NAME'">
 				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
 			</when>
-			<when test="pagination.type == 'ITEM_CONTENT'">
-				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</when>
-			<when test="pagination.type == 'ITEM_TAG'">
+			<when test="pagination.type == 'MAIN_CTG'">
 				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
+			</when>
+			<when test="pagination.type == 'SUB_CTG'">
+				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
 			</when>
 		</choose>
 	</select>
@@ -147,15 +154,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.MEMBER_ID = #{memberId}
 	</select>
 	<select id="selectCategoryList" resultMap="itemResultMap">
-		SELECT * FROM ITEM_CTG WHERE SUB_CTG = #{subCtg} AND ITEM_STATUS = 100 ORDER BY ITEM_ID DESC
+		SELECT * FROM
+		(
+		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
+		FROM
+		ITEM_CTG
+		WHERE 1=1 AND SUB_CTG = #{subCtg} AND ITEM_STATUS = 100 AND NOT ITEM_ID = #{itemId}
+		)
+		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
   	
 	<update id="update">
 		UPDATE ITEM SET
 		ITEM_NAME = #{itemName},
-		ITEM_PRICE = #{itemPrice},
-		ITEM_CONTENT = #{itemContent},
-		ITEM_TAG = #{itemTag},
+		ITEM_CONTENT = #{itemContent}
 		WHERE ITEM_ID = #{itemId}
 	</update>
 	
@@ -164,7 +176,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE ITEM_CTG SET
 		ITEM_NAME = #{itemName},
 		ITEM_PRICE = #{itemPrice},
-		ITEM_CONTENT = #{itemContent},
+		MAIN_CTG = #{mainCtg},
+		SUB_CTG = #{subCtg},
+		ORIGIN = #{origin}
 		WHERE ITEM_ID = #{itemId}
 	</update>
 

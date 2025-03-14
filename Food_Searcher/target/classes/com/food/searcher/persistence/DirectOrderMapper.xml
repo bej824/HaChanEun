@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="refundContent" column="REFUND_CONTENT" />
 		<result property="deliveryCompany" column="DELIVERY_COMPANY" />
 		<result property="invoiceNumber" column="INVOICE_NUMBER" />
+		<result property="itemName" column="ITEM_NAME" />
 	</resultMap>
 	
 	<insert id="insert">
@@ -74,6 +75,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					</when>
 					<when test="keyword == '결제 취소'">
 						WHERE DELIVERY_STATUS LIKE '%결제 취소%'
+					</when>
+					<when test="keyword == '주문 취소'">
+						WHERE DELIVERY_STATUS LIKE '%주문 취소%'
 					</when>
 				</choose>
 				</when>
@@ -133,6 +137,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<when test="keyword == '결제 취소'">
 						WHERE DELIVERY_STATUS LIKE '%결제 취소%'
 					</when>
+					<when test="keyword == '주문 취소'">
+						WHERE DELIVERY_STATUS LIKE '%주문 취소%'
+					</when>
 				</choose>
 				</when>
 				<when test="type == 'DELIVERY_DATE'.toString()">
@@ -167,12 +174,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="memberList" resultMap="orderResultMap">
-		SELECT * FROM
-		    (
-		    SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, d.* 
-		    FROM DIRECT_ORDER d
-		    JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
-			WHERE d.member_id = #{memberId} 
+		SELECT * FROM (
+   		  SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, d.*, i.ITEM_NAME
+		  FROM DIRECT_ORDER d
+		  JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		  WHERE d.member_id = #{memberId}
 			<choose>
 				<when test="pagination.type == 'DELIVERY_STATUS'">
 				<choose>
@@ -199,6 +205,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					</when>
 					<when test="pagination.keyword == '결제 취소'">
 						AND DELIVERY_STATUS LIKE '%결제 취소%'
+					</when>
+					<when test="pagination.keyword == '주문 취소'">
+						AND DELIVERY_STATUS LIKE '%주문 취소%'
 					</when>
 				</choose>
 				</when>
@@ -233,8 +242,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectMemberTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER
-		WHERE MEMBER_ID = #{memberId}
+		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER d
+		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		WHERE d.MEMBER_ID = #{memberId}
 		<choose>
 				<when test="pagination.type == 'DELIVERY_STATUS'">
 				<choose>
@@ -261,6 +271,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					</when>
 					<when test="pagination.keyword == '결제 취소'">
 						AND DELIVERY_STATUS LIKE '%결제 취소%'
+					</when>
+					<when test="pagination.keyword == '주문 취소'">
+						AND DELIVERY_STATUS LIKE '%주문 취소%'
 					</when>
 				</choose>
 				</when>
@@ -335,6 +348,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<when test="pagination.keyword == '결제 취소'">
 						AND DELIVERY_STATUS LIKE '%결제 취소%'
 					</when>
+					<when test="pagination.keyword == '주문 취소'">
+						AND DELIVERY_STATUS LIKE '%주문 취소%'
+					</when>
 				</choose>
 				</when>
 				<when test="pagination.type == 'DELIVERY_DATE'">
@@ -399,6 +415,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<when test="pagination.keyword == '결제 취소'">
 						AND DELIVERY_STATUS LIKE '%결제 취소%'
 					</when>
+					<when test="pagination.keyword == '주문 취소'">
+						AND DELIVERY_STATUS LIKE '%주문 취소%'
+					</when>
 				</choose>
 				</when>
 				<when test="pagination.type == 'DELIVERY_DATE'">
@@ -433,6 +452,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId} ORDER BY ORDER_ID DESC
 	</select>
 	
+	<select id="orderCancelList" resultMap="orderResultMap">
+		SELECT * FROM DIRECT_ORDER d
+		JOIN ITEM_CTG i ON d.ITEM_ID = i.ITEM_ID
+		WHERE (i.ITEM_STATUS = 300 OR i.ITEM_STATUS = 200)
+		AND (d.DELIVERY_STATUS = '상품 준비중' OR d.DELIVERY_STATUS = '배송 준비중')
+	</select>
+	
 	<update id="cancel">
 		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '결제 취소' WHERE ORDER_ID = #{orderId} AND (DELIVERY_STATUS = '상품 준비중' OR DELIVERY_STATUS = '배송 준비중')
 	</update>
@@ -459,6 +485,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="deliveryCompleted">
 		UPDATE DIRECT_ORDER SET DELIVERY_STATUS = '배송 완료', DELIVERY_COMPLETED_DATE = SYSDATE, DELIVERY_REFUND = SYSDATE + 7  WHERE ORDER_ID = #{orderId} and DELIVERY_STATUS = '배송 중'
+	</update>
+	
+	<update id="orderCancel">
+		UPDATE DIRECT_ORDER d
+		SET d.DELIVERY_STATUS = '주문 취소'
+		WHERE d.ITEM_ID IN (
+	    SELECT i.ITEM_ID
+	    FROM ITEM_CTG i
+	    WHERE (i.ITEM_STATUS = 300 OR i.ITEM_STATUS = 200)
+	    AND (d.DELIVERY_STATUS = '상품 준비중' OR d.DELIVERY_STATUS = '배송 준비중')
+		)
 	</update>
 
 </mapper>

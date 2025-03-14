@@ -1,7 +1,9 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
@@ -62,7 +66,7 @@ public class ItemController {
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(Model model) {
 	}
 	
 	@PostMapping("/register")	
@@ -83,14 +87,20 @@ public class ItemController {
 			Integer itemId,
 			Pagination pagination) {
 		
+		
 		ItemVO itemVO = itemService.getItemById(itemId);
 		log.info(itemVO);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(itemService.getSelectCategoryList(itemVO.getSubCtg(), itemVO.getItemId(), pagination).size());
 		pageMaker.setPageCount(1);
 		
-		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getSubCtg(), pagination);
+		pagination.setPageSize(5);
+		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getSubCtg(), itemVO.getItemId(), pagination);
+		log.info("itemList : " + itemList);
 		model.addAttribute("itemList", itemList);
+		model.addAttribute(pageMaker);
+		log.info("pageMaker : " + pageMaker);
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
@@ -151,14 +161,15 @@ public class ItemController {
 		}
 	}
 	
+	@ResponseBody
 	@PostMapping("/order")
-	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
+	public int order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
 		int result = directOrderService.orderPurchase(directOrderVO);
 		log.info(result);
-		return "redirect:/item/purchaseHistory";
+		return result;
 	}
 	
 	@GetMapping("/purchaseHistory")

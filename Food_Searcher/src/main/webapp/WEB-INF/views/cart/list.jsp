@@ -62,7 +62,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
                 <td>
                     <button class="minusBtn">-</button>
                     <input type="text" style="width: 50px; text-align: center;" id="itemAmount"
-						   name="itemAmount" class="itemAmount" value="${CartVO.cartAmount }" readonly>
+						   name="itemAmount" class="itemAmount" value="${CartVO.cartAmount }">
                     <button class="plusBtn">+</button>
                 </td>
                 <td> <div class="itemEachPrice">
@@ -147,41 +147,14 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 		    cartinfo(row, quantity, cartId, itemPrice);
 		});
 		
-		$(".itemAmount").on("click", function(){
+		$(".itemAmount").on("change", function(){
 			let row = $(this).closest("tr");
 			let quantity = parseInt(row.find(".itemAmount").val());
 			let cartId = row.find(".cartId").val();
-		    let itemPrice = parseInt(row.find(".itemPrice").val()); 
+		    let itemPrice = parseInt(row.find(".itemPrice").val());
 		    
 		    cartinfo(row, quantity, cartId, itemPrice);
 		})
-
-		function cartinfo(row, quantity, cartId, itemPrice){
-
-			row.find(".itemAmount").val(quantity); // 변경된 수량 업데이트
-	
-		    let itemTotalPrice = itemPrice * quantity;
-		    let cartAmount = quantity.toString();
-	
-		    $.ajax({
-		        type: "PUT",
-		        url: "../update/" + cartId,
-		        headers: {
-		            "Content-Type": "application/json",
-		        },
-		        data: cartAmount,
-		        success: function (result) {
-		            console.log(result);
-		            if (result == 1) {
-		                let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
-		                row.find(".itemTotalPrice").text(textContent);
-		                row.find(".itemTotalPrice").val(itemTotalPrice);
-		            } else {
-		                alert("변경 실패");
-		            }
-		        },
-		    }); // end ajax
-		}
 
 	    $('.delBtn').on('click', function(){
 			 let cartId =  $(this).closest('tr').find('.cartId').val();
@@ -210,8 +183,40 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 		        }
 		    });
 	    
-			$(".checkBox, .plusBtn, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
-	    
+			$(".checkBox, .plusBtn, .itemAmount, .minusBtn, .delBtn").on("change click", setTotalPrice); // 체크박스 및 수량 변경 시 업데이트
+	    	
+			function cartinfo(row, quantity, cartId, itemPrice){
+				
+				if(quantity <= 0) {
+					alert("0개 이하로 구매 불가능합니다.");
+					return;
+				}
+
+				row.find(".itemAmount").val(quantity); // 변경된 수량 업데이트
+		
+			    let itemTotalPrice = itemPrice * quantity;
+			    let cartAmount = quantity.toString();
+		
+			    $.ajax({
+			        type: "PUT",
+			        url: "../update/" + cartId,
+			        headers: {
+			            "Content-Type": "application/json",
+			        },
+			        data: cartAmount,
+			        success: function (result) {
+			            console.log(result);
+			            if (result == 1) {
+			                let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
+			                row.find(".itemTotalPrice").text(textContent);
+			                row.find(".itemTotalPrice").val(itemTotalPrice);
+			            } else {
+			                alert("변경 실패");
+			            }
+			        },
+			    }); // end ajax
+			}
+			
 			function updateOutput() {
 			      // 각 input 필드의 값을 가져오기
 			      const value1 = $("#postcode").val();
