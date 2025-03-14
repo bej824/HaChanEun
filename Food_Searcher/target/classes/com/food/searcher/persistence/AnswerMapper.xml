@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 		
 	<select id="select" resultMap="answerResultMap">
-		SELECT * FROM ANSWER WHERE ASK_ID = #{askId} ORDER BY ANSWER_ID
+		SELECT * FROM ANSWER WHERE ASK_ID = #{askId} ORDER BY ANSWER_ID DESC
 	</select>
 	
 	<update id="update">

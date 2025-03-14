@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.food.searcher.persistence.AmountHeldMapper">
+
+	<resultMap type="com.food.searcher.domain.AmountHeldVO"
+		id="AmountHeldMap">
+		
+		<id property="logId" column="LOG_ID" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="logMsg" column="LOG_MSG" />
+		<result property="logAmountHeld" column="LOG_AMOUNTHELD" />
+		<result property="logDate" column="LOG_DATE" />
+		<result property="orderId" column="ORDER_ID" />
+	</resultMap>
+	
+	<select id="selectMemberAmountHeldByMemberId" resultType="Integer">
+		SELECT NVL (
+		(
+    		SELECT AMOUNT_HELD 
+    		FROM MEMBER_AMOUNT 
+    		WHERE MEMBER_ID = #{memberId}
+		), 0) AS AMOUNT_HELD FROM DUAL
+	</select>
+	
+	<update id="updateMemberAmountHeld">
+		MERGE INTO MEMBER_AMOUNT DB
+		USING (
+			 SELECT
+			 	  #{memberId} AS MEMBER_ID
+			 	 ,#{amountHeld} AS AMOUNT_HELD
+			FROM DUAL
+		) INPUT
+		ON (
+			DB.MEMBER_ID = INPUT.MEMBER_ID 
+		)
+		WHEN NOT MATCHED THEN 
+    	INSERT (
+    		  MEMBER_ID
+    		 ,AMOUNT_HELD
+    	)
+    	VALUES (
+    		 INPUT.MEMBER_ID
+    		,INPUT.AMOUNT_HELD
+    	)
+    	WHEN MATCHED THEN
+    	UPDATE
+    	SET DB.AMOUNT_HELD = DB.AMOUNT_HELD + INPUT.AMOUNT_HELD
+	</update>
+	
+	</mapper>

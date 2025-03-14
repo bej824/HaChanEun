@@ -75,8 +75,7 @@ $(document).ajaxSend(function(e, xhr, opt){
 	
 $(document).ready(function(){
 	getAllAsk();
-	console.log("게시글 ID : " + $('#itemId').val());
-	
+		
 	$("#askAdd").on("click", function() {
 		let itemId = $('#itemId').val();
 		let memberId = $('#memberId').val();
@@ -88,7 +87,6 @@ $(document).ready(function(){
 			'memberId' : memberId,
 			'askContent' : askContent
 		};
-		console.log(obj);
 		
 		if(!askContent) {
 			alert("내용을 입력해주세요.");			
@@ -298,7 +296,6 @@ $(document).ready(function(){
 			});
 		
 		$('#asks').on('click', '.btn_answerDelete', function(){
-			console.log(this);
 			let answerId = $(this).closest('.ask_item').find('#answerId').val();
 			let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
 			
@@ -344,7 +341,6 @@ $(document).ready(function(){
 		            list += '<div class="noAsk">작성된 문의가 없습니다.</div>'
 		        } else {
 		            $(data).each(function() {
-		                console.log(this);
 
 		                let askDate = new Date(this.askDate).toLocaleString();
 		                let disabled = (memberId != this.memberId) ? 'disabled' : '';
@@ -383,7 +379,11 @@ $(document).ready(function(){
 		                    
 		                    $(data).each(function() {
 		                        let answerDate = new Date(this.answerDate).toLocaleString();
-		                        let disabled = (memberId != this.memberId) ? 'disabled' : '';
+		                        let disabled = '';
+		                        
+		                        if(memberId != this.memberId){
+									disabled = 'disabled';
+								}
 		                        
 		                        answers += '<div class="answer_item" value="' + this.answerId + '">'
 		                                  + '<div class="userInfo">'
