@@ -23,5 +23,7 @@ public class ReviewVO {
 	private Date reviewDate;
 	private boolean reviewLove;
 	private long likesCount;
+	private String itemName;
+	private String itemContent;
 	
 }

@@ -36,5 +36,10 @@ public class AuthController {
 	        model.addAttribute("errorMsg", "로그인 에러! 아이디 비밀번호를 확인하세요.");
 	    }
 	}
+	
+	@GetMapping("/logout")
+	public void logoutPOST() {
+		
+	}
 
 }

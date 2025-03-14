@@ -55,7 +55,6 @@
 		<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
-			<div class="image-list">
 				<!-- 이미지 파일 처리 코드 -->
                 <c:forEach var="attachVO" items="${idList}">
                     <c:if test="${attachVO.attachExtension eq 'jpg' or 
@@ -64,17 +63,15 @@
                                   attachVO.attachExtension eq 'gif'}">
                         <div class="image_item">
                             <a href="../images/get?attachId=${attachVO.attachId }" target="_blank">
-                                <img width="100px" height="100px" 
+                                <img width="150px" height="150px" 
                                      src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
                             </a>
                         </div>
                     </c:if>
                 </c:forEach>
-			</div>
 		</div>
 		<div class="image-modify" style="display : none;">
 			<h2>이미지 파일 업로드</h2>
-			<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 			<p>* 최대 용량은 10MB 입니다.</p>
 			<div class="image-drop">이미지를 드래그 하세요.</div>
 			<h2>선택한 이미지 파일 :</h2>
@@ -95,20 +92,40 @@
 		<p>가격 : <input type="text" name="itemPrice" placeholder="가격 입력"
 				maxlength="30" value="${itemVO.itemPrice }" required> 원</p>
 		
-		<p>분류 : 
+		<p>분류 :
 		<select name="mainCtg" id="mainCtg">
+		<option>${itemVO.mainCtg }</option>
+		<c:forEach var="ctgList" items="${ctgList}">
+		<c:if test="${ctgList.mainCtg != itemVO.mainCtg }">
+		<option>${ctgList.mainCtg }</option>
+		</c:if>
+		</c:forEach>
 		</select>
 		<select name="subCtg" id="subCtg">
+		<option>${itemVO.subCtg }</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
 		</select>
-		<input type="text" name="subCtg" id="subCtg"
-		placeholder="세부 분류를 입력해주세요.">
+		<p>원산지 : 
+		<select name="origin" id="origin">
+			<option>국내산</option>
+			<option>중국산</option>
+			<option>미국산</option>
+			<option>일본산</option>
+			<option>호주산</option>
+			<option>칠레산</option>
+			<option>태국산</option>
+			<option>인도산</option>
+			<option>베트남산</option>
+		</select></p>
 				
 		<p>판매자 : ${itemVO.memberId } </p>
 		
 		<span>판매 상태 :
 		<select>
-			<option value="1">판매 중</option>
-			<option value="2">판매 중단</option>
+			<option value="100">판매 중</option>
+			<option value="200">판매 중단</option>
 		</select>
 		</span>
 		
@@ -166,38 +183,36 @@
             $('#modifyBoard').click(function() {
                 let modifyForm = $('#modifyForm');
                 let formData = new FormData(modifyForm[0]);
-                let i = 0;
 
+                // 업로드가 변경되었을 때, 단일 이미지를 처리
                 if (isUploadChanged) {
-                // attachDTOImg-list의 각 input 태그 접근
-                $('.attachDTOImg-list input[name="attachVO"]').each(function() {
-                    let attachVO = JSON.parse($(this).val());
-                    formData.append('attachList[' + i + '].attachPath', attachVO.attachPath);
-                    formData.append('attachList[' + i + '].attachRealName', attachVO.attachRealName);
-                    formData.append('attachList[' + i + '].attachChgName', attachVO.attachChgName);
-                    formData.append('attachList[' + i + '].attachExtension', attachVO.attachExtension);
-                    i++;
-                });
-                } else {
-                	
+                    // 이미지 입력 필드에서 값을 가져옴
+                    let attachVO = JSON.parse($('.attachDTOImg-list input[name="attachVO"]').val());
+
+                    // 이미지 세부 정보를 formData에 추가
+                    formData.append('attachList[0].attachPath', attachVO.attachPath);
+                    formData.append('attachList[0].attachRealName', attachVO.attachRealName);
+                    formData.append('attachList[0].attachChgName', attachVO.attachChgName);
+                    formData.append('attachList[0].attachExtension', attachVO.attachExtension);
                 }
 
-                // 비동기적으로 폼 전송
+                // 비동기적으로 폼 데이터를 전송
                 $.ajax({
                     url: 'modify', // 서버 URL
                     type: 'POST',
                     data: formData,
-                    processData: false,  // jQuery가 데이터 처리하지 않도록 설정
+                    processData: false,  // jQuery가 데이터를 처리하지 않도록 설정
                     contentType: false,  // jQuery가 Content-Type을 설정하지 않도록 설정
                     success: function(response) {
                         alert('업로드 성공!');
-                        window.location.href = "../item/detail?itemId="+"${itemVO.itemId }";
+                        window.location.href = "../item/detail?itemId=" + "${itemVO.itemId }";
                     },
                     error: function(xhr, status, error) {
                         alert('업로드 실패: ' + error);
                     }
                 });
             });
+
         });
     </script>
     

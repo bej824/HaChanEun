@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<!-- <id> : key 컬럼 매핑 태그 <result> : 일반 컬럼 매핑 태그 - 속성 : property : Entity(VO) 
 			멤버 변수 column : DB 테이블 컬럼 -->
 		<id property="recipeLikesId" column="RECIPE_LIKES_ID" />
-		<result property="recipeBoardId" column="RECIPE_BOARD_ID" />
+		<result property="recipeId" column="RECIPE_ID" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="memberLike" column="MEMBER_LIKE" />
 		<result property="likeCount" column="like_count" />
@@ -34,19 +34,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_BOARD_ID, MEMBER_ID, MEMBER_LIKE)
-		VALUES (RECIPE_LIKES_SEQ.NEXTVAL, #{recipeBoardId}, #{memberId}, #{memberLike})
+		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_ID, MEMBER_ID, MEMBER_LIKE)
+		VALUES (RECIPE_LIKES_SEQ.NEXTVAL, #{recipeId}, #{memberId}, #{memberLike})
 	</insert>
 	
 	<update id="update">
 		UPDATE RECIPE_LIKES
-		SET MEMBER_LIKE = #{memberLike} WHERE RECIPE_BOARD_ID = #{recipeBoardId} AND MEMBER_ID = #{memberId}
+		SET MEMBER_LIKE = #{memberLike} WHERE RECIPE_ID = #{recipeId} AND MEMBER_ID = #{memberId}
 	</update>
 	
 	<select id="selectAll" resultMap="recipeLikesResultMap">
-		SELECT recipe_board_id, COUNT(*) AS like_count
+		SELECT recipe_id, COUNT(*) AS like_count
 		FROM RECIPE_LIKES 
-		group by recipe_board_id, member_like 
+		group by recipe_id, member_like 
 		having member_like=1
 		ORDER BY LIKE_COUNT DESC
 	</select>
@@ -54,21 +54,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemberLikes" resultMap="recipeLikesResultMap">
 		SELECT *
 		FROM RECIPE_LIKES
-		WHERE RECIPE_BOARD_ID = #{recipeBoardId}
+		WHERE RECIPE_ID = #{recipeId}
 		AND MEMBER_ID = #{memberId}
 	</select>
 	
 	<select id="selectListByPagination" resultMap="recipeLikesResultMap">
-		SELECT r.RECIPE_BOARD_ID, COUNT(*) AS LIKE_COUNT
+		SELECT r.RECIPE_ID, COUNT(*) AS LIKE_COUNT
 		FROM RECIPE_LIKES r
 		JOIN MEMBER m ON r.MEMBER_ID = m.MEMBER_ID
 		WHERE r.MEMBER_LIKE = 1
 			<choose>
 				<when test="type == null">
-					GROUP BY r.RECIPE_BOARD_ID, member_like
+					GROUP BY r.RECIPE_ID, member_like
 				</when>
 				<when test="type == ''">
-					GROUP BY r.RECIPE_BOARD_ID, member_like
+					GROUP BY r.RECIPE_ID, member_like
 				</when>
 				<when test="type == '나이'.toString()">
 					<choose>
@@ -91,14 +91,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							AND FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(m.member_date_of_birth, 'YYYYMMDD')) / 12) >= 50
 						</when>
 					</choose>
-					GROUP BY r.RECIPE_BOARD_ID
+					GROUP BY r.RECIPE_ID
 				</when>
 				<when test="type == '성별'.toString()">
-					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_GENDER
+					GROUP BY r.RECIPE_ID, m.MEMBER_GENDER
 					HAVING m.MEMBER_GENDER = #{keyword}
 				</when>
 				<when test="type == 'MBTI'.toString()">
-					GROUP BY r.RECIPE_BOARD_ID, m.MEMBER_MBTI
+					GROUP BY r.RECIPE_ID, m.MEMBER_MBTI
 					HAVING m.MEMBER_MBTI = #{keyword}
 				</when>
         <when test="type == '별자리'.toString()">
@@ -140,7 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     AND (TO_DATE(TO_CHAR(m.member_date_of_birth), 'YYMMDD') BETWEEN TO_DATE(TO_CHAR('02-19'), 'MM-DD') AND TO_DATE(TO_CHAR('03-20'), 'MM-DD'))
                 </when>
             </choose>
-            GROUP BY r.RECIPE_BOARD_ID
+            GROUP BY r.RECIPE_ID
         </when>
     </choose>
 		ORDER BY LIKE_COUNT DESC
@@ -149,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateMemberLikes">
 		UPDATE RECIPE_LIKES
 		SET MEMBER_LIKE = #{memberLike}
-		WHERE RECIPE_BOARD_ID = #{recipeBoardId}
+		WHERE RECIPE_ID = #{recipeId}
 		AND MEMBER_ID = #{memberId}
 	</update>
 	

@@ -15,5 +15,6 @@ public class RecipeViewListVO {
 	private int viewsNo;
 	private int recipeId;
 	private String memberId;
+	private String category;
 	private RecipeViewsVO views;
 }

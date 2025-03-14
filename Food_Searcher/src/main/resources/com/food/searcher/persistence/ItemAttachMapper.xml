@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			,ATTACH_EXTENSION
 			) VALUES 
 			(ITEM_ATTACH_SEQ.NEXTVAL
-			,ITEM_SEQ.CURRVAL
+			,#{itemId}
 			,#{attachPath}
 			,#{attachRealName}
 			,#{attachChgName}

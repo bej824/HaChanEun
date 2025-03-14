@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	
 	<select id="select" resultMap="askResultMap">
-		SELECT * FROM ASK WHERE ITEM_ID = #{itemId}
+		SELECT * FROM ASK WHERE ITEM_ID = #{itemId} ORDER BY ASK_ID DESC
 	</select>
 	
 	<select id="countTodayAsk" resultType="int">

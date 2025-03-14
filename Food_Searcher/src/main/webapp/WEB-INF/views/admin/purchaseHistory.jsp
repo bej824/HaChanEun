@@ -91,7 +91,7 @@
 	                keyword.appendChild(option);
 	            });
 	        } else if (type === "DELIVERY_STATUS") {
-	        	let options = ["상품 준비중", "배송 준비중", "배송 중", "배송 완료", "환불 신청", "환불 승인", "환불 완료", "결제 취소"];
+	        	let options = ["상품 준비중", "배송 준비중", "배송 중", "배송 완료", "환불 신청", "환불 승인", "환불 완료", "결제 취소", "주문 취소"];
 	        	keyword.style.display = "inline-block";  // 추가 필터 보이기
 	            options.forEach(function(optionText) {
 	                let option = document.createElement("option");

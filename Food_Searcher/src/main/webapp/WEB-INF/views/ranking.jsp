@@ -41,9 +41,9 @@
 		</thead>
 		<tbody>
 			<c:forEach var="RecipeLikesVO" items="${likeList }" varStatus="status">
-			<c:if test="${status.index < 5}">
-				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeLikesVO.recipeBoardId }'">
-					<td>${RecipeLikesVO.recipeBoardId }</td>
+			<c:if test="${status.index < 10}">
+				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeLikesVO.recipeId }'">
+					<td>${RecipeLikesVO.recipeId }</td>
 					<td>${recipeList[status.index].recipeTitle }</td>
 					<td>${recipeList[status.index].memberId }</td>
 					<td>${recipeList[status.index].replyCount }</td>

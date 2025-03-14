@@ -15,5 +15,7 @@ public interface RecipeViewMapper {
 	int insert(Map<String, Object> params);
 	int insertViews();
 	int updateViews();
+	int insertCategoryViews();
+	int updateCategoryViews();
 	int delete();
 }

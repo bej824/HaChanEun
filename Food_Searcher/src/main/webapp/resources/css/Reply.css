@@ -157,7 +157,7 @@ button:hover {
 }
 
 .button, .btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add, .btn_commentAdd, #button,
-.btn_commentupdate, .btn_commentdelete, .btn_answer, .addAnswer, .btn_answerUpdate, .btn_answerDelete {
+.btn_commentupdate, .btn_commentdelete, .btn_answer, .addAnswer, .btn_answerUpdate, .btn_answerDelete, .btn_reviewUpdate, .btn_reviewDelete {
    background-color: #04AA6D;
    color:white;
    font-size:14px;
@@ -185,7 +185,7 @@ button:hover {
    border:1px solid #ccc; 
  }
 
-.btn_update:disabled, .btn_delete:disabled, .comment_update:disabled, .comment_delete:disabled, .comment_add:disabled {
+.comment_update:disabled, .comment_delete:disabled, .comment_add:disabled {
     display: none;
 }
 
@@ -198,7 +198,7 @@ button:hover {
 }
 
 .btn_update:disabled, .btn_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled,
-.btn_commentdelete:disabled, .btn_answerUpdate:disabled, .btn_answerDelete:disabled {
+.btn_commentdelete:disabled, .btn_answerUpdate:disabled, .btn_answerDelete:disabled, .btn_reviewUpdate:disabled, .btn_reviewDelete:disabled {
     display: none;
 }	
 
@@ -211,6 +211,11 @@ button:hover {
   background:rgba(0, 0, 0, 0.5);
   z-index:-1;
   }
+  
+.reviewLove {
+	background:black;
+	text-align: left, top; /* 왼쪽 정렬 */
+}
 
 
 div.replyModal { position:relative; z-index:1; display:none; }
@@ -242,3 +247,9 @@ div.answerModify { position:fixed; top:20%; left:calc(50% - 250px); width:500px;
 div.answerModify textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
 div.answerModify button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
 div.answerModify button.answer_modify_cancle { margin-left:20px; }
+
+div.reviewModal { position:relative; z-index:1; display:none; }
+div.reviewModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.reviewModalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
+div.reviewModalContent button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+div.reviewModalContent button.review_modify_cancle { margin-left:20px; }

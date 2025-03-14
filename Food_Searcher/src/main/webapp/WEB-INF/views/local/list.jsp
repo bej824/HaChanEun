@@ -113,9 +113,8 @@ a:link, a:visited, a:hover, a:active {
 		<thead>
 			<tr>
 				<th style="width: 10%">번호</th>
-				<th style="width: 50%">특산품</th>
 				<th style="width: 20%">지역</th>
-				<th style="width: 10%">댓글수</th>
+				<th style="width: 50%">특산품</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -219,9 +218,9 @@ a:link, a:visited, a:hover, a:active {
 			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
 			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect +'\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
+			                    + '<td>' + LocalSpecialityVO.localLocal + " " 
+			                    + LocalSpecialityVO.localDistrict + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localTitle + '</td>'
-			                    + '<td>' + LocalSpecialityVO.localLocal + " " + LocalSpecialityVO.localDistrict + '</td>'
-			                    + '<td>' + LocalSpecialityVO.replyCount + '</td>'
 			                    + '</tr>';
 			            	if(indexLocalDistrict != '' && indexLocalDistrict == LocalSpecialityVO.localDistrict){
 			            	tbody.append(row); // 새로운 데이터 행 추가
