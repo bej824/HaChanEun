@@ -21,8 +21,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO CART (CART_ID, ITEM_ID, CART_AMOUNT, MEMBER_ID) VALUES
-		(CART_SEQ.NEXTVAL, #{itemId}, #{cartAmount}, #{memberId})
+	MERGE INTO CART DB
+		USING (
+			SELECT
+			 #{itemId} AS ITEM_ID
+			,#{memberId} AS MEMBER_ID
+			FROM DUAL
+		) INPUT
+		ON (
+			DB.ITEM_ID = INPUT.ITEM_ID 
+			AND 
+			DB.MEMBER_ID = INPUT.MEMBER_ID
+		)
+		WHEN NOT MATCHED THEN 
+		INSERT 
+		(
+			 CART_ID
+			,ITEM_ID
+			,CART_AMOUNT
+			,MEMBER_ID
+		) VALUES (
+			 CART_SEQ.NEXTVAL
+			,#{itemId}
+			,#{cartAmount}
+			,#{memberId}
+		)
 	</insert>
 	
 	<select id="cartAll" resultMap="cartResultMap">
@@ -68,7 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<delete id="cartDelete">
-		DELETE FROM CART WHERE CART_ID = #{cartId} and CART_CHECKED = 1
+		DELETE FROM CART
+		WHERE MEMBER_ID = #{memberId}
+		AND CART_CHECKED = 1
 	</delete>
 	
 	<update id="updateChecked">

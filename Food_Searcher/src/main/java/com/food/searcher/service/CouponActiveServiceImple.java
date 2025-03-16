@@ -18,10 +18,6 @@ import com.food.searcher.task.MemberCouponTask;
 
 import lombok.extern.log4j.Log4j;
 
-/**
- * @author sdedu
- *
- */
 @Log4j
 @Service
 public class CouponActiveServiceImple implements CouponActiveService {
@@ -55,26 +51,22 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	
 	@Transactional
 	@Override
-	public List<CouponActiveVO> selectCouponActive(String memberId, int itemId) {
+	public List<CouponActiveVO> selectCouponActive(String memberId) {
 		
-		return couponActiveMapper.selectCouponActive(memberId, itemId);
+		return couponActiveMapper.selectCouponActive(memberId);
 	}
 	
 	@Transactional
 	@Override
-	public Integer selectCouponActiveByCouponPrice(DirectOrderVO directOrderVO, LocalDateTime now) {
+	public Integer selectCouponActiveByCouponPrice(String couponActiveId) {
 		log.info("selectCouponActiveByCouponPrice()");
 		Integer discountPrice = 0;
-		String couponActiveId = directOrderVO.getCouponActiveId();
-		String memberId = directOrderVO.getMemberId();
-		
-		if(!couponActiveId.equals("0") || !couponActiveId.equals(null)) {
+		String memberId = utilityService.loginMember();
 			discountPrice = couponActiveMapper.selectCouponPriceByCouponActiveId(
 					 couponActiveId
 					,memberId);
 			
 			discountPrice = (discountPrice == null) ? 0 : discountPrice;
-		}
 		
 		return discountPrice;
 	}

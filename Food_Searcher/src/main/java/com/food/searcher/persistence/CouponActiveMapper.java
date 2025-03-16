@@ -14,7 +14,6 @@ public interface CouponActiveMapper {
 	
 	List<CouponActiveVO> selectCouponActive(
 			 @Param("memberId") String memberId
-			,@Param("itemId") int itemId
 			);
 	
 	int updateCouponActiveByCouponActiveId(CouponActiveVO couponActiveVO);

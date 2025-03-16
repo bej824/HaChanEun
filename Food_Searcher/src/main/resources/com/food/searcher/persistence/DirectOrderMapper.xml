@@ -23,21 +23,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-	    INSERT INTO DIRECT_ORDER(
-	        ORDER_ID,
-	        MEMBER_ID,
-	        ITEM_ID,
-	        TOTAL_COUNT,
-	        TOTAL_PRICE,
-	        DELIVERY_ADDRESS
-	    ) VALUES (
-	        #{orderId} || LPAD(TO_CHAR(order_seq.NEXTVAL), 4, '0'), 
-	        #{memberId}, 
-	        #{itemId},
-	        #{totalCount},
-	        #{totalPrice}, 
-	        #{deliveryAddress}
-	    )
+    INSERT ALL
+    <foreach collection="orderList" item="order" separator=" ">
+        INTO DIRECT_ORDER(ORDER_ID, MEMBER_ID, ITEM_ID, TOTAL_COUNT, TOTAL_PRICE, DELIVERY_ADDRESS)
+        VALUES (
+            #{order.orderId},
+            #{order.memberId},
+            #{order.itemId},
+            #{order.totalCount},
+            #{order.totalPrice},
+            #{order.deliveryAddress}
+        )
+    </foreach>
+    SELECT 1 FROM DUAL
 	</insert>
 	
 	<select id="selectAll" resultMap="orderResultMap">

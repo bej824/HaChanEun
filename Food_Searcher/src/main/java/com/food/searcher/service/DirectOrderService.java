@@ -15,8 +15,8 @@ public interface DirectOrderService {
 	int getTotalCount(Pagination pagination);
 	int getSellerTotalCount(String memberId, Pagination pagination);
 	int getMemberTotalCount(String memberId, Pagination pagination);
-	int orderPurchase(DirectOrderVO directOrderVO);
-	int cartPurchase(List<DirectOrderVO> directOrderVO);
+//	int orderPurchase(DirectOrderVO directOrderVO);
+//	int cartPurchase(List<DirectOrderVO> directOrderVO);
 	int cancel(String orderId);
 	int refundReady(String orderId);
 	int refund(String refundReason, String refundContent, String orderId);

@@ -194,9 +194,7 @@ pageEncoding="UTF-8"%>
 	});
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
-		console.log(quantity);
 		let amount = '${itemVO.itemAmount}'
-		console.log(amount);
 	
 		$(".plusBtn").on("click", function() {
 		    if (quantity < amount) { 
@@ -222,7 +220,6 @@ pageEncoding="UTF-8"%>
 				itemId : ${itemVO.itemId},
 				cartAmount : $(".itemAmount").val(),
 		}
-		console.log(data);
 		// 3개 값을 data로 묶음
 		
 		$('#btnCart').on("click", function (e){
@@ -237,7 +234,9 @@ pageEncoding="UTF-8"%>
 				if (result == '1') {
 					alert("장바구니 추가 성공")	
 					window.location.href = 'http://localhost:8080/searcher/item/list';
-				} else {
+				} else if(result == '0') {
+					alert("이미 장바구니에 존재하는 상품입니다.")
+				  } else {
 					alert("장바구니 추가 실패")
 				  }
 				}
