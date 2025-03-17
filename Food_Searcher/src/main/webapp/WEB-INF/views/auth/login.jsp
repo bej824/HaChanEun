@@ -34,9 +34,10 @@
 	    <!-- CSRF 토큰 -->
 	    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
     </form>
-    
+    <div style="display: flex;">
     <a href="../access/registerEmail?select=idSearch" class="button">ID 찾기</a>
 	<a href="../access/registerEmail?select=pwSearch" class="button">PW 찾기</a>
+	</div>
 	
 	<c:if test="${not empty errorMsg }">
     	<script>alert('${errorMsg }');</script>
