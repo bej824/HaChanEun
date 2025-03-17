@@ -26,8 +26,6 @@ public class LocalServiceImple implements LocalService {
 	@Transactional
 	@Override
 	public int createSpeciality (LocalSpecialityVO localSpecialityVO) {
-		log.info("createSpeciality()");
-		log.info(localSpecialityVO);
 		
 		return localMapper.insertSepeciality(localSpecialityVO);
 	}
@@ -35,20 +33,14 @@ public class LocalServiceImple implements LocalService {
 	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getAllSpeciality(
-			String localLocal,
-			String localDistrict,
-			String localTitle,
-			String mainCtg,
-			String subCtg) {
-		log.info("getAllSpeciality()");
+			LocalSpecialityVO localSpecialityVO) {
 		
-		return localMapper.selectList(localLocal, localDistrict, localTitle, mainCtg, subCtg);
+		return localMapper.selectList(localSpecialityVO);
 	}
 	
 	@Transactional
 	@Override
 	public List<LocalSpecialityVO> getPagingSpeciality(Pagination pagination) {
-		log.info("getPagingSpeciality()");
 		
 		return localMapper.selectListByPagination(pagination);
 	}
@@ -56,14 +48,12 @@ public class LocalServiceImple implements LocalService {
 	@Transactional
 	@Override
 	public List<String> getDistrictByLocal(String localLocal) {
-		log.info("getDistrictByLocal()");
 		return localMapper.selectDistrict(localLocal);
 	}
 	
 	@Transactional
 	@Override
 	public LocalSpecialityVO getSpecialityByLocalId(int localId) {
-		log.info("getSpecialityByLocalId()");
 		
 		LocalSpecialityVO localSpecialityVO = localMapper.selectByLocalId(localId);
 		specialityViewLog(localId);
@@ -81,7 +71,6 @@ public class LocalServiceImple implements LocalService {
 	@Transactional
 	@Override
 	public int updateSpeciality(LocalSpecialityVO localSpecialityVO) {
-		log.info("updateSpeciality()");
 		
 		return localMapper.update(localSpecialityVO);
 	}
@@ -93,7 +82,6 @@ public class LocalServiceImple implements LocalService {
 	}
 	
 	public void specialityViewLog(int localId) {
-		log.info("specialityViewLog()");
 		
 		String memberId = utilityService.loginMember();
 		if(memberId != null) {

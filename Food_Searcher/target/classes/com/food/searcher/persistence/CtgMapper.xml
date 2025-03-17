@@ -26,13 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectCtg" resultMap="ctgMap">
-	SELECT DISTINCT 
-	MAIN_CTG
+	SELECT DISTINCT MAIN_CTG
 	FROM CTG
 	WHERE 1=1
-	<if test="ctgId != 0 and ctg != ''">
-		AND CTG_ID = #{ctgId}
-	</if>
 	<if test="mainCtg != null and mainCtg != ''">
 		AND MAIN_CTG = #{mainCtg}
 	</if>

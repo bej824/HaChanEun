@@ -125,16 +125,19 @@ textarea {
     left: auto !important;
 }
 
-#memberForm{
-	box-sizing: border-box;
-	width: 150px;
-	height: 150px;
-	border-radius: 8px;
-	border: 1px solid #ccc;
-	text-align:center;
-	line-height: 2.1;
-	font-size: 14px;
-	color: #ffffff;
+#memberForm {
+    box-sizing: border-box;
+    text-align: right;
+    padding-right: 100px;
+
+    font-size: 14px;
+    background-color: lightgray;
+    white-space: nowrap;
+    
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
 }
 
 #memberForm a {
@@ -157,26 +160,9 @@ textarea {
 
 
 #list {
-	font-size : 16px;
 	text-decoration: none;
-}
-
-#list .headerNavi {
-	width : 100px; /* header 버튼에 할당된 길이 */
-	list-style: none;
-	padding:5px;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-    /* user agent 초기화 */
-    
-	font-size:16px;
-	text-decoration:none;
-	
-	display: flex;
-    justify-content: center; /* 수평 중앙 정렬 */
-    text-align: center;      /* 텍스트 중앙 정렬 */
+	background-color : yellowgreen;
+	text-align: center;
 }
 
 table {
@@ -186,28 +172,26 @@ table {
 	text-align: center;
 }
 
-li {
-	text-align: none;
-	text-decoration: none;
-	display:inline-block;
-	
+.headerNavi {
+    font-size: 30px;
+    color: white;
+    margin-right: 100px;
+    margin-left: 100px;
+    text-align: center; /* 부모에서 텍스트 중앙 정렬 */
+}
+
+.headerNavi a {
+    display: inline-block;
+    color: white;
+    margin-right: 100px;
+    margin-left: 100px;
+    text-decoration: none; /* 기본 텍스트 꾸미기 제거 */
 }
 
 ul, ol {
   list-style: none; /* 마커를 제거 */
   padding : 1px;
   margin: 1px;
-}
-
-/* 테이블 컨테이너 */
-.table-container {
-	border-top: 2px solid black;
-    width: 100%; /* 테이블이 컨테이너의 전체 너비를 차지하게 설정 */
-    height: 455px; /* 원하는 높이 설정 */
-    overflow-y: auto; /* 수직 방향으로 스크롤 추가 */
-    margin-left: 10; /* 자동 왼쪽 여백 설정 */
-    margin-right: auto; /* 자동 오른쪽 여백 설정 */
-    border-radius: 10px; /* 테두리를 둥글게 설정 */
 }
 
     .quick-scroll {
@@ -254,6 +238,33 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 </head>
 
 <body>
+     <div id="memberForm">
+     	<sec:authorize access="hasRole('ROLE_MEMBER') && !hasRole('ROLE_SELLER')">
+        <a href="/searcher/seller/authenticate" 
+    	style="display: inline-block; margin-left: 100px; float: left;">판매자등록</a>
+        </sec:authorize>
+		<sec:authorize access="isAuthenticated() && hasRole('ROLE_ADMIN')">
+		<a href="/searcher/admin/adminPage"><sec:authentication property="name" />님 환영합니다.</a>
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated() && !hasRole('ROLE_ADMIN')">
+			<a><sec:authentication property="name" />님</a> &nbsp;
+		</sec:authorize>
+    	<sec:authorize access="hasRole('ROLE_MEMBER') && !hasRole('ROLE_SELLER')">
+        	<a href="/searcher/auth/logout">로그아웃</a> &nbsp;
+        	<a href="/searcher/access/memberPage">마이페이지</a> &nbsp;
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_SELLER')">
+        	<a href="/searcher/auth/logout">로그아웃</a> &nbsp;
+        	<a href="/searcher/access/memberPage">마이페이지</a> &nbsp;
+        	<a href="/searcher/seller/management">관리페이지</a>
+        </sec:authorize>
+        
+   		<sec:authorize access="!isAuthenticated()">
+        	<a href="/searcher/auth/login">로그인</a> &nbsp;
+        	<a href="/searcher/access/registerEmail?select=register">회원가입</a>
+    	</sec:authorize>
+    </div>
+    
     <!-- 네비게이션 바 -->
     <div class="navbar">
     	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -261,44 +272,14 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
         <div id="front_img">
         <a href="/searcher/home">Home</a>
         </div>
-    </div>
-    
-    <div id="boardArea">
-    
-     <div id="memberForm">
-		<sec:authorize access="isAuthenticated() && hasRole('ROLE_ADMIN')">
-		<a href="/searcher/admin/adminPage"><sec:authentication property="name" />님 환영합니다.</a>
-		</sec:authorize>
-		<sec:authorize access="isAuthenticated() && !hasRole('ROLE_ADMIN')">
-			<p><sec:authentication property="name" />님 환영합니다.</p>
-		</sec:authorize>
-		<div class="myPage">
-    	<sec:authorize access="hasRole('ROLE_MEMBER') && !hasRole('ROLE_SELLER')">
-        	<a href="/searcher/auth/logout">로그아웃</a> <br>
-        	<a href="/searcher/access/memberPage">마이페이지</a> <br>
-        	<a href="/searcher/seller/authenticate">판매자등록</a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('ROLE_SELLER')">
-        	<a href="/searcher/auth/logout">로그아웃</a> <br>
-        	<a href="/searcher/access/memberPage">마이페이지</a> <br>
-        	<a href="/searcher/seller/management">관리페이지</a>
-        </sec:authorize>
         
-   		<sec:authorize access="!isAuthenticated()">
-        	<a href="/searcher/auth/login">로그인</a>
-        	<a href="/searcher/access/registerEmail?select=register">회원가입</a>
-    	</sec:authorize>
-		</div>
-    	</div>
+    </div>
     
 	<div id="list">
-        <ul>
-            <li><a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a></li>
-            <li><a class="headerNavi" href="/searcher/local/list" >특산품</a></li>
-            <li><a class="headerNavi" href="/searcher/item/list">상품</a></li>
-        </ul>
+            <a class="headerNavi" href="/searcher/recipe/list" >레시피 공유</a>
+            <a class="headerNavi" href="/searcher/local/list" >특산품</a>
+            <a class="headerNavi" href="/searcher/item/list">상품</a>
     </div>
-	</div>
 	
 	<script type="text/javascript">
 		$(document).ajaxSend(function(e, xhr, opt){

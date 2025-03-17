@@ -48,6 +48,7 @@ li {
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
+<%@ include file ="../layout/side.jsp" %>
 <div id="area">
 
 <h1>상품 리스트</h1>
@@ -79,11 +80,12 @@ li {
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">
 					<div class="image_item">
-					        <img width="200px" height="120px" 
-					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" />
-				        </div>
-				        </c:if>
-				        </c:forEach>
+						<img width="200px" height="120px" 
+     					src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+    					onerror="this.onerror=null; this.src='../resources/image/imageReady.png';">
+					</div>
+				    </c:if>
+			</c:forEach>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<input type="hidden" value="${itemVO.itemTag }">

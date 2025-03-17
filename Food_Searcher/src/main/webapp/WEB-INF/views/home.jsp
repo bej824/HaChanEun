@@ -44,8 +44,7 @@ li {
 		<p>${session.memberId }님 환영합니다.</p>
 	
 	</c:if>
-
-	<a href="recipe/list" class="button">레시피 공유</a>
+	<br>
 	<table border="1">
 	<thead>
 		<tr>

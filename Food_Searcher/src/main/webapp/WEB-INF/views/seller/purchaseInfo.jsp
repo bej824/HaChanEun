@@ -7,7 +7,8 @@
 <title>${directOrderVO.memberId }회원 거래 내역</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/header.jsp"%>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
+	<div id="area">
 	<h2>[${directOrderVO.memberId }]회원의 ${itemVO.itemName }구매 내역</h2>
 	<div><p></p></div>
 	<c:forEach var="attachVO" items="${attachVO}">
@@ -83,7 +84,7 @@
 		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea><br>
 		<button id="refundOK" class="button">환불 승인</button>
 	</c:if>
-	
+	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#ready').click(function(){
