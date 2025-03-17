@@ -24,7 +24,6 @@ import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
-import com.food.searcher.service.OrderStepService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -48,9 +47,6 @@ public class ItemController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private OrderStepService orderStepService;
 	
 	@GetMapping("/list")
 	public String list(Model model, Pagination pagination) {
@@ -171,7 +167,7 @@ public class ItemController {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
-		int result = orderStepService.oneOrder(directOrderVO);
+		int result = directOrderService.oneOrder(directOrderVO);
 		log.info(result);
 		return result;
 	}

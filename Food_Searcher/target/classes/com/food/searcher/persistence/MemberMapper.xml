@@ -149,12 +149,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET ROLE_NAME = #{roleName}
 		WHERE MEMBER_ID = #{memberId}
 	</update>
-	
-	<update id="updateAmountHeld">
-		UPDATE MEMBER
-		SET AMOUNT_HELD = AMOUNT_HELD + #{amountHeld}
-		WHERE MEMBER_ID = #{memberId}
-	</update>
 
 </mapper>
 

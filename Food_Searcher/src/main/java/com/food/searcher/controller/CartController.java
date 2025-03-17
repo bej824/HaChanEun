@@ -25,7 +25,6 @@ import com.food.searcher.service.CartService;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.MemberService;
-import com.food.searcher.service.OrderStepService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -45,9 +44,6 @@ public class CartController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private OrderStepService orderStepService;
 	
 	@GetMapping("/list/{memberId}")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
@@ -70,7 +66,7 @@ public class CartController {
 	
 	@PostMapping("/list/{memberId}")
 	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
-		int result = orderStepService.cartOrder(directOrderVO);
+		int result = directOrderService.cartOrder(directOrderVO);
 		log.info(result);
 		return "cart/list";
 	}
