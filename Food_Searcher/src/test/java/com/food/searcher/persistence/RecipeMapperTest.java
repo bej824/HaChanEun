@@ -44,8 +44,8 @@ public class RecipeMapperTest {
 		directOrderVO.setTotalPrice(4000);
 		directOrderVO.setDeliveryAddress("주소");
 		log.info(directOrderVO);
-		int result = directOrderMapper.insert(directOrderVO);
-		log.info(result);
+//		int result = directOrderMapper.insert(directOrderVO);
+//		log.info(result);
 	}
 
 }

@@ -16,7 +16,7 @@ public interface CouponActiveService {
 	 * @param memberId 로그인 회원 id 기입.
 	 * @param itemId 상품 구매할 때 사용 가능한 쿠폰 확인 시 자동 기입.
 	 */
-	List<CouponActiveVO> selectCouponActive(String memberId, int itemId);
+	List<CouponActiveVO> selectCouponActive(String memberId);
 	
 	/**
 	 * 사용 요청된 쿠폰의 가격 확인
@@ -24,7 +24,7 @@ public interface CouponActiveService {
 	 * @param memberId(principal.getName())
 	 * @return
 	 */
-	Integer selectCouponActiveByCouponPrice(DirectOrderVO directOrderVO, LocalDateTime now);
+	Integer selectCouponActiveByCouponPrice(String couponActiveId);
 	
 	/**
 	 * 구매 시 쿠폰 사용 시 db내 사용 처리

@@ -14,7 +14,7 @@ public interface CartMapper {
 	List<CartVO> selectOne(String memberId);
 	List<CartVO> cartOrder(String memberId);
 	int delete(int cartId);
-	int cartDelete(int cartId);
+	int cartDelete(String memberId);
 	int updateChecked(@Param("cartChecked") int cartChecked, @Param("cartId") int cartId);
 	int updateAmount(CartVO cartVO);
 }

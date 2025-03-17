@@ -31,6 +31,7 @@ public class DirectOrderVO {
 	private String invoiceNumber;
 	private int orderCount;
 	private String couponActiveId;
+	private String tid;
 
 	private String itemName;
 	

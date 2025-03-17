@@ -27,7 +27,7 @@
    			window.location.href = "../item/list";
    		});
    		
-   		$('#purchase').click(function(){
+   		$('#btn_goItem').click(function(){
    			window.location.href = "../item/purchaseHistory";
    		});
    		

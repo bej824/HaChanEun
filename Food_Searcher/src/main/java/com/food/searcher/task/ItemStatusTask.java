@@ -28,7 +28,7 @@ public class ItemStatusTask {
 		List<CartVO> cartVO = cartMapper.cartAll();
 		for(CartVO vo : cartVO) {
 			if(vo.getItemStatus() != 100) {
-				cartMapper.cartDelete(vo.getCartId());
+				cartMapper.delete(vo.getCartId());
 			}
 		}
 	}

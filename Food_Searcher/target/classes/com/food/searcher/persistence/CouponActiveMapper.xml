@@ -71,9 +71,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="memberId != '' and memberId != null">
 			AND a.MEMBER_ID = #{memberId}
 		</if>
-		<if test="itemId != 0 and itemId != null">
-			AND (a.ITEM_ID = #{itemId} OR a.ITEM_ID = 0)
-		</if>
 	</select>
 	
 	<select id="selectCouponPriceByCouponActiveId" resultType="Integer">
@@ -91,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE COUPON_ACTIVE
 		SET COUPON_USE_DATE = #{couponUseDate}
 		,ITEM_ID = #{itemId}
-		,ORDER_ID = #{orderId} || LPAD(TO_CHAR(order_seq.CURRVAL), 4, '0')
+		,ORDER_ID = #{orderId}
 		WHERE COUPON_ACTIVE_ID = #{couponActiveId}
 	</update>
 	

@@ -83,8 +83,6 @@
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
 	<br>
-	<p>보유 금액 : <span id="amountHeld">${memberVO.amountHeld }</span>원
-	<button id="btn_tolUp" class="button">충전</button></p>
 	
 	<button id="btn_memberCoupon" class="button">쿠폰함</button>
 	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
@@ -141,35 +139,6 @@
 			inactive(memberId, memberStatus);
 			
 		});
-		
-	$('#btn_tolUp').click(function(){
-			let childWindow = window.open('tolUp', '', 'width=300,height=200,left=100,top=100');
-			let amountHeld = $('#amountHeld');
-
-		    let interval = setInterval(function() {
-		        if (childWindow.closed) {
-		            if(childWindow.statusValue == 1) {
-		            	
-		            	$.ajax({
-						    type: 'GET',
-						    url: 'amountHeld',
-						    data: { },
-						    success: function(result) {
-						    	  alert("충전이 완료되었습니다.");
-						    	  $('#amountHeld').text(result);
-						    }
-						    	
-						  });
-		            	
-		            } else if(childWindow.statusValue == 2) {
-		            	alert("충전이 취소되었습니다.");
-		            } else {
-		            	alert("다시 시도하여 주세요.");
-		            }
-		            clearInterval(interval);  // 인터벌 클리어
-		    	    }
-		    }, 100);
-		})
 	
 		function update(memberId, emailAgree, memberMBTI) {
 			let result = confirm("수정하시겠습니까?");

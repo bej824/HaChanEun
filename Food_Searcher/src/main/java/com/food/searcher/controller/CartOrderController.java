@@ -54,7 +54,7 @@ public class CartOrderController {
 	
 	@PostMapping("/list/{memberId}/order")
 	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
-		int result = directOrderService.cartPurchase(directOrderVO);
+		int result = directOrderService.cartOrder(directOrderVO);
 		log.info(result);
 		return "redirect:../../../item/purchaseHistory";
 	}

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.ApproveResponse;
 import com.food.searcher.domain.CartVO;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
@@ -25,6 +27,7 @@ import com.food.searcher.service.CartService;
 import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.MemberService;
+import com.food.searcher.util.SessionUtils;
 
 import lombok.extern.log4j.Log4j;
 
@@ -64,11 +67,14 @@ public class CartController {
 		return "cart/list";
 	}
 	
+	@ResponseBody
 	@PostMapping("/list/{memberId}")
 	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
-		int result = directOrderService.cartPurchase(directOrderVO);
+		log.info(directOrderVO);
+		int result = directOrderService.cartOrder(directOrderVO);
 		log.info(result);
-		return "cart/list";
+		String next_redirect_pc_url = SessionUtils.getStringAttributeValue("next_redirect_pc_url");
+		return next_redirect_pc_url;
 	}
 	
 	@PostMapping("/add")
@@ -101,5 +107,24 @@ public class CartController {
 	    
 	    return new ResponseEntity<>(cartService.updateChecked(cartVO.getCartChecked(), cartVO.getCartId()), HttpStatus.OK);
 	}
+	
+	@GetMapping("/completed")
+    public String completed(@RequestParam("pg_token") String pg_token, Model model) {
+    	String tid = SessionUtils.getStringAttributeValue("tid");
+    	String orderId = SessionUtils.getStringAttributeValue("partner_order_id");
+    	String itemName = SessionUtils.getStringAttributeValue("item_name");
+        // 결제 승인 처리 API 호출
+        ApproveResponse approvalResult = directOrderService.payApprove(tid, pg_token, orderId, itemName);
+        
+        model.addAttribute("response", approvalResult);
+        
+        // 결제 승인 결과 반환
+        return "redirect:/item/approve?pg_token="+pg_token;
+    }
+	
+	@GetMapping("/approve")
+    public void approve() {
+    	
+    }
 	
 } //end CartController

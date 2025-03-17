@@ -95,12 +95,7 @@
     			    }, 
     			    success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
-    			        if(result == 1) {
-    			            alert('상태 변경');
     			            location.reload();
-    			        } else {
-    			            alert('예상치 못한 값:', result); // unexpected value
-    			        }
     			    }
 
 				});

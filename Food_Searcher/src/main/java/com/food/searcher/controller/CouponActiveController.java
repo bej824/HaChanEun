@@ -50,11 +50,10 @@ public class CouponActiveController {
 	@ResponseBody
 	@PostMapping("memberCouponList")
 	public List<CouponActiveVO> memberCouponListPOST(
-			@RequestParam("memberId") String memberId,
-			@RequestParam(value="itemId", required = false, defaultValue = "0") int itemId){
+			@RequestParam("memberId") String memberId){
 		log.info("couponListPOST()");
 		
-		return couponActiveService.selectCouponActive(memberId, itemId);
+		return couponActiveService.selectCouponActive(memberId);
 	}
 	
 }

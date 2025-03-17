@@ -42,7 +42,5 @@ public interface MemberMapper {
 	int insertRole(@Param("memberId") String memberId, @Param("roleName") String roleName);
 	List<RoleVO> selectRoleByMemberId(@Param("memberId") String memberId);
 	int updateRoleByMemberId(@Param("memberId") String memberId, @Param("roleName") String roleName);
-	
-	int updateAmountHeld(@Param("memberId") String memberId, @Param("amountHeld") int amountHeld);
 
 }

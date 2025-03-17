@@ -22,11 +22,7 @@ public interface LocalMapper {
 			);
 	
 	List<LocalSpecialityVO> selectList(
-			@Param("localLocal") String localLocal,
-			@Param("localDistrict") String localDistrict,
-			@Param("localTitle") String localTitle,
-			@Param("mainCtg") String mainCtg,
-			@Param("subCtg") String subCtg
+			LocalSpecialityVO localSpecialityVO
 			); // 특산품 조회
 	
 	List<LocalSpecialityVO> selectAll();

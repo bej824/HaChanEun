@@ -12,11 +12,7 @@ public interface LocalService {
 			LocalSpecialityVO localSpecialityVO);
 	
 	List<LocalSpecialityVO> getAllSpeciality(
-			String localLocal,
-			String localDistrict,
-			String localTitle,
-			String mainCtg,
-			String subCtg);
+			LocalSpecialityVO localSpecialityVO);
 	
 	List<LocalSpecialityVO> getPagingSpeciality(
 			Pagination pagination);

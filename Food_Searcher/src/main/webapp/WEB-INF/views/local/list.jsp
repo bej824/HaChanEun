@@ -6,6 +6,7 @@
 <style type="text/css">
 
 .search {
+	width: 100%;
     margin: 20px auto; /* 검색 상자의 상단 여백 설정 */
     padding: 20px; /* 내부 여백 설정 */
     text-align: center; /* 내용 중앙 정렬 */
@@ -65,21 +66,12 @@ li {
     display: inline-block;
 }
 
-a:link, a:visited, a:hover, a:active {
-    color: black; /* 링크, 방문된 링크, hover 상태, active 상태 모두 검은색 */
-    text-decoration: none; /* 모든 상태에서 밑줄 없애기 */
-    transform: none !important; 
-    position: static !important;
-    margin: 0 !important;
-    top: auto !important;
-    left: auto !important;
-}
-
 </style>
 <title>지역 특산품 안내</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<%@ include file ="../layout/side.jsp" %>
 	<div id="area">
 	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
 	<div class="search" id = "search">
@@ -112,8 +104,8 @@ a:link, a:visited, a:hover, a:active {
 	<table>
 		<thead>
 			<tr>
-				<th style="width: 10%">번호</th>
-				<th style="width: 20%">지역</th>
+				<th style="width: 20%">번호</th>
+				<th style="width: 30%">지역</th>
 				<th style="width: 50%">특산품</th>
 			</tr>
 		</thead>
@@ -174,6 +166,8 @@ a:link, a:visited, a:hover, a:active {
 			});
 				
 			function listUpdate(localLocal, localDistrict, localTitle) {
+				let mainCtg = $('');
+				let subCtg = $('');
 			    
 			    if(!/^[가-힣]+$/.test(localLocal)) {
 			    	localLocal = "";

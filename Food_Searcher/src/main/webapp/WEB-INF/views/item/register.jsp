@@ -51,9 +51,6 @@
 	<div>
 	<p>분류 : 
 	<select name="mainCtg" id="mainCtg">
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
 	</select>
 	<select name="subCtg" id="subCtg">
 		<option>1</option>
@@ -118,7 +115,9 @@
     });
 
     $(document).ready(function() {
-        let ctg = [];
+    	
+    	mainCtg();
+    	
         // 차단할 확장자 정규식 (exe, sh, php, jsp, aspx, zip, alz)
         let blockedExtensions = /\.(exe|sh|php|jsp|aspx|zip|alz)$/i;
 
@@ -205,30 +204,29 @@
             console.log(subCtg);
         });
         
-        function callCtg() {
-            $.ajax({
-                type : 'GET',
-                url : 'callCtg',
-                data : {},
-                success : function(result) {
-                    result.forEach(function(list){
-                        ctg.push(list);
-                    });
-                }
-            });
+        function mainCtg() {
+            let mainCtg = $('#mainCtg');
+            
+            mainCtg.empty();
+            
+		    $.ajax({
+				type: 'GET',
+		        url: '../ctg/ctgGet',
+		        data: {},
+		        success: function(result) {
+		        	result.forEach(function(ctg) {
+		        		
+		        		let low = '<option>' + ctg.mainCtg + '</option>'
+		        		
+		        		if(ctg.mainCtg != '기타') {
+			        	mainCtg.append(low);
+		        		}
+		            });
+		        	
+		        }
+			})
         }
         
-        function mainCtg() {
-            let mainCtgOption = $('#mainCtg');
-            let mainCtgValue = [];
-            mainCtgList = ctg.filter(function(result) {
-                return result.mainCtg != mainCtg;
-            });
-            
-            mainCtgList.forEach(function(list){
-                // Your logic to populate main category
-            });
-        }
     });
 
 		

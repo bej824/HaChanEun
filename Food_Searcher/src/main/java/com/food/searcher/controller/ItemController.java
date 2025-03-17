@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.food.searcher.domain.ApproveResponse;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
@@ -26,6 +27,7 @@ import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
+import com.food.searcher.util.SessionUtils;
 
 import lombok.extern.log4j.Log4j;
 
@@ -163,13 +165,16 @@ public class ItemController {
 	
 	@ResponseBody
 	@PostMapping("/order")
-	public int order (@RequestBody DirectOrderVO directOrderVO, Principal principal) {
+	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal, Model model) {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
-		int result = directOrderService.orderPurchase(directOrderVO);
+		int result = directOrderService.oneOrder(directOrderVO);
+		
+		String next_redirect_pc_url = SessionUtils.getStringAttributeValue("next_redirect_pc_url");
+		model.addAttribute("next_redirect_pc_url", next_redirect_pc_url);
 		log.info(result);
-		return result;
+		return next_redirect_pc_url;
 	}
 	
 	@GetMapping("/purchaseHistory")
@@ -201,5 +206,24 @@ public class ItemController {
 		model.addAttribute("attachVO", attachVO);
 		model.addAttribute("directOrderVO", directOrderVO);
 	}
+	
+	@GetMapping("/completed")
+    public String completed(@RequestParam("pg_token") String pg_token, Model model) {
+    	String tid = SessionUtils.getStringAttributeValue("tid");
+    	String orderId = SessionUtils.getStringAttributeValue("partner_order_id");
+    	String itemName = SessionUtils.getStringAttributeValue("item_name");
+        // 결제 승인 처리 API 호출
+        ApproveResponse approvalResult = directOrderService.payApprove(tid, pg_token, orderId, itemName);
+        
+        model.addAttribute("response", approvalResult);
+        
+        // 결제 승인 결과 반환
+        return "redirect:/item/approve?pg_token="+pg_token;
+    }
+	
+	@GetMapping("/approve")
+    public void approve() {
+    	
+    }
 	
 } // end ItemController

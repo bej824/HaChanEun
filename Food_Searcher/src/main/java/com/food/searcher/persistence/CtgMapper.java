@@ -14,7 +14,5 @@ public interface CtgMapper {
 	
 	List<CtgVO> selectCtg(
 			 @Param("mainCtg") String mainCtg);
-	
-	int updateCtg(CtgVO foodctgVO);
 
 }
