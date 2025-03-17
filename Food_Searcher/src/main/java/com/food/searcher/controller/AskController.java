@@ -23,7 +23,7 @@ import com.food.searcher.service.AskService;
 import lombok.extern.log4j.Log4j;
 
 @RestController
-@RequestMapping("/ask")
+@RequestMapping("/product")
 @Log4j
 
 public class AskController {
@@ -31,7 +31,7 @@ public class AskController {
 	@Autowired
 	private AskService askService;
 	
-	@GetMapping("/list/{itemId}")
+	@GetMapping("/ask/{itemId}")
 	public ResponseEntity<List<AskVO>> askGET(@PathVariable("itemId") long itemId, Model model)	{
 		List<AskVO> askVO = askService.getAsk(itemId);
 		model.addAttribute("askVO", askVO);

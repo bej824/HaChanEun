@@ -59,6 +59,8 @@ li {
 <br>
 </div>
 
+<a href="../product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
+
 	<form id="searchForm" method="get" action="list">
 			<input type="hidden" name="pageNum">
 			<select name="type">

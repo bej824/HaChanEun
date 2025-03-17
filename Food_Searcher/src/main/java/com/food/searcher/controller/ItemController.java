@@ -1,7 +1,9 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.DirectOrderVO;
@@ -21,6 +24,7 @@ import com.food.searcher.service.DirectOrderService;
 import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
+import com.food.searcher.service.OrderStepService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
 
@@ -44,6 +48,9 @@ public class ItemController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrderStepService orderStepService;
 	
 	@GetMapping("/list")
 	public String list(Model model, Pagination pagination) {
@@ -164,7 +171,7 @@ public class ItemController {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
-		int result = directOrderService.orderPurchase(directOrderVO);
+		int result = orderStepService.oneOrder(directOrderVO);
 		log.info(result);
 		return result;
 	}

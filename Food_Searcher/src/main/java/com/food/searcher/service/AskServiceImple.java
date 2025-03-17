@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.food.searcher.domain.AnswerVO;
 import com.food.searcher.domain.AskVO;
 import com.food.searcher.persistence.AskMapper;
 
@@ -18,6 +19,9 @@ public class AskServiceImple implements AskService {
 	
 	@Autowired
 	AskMapper askMapper;
+	
+	@Autowired
+	AnswerService answerService;
 	
 	@Override
 	public int createAsk(AskVO askVO) {
@@ -36,15 +40,22 @@ public class AskServiceImple implements AskService {
 
 	@Override
 	public int updateAsk(long askId, String askContent) {
-		log.info("updateAsk");
-		AskVO askVO = new AskVO();
-		askVO.setAskContent(askContent);
-		askVO.setAskId(askId);
+ 		log.info("updateAsk");
+ 		AskVO askVO = new AskVO();
+ 		askVO.setAskContent(askContent);
+ 		askVO.setAskId(askId);
 		return askMapper.update(askVO);
 	}
 
 	@Override
 	public int deleteAsk(long askId) {
+		List<AnswerVO> list = answerService.getAnswer(askId);
+		log.info("Answer : " + list);
+		
+		for(AnswerVO vo : list) {
+			int result = answerService.deleteAnswer(vo.getAskId());
+			log.info(result + "행 Answer 삭제");
+		}
 		return askMapper.delete(askId);
 	}
 	

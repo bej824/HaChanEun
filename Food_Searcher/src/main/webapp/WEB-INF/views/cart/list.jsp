@@ -114,15 +114,16 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	<button id="order" class="button">구매</button>
 
 	<script>
+		let couponActive = [];
 	
 	$(document).ready(function () {
-		let couponActive = [];
 		let couponSelectOption = 0;
 		let discountPrice = 0;
 		let totalCost = 0;
 		let totalPrice = 0; // 주문 가격 합계
 		
 		setTotalPrice(); // 페이지 로드 시 실행
+		
 		couponList();
 		
 		$("#postcode, #address, #detailaddress").on("input", updateOutput);
@@ -160,7 +161,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 			 let cartId =  $(this).closest('tr').find('.cartId').val();
 			 let memberId = $(this).closest('tr').find('.memberId').val(); // 같은 행에서 memberId 가져오기
 			 let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
-			 console.log("cartId : " + cartId, "memberId : " + memberId);
 			 
 			 if(deleteConfirm) {
 				 $.ajax({
@@ -330,7 +330,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
  			    		
  			    	})
  			    	couponSelect.append(couponSelectOption);
- 			    	
  			    }
  			    	
  			})
@@ -344,8 +343,13 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	    // tr 태그 내의 데이터들을 배열로 수집
 	    let orderData = [];
 	    let deliveryAddress = $("#deleveryAddress").val();
-	    let memberAmount = ${member.amountHeld};
-		console.log("보유 금액 : " + memberAmount);
+	    let couponSelect = $('#couponSelect').val();
+	    
+	    let couponActiveId = 0;
+	    if(couponSelect != 0) {
+	    	couponActiveId = couponActive[couponSelect].couponActiveId;
+	    }
+	    
 	    let memberPrice = 0;
 
 	    // 주소가 비어 있으면 경고
@@ -370,20 +374,20 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	                itemId: itemId,
 	                totalCount: totalCount,
 	                totalPrice: totalPrice,
-	                deliveryAddress: deliveryAddress
+	                deliveryAddress: deliveryAddress,
+	                couponActiveId: couponActiveId
 	            });
 	            memberPrice += totalPrice;
+	            couponActiveId = 0;
 	        }
 	        
 	    });
-	    console.log("토탈 : " + memberPrice);
 
 	    // 배열이 비어 있으면 종료
 	    if (orderData.length === 0) {
 	        return;
 	    }
 
-	    if(memberAmount >= memberPrice) {
 	    // 데이터 한 번에 전송
 	    $.ajax({
 	        url: 'order',
@@ -391,7 +395,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	        headers: {
 	            'Content-Type': 'application/json' // json content-type 설정
 	        },
-	        data: JSON.stringify(orderData), // 배열을 JSON으로 변환하여 전송
+	        data: JSON.stringify(orderData),// 배열을 JSON으로 변환하여 전송
 	        success: function(result) {
 	            if (!hasCheckedAddress) {
 	                alert('구매 완료되었습니다.');
@@ -400,9 +404,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	            window.location.href = 'http://localhost:8080/searcher/item/list';
 	        }
 	    });
-	} else {
-		alert('보유 금액이 구매하려는 금액보다 적습니다.');
-	}
 	});
 
 	    

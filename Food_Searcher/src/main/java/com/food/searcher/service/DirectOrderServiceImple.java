@@ -48,9 +48,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private AmountHeldService amountHeldService;
 
 	@Override
 	public List<DirectOrderVO> getAllOrder() {
@@ -67,90 +64,90 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		return directOrderMapper.selectOne(itemId);
 	}
 
-	@Transactional(value = "transactionManager")
-	@Override
-	public int orderPurchase(DirectOrderVO directOrderVO) {
-		log.info("orderPurchase()");
-		
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-		directOrderVO.setOrderId(now.format(formatter));
-
-		log.info(directOrderVO);
-
-		List<ItemVO> list = new ArrayList<>();
-		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
-		itemVO.setItemCount(directOrderVO.getTotalCount());
-		list.add(itemVO);
-		
-		if(list.get(0).getItemAmount() - directOrderVO.getTotalCount() >= 0) {
-			itemService.updateItemAmount(
-					directOrderVO.getItemId()
-					,list.get(0).getItemAmount() - directOrderVO.getTotalCount());
-		} else {
-			log.warn(list.get(0).getItemId() + " " + list.get(0).getItemName() + "의 재고가 부족합니다.");
-			return 401;
-		}
-		
-		if(itemVO.getItemStatus() != 100) {
-			return 402;
-		}
-		
-		Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
-		
-
-		int totalPrice = calculateTotalPrice(
-				 list
-				,discountPrice);
-		
-		directOrderVO.setTotalPrice(totalPrice);
-
-		if(amountHeldService.selectAmountHeld() >= totalPrice) {
-		directOrderMapper.insert(directOrderVO);
-		memberService.updateAmountHeld(totalPrice, 0);
-		
-		if(discountPrice != 0) {
-			int couponUseInfo = couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
-			if(couponUseInfo != 1) {
-				return 403;
-			}
-		}
-		return 1;
-		} else {
-			return 404;
-		}
-	}
-
-	@Transactional
-	@Override
-	public int cartPurchase(List<DirectOrderVO> directOrderVO) {
-	    log.info("cartInsert()");
-	    LocalDateTime now = LocalDateTime.now();
-	    
-	    int totalPrice = 0;
-	    for (DirectOrderVO vo : directOrderVO) {
-	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-	    	vo.setOrderId(now.format(formatter));
-	    	
-	    	List<CartVO> cartVO = cartMapper.cartOrder(vo.getMemberId());
-		    
-		    directOrderMapper.insert(vo);
-		    totalPrice += vo.getTotalPrice();
-		    
-		    for (CartVO cartDelete : cartVO) {
-		        cartMapper.cartDelete(cartDelete.getCartId());
-		    }
-	    }
-	    
-//	    Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
-	    
-	    if(amountHeldService.selectAmountHeld() >= totalPrice) {
-	    memberService.updateAmountHeld(totalPrice, 0);
-	    return 1;
-	    } else {
-			return 404;
-		}
-	}
+//	@Transactional(value = "transactionManager")
+//	@Override
+//	public int orderPurchase(DirectOrderVO directOrderVO) {
+//		log.info("orderPurchase()");
+//		
+//		LocalDateTime now = LocalDateTime.now();
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+//		directOrderVO.setOrderId(now.format(formatter));
+//
+//		log.info(directOrderVO);
+//
+//		List<ItemVO> list = new ArrayList<>();
+//		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+//		itemVO.setItemCount(directOrderVO.getTotalCount());
+//		list.add(itemVO);
+//		
+//		if(list.get(0).getItemAmount() - directOrderVO.getTotalCount() >= 0) {
+//			itemService.updateItemAmount(
+//					directOrderVO.getItemId()
+//					,list.get(0).getItemAmount() - directOrderVO.getTotalCount());
+//		} else {
+//			log.warn(list.get(0).getItemId() + " " + list.get(0).getItemName() + "의 재고가 부족합니다.");
+//			return 401;
+//		}
+//		
+//		if(itemVO.getItemStatus() != 100) {
+//			return 402;
+//		}
+//		
+//		Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
+//		
+//
+//		int totalPrice = calculateTotalPrice(
+//				 list
+//				,discountPrice);
+//		
+//		directOrderVO.setTotalPrice(totalPrice);
+//
+//		if(amountHeldService.selectAmountHeld() >= totalPrice) {
+//		directOrderMapper.insert(directOrderVO);
+//		memberService.updateAmountHeld(totalPrice, 0);
+//		
+//		if(discountPrice != 0) {
+//			int couponUseInfo = couponActiveService.applyCoupon(directOrderVO, now, discountPrice);			
+//			if(couponUseInfo != 1) {
+//				return 403;
+//			}
+//		}
+//		return 1;
+//		} else {
+//			return 404;
+//		}
+//	}
+//
+//	@Transactional
+//	@Override
+//	public int cartPurchase(List<DirectOrderVO> directOrderVO) {
+//	    log.info("cartInsert()");
+//	    LocalDateTime now = LocalDateTime.now();
+//	    
+//	    int totalPrice = 0;
+//	    for (DirectOrderVO vo : directOrderVO) {
+//	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+//	    	vo.setOrderId(now.format(formatter));
+//	    	
+//	    	List<CartVO> cartVO = cartMapper.cartOrder(vo.getMemberId());
+//		    
+//		    directOrderMapper.insert(vo);
+//		    totalPrice += vo.getTotalPrice();
+//		    
+//		    for (CartVO cartDelete : cartVO) {
+//		        cartMapper.cartDelete(cartDelete.getCartId());
+//		    }
+//	    }
+//	    
+////	    Integer discountPrice = couponActiveService.selectCouponActiveByCouponPrice(directOrderVO, now);
+//	    
+//	    if(amountHeldService.selectAmountHeld() >= totalPrice) {
+//	    memberService.updateAmountHeld(totalPrice, 0);
+//	    return 1;
+//	    } else {
+//			return 404;
+//		}
+//	}
 
 
 	@Override

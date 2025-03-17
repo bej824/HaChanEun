@@ -21,9 +21,6 @@ public class MemberServiceImple implements MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
 	
-	@Autowired
-	private AmountHeldService amountHeldService;
-	
 	// 회원가입
 	@Transactional
 	@Override
@@ -123,20 +120,6 @@ public class MemberServiceImple implements MemberService {
 	public int updateRole(String memberId, String roleName) {
 		
 		return memberMapper.updateRoleByMemberId(memberId, roleName);
-	}
-	
-	@Override
-	public int selectAmountHeld() {
-		
-		return amountHeldService.selectAmountHeld();
-	}
-	
-	@Override
-	public int updateAmountHeld(int totalPrice, int amountHeld) {
-		
-		amountHeld -= totalPrice;
-		
-		return amountHeldService.amountHeldLog(amountHeld);
 	}
 
 }

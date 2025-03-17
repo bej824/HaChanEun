@@ -45,27 +45,6 @@ public class MemberController {
 		log.info("memberCouponGET()");
 	}
 	
-	@GetMapping("tolUp")
-	public void tolUpGet() {
-		
-	}
-	
-	@ResponseBody
-	@PostMapping("/tolUpPOST")
-	public int tolUpPOST(
-			@RequestParam("amount") int amountHeld
-			) {
-		
-		return memberService.updateAmountHeld(0, amountHeld);
-	}
-	
-	@ResponseBody
-	@GetMapping("/amountHeld")
-	public int amountHeldGET() {
-		
-		return memberService.selectAmountHeld();
-	}
-	
 	// 이메일 인증 호출
 	@GetMapping("/registerEmail")
 	public void rigisterEmailGET(

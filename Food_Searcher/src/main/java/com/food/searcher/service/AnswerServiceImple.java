@@ -56,5 +56,5 @@ public class AnswerServiceImple implements AnswerService {
 		log.info("deleteAnswer()");
 		return answerMapper.delete(answerId);
 	}
-
+	
 }

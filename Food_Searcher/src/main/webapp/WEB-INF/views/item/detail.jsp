@@ -46,8 +46,8 @@ pageEncoding="UTF-8"%>
 	flex-wrap: wrap;
 }
 
-.ask {
-    flex: 1; /* 동일한 너비를 차지하도록 설정 */
+.ask, .review {
+    flex: 1;
     border-width: 3px 1px 1px 1px;
     background-color: #f9f9f9;
     border-style: solid;
@@ -152,11 +152,15 @@ pageEncoding="UTF-8"%>
 	<div class="askArea">
 		<div class="ask">상품 문의</div>
 			
-	   	<div class="ask">상품평</div>
+	   	<div class="review">상품평</div>
 	</div>
 	
 	<div class="askDiv">
-	<%@ include file="../ask/list.jsp"%>
+		<%@ include file="../product/ask.jsp"%>
+	</div>
+	
+	<div class="reviewDiv">
+		<%@ include file="../product/review.jsp"%>
 	</div>
 	
 	<script type="text/javascript">
@@ -172,11 +176,19 @@ pageEncoding="UTF-8"%>
 	
 	$(document).ready(function() {
 		$(".askDiv").hide();
+		$(".reviewDiv").hide();
 		
 		$(".ask").on("click", function(){
-	        // 클릭한 요소가 "상품 문의"일 경우만 토글
 	        if ($(this).text().trim() === "상품 문의") {
+	        	$(".reviewDiv").hide();
 	            $(".askDiv").toggle();
+	        }
+		});
+		
+		$(".review").on("click", function(){
+	        if ($(this).text().trim() === "상품평") {
+	        	$(".askDiv").hide();
+	            $(".reviewDiv").toggle();
 	        }
 		});
 		
@@ -194,9 +206,7 @@ pageEncoding="UTF-8"%>
 	});
 	
 		let quantity = $(".itemAmount").val(); // 현재 수량 가져오기
-		console.log(quantity);
 		let amount = '${itemVO.itemAmount}'
-		console.log(amount);
 	
 		$(".plusBtn").on("click", function() {
 		    if (quantity < amount) { 
@@ -222,7 +232,6 @@ pageEncoding="UTF-8"%>
 				itemId : ${itemVO.itemId},
 				cartAmount : $(".itemAmount").val(),
 		}
-		console.log(data);
 		// 3개 값을 data로 묶음
 		
 		$('#btnCart').on("click", function (e){
@@ -237,7 +246,9 @@ pageEncoding="UTF-8"%>
 				if (result == '1') {
 					alert("장바구니 추가 성공")	
 					window.location.href = 'http://localhost:8080/searcher/item/list';
-				} else {
+				} else if(result == '0') {
+					alert("이미 장바구니에 존재하는 상품입니다.")
+				  } else {
 					alert("장바구니 추가 실패")
 				  }
 				}

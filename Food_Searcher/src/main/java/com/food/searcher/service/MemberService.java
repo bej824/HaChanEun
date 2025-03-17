@@ -107,8 +107,5 @@ public interface MemberService {
 	int updateRole
 		(String memberId
 		,String roleName);
-	
-	int selectAmountHeld();
-	int updateAmountHeld(int totalPrice, int amountHeld);
 
 }

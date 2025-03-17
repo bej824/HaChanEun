@@ -1,7 +1,6 @@
 package com.food.searcher.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,19 @@ public class CartServiceImple implements CartService {
 	@Autowired
 	CartMapper cartMapper;
 	
+	@Autowired
+	UtilityService utilityService;
+	
 	@Override
 	public int createCart(CartVO cartVO) {
-		log.info("createCart()");
-		log.info("cartVO : " + cartVO);
-		int result = cartMapper.insert(cartVO);
-		log.info(result + "행 등록");
+		
+		int result = 2;
+		
+		try {
+			result = cartMapper.insert(cartVO);
+		} catch (Exception e) {
+			log.error("장바구니 등록 중 에러 발생", e);
+		}
 		return result;
 	}
 
@@ -41,8 +47,15 @@ public class CartServiceImple implements CartService {
 
 	@Override
 	public int deleteCart(int cartId) {
-		log.info("deleteCart()");
+		
 		return cartMapper.delete(cartId);
+	}
+	
+	@Override
+	public int deleteOrderCart() {
+		String memberId = utilityService.loginMember();
+		
+		return cartMapper.cartDelete(memberId);
 	}
 
 	@Override

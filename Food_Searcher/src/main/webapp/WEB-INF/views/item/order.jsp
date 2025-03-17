@@ -144,10 +144,6 @@
                     alert('배송 주소를 입력해주세요.');
                     return;  // 비어 있으면 AJAX 요청을 하지 않음
                 }
-    			
-    			if(couponActiveId == null) {
-    				couponActiveId = 0;
-    			}
 				
     			$.ajax({
     			    url : 'order?itemId=' + itemId + '&count=' + count,
