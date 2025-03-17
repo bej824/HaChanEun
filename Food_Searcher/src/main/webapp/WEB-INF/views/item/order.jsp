@@ -155,24 +155,11 @@
     			        itemId : itemId,
     			        totalCount : count,
     			        deliveryAddress : deliveryAddress,
-    			        couponActiveId : couponActiveId
+    			        couponActiveId : couponActiveId,
+    			        itemName : itemName
     			    }),
     			    success : function(result) {
-    			    	if(result == 1) {
-    			    		console.log(result);
-    			            alert('결제 성공');
-    			            window.location.href = 'list';
-    			    	} else if(result == 401) {
-    			    		alert('현재 구매하려는 상품 개수가 부족합니다.');
-    			    	} else if(result == 402) {
-    			    		alert('현재 이 상품은 판매 중지되었습니다. 이용에 불편을 드려 죄송합니다.');
-    			    	} else if(result == 403) {
-    			    		alert('쿠폰에 오류가 있습니다. 잠시후 다시 시도해 주세요.');
-    			    	} else if(result == 404) {
-    			    		alert('보유 금액이 구매하려는 금액보다 적습니다.');
-    			    	} else {
-    			    		alert('결제 실패');
-    			    	}
+    			    	window.open(result, '_blank', 'width=800,height=600,left=100,top=100');
     			    	
     			    }
     			});

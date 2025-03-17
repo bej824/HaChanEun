@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.food.searcher.domain.PaymentCancellationVO;
 import com.food.searcher.service.DirectOrderService;
 
 import lombok.extern.log4j.Log4j;
@@ -24,8 +25,8 @@ public class ItemOrderController {
 	private DirectOrderService directOrderService;
 	
 	@PutMapping("/cancel/{orderId}")
-	public ResponseEntity<Integer> cancel(@PathVariable("orderId") String orderId) {
-	    return new ResponseEntity<Integer>(directOrderService.cancel(orderId), HttpStatus.OK);
+	public ResponseEntity<PaymentCancellationVO> cancel(@PathVariable("orderId") String orderId) {
+	    return new ResponseEntity<PaymentCancellationVO>(directOrderService.payCancel(orderId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/refundReady/{orderId}")

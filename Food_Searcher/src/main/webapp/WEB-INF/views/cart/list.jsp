@@ -390,18 +390,15 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 
 	    // 데이터 한 번에 전송
 	    $.ajax({
-	        url: 'order',
+	        url: '',
 	        type: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json' // json content-type 설정
 	        },
 	        data: JSON.stringify(orderData),// 배열을 JSON으로 변환하여 전송
 	        success: function(result) {
-	            if (!hasCheckedAddress) {
-	                alert('구매 완료되었습니다.');
-	                hasCheckedAddress = true;
-	            }
-	            window.location.href = 'http://localhost:8080/searcher/item/list';
+	        	console.log(result);
+	        	window.open(result, '_blank', 'width=800,height=600,left=100,top=100');
 	        }
 	    });
 	});

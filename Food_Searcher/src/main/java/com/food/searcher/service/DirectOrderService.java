@@ -2,7 +2,10 @@ package com.food.searcher.service;
 
 import java.util.List;
 
+import com.food.searcher.domain.ApproveResponse;
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.PaymentCancellationVO;
+import com.food.searcher.domain.ReadyResponse;
 import com.food.searcher.util.Pagination;
 
 public interface DirectOrderService {
@@ -33,4 +36,9 @@ public interface DirectOrderService {
 	
 	int orderCancel();
 	
+	ReadyResponse kakaoPayReady(List<DirectOrderVO> orderList, int orderTotalPrice);
+	
+	ApproveResponse payApprove(String tid, String pgToken, String orderId, String itemName);
+	
+	PaymentCancellationVO payCancel(String orderId);
 }

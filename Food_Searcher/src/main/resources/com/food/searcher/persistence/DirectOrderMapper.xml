@@ -20,19 +20,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="deliveryCompany" column="DELIVERY_COMPANY" />
 		<result property="invoiceNumber" column="INVOICE_NUMBER" />
 		<result property="itemName" column="ITEM_NAME" />
+		<result property="tid" column="TID" />
 	</resultMap>
 	
 	<insert id="insert">
     INSERT ALL
     <foreach collection="orderList" item="order" separator=" ">
-        INTO DIRECT_ORDER(ORDER_ID, MEMBER_ID, ITEM_ID, TOTAL_COUNT, TOTAL_PRICE, DELIVERY_ADDRESS)
+        INTO DIRECT_ORDER(ORDER_ID, MEMBER_ID, ITEM_ID, TOTAL_COUNT, TOTAL_PRICE, DELIVERY_ADDRESS, TID)
         VALUES (
             #{order.orderId},
             #{order.memberId},
             #{order.itemId},
             #{order.totalCount},
             #{order.totalPrice},
-            #{order.deliveryAddress}
+            #{order.deliveryAddress},
+            #{order.tid}
         )
     </foreach>
     SELECT 1 FROM DUAL
