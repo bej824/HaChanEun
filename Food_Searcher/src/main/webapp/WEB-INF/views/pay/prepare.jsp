@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>충전 test</title>
 </head>
 <body>
 <%@ include file ="../header.jsp" %>
-<input type="text" id="orderId">
-<input type="text" id="itemName">
-<input type="text" id="totalPrice">
+<input type="text" id="orderId" value="123456789">
+<input type="text" id="itemName" value="item">
+<input type="text" id="totalPrice" value="10000">
 <button id="btn-pay-ready">충전</button>
 <script type="text/javascript">
     // 카카오페이 결제 팝업창 연결
