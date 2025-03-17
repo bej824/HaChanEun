@@ -6,7 +6,9 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<%@ include file ="../header.jsp" %>
+	<%@ include file ="../header.jsp" %>
+	<div id="area">
+	
 	<h1>사업자 인증</h1>
 	
 	<p>대표자 이름 : </p>
@@ -24,6 +26,8 @@
 	<div id="dateMsg" class="message" style="color: red;">개업일자를 입력해주세요!</div>
 	
 	<button id="btn_register" class="button">판매자 등록</button>
+	
+	</div>
 	
 	<script type="text/javascript">
 	

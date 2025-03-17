@@ -35,7 +35,8 @@
 				        <div class="image_item">
 				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
 					        <img width="150px" height="150px" 
-					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"
+					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';" /></a>
 				        </div>
 				    </c:if>
 				</c:forEach></td>	

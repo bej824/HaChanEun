@@ -4,10 +4,23 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
+<style>
+
+#area {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;  /* 세로 중앙 정렬 */
+	align-items: center;      /* 가로 중앙 정렬 */
+}
+
+</style>
 </head>
 <body>
 
     <%@ include file ="../header.jsp" %>
+    
+    <div id="area">
+    
     <h1>로그인 페이지</h1>
     
     <!-- 로그인 폼 -->
@@ -28,6 +41,7 @@
 	<c:if test="${not empty errorMsg }">
     	<script>alert('${errorMsg }');</script>
 	</c:if>
-
+	
+	</div>
 </body>
 </html>

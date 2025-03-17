@@ -1,7 +1,7 @@
-
 #area {
 	display:flex;
 	flex-direction: column;
 	margin-right: 5%;
+	margin-left: 20%;
 	align-items:flex-start;
 }

@@ -57,7 +57,8 @@
 					<c:if test="${itemList.itemId eq attachAll.itemId}">
 						<div class="image_item">
 						        <img width="200px" height="120px" 
-						        src="../images/get?attachId=${attachAll.attachId }&attachExtension=${attachAll.attachExtension}" />
+						        src="../images/get?attachId=${attachAll.attachId }&attachExtension=${attachAll.attachExtension}"
+						        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';" />
 						</div>
 					</c:if>
 				</c:forEach>
