@@ -38,4 +38,8 @@ public interface SellerService {
 
 	List<ItemVO> selectSellerItem(String memberId);
 	
+	List<ItemVO> select(String memberId, Pagination pagination);
+	
+	int sellerTotalCount(String memberId, Pagination pagination);
+	
 }

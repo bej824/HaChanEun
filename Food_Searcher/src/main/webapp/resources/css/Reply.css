@@ -1,14 +1,27 @@
-.reply_item, .ask_item {
+.reply_item, .review_item {
 	  display: block;
       width: 100%;
       height: 100%;
       border-style: solid hidden hidden hidden;
       border-color: grey; /* 색 ? */
       border-width: thin;
+      margin-left:20px;
+}
+
+
+#asks {
+	padding:10px;
+	
 }
 
 .ask_item {
-	padding : 10px;
+	padding:10px
+	display: block;
+    width: 100%;
+    height: 100%;
+    border-style: solid hidden hidden hidden;
+    border-width: thin;
+    border-color:#8c8c8c;
 }
 
 .askBox {
@@ -22,6 +35,7 @@
 
 .answerContent, .askContent {
 	margin:15px;
+	margin-left:20px;
 	padding: 5px;
 }
 
@@ -32,10 +46,6 @@
     padding: 10px;
 }
 
-.userInfo {
-	margin : 3px;
-	
-}
 
 
 .comment_item {	
@@ -53,17 +63,22 @@
 	margin: 10px;
 	padding: 10px;
 	box-sizing: border-box;
+
  }
  
  .askLabel {
  	left: 2px;
     background-color: #8c8c8c;
+    border-style: solid;
+    border-color:#8c8c8c;
+    border-width:thin;
     margin:10px;
     padding:5px;
     top:10px;
     color: white;
-    width:35px;
-    height:25px;
+    width:40px;
+    height:30px;
+    border-radius:3px;
  }
  
  .answerLabel {
@@ -73,8 +88,19 @@
     padding:5px;
     top:10px;
     color: white;
-    width:35px;
-    height:25px;
+    width:40px;
+    height:30px;
+    border-radius: 3px;
+ }
+ 
+ .addAnswer {
+ 	float:right;
+ 	padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
  }
 
 .replyContentAdd {
@@ -87,6 +113,7 @@
 	box-sizing: border-box;
 	resize:none;
 	margin-left:20px;
+	
 }
 
 
@@ -157,32 +184,34 @@ button:hover {
 }
 
 .button, .btn_update, .btn_delete, .comment_update, .comment_delete, .comment_add, .btn_commentAdd, #button,
-.btn_commentupdate, .btn_commentdelete, .btn_answer, .addAnswer, .btn_answerUpdate, .btn_answerDelete, .btn_reviewUpdate, .btn_reviewDelete {
-   background-color: #04AA6D;
-   color:white;
-   font-size:14px;
-   padding:5px 10px;
-   margin:10px 0;
-   border:1px solid #ccc; 
+.btn_commentupdate, .btn_commentdelete, .btn_answer, .btn_answerUpdate, .btn_answerDelete, .btn_reviewUpdate, .btn_reviewDelete {
+ 	padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
 }
 
 
 .btn_commentList{
-   background-color: #04AA6D;
+   background-color: #6e6e6e;
    color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
    border:1px solid #ccc; 
+   border-radius: 3px;
 }
 
 .btn_updateComment, .btn_deleteComment {
-	background-color: #04AA6D;
-	color:white;
+   background-color: #6e6e6e;
+   color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
-   border:1px solid #ccc; 
+   border:1px solid #ccc;
+   border-radius: 3px;
  }
 
 .comment_update:disabled, .comment_delete:disabled, .comment_add:disabled {
@@ -190,11 +219,12 @@ button:hover {
 }
 
 .btn_comment  {
-	background-color: #04AA6D;
+   background-color: #6e6e6e;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
    border:1px solid #ccc; 
+   border-radius: 3px;
 }
 
 .btn_update:disabled, .btn_delete:disabled, .comment_add:disabled, .btn_commentupdate:disabled,
@@ -211,11 +241,36 @@ button:hover {
   background:rgba(0, 0, 0, 0.5);
   z-index:-1;
   }
+ 
   
 .reviewLove {
-	background:black;
-	text-align: left, top; /* 왼쪽 정렬 */
+    background: white;
+    color: ;
+    font-size: 14px;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 1px 0px 5px 0px;
 }
+
+.reviewDate, .askDate, .answerDate {
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.reviewContent {
+	margin-left:12px;
+	margin-bottom:50px;
+}
+
+
+
+.memberId {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
 
 
 div.replyModal { position:relative; z-index:1; display:none; }
@@ -249,7 +304,7 @@ div.answerModify button { font-size:14px; padding:5px 10px; margin:10px 0; backg
 div.answerModify button.answer_modify_cancle { margin-left:20px; }
 
 div.reviewModal { position:relative; z-index:1; display:none; }
-div.reviewModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+div.reviewModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:320px; padding:20px; background:#fff; border:2px solid #666; border-radius: 5px;}
 div.reviewModalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
 div.reviewModalContent button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
 div.reviewModalContent button.review_modify_cancle { margin-left:20px; }

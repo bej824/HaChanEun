@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ReviewVO;
 import com.food.searcher.persistence.ReviewMapper;
 
@@ -24,14 +25,7 @@ public class ReviewServiceImple implements ReviewService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public int createReview(ReviewVO reviewVO) {
-		if(isEnabled(reviewVO.getMemberId(), reviewVO.getItemId()) == 1) {
-			log.info("1");
-			return reviewMapper.insert(reviewVO);
-		} else {
-			log.info("2");
-			return 0;
-		}
-		
+		return reviewMapper.insert(reviewVO);
 	}
 
 	@Override
@@ -50,16 +44,13 @@ public class ReviewServiceImple implements ReviewService {
 	}
 	
 	@Override
-	public int isEnabled(String memberId, long itemId) {
+	public int isEnabled(String memberId, Date deliveryCompletedDate) {
 		log.info("isEnabled()");
-		return reviewMapper.isEnabled(memberId, itemId);
+		return reviewMapper.isEnabled(memberId, deliveryCompletedDate);
 	}
 	
 	@Override
-	public int updateReview(long reviewId, String reviewContent) {
-		ReviewVO reviewVO = new ReviewVO();
-		reviewVO.setReviewId(reviewId);
-		reviewVO.setReviewContent(reviewContent);
+	public int updateReview(ReviewVO reviewVO) {
 		return reviewMapper.update(reviewVO);
 	}
 

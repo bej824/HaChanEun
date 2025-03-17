@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{reviewLove},
         #{likesCount}
    		)
-</insert>
+	</insert>
 
 	
 	<select id="selectAll" resultMap="reviewResultMap">
@@ -50,12 +50,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="isEnabled" resultMap="reviewResultMap">
-		SELECT DELIVERY_COMPLETED_DATE FROM DIRECT_ORDER WHERE MEMBER_ID = #{memberId} AND ITEM_ID = #{itemId}
+		SELECT ITEM_ID
+		FROM DIRECT_ORDER
+		WHERE DELIVERY_COMPLETED_DATE = #{deliveryCompletedDate}
+		AND MEMBER_ID = #{memberId}
 	</select>
 	
 	<update id="update">
 		UPDATE REVIEW SET
-			REVIEW_CONTENT = #{reviewContent}
+			REVIEW_CONTENT = #{reviewContent},
+			REVIEW_LOVE = #{reviewLove}
 			WHERE REVIEW_ID = #{reviewId}
 	</update>
 	

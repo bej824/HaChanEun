@@ -44,11 +44,17 @@ public class SellerController {
 	}
 	
 	@GetMapping("/status")
-	public String statusGET(Model model, Principal principal) {
-		log.info("statusGET()");
+	public String statusGET(Model model, 
+							Principal principal, 
+							Pagination pagination) {
 		String memberId = principal.getName();
-		log.info("접속자 아이디 : " + memberId);
-		List<ItemVO> itemList = sellerService.selectSellerItem(memberId);
+		log.info("사용자 : " + memberId);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(sellerService.getTotalCount(pagination));
+		
+		List<ItemVO> itemList = sellerService.select(memberId, pagination);
 				
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);
@@ -56,25 +62,28 @@ public class SellerController {
 			return "returnPage";
 		}
 		
-		model.addAttribute(itemList);
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return "seller/status"; 
 	}
 	
-	@ResponseBody
 	@GetMapping("/status/{memberId}")
 	public List<ItemVO> listStatusGET(
 			@PathVariable("memberId") String memberId,
-			Model model) {
+			  						  Model model,
+									  Pagination pagination
+									  ) {
 		log.info("listStatusGET()");
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(sellerService.sellerTotalCount(memberId, pagination));
 		
-//		PageMaker pageMaker = new PageMaker();
-//		pageMaker.setPagination(pagination);
-//		sellerService.getTotalCount(pagination);
-//		
-//		model.addAttribute("pageMaker", pageMaker);
+		List<ItemVO> itemList = sellerService.select(memberId, pagination);
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("pageMaker", pageMaker);
 		
-		return sellerService.selectSellerItem(memberId);
+		return itemList;
 	}
 	
 	@ResponseBody

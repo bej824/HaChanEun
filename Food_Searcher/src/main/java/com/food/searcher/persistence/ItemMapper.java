@@ -36,6 +36,13 @@ public interface ItemMapper {
 			@Param("memberId") String memberId
 			
 			);
+	
+	List<ItemVO> select(@Param("pagination") Pagination pagination,
+						@Param("memberId") String memberId);
+	
+	int sellerTotalCount(@Param("memberId") String memberId,
+						 @Param("pagination") Pagination pagination
+						);
 
 	List<CtgVO> mainCtgList();
 	

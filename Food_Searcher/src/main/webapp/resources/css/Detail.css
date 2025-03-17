@@ -1,6 +1,6 @@
 .button, .btnAdd, .btn_update, .btn_delete, .btn_comment, .btn_commentUpdate, .btn_commentDelete, .btn_commentAdd, #button {
-   background-color: #04AA6D;
-	color:white;
+   background-color: #5a5a5a;
+   color:white;
    font-size:14px;
    padding:5px 10px;
    margin:10px 0;
@@ -9,6 +9,7 @@
    position: static !important;
    top: auto !important;
    left: auto !important;
+   border-radius: 3px;
 }
 
 button:hover {

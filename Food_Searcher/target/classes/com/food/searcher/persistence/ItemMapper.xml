@@ -144,15 +144,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON a.ITEM_ID = b.ITEM_ID
 		WHERE a.ITEM_ID = #{itemId}
 	</select>
+
+	<select id="select" resultMap="itemResultMap">
+	<!-- seller/status의 조회에 사용됨 -->
+	SELECT * FROM 
+	(
+	    SELECT 
+	    a.MEMBER_ID,
+	    b.*, 
+	    ROW_NUMBER() OVER(ORDER BY a.ITEM_ID DESC) AS RN
+	    FROM ITEM a
+	    LEFT JOIN ITEM_CTG b
+	    ON a.ITEM_ID = b.ITEM_ID
+	    WHERE a.MEMBER_ID = #{memberId}
+	) sub
+	WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
+	</select>
 	
-	<select id="selectSellerItem" resultMap="itemResultMap"
-      parameterType="map">
-		SELECT a.*, b.*
+	<select id="sellerTotalCount" resultMap="itemResultMap">
+	<!-- seller/status의 total count를 구하는 데에 사용됨 -->
+		SELECT COUNT(*)
 		FROM ITEM a
 		LEFT JOIN ITEM_CTG b
 		ON a.ITEM_ID = b.ITEM_ID
 		WHERE a.MEMBER_ID = #{memberId}
 	</select>
+	
+	
 	<select id="selectCategoryList" resultMap="itemResultMap">
 		SELECT * FROM
 		(

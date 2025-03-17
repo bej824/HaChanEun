@@ -44,10 +44,7 @@
 </div> <!-- area -->
 
 <script>
-	$(document).ready(function() {
-		
-	}); // end document
-
+	
 </script>
 
 </body>
