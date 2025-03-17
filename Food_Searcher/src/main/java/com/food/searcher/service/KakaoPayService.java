@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.food.searcher.domain.ApproveResponse;
+import com.food.searcher.domain.PaymentCancellationVO;
 import com.food.searcher.domain.ReadyResponse;
 
 import lombok.extern.log4j.Log4j;
@@ -34,6 +35,9 @@ public class KakaoPayService {
     private static final String KAKAO_PAY_API_URL_APPROVE = 
     		"https://open-api.kakaopay.com/online/v1/payment/approve";
     
+    private static final String KAKAO_PAY_API_URL_CANCEL = 
+    		"https://open-api.kakaopay.com/online/v1/payment/cancel";
+    
     private static final String REST_API_KEY = 
     		"DEV68BCC7625BFB142057D59F4EAB9E0F6FC888E"; // 카카오 개발자 사이트에서 받은 REST API 키
 
@@ -51,8 +55,7 @@ public class KakaoPayService {
         parameters.put("approval_url", "http://localhost:8080/searcher/pay/completed"); 		// 결제 성공 시 URL
         parameters.put("cancel_url", "http://localhost:8080/searcher/pay/cancel");      		// 결제 취소 시 URL
         parameters.put("fail_url", "http://localhost:8080/searcher/pay/fail");          		// 결제 실패 시 URL
-
-        log.info(parameters);
+        
         // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
@@ -78,26 +81,45 @@ public class KakaoPayService {
     // 사용자가 결제 수단을 선택하고 비밀번호를 입력해 결제 인증을 완료한 뒤,
     // 최종적으로 결제 완료 처리를 하는 단계
     public ApproveResponse payApprove(String tid, String pgToken, String orderId) {
-    	log.info("approve");
         Map<String, String> parameters = new HashMap<>();
         parameters.put("cid", KAKAO_PAY_API_ID);              					// 가맹점 코드(테스트용)
         parameters.put("tid", tid);                       						// 결제 고유번호
         parameters.put("partner_order_id", String.valueOf(orderId)); 			// 주문번호
         parameters.put("partner_user_id", utilityService.loginMember());    	// 회원 아이디
         parameters.put("pg_token", pgToken);              						// 결제승인 요청을 인증하는 토큰
-
-        log.info(parameters);
-        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
-        log.info(requestEntity);
         
-        RestTemplate template = new RestTemplate();
-        ApproveResponse approveResponse = template.postForObject(
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+        
+        ApproveResponse approveResponse = restTemplate.postForObject(
         		 KAKAO_PAY_API_URL_APPROVE
         		,requestEntity
         		,ApproveResponse.class);
         log.info("결제승인 응답객체: " + approveResponse);
 
         return approveResponse;
+    }
+    
+    public PaymentCancellationVO payCancel(String tid, int cancel_amount) {
+    	Map<String, String> parameters = new HashMap<>();
+    	parameters.put("cid", KAKAO_PAY_API_ID);								// 가맹점 코드(테스트용)
+    	parameters.put("tid", tid);												// 결제 고유번호
+    	parameters.put("cancel_amount", String.valueOf(cancel_amount));			// 상품 총액
+    	parameters.put("cancel_tax_free_amount", "0");							// 취소 비과세 금액
+    	
+    	HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+    	
+    	try {
+            ResponseEntity<PaymentCancellationVO> responseEntity = restTemplate.postForEntity(
+            	KAKAO_PAY_API_URL_CANCEL,
+                requestEntity,
+                PaymentCancellationVO.class
+            );
+            log.info("결제취소 응답객체: " + responseEntity.getBody());
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("카카오페이 결제 취소 실패: " + e.getMessage());
+            throw new RuntimeException("카카오페이 결제 취소 실패");
+        }
     }
     
 //    public int payCancle() {
@@ -111,7 +133,6 @@ public class KakaoPayService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "SECRET_KEY " + REST_API_KEY); // 권한
         headers.set("Content-type", "application/json");
-//        headers.setContentType(MediaType.APPLICATION_JSON);
 
         return headers;
     }
