@@ -46,8 +46,8 @@ pageEncoding="UTF-8"%>
 	flex-wrap: wrap;
 }
 
-.ask {
-    flex: 1; /* 동일한 너비를 차지하도록 설정 */
+.ask, .review {
+    flex: 1;
     border-width: 3px 1px 1px 1px;
     background-color: #f9f9f9;
     border-style: solid;
@@ -152,11 +152,15 @@ pageEncoding="UTF-8"%>
 	<div class="askArea">
 		<div class="ask">상품 문의</div>
 			
-	   	<div class="ask">상품평</div>
+	   	<div class="review">상품평</div>
 	</div>
 	
 	<div class="askDiv">
-	<%@ include file="../ask/list.jsp"%>
+		<%@ include file="../product/ask.jsp"%>
+	</div>
+	
+	<div class="reviewDiv">
+		<%@ include file="../product/review.jsp"%>
 	</div>
 	
 	<script type="text/javascript">
@@ -172,11 +176,19 @@ pageEncoding="UTF-8"%>
 	
 	$(document).ready(function() {
 		$(".askDiv").hide();
+		$(".reviewDiv").hide();
 		
 		$(".ask").on("click", function(){
-	        // 클릭한 요소가 "상품 문의"일 경우만 토글
 	        if ($(this).text().trim() === "상품 문의") {
+	        	$(".reviewDiv").hide();
 	            $(".askDiv").toggle();
+	        }
+		});
+		
+		$(".review").on("click", function(){
+	        if ($(this).text().trim() === "상품평") {
+	        	$(".askDiv").hide();
+	            $(".reviewDiv").toggle();
 	        }
 		});
 		

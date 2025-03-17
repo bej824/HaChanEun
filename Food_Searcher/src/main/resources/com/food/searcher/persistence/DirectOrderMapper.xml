@@ -172,12 +172,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="memberList" resultMap="orderResultMap">
-		SELECT * FROM
-		    (
-		    SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, d.*, i.ITEM_NAME
-		    FROM DIRECT_ORDER d
-		    JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
-			WHERE d.member_id = #{memberId} 
+		SELECT * FROM (
+   		  SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, d.*, i.ITEM_NAME
+		  FROM DIRECT_ORDER d
+		  JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		  WHERE d.member_id = #{memberId}
 			<choose>
 				<when test="pagination.type == 'DELIVERY_STATUS'">
 				<choose>
@@ -241,8 +240,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectMemberTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER
-		WHERE MEMBER_ID = #{memberId}
+		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER d
+		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
+		WHERE d.MEMBER_ID = #{memberId}
 		<choose>
 				<when test="pagination.type == 'DELIVERY_STATUS'">
 				<choose>

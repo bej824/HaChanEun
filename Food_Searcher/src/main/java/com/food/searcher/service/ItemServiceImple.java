@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.food.searcher.domain.AskVO;
 import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
@@ -31,6 +32,9 @@ public class ItemServiceImple implements ItemService {
 
 	@Autowired
 	UtilityService utilityService;
+	
+	@Autowired
+	AskService askService;
 
 	@Transactional(value = "transactionManager", rollbackFor = Exception.class)
 	@Override
@@ -130,6 +134,14 @@ public class ItemServiceImple implements ItemService {
 	@Transactional
 	@Override
 	public int deleteItem(int itemId) {
+		log.info("deleteItem()");
+		List<AskVO> askList = askService.getAsk(itemId);
+		log.info("작성된 문의 : " + askList);
+		for (AskVO askVO : askList) {
+			log.info(askVO);
+			int result = askService.deleteAsk(askVO.getAskId());
+			log.info(result + "행 문의 삭제");
+		}
 		return itemMapper.delete(itemId);
 	}
 

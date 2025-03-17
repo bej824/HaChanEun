@@ -3,11 +3,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Detail.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Base.css">
 <meta charset="UTF-8">
 <title>구매내역</title>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
+<div id="area">
 <p>구매내역</p>
 
 	<table border="1">
@@ -32,11 +37,9 @@
 				<td>${DirectOrderVO.deliveryStatus }</td>
 				<fmt:formatDate value="${DirectOrderVO.deliveryDate }" pattern="yyyy/MM/dd-HH:mm:ss" var="deliveryDate"/>
 				<td>${deliveryDate }</td>
-				<td onclick="event.stopPropagation()">
+				<td><button class="reviewRegister" data-item="${DirectOrderVO.itemId }" onclick="reviewRegister()" >리뷰 작성</button></td>
 				<c:if test="${DirectOrderVO.deliveryStatus == '배송 완료' || DirectOrderVO.deliveryStatus == '환불 완료'}">
-				<button>리뷰 작성</button>
 				</c:if>
-				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
@@ -78,7 +81,7 @@
 			    </li>
 			</c:if>		
 		</ul>
-		
+		</div>
 		<script type="text/javascript">
 	    function updateFilters() {
 	        let type = document.getElementById("type").value;
@@ -111,6 +114,12 @@
 	            keyword.style.display = "none";  // 'DELIVERY_DATE' 이외의 타입에서는 필터 숨기기
 	        }
 	    }
+	    
+	    $(".reviewRegister").on("click", function(){
+	    	 event.stopPropagation();
+	    	    let itemId = $(this).data("item");
+	    	    window.location.href = "../product/reviewRegister?itemId=" + encodeURIComponent(itemId);
+	    }); // end reviewRegister
 	</script>
 </body>
 </html>

@@ -26,7 +26,7 @@ public class KakaoPayService {
     private UtilityService utilityService;
     
     private static final String KAKAO_PAY_API_ID = 
-    		"547A4302DD26F48890C0";
+    		"TC0ONETIME";
     
     private static final String KAKAO_PAY_API_URL_READY = 
     		"https://open-api.kakaopay.com/online/v1/payment/ready";
@@ -35,23 +35,24 @@ public class KakaoPayService {
     		"https://open-api.kakaopay.com/online/v1/payment/approve";
     
     private static final String REST_API_KEY = 
-    		"DEVA6E616D5501C801CA7AD571A156C1E6413A42"; // 카카오 개발자 사이트에서 받은 REST API 키
+    		"DEV68BCC7625BFB142057D59F4EAB9E0F6FC888E"; // 카카오 개발자 사이트에서 받은 REST API 키
 
     // 카카오페이 결제창 연결
-    public ReadyResponse payReady(int orderId, String itemName, int totalPrice) {
+    public ReadyResponse payReady(String orderId, String itemName, int totalPrice) {
     
         Map<String, String> parameters = new HashMap<>();
         parameters.put("cid", KAKAO_PAY_API_ID);                                // 가맹점 코드(테스트용)
         parameters.put("partner_order_id", String.valueOf(orderId));            // 주문번호
         parameters.put("partner_user_id", utilityService.loginMember());        // 회원 아이디
-        parameters.put("item_name", itemName);                                  // 상품명
+        parameters.put("item_name", String.valueOf(itemName));                                  // 상품명
         parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
         parameters.put("total_amount", String.valueOf(totalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-        parameters.put("approval_url", "http://localhost/pay/completed"); 		// 결제 성공 시 URL
-        parameters.put("cancel_url", "http://localhost/pay/cancel");      		// 결제 취소 시 URL
-        parameters.put("fail_url", "http://localhost/pay/fail");          		// 결제 실패 시 URL
+        parameters.put("approval_url", "http://localhost:8080/searcher/pay/completed"); 		// 결제 성공 시 URL
+        parameters.put("cancel_url", "http://localhost:8080/searcher/pay/cancel");      		// 결제 취소 시 URL
+        parameters.put("fail_url", "http://localhost:8080/searcher/pay/fail");          		// 결제 실패 시 URL
 
+        log.info(parameters);
         // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
@@ -76,7 +77,8 @@ public class KakaoPayService {
     // 카카오페이 결제 승인
     // 사용자가 결제 수단을 선택하고 비밀번호를 입력해 결제 인증을 완료한 뒤,
     // 최종적으로 결제 완료 처리를 하는 단계
-    public ApproveResponse payApprove(String tid, String pgToken, int orderId) {
+    public ApproveResponse payApprove(String tid, String pgToken, String orderId) {
+    	log.info("approve");
         Map<String, String> parameters = new HashMap<>();
         parameters.put("cid", KAKAO_PAY_API_ID);              					// 가맹점 코드(테스트용)
         parameters.put("tid", tid);                       						// 결제 고유번호
@@ -84,8 +86,10 @@ public class KakaoPayService {
         parameters.put("partner_user_id", utilityService.loginMember());    	// 회원 아이디
         parameters.put("pg_token", pgToken);              						// 결제승인 요청을 인증하는 토큰
 
+        log.info(parameters);
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
-
+        log.info(requestEntity);
+        
         RestTemplate template = new RestTemplate();
         ApproveResponse approveResponse = template.postForObject(
         		 KAKAO_PAY_API_URL_APPROVE
@@ -105,8 +109,9 @@ public class KakaoPayService {
     // 카카오페이 측에 요청 시 헤더부에 필요한 값
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", REST_API_KEY);
+        headers.set("Authorization", "SECRET_KEY " + REST_API_KEY); // 권한
         headers.set("Content-type", "application/json");
+//        headers.setContentType(MediaType.APPLICATION_JSON);
 
         return headers;
     }
