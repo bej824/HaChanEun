@@ -42,6 +42,9 @@ public class RecipeController {
 
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
+		
+		List<AttachVO> attachVO = attachService.getSelectAll();
+		model.addAttribute("attachVO", attachVO);
 	}
 
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회

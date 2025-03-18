@@ -8,6 +8,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
+<div id="area">
 	<c:forEach var="attachVO" items="${attachVO}">
 		<c:if test="${attachVO.attachExtension eq 'jpg' or 
 				    attachVO.attachExtension eq 'jpeg' or 
@@ -169,6 +170,6 @@
 	</script>
 	
 	<button onclick="window.location.href='purchaseHistory?&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
-	
+</div>
 </body>
 </html>

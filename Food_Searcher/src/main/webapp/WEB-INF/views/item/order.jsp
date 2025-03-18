@@ -14,6 +14,7 @@
 </head>
 <body>
 	<%@ include file ="/WEB-INF/views/header.jsp" %>
+	<div id="area">
 	<h1>구매 페이지</h1>
 	<table border="1">
 		<thead>
@@ -160,7 +161,7 @@
     			        itemName : itemName
     			    }),
     			    success : function(result) {
-    			    	window.open(result, '_blank', 'width=800,height=600,left=100,top=100');
+    			    	location.href = result;
     			    	
     			    }
     			});
@@ -299,6 +300,6 @@
         }
 	    
     </script>
-    
+    </div>
 </body>
 </html>
