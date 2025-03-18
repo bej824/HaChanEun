@@ -165,7 +165,6 @@ textarea {
 	        let localsplit = localList.split(' ');
 	
 	        let local = [...new Set(localsplit)];
-	        console.log(local);
 	
 	        // ingredient 값을 공백으로 구분하여 배열로 만듭니다.
 	        let words = textContent.split(', ');  // 공백 기준으로 단어 분리
@@ -180,7 +179,6 @@ textarea {
 	            $wordSpan.text(word);
 	
 	            if (word != '' && word != ' ') {
-	            	console.log("word : " + word);
 	                // 버튼 생성
 	                let $button = $('<button></button>');  
 	                $button.text('구매');  // 버튼에 표시될 텍스트
@@ -189,16 +187,9 @@ textarea {
 	                // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
 	                $button.on('click', function () {
 	                    console.log('클릭된 단어:', word);
-	                    if (local.includes(word)) {
 	                    	localStorage.setItem('buttonCreated', 'true');
-	                        let url = 'http://localhost:8080/searcher/item/list?pageNum=1&type=ITEM_NAME&keyword=' + encodeURIComponent(word);
-	                        console.log('local/map?localTitle=' + word);
-	                        console.log('http://localhost:8080/searcher/local/list?localLocal=&localDistrict=&localTitle=' + word);
+	                        let url = '/searcher/item/list?pageNum=1&type=ITEM_NAME&keyword=' + encodeURIComponent(word);
 	                        window.open(url, '_self');
-	                    } else {
-	                        let url = 'https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=' + encodeURIComponent(word);
-	                        window.open(url, '_blank');
-	                    }
 	                });
 	
 	                // 새로 생성된 단어 span 추가

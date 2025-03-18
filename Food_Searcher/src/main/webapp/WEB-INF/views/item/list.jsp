@@ -189,8 +189,11 @@ li {
 	        let searchForm = $("#searchForm");
 	        const urlParams = new URLSearchParams(window.location.search);
 	        const keyword = urlParams.get('keyword');
+	        const type = urlParams.get('type');
 	        console.log(decodeURIComponent(keyword));
+	        console.log(decodeURIComponent(type));
 	        
+	        if(type == 'ITEM_NAME') {
 	        // 새로운 버튼을 동적으로 생성
 	        let newButton = $('<button>')
 	            .text('쿠팡')
@@ -204,6 +207,7 @@ li {
 
 	        // 새 버튼을 폼에 추가
 	        searchForm.append(newButton);
+	        }
 
 	        // 버튼을 생성한 상태를 로컬 스토리지에서 삭제
 	        localStorage.removeItem('buttonCreated');

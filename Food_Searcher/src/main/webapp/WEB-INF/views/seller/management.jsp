@@ -13,12 +13,14 @@
 	
 	<h1>판매 관리</h1>
 	
+	<div style="display: flex;">
 	<a href="/searcher/item/register" class="button">상품 등록</a>
 	<a href="/searcher/seller/status" class="button">상품 관리</a><br>
 	<a href="purchaseHistory" class="button">상품 거래 내역</a>
 	<sec:authorize access="hasRole('ROLE_MEMBER')">
 	<a href="../item/purchaseHistory" class="button">구매 내역</a>
 	</sec:authorize>
+	</div>
 	
 	</div>
 	
