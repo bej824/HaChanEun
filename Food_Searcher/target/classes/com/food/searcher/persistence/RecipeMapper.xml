@@ -71,26 +71,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(
 		SELECT ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC)
 		AS RN, RECIPE.* FROM RECIPE
-			<choose>
-				<when test="type == 'RECIPE_TITLE'.toString()">
+				<if test="type == 'RECIPE_TITLE'.toString()">
 					WHERE RECIPE_TITLE LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'RECIPE_FOOD'.toString()">
+				</if>
+				<if test="type == 'RECIPE_FOOD'.toString()">
 					WHERE RECIPE_FOOD LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'CATEGORY'.toString()">
+				</if>
+				<if test="type == 'CATEGORY'.toString()">
 					WHERE CATEGORY LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'RECIPE_CONTENT'.toString()">
+				</if>
+				<if test="type == 'RECIPE_CONTENT'.toString()">
 					WHERE RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'MEMBER_ID'.toString()">
+				</if>
+				<if test="type == 'MEMBER_ID'.toString()">
 					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'INGREDIENT'.toString()">
+				</if>
+				<if test="type == 'INGREDIENT'.toString()">
 					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
-				</when>
-			</choose>
+				</if>
 		)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
@@ -100,26 +98,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE
-			<choose>
-				<when test="type == 'RECIPE_TITLE'.toString()">
+				<if test="type == 'RECIPE_TITLE'.toString()">
 					WHERE RECIPE_TITLE LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'RECIPE_FOOD'.toString()">
+				</if>
+				<if test="type == 'RECIPE_FOOD'.toString()">
 					WHERE RECIPE_FOOD LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'CATEGORY'.toString()">
+				</if>
+				<if test="type == 'CATEGORY'.toString()">
 					WHERE CATEGORY LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'RECIPE_CONTENT'.toString()">
+				</if>
+				<if test="type == 'RECIPE_CONTENT'.toString()">
 					WHERE RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'MEMBER_ID'.toString()">
+				</if>
+				<if test="type == 'MEMBER_ID'.toString()">
 					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'INGREDIENT'.toString()">
+				</if>
+				<if test="type == 'INGREDIENT'.toString()">
 					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
-				</when>
-			</choose>	
+				</if>
 	</select>
 	
 	<select id="foodRecommendation" resultMap="recipeResultMap">

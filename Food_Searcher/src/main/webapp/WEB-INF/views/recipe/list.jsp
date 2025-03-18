@@ -18,6 +18,7 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<%@ include file ="../layout/side.jsp" %>
 	<div id="area">
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
@@ -170,10 +171,6 @@
 		        sessionStorage.removeItem("reloaded");
 		    }
 		};
-		
-		window.addEventListener("beforeunload", function() {
-		    sessionStorage.setItem("reloaded", "true");
-		});
 		
 		function insertSpeciality(){
 			console.log("insertSpeciality()");

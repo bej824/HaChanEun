@@ -49,8 +49,6 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
-	<button id="btn_index" class="button">글 목록</button> <br>
-	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<div>
 	<button id="btn_update" class="button">글 수정</button>
@@ -79,6 +77,7 @@
 		let localLocal = '${localLocal }';
 		let localDistrict = '${localDistrict }';
 		let localTitle = '${localTitle}';
+		let mainCtg = '${mainCtg}';
 		
 		if(localLocal != "" && localLocal != '${localSpecialityVO.localLocal }'){
 			localLocal = "";
@@ -91,7 +90,8 @@
 		window.location.href=
 			'list?localLocal='+ localLocal +
 			'&localDistrict=' + localDistrict +
-			'&localTitle=' + localTitle;
+			'&localTitle=' + localTitle +
+			'&mainCtg=' + mainCtg;
 	}
 	
 	})

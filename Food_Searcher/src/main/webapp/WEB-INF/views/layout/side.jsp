@@ -61,36 +61,71 @@ li {
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			let mainCtg;
+			let currentUrl = window.location.href;
+			let urlParts = currentUrl.split('searcher/');
+			urlParts = urlParts[1].split('/');
+			
+			let searchParts = currentUrl.split('keyword=');
 			
 			ctgCheck();
 			
-			$('#checkBox_ctg').on('click', '.mainCtg', function() {
-				var mainCtg = $(this).text();
-				console.log(mainCtg);
+		$('#checkBox_ctg').on('click', '.mainCtg', function() {
+				
+				if(mainCtg != $(this).text()) {
+					mainCtg = $(this).text();
+					
+					$(this).css({
+						  'color': 'blue',
+						  'font-weight': 'bold'
+						});
+					
+					$('.mainCtg').not(this).css({
+				        'color': 'black',
+				        'font-weight': 'normal'
+				    });
+					
+					$("#localLocal").val('');
+					$('#localTitle').val('');
+					
+				}
+				
+				if(urlParts[0] == 'recipe'){
+					window.location.href="list?type=CATEGORY&keyword=" + mainCtg;
+				} else if(urlParts[0] == 'item') {
+					window.location.href= "list?pageNum=1&type=MAIN_CTG&keyword=" + mainCtg;
+				}
 			});
 			
 			function ctgCheck(){
 				let boardArea = $('#boardArea');
 				let checkBox_ctg = boardArea.find('#checkBox_ctg');
-				
 				checkBox_ctg.empty();
 				checkBox_ctg.html('<h5>카테고리</h5>');
-            
 				
 				$.ajax({
 					type: 'GET',
 			        url: '../ctg/ctgGet',
-			        data: {},
+			        data: {url : urlParts[0]},
 			        success: function(result) {
 			        	result.forEach(function(ctg) {
 			        		
 			                let low = '<button class="mainCtg">' + ctg.mainCtg + '</button>'
 			                		+ '<br>';
 			                
+			                if(ctg.mainCtg == decodeURIComponent(searchParts[1])) {
+			                	low = '<button class="mainCtg" style="color: blue; font-weight: bold;">' 
+			                        + ctg.mainCtg 
+			                        + '</button><br>';
+			                }
+			                
 			                if(ctg.mainCtg != '기타') {
 			                checkBox_ctg.append(low);
+			                
 			                }
+			                
 			            });
+			        	
 			        	
 			        }
 				})

@@ -124,29 +124,33 @@ li {
 			let indexLocalLocal = "${localLocal }";
 			let indexLocalDistrict = "${localDistrict }";
 			let indexLocalTitle = "${localTitle }";
+			let indexmainCtg = "${mainCtg}";
 			let localLocal = $('#localLocal').val();
 			let localDistrict = $('#localDistrict').val();
 			let localTitle = $('#localTitle').val();
+			let mainCtg;
 			
 			
 			if(indexLocalLocal == ''){
-			listUpdate(localLocal, localDistrict, localTitle);
+			listUpdate(localLocal, localDistrict, localTitle, indexmainCtg);
 			} else if(indexLocalLocal != ''){
-			listUpdate(indexLocalLocal, '', indexLocalTitle);
+			listUpdate(indexLocalLocal, '', indexLocalTitle, indexmainCtg);
 			}
 			
 			// localLocal만 선택되었을 때
 			$('#localLocal').change(function(){
 				let localLocal = $(this).val();
 				let localDistrict = '';
-			    listUpdate(localLocal, localDistrict, localTitle);
+				let localTitle = $('#localTitle').val().replace(/\s+/g, '');
+			    listUpdate(localLocal, localDistrict, localTitle, mainCtg);
 			});
 			
 			// localDistrict까지 둘 다 선별되었을 때
 			$('#localDistrict').change(function(){
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $(this).val();
-			    listUpdate(localLocal, localDistrict, localTitle);
+			    let localTitle = $('#localTitle').val().replace(/\s+/g, '');
+			    listUpdate(localLocal, localDistrict, localTitle, mainCtg);
 			});
 			
 			$('#localTitle').change(function(){
@@ -154,7 +158,20 @@ li {
 			    let localDistrict = $('#localDistrict').val();
 				let localTitle = $('#localTitle').val().replace(/\s+/g, '');
 				
-				listUpdate(localLocal, localDistrict, localTitle);
+				listUpdate(localLocal, localDistrict, localTitle, mainCtg);
+			});
+			
+			$('#checkBox_ctg').on('click', '.mainCtg', function() {
+				let localLocal = $('#localLocal').val();
+			    let localDistrict = $('#localDistrict').val();
+				let localTitle = $('#localTitle').val().replace(/\s+/g, '');
+				
+				if(mainCtg != $(this).text()) {
+					mainCtg = $(this).text();
+					listUpdate('', '', '', mainCtg);					
+				} else {
+					listUpdate(localLocal, localDistrict, localTitle, '');
+				}
 			});
 			
 			// 검색어 초기화
@@ -165,9 +182,7 @@ li {
 				listUpdate('', '', '');
 			});
 				
-			function listUpdate(localLocal, localDistrict, localTitle) {
-				let mainCtg = $('');
-				let subCtg = $('');
+			function listUpdate(localLocal, localDistrict, localTitle, mainCtg) {
 			    
 			    if(!/^[가-힣]+$/.test(localLocal)) {
 			    	localLocal = "";
@@ -190,7 +205,8 @@ li {
 			        data: {
 			            localLocal: localLocal,
 			            localDistrict: localDistrict,
-			            localTitle: localTitle
+			            localTitle: localTitle,
+			            mainCtg: mainCtg
 			        },
 			        success: function(result) {
 			            let tbody = $('table tbody');
@@ -209,8 +225,11 @@ li {
 			            
 			            result.forEach(function(LocalSpecialityVO) {
 			            	
-			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId +
-			                    '&localLocal=' + localLocal + '&localDistrict=' + localDistrictSelect +'\'">'
+			                let row = '<tr onclick="window.location.href=\'detail?localId=' + LocalSpecialityVO.localId 
+			                	+ '&localLocal=' + localLocal 
+			                    + '&localDistrict=' + localDistrictSelect 
+			                    + '&localTitle=' + localTitle 
+			                    + '&mainCtg=' + mainCtg + '\'">'
 			                    + '<td>' + LocalSpecialityVO.localId + '</td>'
 			                    + '<td>' + LocalSpecialityVO.localLocal + " " 
 			                    + LocalSpecialityVO.localDistrict + '</td>'
