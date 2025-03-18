@@ -173,6 +173,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ORDER_ID = #{orderId}
 	</select>
 	
+	<select id="isEnabled" resultMap="orderResultMap">
+	<!-- review에 사용됨 -->
+		SELECT ITEM_ID, DELIVERY_COMPLETED_DATE
+		FROM DIRECT_ORDER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
 	<select id="memberList" resultMap="orderResultMap">
 		SELECT * FROM (
    		  SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, d.*, i.ITEM_NAME
