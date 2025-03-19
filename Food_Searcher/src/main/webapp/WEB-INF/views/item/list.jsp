@@ -79,19 +79,14 @@ li {
 					<c:set var="imageFound" value="true"/>
 				    </c:if>
 			</c:forEach>
-<<<<<<< HEAD
 			<c:if test="${!imageFound}">
 	            <div class="image_item">
 	                <img width="150px" height="150px" 
 	                     src="../resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-					<p>상품명 : ${itemVO.itemName }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
-=======
 					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<p class="nameDisplay">${itemVO.itemName }</p>
->>>>>>> 67c992a9d9975ecca545439ddc57decb03dd44fe
 					<input type="hidden" value="${itemVO.itemTag }">
 					<input type="hidden" value="${itemVO.itemId }">
 			</div>
