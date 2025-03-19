@@ -24,7 +24,7 @@ public class CtgController {
 	
 	@ResponseBody
 	@GetMapping("ctgGet")
-	public List<CtgVO> ctgGET(@RequestParam("url") String url) {
+	public List<CtgVO> ctgGET(@RequestParam(value = "url", required = false) String url) {
 		
 		return ctgService.selectCtg(url);
 	}

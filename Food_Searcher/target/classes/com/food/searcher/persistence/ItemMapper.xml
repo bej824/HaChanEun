@@ -101,15 +101,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		ITEM_CTG
 		WHERE 1=1 AND ITEM_STATUS = 100
-			<if test="pagination.type == 'ITEM_NAME'">
-				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
-			</if>
-			<if test="pagination.type == 'MAIN_CTG'">
-				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</if>
-			<if test="pagination.type == 'SUB_CTG'">
-				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</if>
+		<if test="pagination.keyword != null and pagination.keyword != ''">
+    	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+            <if test="pagination.type[i] == 'ITEM_NAME'">
+                AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'MAIN_CTG'">
+                AND MAIN_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'SUB_CTG'">
+                AND SUB_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+    	</foreach>
+		</if>
 		)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -117,19 +121,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT
 		FROM ITEM_CTG
-		WHERE 1=1
-		<if test="itemStatus != null and itemStatus != 0">
-			AND ITEM_STATUS = #{itemStatus}
+		WHERE 1=1 AND ITEM_STATUS = 100
+		<if test="pagination.keyword != null and pagination.keyword != ''">
+    	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+            <if test="pagination.type[i] == 'ITEM_NAME'">
+                AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'MAIN_CTG'">
+                AND MAIN_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'SUB_CTG'">
+                AND SUB_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+    	</foreach>
 		</if>
-			<if test="pagination.type == 'ITEM_NAME'">
-				AND ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
-			</if>
-			<if test="pagination.type == 'MAIN_CTG'">
-				AND MAIN_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</if>
-			<if test="pagination.type == 'SUB_CTG'">
-				AND SUB_CTG LIKE '%'||#{pagination.keyword}||'%'
-			</if>
 	</select>
 
 	<select id="selectOne" resultMap="itemResultMap">

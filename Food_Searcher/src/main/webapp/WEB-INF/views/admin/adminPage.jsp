@@ -8,6 +8,7 @@
 </head>
 <body>
 <%@ include file ="../header.jsp" %>
+<div id="area">
 <h1>등급 : ${roleVO.roleName }</h1>
 
 <input type="text" id="memberId" placeholder="운영자 등업 id" required>
@@ -21,6 +22,7 @@
 
 <br>
 <button class="button" id="financialManagement">재무 관리</button>
+</div>
 
 	<script type="text/javascript">
 	

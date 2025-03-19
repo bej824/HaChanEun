@@ -9,6 +9,28 @@
 .search {
 	margin-left: 750px;
 }
+
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 10px;        /* 아이템 간의 간격 */
+        justify-content: space-between; /* 항목들이 화면에 고르게 분포되도록 함 */
+        
+    }
+
+.item .image_item {
+    display: none;
+}
+
+.item .image_item:first-child {
+    display: block;
+}
+
+.item {
+  width: 18%; /* 5개씩 배치하려면 100% / 5 = 20% - 여백을 고려하여 18%로 설정 */
+  margin-bottom: 10px; /* 항목 간의 간격 */
+  box-sizing: border-box; /* padding, margin을 포함해서 크기를 계산 */
+}
 </style>
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
@@ -24,50 +46,42 @@
 	<!-- 글 작성 페이지 이동 버튼 -->
 	    <a href="register" class="button">글 작성</a>
 	<hr>
-	<table>
-		<thead>
-			<tr>
-				<th style="width: 5%">번호</th>
-				<th style="width: 40%">제목</th>
-				<th style="width: 10%">음식</th>
-				<th style="width: 10%">카테고리</th>
-				<th style="width: 12%">작성자</th>
-				<th style="width: 10%">작성일</th>
-				<th style="width: 5%">댓글수</th>
-				<th style="width: 5%">조회수</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
-					<td>${RecipeVO.recipeId }</td>
-					<td style="text-align: left;">${RecipeVO.recipeTitle }</td>
-					<td>${RecipeVO.recipeFood }</td>
-					<td>${RecipeVO.category }</td>
-					<td>${RecipeVO.memberId }</td>
-					<!-- boardDateCreated 데이터 포멧 변경 -->
-					<fmt:formatDate value="${RecipeVO.recipeDateCreated }"
-						pattern="yyyy-MM-dd" var="recipeDateCreated" />
-					<td>${recipeDateCreated }</td>
-					<td style="text-align: right;">${RecipeVO.replyCount }</td>
-					<td style="text-align: right;">${RecipeVO.viewCount }</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
 	
-	<form id="searchForm" method="GET" action="list" class="search">
-	    <input type="text" name="keyword" placeholder="검색어 입력" required>
-	    <select name="type">
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${recipeList }">
+			<div class="item" onclick="window.location.href='detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="detail_button">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId }">
+				<div class="image_item">
+						<img width="180px" height="150px" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="180px" height="150px" 
+	                     src="../resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
+	
+	</div>
+	<p> <select id="type" name="type">
 	        <option value="RECIPE_TITLE">제목</option>
 	        <option value="RECIPE_FOOD">음식</option>
-	        <option value="CATEGORY">카테고리</option>
 	        <option value="INGREDIENT">재료</option>
 	        <option value="RECIPE_CONTENT">내용</option>
 	        <option value="MEMBER_ID">작성자</option>
-	    </select>
-	    <button type="submit" class="button">검색</button>
-	</form>
+	    </select> <input type="text" id="keyword" name="keyword" placeholder="검색어 입력"> <button id="btn_search" class="button">검색</button> <p>
 	
 		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
 		<form id="detailForm" action="detail" method="get">
@@ -176,7 +190,32 @@
 			console.log("insertSpeciality()");
 			window.location.href = 'register';
 		}
+		
+		$("#btn_search").click(function(){
+			let keywordInput = $('#keyword').val();
+			let typeInput = $('#type').val();
+			let type = [];
+			let keyword = [];
+			
+			if(keywordInput == '' || keywordInput == null) {
+				return;
+			}
+				
+			if (window.location.href.includes('type=CATEGORY&keyword=')) {
+			    let mainCtg = decodeURIComponent(window.location.href.split('type=CATEGORY&keyword=')[1]);
+			    type.push('CATEGORY');
+			    keyword.push(mainCtg);
+			}
+				type.push(typeInput);
+		    	keyword.push(keywordInput);
+		    	
+		    const url = new URL(window.location.href);
+		    url.searchParams.set("type", type);
+		    url.searchParams.set("keyword", keyword);
+		    window.location.href = url;
+		    	
+	    })
 	</script>
-</div>
+
 </body>
 </html>

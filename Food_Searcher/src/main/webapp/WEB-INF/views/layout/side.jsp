@@ -113,7 +113,7 @@ li {
 			                let low = '<button class="mainCtg">' + ctg.mainCtg + '</button>'
 			                		+ '<br>';
 			                
-			                if(ctg.mainCtg == decodeURIComponent(searchParts[1])) {
+			                if(decodeURIComponent(searchParts[1]).includes(ctg.mainCtg)) {
 			                	low = '<button class="mainCtg" style="color: blue; font-weight: bold;">' 
 			                        + ctg.mainCtg 
 			                        + '</button><br>';

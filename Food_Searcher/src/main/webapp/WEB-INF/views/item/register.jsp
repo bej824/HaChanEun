@@ -52,12 +52,7 @@
 	<p>분류 : 
 	<select name="mainCtg" id="mainCtg">
 	</select>
-	<select name="subCtg" id="subCtg">
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-	</select>
-	<input type="text" name="othersubCtg" id="othersubCtg"
+	<input type="text" name="subCtg" id="subCtg"
 	placeholder="세부 분류를 입력해주세요.">
 	<p>원산지 : 
 	<select name="origin" id="origin">
@@ -115,6 +110,7 @@
     });
 
     $(document).ready(function() {
+    	let subCtgFlg = false;
     	
     	mainCtg();
     	
@@ -124,6 +120,11 @@
         // registerForm 데이터 전송
         $('#registerBoard').click(function(e) {
             e.preventDefault();  // 기본 폼 제출 동작을 막음
+            
+            if(subCtgFlg) {
+            	alert("서브 카테고리를 입력해주세요.");
+            	return;
+            }
 
             // form 객체 참조
             let registerForm = $('#registerForm');
@@ -196,12 +197,19 @@
         
         $('#mainCtg').change(function(){
             let mainCtg = $(this).val();
-            console.log(mainCtg);
         });
         
         $('#subCtg').change(function(){
-            let subCtg = $(this).val();
-            console.log(subCtg);
+            let subCtg = $(this).val().trim();
+            
+            if(subCtg == null || subCtg == '') {
+            	alert("서브 카테고리를 입력해주세요.");
+            	subCtg = $(this).val('');
+            	return;
+            } else {
+            	subCtg = true;
+            }
+            
         });
         
         function mainCtg() {

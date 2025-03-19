@@ -71,24 +71,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(
 		SELECT ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC)
 		AS RN, RECIPE.* FROM RECIPE
-				<if test="type == 'RECIPE_TITLE'.toString()">
-					WHERE RECIPE_TITLE LIKE '%'||#{keyword}||'%'
+		WHERE 1=1
+		<if test="keyword != null and keyword != ''">
+    	<foreach collection="keyword" index="i" item="keyword" separator=" ">
+				<if test="type[i] == 'RECIPE_TITLE'.toString()">
+					AND RECIPE_TITLE LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'RECIPE_FOOD'.toString()">
-					WHERE RECIPE_FOOD LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'RECIPE_FOOD'.toString()">
+					AND RECIPE_FOOD LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'CATEGORY'.toString()">
-					WHERE CATEGORY LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'CATEGORY'.toString()">
+					AND CATEGORY LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'RECIPE_CONTENT'.toString()">
-					WHERE RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'RECIPE_CONTENT'.toString()">
+					AND RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'MEMBER_ID'.toString()">
-					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'MEMBER_ID'.toString()">
+					AND MEMBER_ID LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'INGREDIENT'.toString()">
-					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'INGREDIENT'.toString()">
+					AND INGREDIENT LIKE '%'||#{keyword}||'%'
 				</if>
+		</foreach>
+		</if>
 		)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
@@ -97,25 +102,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
 	<select id="selectTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM RECIPE
-				<if test="type == 'RECIPE_TITLE'.toString()">
-					WHERE RECIPE_TITLE LIKE '%'||#{keyword}||'%'
+		SELECT COUNT(*) TOTAL_COUNT
+		FROM RECIPE
+		WHERE 1=1
+		<if test="keyword != null and keyword != ''">
+    	<foreach collection="keyword" index="i" item="keyword" separator=" ">
+				<if test="type[i] == 'RECIPE_TITLE'.toString()">
+					AND RECIPE_TITLE LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'RECIPE_FOOD'.toString()">
-					WHERE RECIPE_FOOD LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'RECIPE_FOOD'.toString()">
+					AND RECIPE_FOOD LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'CATEGORY'.toString()">
-					WHERE CATEGORY LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'CATEGORY'.toString()">
+					AND CATEGORY LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'RECIPE_CONTENT'.toString()">
-					WHERE RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'RECIPE_CONTENT'.toString()">
+					AND RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'MEMBER_ID'.toString()">
-					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'MEMBER_ID'.toString()">
+					AND MEMBER_ID LIKE '%'||#{keyword}||'%'
 				</if>
-				<if test="type == 'INGREDIENT'.toString()">
-					WHERE INGREDIENT LIKE '%'||#{keyword}||'%'
+				<if test="type[i] == 'INGREDIENT'.toString()">
+					AND INGREDIENT LIKE '%'||#{keyword}||'%'
 				</if>
+			</foreach>
+			</if>
 	</select>
 	
 	<select id="foodRecommendation" resultMap="recipeResultMap">

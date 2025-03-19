@@ -84,6 +84,8 @@
 		<textarea rows="" cols="" readonly>${directOrderVO.refundContent }</textarea><br>
 		<button id="refundOK" class="button">환불 승인</button>
 	</c:if>
+	
+	<button onclick="window.location.href='purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -178,7 +180,7 @@
 		});
 	</script>
 	
-	<button onclick="window.location.href='purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
+	
 
 </body>
 </html>

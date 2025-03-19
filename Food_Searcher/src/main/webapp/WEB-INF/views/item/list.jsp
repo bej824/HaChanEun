@@ -61,17 +61,8 @@ li {
 </div>
 
 <a href="../product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
-
-	<form id="searchForm" method="get" action="list">
-			<input type="hidden" name="pageNum">
-			<select name="type">
-				<option value="ITEM_NAME">상품명</option>
-				<option value="MAIN_CTG">메인 태그</option>
-				<option value="SUB_CTG">서브 태그</option>
-			</select>
-			<input type="text" name="keyword">
-			<button class="button"> 검색 </button><br>
-	</form>
+			<p> 상품 이름 :<input type="text" id="keyword" name="keyword"> <button id="btn_search">검색</button></p>
+			<br>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
@@ -93,9 +84,9 @@ li {
 			</div>
 			</c:forEach>
 		</div>
+	</div> <!-- area -->
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
-	
 	<form id="listForm" action="list" method="get">
 	    	<input type="hidden" name="pageNum" >
 	    	<input type="hidden" name="type" >
@@ -189,8 +180,11 @@ li {
 	        let searchForm = $("#searchForm");
 	        const urlParams = new URLSearchParams(window.location.search);
 	        const keyword = urlParams.get('keyword');
+	        const type = urlParams.get('type');
 	        console.log(decodeURIComponent(keyword));
+	        console.log(decodeURIComponent(type));
 	        
+	        if(type == 'ITEM_NAME') {
 	        // 새로운 버튼을 동적으로 생성
 	        let newButton = $('<button>')
 	            .text('쿠팡')
@@ -204,14 +198,39 @@ li {
 
 	        // 새 버튼을 폼에 추가
 	        searchForm.append(newButton);
+	        }
 
 	        // 버튼을 생성한 상태를 로컬 스토리지에서 삭제
 	        localStorage.removeItem('buttonCreated');
 	    }
+	    
+	    $("#btn_search").click(function(){
+	    	let typeInput = 'ITEM_NAME';
+			let keywordInput = $('#keyword').val();
+			let type = [];
+			let keyword = [];
+			
+			if(keywordInput == '' || keywordInput == null) {
+				return;
+			}
+				
+			if (window.location.href.includes('type=MAIN_CTG&keyword=')) {
+			    let mainCtg = decodeURIComponent(window.location.href.split('type=MAIN_CTG&keyword=')[1]);
+			    type.push('MAIN_CTG');
+			    keyword.push(mainCtg);
+			}
+				type.push(typeInput);
+		    	keyword.push(keywordInput);
+		    
+		    const url = new URL(window.location.href);
+	        url.searchParams.set("type", type);
+	        url.searchParams.set("keyword", keyword);
+	        window.location.href = url;
+	    })
 	});
 
 	
 </script>	
-</div> <!-- area -->
+
 </body>
 </html>

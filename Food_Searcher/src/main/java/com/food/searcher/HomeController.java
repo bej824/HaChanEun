@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.service.AttachService;
 import com.food.searcher.service.LocalService;
 import com.food.searcher.service.MemberService;
 import com.food.searcher.service.RecipeService;
@@ -42,6 +44,9 @@ public class HomeController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private AttachService attachService;
 	
 	MemberVO memberVO = null;
 	
@@ -67,19 +72,31 @@ public class HomeController {
 	@GetMapping("/home")
 	public void main(Model model, Pagination pagination, Principal principal) {
 		log.info("home()");
-		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		
 		PageMaker pageMaker = new PageMaker();
+		pagination.setPageSize(5);
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
 		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("recipeList", recipeList);
+
+		pagination.getType().add(0, "CATEGORY");
+		pagination.getKeyword().add(0, "한식");
+		model.addAttribute("koreanList", recipeService.getPagingBoards(pagination));
 		
-		if(principal != null) {
-		String memberId = principal.getName();
-		model.addAttribute("memberVO", memberService.getMemberById(memberId));
-		}
+		pagination.getKeyword().set(0, "중식");
+		model.addAttribute("chinaList", recipeService.getPagingBoards(pagination));
+		
+		pagination.getKeyword().set(0, "일식");
+		model.addAttribute("japanList", recipeService.getPagingBoards(pagination));
+		
+		pagination.getKeyword().set(0, "동남아식");
+		model.addAttribute("SoutheastList", recipeService.getPagingBoards(pagination));
+		
+		pagination.getKeyword().set(0, "양식");
+		model.addAttribute("westernList", recipeService.getPagingBoards(pagination));
+		
+		List<AttachVO> attachVO = attachService.getSelectAll();
+		model.addAttribute("attachVO", attachVO);
 	}
 	
 }

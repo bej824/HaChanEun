@@ -31,6 +31,21 @@ li {
   cursor: pointer;
 }
 
+.item-container {
+        display: flex;
+        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+        gap: 20px;        /* 아이템 간의 간격 */
+        
+    }
+
+.item .image_item {
+    display: none;
+}
+
+.item .image_item:first-child {
+    display: block;
+}
+
 </style>
 
 <title>Home</title>
@@ -39,32 +54,153 @@ li {
 	<%@ include file ="header.jsp" %>
 	<div id="container">
    		<div id="area">
-
-	<c:if test="${session.memberId != null}">	
-		<p>${session.memberId }님 환영합니다.</p>
 	
-	</c:if>
 	<br>
-	<table border="1">
-	<thead>
-		<tr>
-				<th style="width: 60px">번호</th>
-				<th style="width: 600px">제목</th>
-				<th style="width: 120px">음식</th>
-				<th style="width: 40px">댓글수</th>
-		</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="RecipeVO" items="${recipeList }">
-				<tr onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }'">
-					<td>${RecipeVO.recipeId }</td>
-					<td>${RecipeVO.recipeTitle }</td>
-					<td>${RecipeVO.recipeFood }</td>
-					<td>${RecipeVO.replyCount }</td>
-				</tr>
+	
+	<a href="recipe/list?type=CATEGORY&keyword=한식" class="button">한식</a>
+	
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${koreanList }">
+			<div class="item" onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}'">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId }">
+				<div class="image_item">
+						<img width="150px" height="150px" 
+					        src="image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
 			</c:forEach>
-		</tbody>
-	</table>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
+
+	<a href="recipe/list?type=CATEGORY&keyword=중식" class="button">중식</a>
+	
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${chinaList }">
+			<div class="item" onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}'">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId}">
+				<div class="image_item">
+						<img width="150px" height="150px" 
+					        src="image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
+	
+	<a href="recipe/list?type=CATEGORY&keyword=일식" class="button">일식</a>
+	
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${japanList }">
+			<div class="item" onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}'">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId}">
+				<div class="image_item">
+						<img width="150px" height="150px" 
+					        src="image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
+	
+	<a href="recipe/list?type=CATEGORY&keyword=동남아식" class="button">동남아식</a>
+	
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${SoutheastList }">
+			<div class="item" onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}'">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId}">
+				<div class="image_item">
+						<img width="150px" height="150px" 
+					        src="image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
+	
+	<a href="recipe/list?type=CATEGORY&keyword=양식" class="button">양식</a>
+	
+	<div class="item-container">
+		<c:forEach var="RecipeVO" items="${westernList }">
+			<div class="item" onclick="window.location.href='recipe/detail?recipeId=${RecipeVO.recipeId }&keyword=${param.keyword}&type=${param.type}'">
+			<c:set var="imageFound" value="false"/>
+			<c:forEach var="attachVO" items="${attachVO}">
+				<c:if test="${RecipeVO.recipeId eq attachVO.boardId}">
+				<div class="image_item">
+						<img width="150px" height="150px" 
+					        src="image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        onerror="this.onerror=null; this.src='resources/image/imageReady.png';"/>
+					</div>
+					<c:set var="imageFound" value="true"/>
+				</c:if>
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
+				<p>제목 : ${RecipeVO.recipeTitle }</p>
+				<p>음식명 : ${RecipeVO.recipeFood }</p>
+				<p>조회수 : ${RecipeVO.viewCount }</p>
+			</div>
+		</c:forEach>
+	</div>
 	
 	</div>
 	</div>
