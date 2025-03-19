@@ -48,7 +48,7 @@ li {
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-<%@ include file ="./layout/side.jsp" %>
+<%@ include file ="../layout/side.jsp" %>
 <div id="area">
 
 <h1>상품 리스트</h1>
@@ -59,8 +59,6 @@ li {
 </sec:authorize>
 <br>
 </div>
-
-<a href="../product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
 
 	<form id="searchForm" method="get" action="list">
 			<input type="hidden" name="pageNum">
@@ -85,9 +83,9 @@ li {
     					onerror="this.onerror=null; this.src='../resources/image/imageReady.png';">
 					</div>
 				    </c:if>
-			</c:forEach>
-					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+			</c:forEach>	
 					<p class="nameDisplay">${itemVO.itemName }</p>
+					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<input type="hidden" value="${itemVO.itemTag }">
 					<input type="hidden" value="${itemVO.itemId }">
 			</div>

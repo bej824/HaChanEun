@@ -154,12 +154,9 @@ $(document).ready(function() {
 		                }
 		                
 		                list += '<div class="review_item"' + this.reviewId + '>'
-		                
-		                      + '<p class="reviewLove" value=">' + this.reviewLove + '"</p>'
-		                      + (this.reviewLove == 1 ? '이 상품을 추천합니다!' : '이 상품을 추천하지 않습니다!') + '<br>'
-		                      
 		                	  + '<div class="userInfo">'
-		                      
+		                	  
+		                      + '<p class="reviewLove">' + this.reviewLove + '점</p>' + '<br>'
 		                      + '<input type="hidden" id="reviewId" value="' + this.reviewId + '">'
 		                      + '<span class="memberId">' + this.memberId + '&nbsp</span>'
 		                      + '<span class="reviewDate">' + reviewDate + '&nbsp</span>'

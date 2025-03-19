@@ -79,3 +79,13 @@ li {
 	text-decoration: none;
 	
 }
+
+.nameDisplay {
+	font-size:18px;
+	font-weight: bold;
+}
+
+.priceDisplay {
+	margin:1px;
+	
+}

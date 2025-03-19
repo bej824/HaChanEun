@@ -12,7 +12,7 @@ public interface ReviewMapper {
 	int insert(ReviewVO reviewVO);
 	List<ReviewVO> selectAll(long itemId);
 	ReviewVO selectOne(@Param("itemId") long itemId, @Param("memberId") String memberId);
-	int isExist(String memberId);
+	List<ReviewVO> isExist(String memberId);
 	int update(ReviewVO reviewVO);
 	int delete(long reviewId);
 	

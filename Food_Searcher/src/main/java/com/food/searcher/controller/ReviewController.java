@@ -1,7 +1,6 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ReviewVO;
+import com.food.searcher.exception.CustomException;
 import com.food.searcher.service.ReviewService;
 
 import lombok.extern.log4j.Log4j;
@@ -49,21 +45,35 @@ public class ReviewController {
         log.info("registerGET()");
         
         String memberId = principal.getName();
-        ReviewVO reviewVO = reviewService.getReview(itemId, memberId);
-        if (reviewVO == null) {
-            model.addAttribute("msg", "배송이 완료된 상품만 리뷰를 작성할 수 있습니다..");
-            model.addAttribute("url", "../item/purchaseHistory");
+        try {
+            ReviewVO reviewVO = reviewService.getReview(itemId, memberId);
+            
+            model.addAttribute("reviewVO", reviewVO);
+            model.addAttribute("itemId", itemId);
+            
+            log.info("VO : " + reviewVO);
+            
+            return "product/reviewRegister";
+
+        } catch (CustomException e) {
+            log.info(e.getErrorCode());
+            log.info(e.getMessage());
+            
+            model.addAttribute("msg", e.getMessage());  
+            
+            if ("REVIEW_001".equals(e.getErrorCode())) {
+                model.addAttribute("url", "../item/purchaseHistory");
+            } else if ("REVIEW_002".equals(e.getErrorCode())) {
+                model.addAttribute("url", "../item/purchaseHistory");
+            } else {
+                model.addAttribute("url", "../home");
+            }
+
             return "alert";
         }
         
-        model.addAttribute("reviewVO", reviewVO);
-        model.addAttribute("itemId", itemId);
 
-        log.info("VO : " + reviewVO);
-
-        return "product/reviewRegister";
-        
-    }
+	}
 	
 	@PostMapping("/reviewRegister")
 	public ResponseEntity<String> reviewPOST(ReviewVO reviewVO, Principal principal) {

@@ -54,7 +54,6 @@ li {
 	<%@ include file ="header.jsp" %>
 	<div id="container">
    		<div id="area">
-	<a href="./product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
 	<c:if test="${session.memberId != null}">	
 		<p>${session.memberId }님 환영합니다.</p>
 	

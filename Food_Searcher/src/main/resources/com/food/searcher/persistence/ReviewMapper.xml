@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="isExist" resultMap="reviewResultMap">
-		SELECT REVIEW_ID
+		SELECT REVIEW_ID, ITEM_ID
 		FROM REVIEW
 		WHERE MEMBER_ID = #{memberId}
 	</select>

@@ -32,11 +32,13 @@
 	
 	<div>
 	<p>이 상품을 추천하시나요?</p>
-	<input type="radio" name="reviewLove" value="1" /><label>예</label>
-	<input type="radio" name="reviewLove" value="0" /><label>아니오</label>
+	<input type="radio" name="reviewLove" value="1" /><label>1점</label>
+	<input type="radio" name="reviewLove" value="2" /><label>2점</label>
+	<input type="radio" name="reviewLove" value="3" /><label>3점</label>
+	<input type="radio" name="reviewLove" value="4" /><label>4점</label>
+	<input type="radio" name="reviewLove" value="5" /><label>5점</label>
 	</div>
 	
-	<input type="hidden" name="reviewLove" value="1">
 	<input type="hidden" name="likesCount" value="1">
 	
 	<button id="register" class="button">등록</button>

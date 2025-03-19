@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ReviewVO;
+import com.food.searcher.exception.CustomException;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ReviewMapper;
 
@@ -39,6 +40,7 @@ public class ReviewServiceImple implements ReviewService {
 		return vo;
 	}
 	
+	@Transactional(value="transactionManager")
 	@Override
 	public ReviewVO getReview(long itemId, String memberId) {
 		log.info("getReviewOne");
@@ -57,21 +59,21 @@ public class ReviewServiceImple implements ReviewService {
 			}
 		}
 		
-		if(result==true) {
-			log.info("내역 조회 성공");
-			int existResult = reviewMapper.isExist(memberId);
-			if(existResult != 0) {
-				log.info("작성 페이지로 이동");
-				return reviewMapper.selectOne(itemId, memberId);
-			} else {
-				log.info("이미 리뷰가 작성되었습니다.");
-				return null;
-			}
-			 
-		} else {
-			log.info("내역 조회 실패");
-			return null;
-		}
+		if (!result) {
+	        log.info("내역 조회 실패");
+	        throw new CustomException("배송이 완료된 상품만 리뷰를 작성할 수 있습니다.", "REVIEW_001");
+	    }
+
+	    log.info("내역 조회 성공");
+	    List<ReviewVO> existResult = reviewMapper.isExist(memberId);
+	    
+	    if (existResult != null && !existResult.isEmpty()) {
+	        log.info("이미 리뷰가 존재합니다.");
+	        throw new CustomException("이미 리뷰가 존재합니다.", "REVIEW_002");
+	    }
+
+	    log.info("작성 페이지로 이동");
+	    return reviewMapper.selectOne(itemId, memberId);
 	}
 	
 	@Override
