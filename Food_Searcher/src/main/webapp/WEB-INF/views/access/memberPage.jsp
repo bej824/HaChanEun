@@ -9,29 +9,27 @@
 <body>
 
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<h1>Member Page</h1>
 
-	<p>아이디 : <sec:authentication property="name" /></p>
-
-	<p>이름 : ${memberVO.memberName }</p>
-
-	<p>
+	<p>아이디 : <sec:authentication property="name" /><br><br>
+	
+	이름 : ${memberVO.memberName }<br><br>
+	
 	성별 :
 		<c:if test="${memberVO.memberGender == 'male'}">
 			남성 
 		</c:if>
 		<c:if test="${memberVO.memberGender == 'female'}">
 			여성 
-		</c:if>
-		</p>
+		</c:if> <br><br>
 		
-	<p>나이 : <span id="age"></span></p>
-
-	<p>별자리 : <span id=constellation></span></p>
+	나이 : <span id="age"></span><br><br>
+	
+	별자리 : <span id=constellation></span><br><br>
 		
 	<%@ include file ="ageConstellation.jsp" %>
 
-	<p>
 		MBTI : <select name="memberMBTI" id="memberMBTI">
 			<!-- MBTI 유형 옵션 -->
 			<option value=" "
@@ -68,12 +66,12 @@
 				<c:if test="${memberVO.memberMBTI == 'ENFJ'}">selected</c:if>>ENFJ</option>
 			<option value="ENTJ"
 				<c:if test="${memberVO.memberMBTI == 'ENTJ'}">selected</c:if>>ENTJ</option>
-		</select>
-	</p>
-
-	<p> 이메일 : ${memberVO.email } <button id="btn_emailUpdate" name="btn_emailUpdate" class="button">수정</button></p>
-
-	<p>이메일 광고 수신 동의</p>
+		</select><br>
+	
+	이메일 : ${memberVO.email } <button id="btn_emailUpdate" name="btn_emailUpdate" class="button">수정</button><br>
+	
+	이메일 광고 수신 동의</p>
+	<div style="display: flex;">
 	<c:if test="${memberVO.emailAgree == 'yes'}">
 		<input type="radio" name="emailAgree" value="yes" checked="checked">예
 		<input type="radio" name="emailAgree" value="no">아니오
@@ -82,16 +80,17 @@
 		<input type="radio" name="emailAgree" value="yes">예
 		<input type="radio" name="emailAgree" value="no" checked="checked">아니오
 	</c:if>
-	<br>
-	
+	</div>
+	<div style="display: flex;">
 	<button id="btn_memberCoupon" class="button">쿠폰함</button>
 	<a href="../cart/list/<sec:authentication property="name" />" class="button">장바구니</a>
 	<a href="../item/purchaseHistory" class="button">구매 내역</a>
-	<br>
+	</div>
+	<div style="display: flex;">
 	<button id="btn_update" class="button">수정하기</button>
 	<button id="btn_pwUpdate" class="button">비밀번호 변경</button>
-	<br>
 	<button id="btn_inactive" class="button">회원탈퇴</button>
+	</div>
 
 	<script type="text/javascript">
 	
@@ -185,7 +184,7 @@
 		
 		})
 	</script>
-
+	</div>
 
 </body>
 </html>

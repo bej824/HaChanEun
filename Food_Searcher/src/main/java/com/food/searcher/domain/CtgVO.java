@@ -17,6 +17,7 @@ public class CtgVO {
 	
 	private String memberId;
 	private String mainCtg;
+	private String subCtg;
 	private int ctgViewCount;
 	private Date updateDate;
 	

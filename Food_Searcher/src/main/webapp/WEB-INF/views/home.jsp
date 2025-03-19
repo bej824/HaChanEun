@@ -56,7 +56,6 @@ li {
    		<div id="area">
 	<c:if test="${session.memberId != null}">	
 		<p>${session.memberId }님 환영합니다.</p>
-	
 	</c:if>
 	<br>
 	

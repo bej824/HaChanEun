@@ -10,8 +10,9 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	<h1>이메일 확인</h1>
 	<%@ include file ="emailAuthHeader.jsp" %>
-
+	</div>
 </body>
 </html>

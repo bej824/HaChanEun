@@ -98,12 +98,12 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 
     <div>
         <label for="postcode">우편번호: </label>
-        <input type="text" id="postcode" name="postcode" maxlength="15" required>
+        <input type="text" id="postcode" name="postcode" maxlength="15" required readonly>
     </div>
 
     <div>
         <label for="address">주소: </label>
-        <input type="text" style="width: 300px;" id="address" name="address" maxlength="35" required>
+        <input type="text" style="width: 300px;" id="address" name="address" maxlength="35" required readonly>
     </div>
     <div>
     	<label>상세주소 : </label>
@@ -397,8 +397,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	        },
 	        data: JSON.stringify(orderData),// 배열을 JSON으로 변환하여 전송
 	        success: function(result) {
-	        	console.log(result);
-	        	window.open(result, '_blank', 'width=800,height=600,left=100,top=100');
+	        	location.href = result;
 	        }
 	    });
 	});

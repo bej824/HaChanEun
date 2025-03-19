@@ -70,11 +70,14 @@ li {
 			<input type="text" name="keyword">
 			<button class="button"> 검색 </button><br>
 	</form>
+			<p> 상품 이름 :<input type="text" id="keyword" name="keyword"> <button id="btn_search">검색</button></p>
+			<br>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
+					<c:set var="imageFound" value="false"/>
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">
 					<div class="image_item">
@@ -82,8 +85,15 @@ li {
      					src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
     					onerror="this.onerror=null; this.src='../resources/image/imageReady.png';">
 					</div>
+					<c:set var="imageFound" value="true"/>
 				    </c:if>
-			</c:forEach>	
+			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="../resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
 					<p class="nameDisplay">${itemVO.itemName }</p>
 					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<input type="hidden" value="${itemVO.itemTag }">
@@ -91,9 +101,9 @@ li {
 			</div>
 			</c:forEach>
 		</div>
+	</div> <!-- area -->
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
-	
 	<form id="listForm" action="list" method="get">
 	    	<input type="hidden" name="pageNum" >
 	    	<input type="hidden" name="type" >
@@ -210,10 +220,34 @@ li {
 	        // 버튼을 생성한 상태를 로컬 스토리지에서 삭제
 	        localStorage.removeItem('buttonCreated');
 	    }
+	    
+	    $("#btn_search").click(function(){
+	    	let typeInput = 'ITEM_NAME';
+			let keywordInput = $('#keyword').val();
+			let type = [];
+			let keyword = [];
+			
+			if(keywordInput == '' || keywordInput == null) {
+				return;
+			}
+				
+			if (window.location.href.includes('type=MAIN_CTG&keyword=')) {
+			    let mainCtg = decodeURIComponent(window.location.href.split('type=MAIN_CTG&keyword=')[1]);
+			    type.push('MAIN_CTG');
+			    keyword.push(mainCtg);
+			}
+				type.push(typeInput);
+		    	keyword.push(keywordInput);
+		    
+		    const url = new URL(window.location.href);
+	        url.searchParams.set("type", type);
+	        url.searchParams.set("keyword", keyword);
+	        window.location.href = url;
+	    })
 	});
 
 	
 </script>	
-</div> <!-- area -->
+
 </body>
 </html>

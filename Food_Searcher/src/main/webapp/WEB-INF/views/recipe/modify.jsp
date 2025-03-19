@@ -59,6 +59,7 @@ maxlength="20" value="${recipeVO.recipeTitle }" required>
 		<div>
 			<p>카테고리 : </p>
 			<select name="category">
+				<option>${recipeVO.category }</option>
 		        <option>한식</option>
 		        <option>중식</option>
 		        <option>일식</option>

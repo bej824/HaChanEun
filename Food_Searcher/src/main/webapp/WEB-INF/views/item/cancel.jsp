@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org/">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 </head>
 <body>
+
 	<%@ include file ="../header.jsp" %>
-	<p th:text="${response}"></p>
-	<a href="/" target="_parent"></a>
-   	<div id="area">
 	<div id="container">
-   		<h1>결제가 완료되었습니다.</h1>
+   		<div id="area">
+   		</div>
+   		<h1>결제가 취소되었습니다.</h1>
    		
    		<button id="btn_goItem">더 쇼핑하기</button>
-   	</div>
-   	</div>
+   		</div>
    		
    	<script type="text/javascript">
    	$(document).ready(function(){
@@ -28,5 +26,6 @@
    	})
    	
    	</script>
+
 </body>
 </html>

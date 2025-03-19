@@ -9,6 +9,7 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" maxlength="20" placeholder="아이디 입력"
 			required>
@@ -30,8 +31,10 @@
 		<br>
 
 		<p>성별</p>
-		<input type="radio" name="memberGender" value="male">남 <input
-			type="radio" name="memberGender" value="female">여
+		<div style="display: flex;">
+		<input type="radio" name="memberGender" value="male">남 
+		<input type="radio" name="memberGender" value="female">여
+		</div>
 
 		<p>생일</p>
 		<input type="text" name="memberDateOfBirth" id="memberDateOfBirth" placeholder="생년월일 8자리를 입력해주세요." required>
@@ -62,9 +65,11 @@
 		<p>이메일 : ${email }</p>
 
 		<p>이메일 광고 수신 동의</p>
+		<div style="display: flex;">
 		<input type="radio" name="emailAgree" value="yes" checked="checked">예
-		<input type="radio" name="emailAgree" value="no">아니오 <br>
-		<input type=hidden name=email value="${email}" readonly="readonly"> <br>
+		<input type="radio" name="emailAgree" value="no">아니오
+		<input type=hidden name=email value="${email}" readonly="readonly">
+		</div>
 
 	<button class="button" name="insert" id="insert">회원가입</button>
 
@@ -237,6 +242,6 @@
     })
 		
 		</script>
-
+</div>
 </body>
 </html>

@@ -1,6 +1,10 @@
 package com.food.searcher.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +54,9 @@ public class ItemController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private String uploadPath;
+	
 	@GetMapping("/list")
 	public String list(Model model, Pagination pagination) {
 		
@@ -60,7 +67,15 @@ public class ItemController {
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		
 		List<ItemAttachVO> attachVO = attachService.getSelectAll();
-		model.addAttribute("attachVO", attachVO);
+		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
+		for(ItemAttachVO vo : attachVO) {
+			Path filePath = Paths.get(uploadPath + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		model.addAttribute("attachVO", list);
 		model.addAttribute("itemList", itemList);
 	    model.addAttribute("pageMaker", pageMaker);
 	    
@@ -222,8 +237,18 @@ public class ItemController {
     }
 	
 	@GetMapping("/approve")
-    public void approve() {
+    public void KakaoApprove() {
     	
     }
+	
+	@GetMapping("/cancel")
+	public void kakaoCancel() {
+		
+	}
+	
+	@GetMapping("fail")
+	public void kakaoFail() {
+		
+	}
 	
 } // end ItemController

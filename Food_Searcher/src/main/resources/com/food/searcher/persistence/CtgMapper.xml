@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		<id property="memberId" column="MEMBER_ID" />
 		<result property="mainCtg" column="MAIN_CTG" />
+		<result property="subCtg" column="SUB_CTG" />
 
 	</resultMap>
 	
@@ -25,14 +26,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 	
-	<select id="selectCtg" resultMap="ctgMap">
-	SELECT DISTINCT MAIN_CTG
-	FROM CTG
-	WHERE 1=1
-	<if test="mainCtg != null and mainCtg != ''">
-		AND MAIN_CTG = #{mainCtg}
-	</if>
+	<select id="selectRecipeMainCtg" resultMap="ctgMap">
+		SELECT DISTINCT CATEGORY AS MAIN_CTG
+		FROM RECIPE
+		ORDER BY CATEGORY
+	</select>
 	
+	<select id="selectItemMainCtg" resultMap="ctgMap">
+    	SELECT DISTINCT MAIN_CTG
+    	FROM ITEM_CTG
+    	WHERE ITEM_STATUS = 100
+    	ORDER BY MAIN_CTG
+	</select>
+	
+	<select id="selectSpecialityMainCtg" resultMap="ctgMap">
+		SELECT DISTINCT MAIN_CTG
+    	FROM LOCAL_SPECIALITY
+    	ORDER BY MAIN_CTG
+	</select>
+	
+	<select id="selectCtgMainCtg" resultMap="ctgMap">
+		SELECT DISTINCT MAIN_CTG
+		FROM CTG
+		ORDER BY MAIN_CTG
 	</select>
 	
 </mapper>
