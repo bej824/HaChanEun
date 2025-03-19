@@ -19,15 +19,15 @@
 }
 
 .item {
-	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
-    background-color: #f9f9f9; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-    margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-    height: 300px; /* 첨부 목록의 고정 높이 설정 */
-    width: 250px;     /* 각 아이템의 너비 */
-    box-sizing: border-box;
-}
+ 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
+     background-color: #f9f9f9; /* 배경색 설정 */
+     border: 1px solid #ddd; /* 테두리 추가 */
+     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
+     height: 300px; /* 첨부 목록의 고정 높이 설정 */
+     width: 250px;     /* 각 아이템의 너비 */
+     box-sizing: border-box;
+ }
 
 li {
 	display:inline-block;
@@ -77,8 +77,8 @@ li {
 					</div>
 				    </c:if>
 			</c:forEach>
-					<p>상품명 : ${itemVO.itemName }</p>
-					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+					<p class="nameDisplay">${itemVO.itemName }</p>
 					<input type="hidden" value="${itemVO.itemTag }">
 					<input type="hidden" value="${itemVO.itemId }">
 			</div>

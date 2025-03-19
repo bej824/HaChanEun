@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ReviewVO;
@@ -43,35 +44,43 @@ public class ReviewController {
 		return new ResponseEntity<List<ReviewVO>>(reviewVO, HttpStatus.OK);
 	}
 	
-	@ResponseBody
 	@GetMapping("/reviewRegister")
-    public String registerGET(Date deliveryCompletedDate, Principal principal, Model model) {
+    public String registerGET(long itemId, Principal principal, Model model) {
         log.info("registerGET()");
-        String memberId = principal.getName();
         
-        int result = reviewService.isEnabled(memberId, deliveryCompletedDate);
-        if(result == 1){
-        	 log.info("리뷰 작성 완료");
-        	 return null;
-        } else {
-        	log.info("리뷰 작성 실패");
-        	return null;
+        String memberId = principal.getName();
+        ReviewVO reviewVO = reviewService.getReview(itemId, memberId);
+        if (reviewVO == null) {
+            model.addAttribute("msg", "배송이 완료된 상품만 리뷰를 작성할 수 있습니다..");
+            model.addAttribute("url", "../item/purchaseHistory");
+            return "alert";
         }
+        
+        model.addAttribute("reviewVO", reviewVO);
+        model.addAttribute("itemId", itemId);
+
+        log.info("VO : " + reviewVO);
+
+        return "product/reviewRegister";
         
     }
 	
 	@PostMapping("/reviewRegister")
-	public ResponseEntity<String> reviewPOST(ReviewVO reviewVO,	
-			@RequestParam(value="memberId") String memberId, 
-			@RequestParam(value="itemId") long itemId ) {
-		log.info("memberId : " + memberId);
-		log.info("itemId : " + itemId);
-		
-		int result = reviewService.createReview(reviewVO);
-		
-	    log.info("result : " + result);
-		return ResponseEntity.ok("리뷰가 성공적으로 등록되었습니다.");
-	}	
+	public ResponseEntity<String> reviewPOST(ReviewVO reviewVO, Principal principal) {
+	    log.info("postreviewPOST() 호출");
+
+	    String memberId = principal.getName();
+	    reviewVO.setMemberId(memberId);
+
+	    int result = reviewService.createReview(reviewVO);
+
+	    if (result == 1) {
+	        return ResponseEntity.ok("리뷰가 성공적으로 등록되었습니다.");
+	    } else {
+	        return ResponseEntity.badRequest().body("리뷰 등록 실패: 구매 내역이 없습니다.");
+	    }
+	}
+
 	
 	@ResponseBody
 	@PostMapping("/review-update")

@@ -1,6 +1,5 @@
 package com.food.searcher.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ReviewVO;
+import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ReviewMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -22,11 +22,15 @@ public class ReviewServiceImple implements ReviewService {
 	@Autowired
 	ReviewMapper reviewMapper;
 	
+	@Autowired
+	DirectOrderMapper directOrderMapper;
+	
 	@Transactional(value = "transactionManager")
 	@Override
 	public int createReview(ReviewVO reviewVO) {
-		return reviewMapper.insert(reviewVO);
+	   return reviewMapper.insert(reviewVO);
 	}
+
 
 	@Override
 	public List<ReviewVO> getAll(long itemId) {
@@ -36,17 +40,38 @@ public class ReviewServiceImple implements ReviewService {
 	}
 	
 	@Override
-	public ReviewVO getReview(long itemId) {
+	public ReviewVO getReview(long itemId, String memberId) {
 		log.info("getReviewOne");
-		ReviewVO reviewVO = reviewMapper.selectOne(itemId);
+				
+		List<DirectOrderVO> isEnabled = directOrderMapper.isEnabled(memberId);
 		
-		return reviewVO;
-	}
-	
-	@Override
-	public int isEnabled(String memberId, Date deliveryCompletedDate) {
-		log.info("isEnabled()");
-		return reviewMapper.isEnabled(memberId, deliveryCompletedDate);
+		boolean result = false;
+		int intItemId = (int) itemId;
+		
+		for (DirectOrderVO orderVO : isEnabled) {
+			if (orderVO.getItemId() == intItemId && orderVO.getDeliveryCompletedDate() != null) {
+			    result = true;
+			    log.info("result : " + result);
+			    log.info("intItemId : " + intItemId);
+			    break;
+			}
+		}
+		
+		if(result==true) {
+			log.info("내역 조회 성공");
+			int existResult = reviewMapper.isExist(memberId);
+			if(existResult != 0) {
+				log.info("작성 페이지로 이동");
+				return reviewMapper.selectOne(itemId, memberId);
+			} else {
+				log.info("이미 리뷰가 작성되었습니다.");
+				return null;
+			}
+			 
+		} else {
+			log.info("내역 조회 실패");
+			return null;
+		}
 	}
 	
 	@Override
