@@ -8,6 +8,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
+<div id="area">
 	<div>
 		<p>구매한 회원 : ${directOrderVO.memberId }</p> 
 	</div>
@@ -42,7 +43,7 @@
 		<p>택배사 : ${directOrderVO.deliveryCompany }</p>
 		<p>송장 번호 : ${directOrderVO.invoiceNumber }</p>
 	</c:if>
-	
+	<div style="display: flex;">
 	<c:if test="${directOrderVO.deliveryStatus eq '배송 준비중'}">
 		<button id="delivering" class="button">배송 중</button>
 	</c:if>
@@ -57,6 +58,7 @@
 	</c:if>
 	
 	<button onclick="window.location.href='purchaseHistory?keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'" class="button">뒤로가기</button>
-
+	</div>
+</div>
 </body>
 </html>

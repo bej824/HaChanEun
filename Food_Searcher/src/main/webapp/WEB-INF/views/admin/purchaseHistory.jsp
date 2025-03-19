@@ -8,6 +8,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
+<div id="area">
 <p>회원 전체 거래 내역</p>
 	<table border="1">
 		<thead>
@@ -120,5 +121,6 @@
 		    sessionStorage.setItem("reloaded", "true");
 		});
 	</script>
+	</div>
 </body>
 </html>

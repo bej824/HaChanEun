@@ -335,9 +335,9 @@ public class DirectOrderServiceImple implements DirectOrderService {
         parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
         parameters.put("total_amount", String.valueOf(orderTotalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-        parameters.put("approval_url", "http://localhost:8080/searcher/pay/completed"); 		// 결제 성공 시 URL
-        parameters.put("cancel_url", "http://localhost:8080/searcher/pay/cancel");      		// 결제 취소 시 URL
-        parameters.put("fail_url", "http://localhost:8080/searcher/pay/fail");          		// 결제 실패 시 URL
+        parameters.put("approval_url", "http://localhost:8080/searcher/item/completed"); 		// 결제 성공 시 URL
+        parameters.put("cancel_url", "http://localhost:8080/searcher/item/cancel");      		// 결제 취소 시 URL
+        parameters.put("fail_url", "http://localhost:8080/searcher/item/fail");          		// 결제 실패 시 URL
         
         // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -394,6 +394,38 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		
 		int result = directOrderMapper.cancel(orderId);
 		log.info(result + "행 업데이트 완료");
+		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
+		
+		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
+		itemService.updateItemAmount(itemVO.getItemAmount() - directOrderVO.getTotalCount(), directOrderVO.getItemId());
+		couponActiveService.updateCouponActiveByOrderId(orderId);
+		
+    	Map<String, String> parameters = new HashMap<>();
+    	parameters.put("cid", KAKAO_PAY_API_ID);								// 가맹점 코드(테스트용)
+    	parameters.put("tid", directOrderVO.getTid());												// 결제 고유번호
+    	parameters.put("cancel_amount", String.valueOf(directOrderVO.getTotalPrice()));			// 상품 총액
+    	parameters.put("cancel_tax_free_amount", "0");							// 취소 비과세 금액
+    	
+    	HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+    	
+            ResponseEntity<PaymentCancellationVO> responseEntity = restTemplate.postForEntity(
+            	KAKAO_PAY_API_URL_CANCEL,
+                requestEntity,
+                PaymentCancellationVO.class
+            );
+            log.info("결제취소 응답객체: " + responseEntity.getBody());
+            return responseEntity.getBody();
+        
+	}
+	
+	public PaymentCancellationVO payRefund(String orderId) {
+		
+		int result = directOrderMapper.refundOK(orderId);
+
+		if (result == 1) {
+			couponActiveService.updateCouponActiveByOrderId(orderId);
+		}
+		
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 		
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.food.searcher.domain.PaymentCancellationVO;
 import com.food.searcher.service.DirectOrderService;
 
 import lombok.extern.log4j.Log4j;
@@ -41,8 +42,8 @@ public class SellerOrderController {
 	}
 	
 	@PutMapping("/refundOK/{orderId}")
-	public ResponseEntity<Integer> refundOK(@PathVariable("orderId") String orderId) {
-	    return new ResponseEntity<Integer>(directOrderService.refundOK(orderId), HttpStatus.OK);
+	public ResponseEntity<PaymentCancellationVO> refundOK(@PathVariable("orderId") String orderId) {
+	    return new ResponseEntity<PaymentCancellationVO>(directOrderService.payRefund(orderId), HttpStatus.OK);
 	}
 	
 	@PutMapping("/ready/{orderId}")

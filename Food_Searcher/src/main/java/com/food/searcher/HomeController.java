@@ -1,7 +1,11 @@
 package com.food.searcher;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +51,9 @@ public class HomeController {
 	
 	@Autowired
 	private AttachService attachService;
+	
+	@Autowired
+	private String uploadPath;
 	
 	MemberVO memberVO = null;
 	
@@ -104,7 +111,16 @@ public class HomeController {
 		model.addAttribute("westernList", recipeService.getPagingBoards(pagination));
 		
 		List<AttachVO> attachVO = attachService.getSelectAll();
-		model.addAttribute("attachVO", attachVO);
+		List<AttachVO> list = new ArrayList<AttachVO>();
+		for(AttachVO vo : attachVO) {
+			Path filePath = Paths.get(uploadPath + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		
+		model.addAttribute("attachVO", list);
 	}
 	
 }

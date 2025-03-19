@@ -102,7 +102,6 @@
 		    let localDistrict = $('#localDistrict').val();
 			let localTitle = $('#localTitle').val();
 			let localContent = $('#localContent').val();
-			let replyCount = ${localSpecialityVO.replyCount };
 			
 			let result = confirm("수정하시겠습니까?");
 			if(result) {
@@ -113,8 +112,7 @@
 						localLocal : localLocal,
 						localDistrict : localDistrict,
 						localTitle : localTitle,
-						localContent : localContent,
-						replyCount : replyCount
+						localContent : localContent
 				},
 				success : function(result) {
 					if(result == 1) {

@@ -9,7 +9,7 @@
 <title>나의 쿠폰 확인하기</title>
 </head>
 <body>
-
+	<div id="area">
 	<h1>할인 쿠폰</h1>
 	
 	<table>
@@ -82,6 +82,6 @@
 	})
 	
 	</script>
-
+	</div>
 </body>
 </html>

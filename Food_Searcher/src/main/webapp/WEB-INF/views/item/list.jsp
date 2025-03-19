@@ -77,6 +77,7 @@ li {
 			<c:forEach var="itemVO" items="${itemList}">
 			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
+					<c:set var="imageFound" value="false"/>
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">
 					<div class="image_item">
@@ -84,8 +85,15 @@ li {
      					src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
     					onerror="this.onerror=null; this.src='../resources/image/imageReady.png';">
 					</div>
+					<c:set var="imageFound" value="true"/>
 				    </c:if>
 			</c:forEach>
+			<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="../resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<input type="hidden" value="${itemVO.itemTag }">

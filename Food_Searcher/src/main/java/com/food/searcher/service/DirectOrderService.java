@@ -41,4 +41,6 @@ public interface DirectOrderService {
 	ApproveResponse payApprove(String tid, String pgToken, String orderId, String itemName);
 	
 	PaymentCancellationVO payCancel(String orderId);
+	
+	PaymentCancellationVO payRefund(String orderId);
 }

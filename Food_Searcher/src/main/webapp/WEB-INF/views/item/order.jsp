@@ -66,12 +66,12 @@
 
     <div>
         <label for="postcode">우편번호: </label>
-        <input type="text" id="postcode" name="postcode" required>
+        <input type="text" id="postcode" name="postcode" required readonly>
     </div>
 
     <div>
         <label for="address">주소: </label>
-        <input type="text" style="width: 300px;" id="address" name="address" required>
+        <input type="text" style="width: 300px;" id="address" name="address" required readonly>
     </div>
     <div>
     	<label>상세주소 : </label>

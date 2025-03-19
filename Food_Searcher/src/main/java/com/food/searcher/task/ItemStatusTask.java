@@ -21,7 +21,7 @@ public class ItemStatusTask {
 	@Autowired
 	DirectOrderService directOrderService;
 	
-	@Scheduled(cron = "0 38 16 * * *")
+	@Scheduled(cron = "0 0 0 * * *")
 	public void StatusChange() {
 		directOrderService.orderCancel();
 		

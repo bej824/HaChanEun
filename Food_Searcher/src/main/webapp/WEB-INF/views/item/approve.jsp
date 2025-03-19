@@ -9,6 +9,7 @@
 </head>
 <body>
 <%@ include file ="../header.jsp" %>
+<div id="area">
 	<p th:text="${response}"></p>
 	<a href="/" target="_parent"></a>
 	<div id="container">
@@ -27,12 +28,13 @@
    			window.location.href = "../item/list";
    		});
    		
-   		$('#btn_goItem').click(function(){
+   		$('#purchase').click(function(){
    			window.location.href = "../item/purchaseHistory";
    		});
    		
    	});
    	
    	</script>
+   	</div>
 </body>
 </html>
