@@ -6,8 +6,8 @@ import com.food.searcher.domain.CtgVO;
 
 public interface CtgService {
 	
-	int createCtg(CtgVO foodCtvVO);
+	int createCtg(CtgVO foodCtgVO);
 	
-	List<CtgVO> selectCtg(String mainCtg);
+	List<CtgVO> selectCtg(String url);
 
 }

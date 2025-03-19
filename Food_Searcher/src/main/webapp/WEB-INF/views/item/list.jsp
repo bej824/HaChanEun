@@ -19,15 +19,15 @@
 }
 
 .item {
-	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
-    background-color: #f9f9f9; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-    margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-    height: 300px; /* 첨부 목록의 고정 높이 설정 */
-    width: 250px;     /* 각 아이템의 너비 */
-    box-sizing: border-box;
-}
+ 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
+     background-color: #f9f9f9; /* 배경색 설정 */
+     border: 1px solid #ddd; /* 테두리 추가 */
+     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
+     height: 300px; /* 첨부 목록의 고정 높이 설정 */
+     width: 250px;     /* 각 아이템의 너비 */
+     box-sizing: border-box;
+ }
 
 li {
 	display:inline-block;
@@ -61,17 +61,8 @@ li {
 </div>
 
 <a href="../product/reviewRegister?itemId=47">리뷰 작성 테스트</a>
-
-	<form id="searchForm" method="get" action="list">
-			<input type="hidden" name="pageNum">
-			<select name="type">
-				<option value="ITEM_NAME">상품명</option>
-				<option value="MAIN_CTG">메인 태그</option>
-				<option value="SUB_CTG">서브 태그</option>
-			</select>
-			<input type="text" name="keyword">
-			<button class="button"> 검색 </button><br>
-	</form>
+			<p> 상품 이름 :<input type="text" id="keyword" name="keyword"> <button id="btn_search">검색</button></p>
+			<br>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
@@ -88,6 +79,7 @@ li {
 					<c:set var="imageFound" value="true"/>
 				    </c:if>
 			</c:forEach>
+<<<<<<< HEAD
 			<c:if test="${!imageFound}">
 	            <div class="image_item">
 	                <img width="150px" height="150px" 
@@ -96,14 +88,18 @@ li {
 	        </c:if>
 					<p>상품명 : ${itemVO.itemName }</p>
 					<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+=======
+					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+					<p class="nameDisplay">${itemVO.itemName }</p>
+>>>>>>> 67c992a9d9975ecca545439ddc57decb03dd44fe
 					<input type="hidden" value="${itemVO.itemTag }">
 					<input type="hidden" value="${itemVO.itemId }">
 			</div>
 			</c:forEach>
 		</div>
+	</div> <!-- area -->
 	<input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 	<input type="hidden" value="${itemVO.itemStatus }" >
-	
 	<form id="listForm" action="list" method="get">
 	    	<input type="hidden" name="pageNum" >
 	    	<input type="hidden" name="type" >
@@ -220,10 +216,34 @@ li {
 	        // 버튼을 생성한 상태를 로컬 스토리지에서 삭제
 	        localStorage.removeItem('buttonCreated');
 	    }
+	    
+	    $("#btn_search").click(function(){
+	    	let typeInput = 'ITEM_NAME';
+			let keywordInput = $('#keyword').val();
+			let type = [];
+			let keyword = [];
+			
+			if(keywordInput == '' || keywordInput == null) {
+				return;
+			}
+				
+			if (window.location.href.includes('type=MAIN_CTG&keyword=')) {
+			    let mainCtg = decodeURIComponent(window.location.href.split('type=MAIN_CTG&keyword=')[1]);
+			    type.push('MAIN_CTG');
+			    keyword.push(mainCtg);
+			}
+				type.push(typeInput);
+		    	keyword.push(keywordInput);
+		    
+		    const url = new URL(window.location.href);
+	        url.searchParams.set("type", type);
+	        url.searchParams.set("keyword", keyword);
+	        window.location.href = url;
+	    })
 	});
 
 	
 </script>	
-</div> <!-- area -->
+
 </body>
 </html>

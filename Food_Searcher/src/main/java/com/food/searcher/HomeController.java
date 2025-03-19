@@ -79,35 +79,27 @@ public class HomeController {
 	@GetMapping("/home")
 	public void main(Model model, Pagination pagination, Principal principal) {
 		log.info("home()");
-		pagination.setPageSize(5);
-		List<RecipeVO> recipeList = recipeService.getPagingBoards(pagination);
 		
 		PageMaker pageMaker = new PageMaker();
+		pagination.setPageSize(5);
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
 		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("recipeList", recipeList);
-		
-		if(principal != null) {
-		String memberId = principal.getName();
-		model.addAttribute("memberVO", memberService.getMemberById(memberId));
-		}
-		
-		pagination.setType("CATEGORY");
-		pagination.setKeyword("한식");
+
+		pagination.getType().add(0, "CATEGORY");
+		pagination.getKeyword().add(0, "한식");
 		model.addAttribute("koreanList", recipeService.getPagingBoards(pagination));
 		
-		pagination.setKeyword("중식");
+		pagination.getKeyword().set(0, "중식");
 		model.addAttribute("chinaList", recipeService.getPagingBoards(pagination));
 		
-		pagination.setKeyword("일식");
+		pagination.getKeyword().set(0, "일식");
 		model.addAttribute("japanList", recipeService.getPagingBoards(pagination));
 		
-		pagination.setKeyword("동남아식");
+		pagination.getKeyword().set(0, "동남아식");
 		model.addAttribute("SoutheastList", recipeService.getPagingBoards(pagination));
 		
-		pagination.setKeyword("양식");
+		pagination.getKeyword().set(0, "양식");
 		model.addAttribute("westernList", recipeService.getPagingBoards(pagination));
 		
 		List<AttachVO> attachVO = attachService.getSelectAll();

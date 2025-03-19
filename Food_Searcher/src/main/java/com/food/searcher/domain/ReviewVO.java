@@ -25,5 +25,5 @@ public class ReviewVO {
 	private long likesCount;
 	private String itemName;
 	private String itemContent;
-	
+	private Date deliveryCompletedDate;
 }

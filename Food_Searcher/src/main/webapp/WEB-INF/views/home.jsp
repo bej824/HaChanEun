@@ -54,11 +54,7 @@ li {
 	<%@ include file ="header.jsp" %>
 	<div id="container">
    		<div id="area">
-
-	<c:if test="${session.memberId != null}">	
-		<p>${session.memberId }님 환영합니다.</p>
 	
-	</c:if>
 	<br>
 	
 	<a href="recipe/list?type=CATEGORY&keyword=한식" class="button">한식</a>

@@ -30,12 +30,14 @@ public class LocalController {
 	public void listGET(Model model, 
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
-			@RequestParam(value = "localTitle", required = false) String localTitle) {
+			@RequestParam(value = "localTitle", required = false) String localTitle,
+			@RequestParam(value = "mainCtg", required = false) String mianCtg) {
 		log.info("listGET()");
 		
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
 		model.addAttribute("localTitle", localTitle);
+		model.addAttribute("mainCtg", mianCtg);
 	}
 	
 	@GetMapping("register")
@@ -87,9 +89,9 @@ public class LocalController {
 			@RequestParam(value = "localLocal", required = false) String localLocal,
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
 			@RequestParam(value = "localTitle", required = false) String localTitle,
+			@RequestParam(value = "mainCtg", required = false) String mainCtg,
 			Model model, LocalSpecialityVO localSpecialityVO) {
 		log.info("localDetailGET()");
-		log.info("localLocal = " + localLocal + ", localDistrict = " + localDistrict);
 		
 		localSpecialityVO = localService.getSpecialityByLocalId(localId);
 

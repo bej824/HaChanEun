@@ -12,7 +12,12 @@ public interface CtgMapper {
 	
 	int insertCtg(CtgVO foodctgVO);
 	
-	List<CtgVO> selectCtg(
-			 @Param("mainCtg") String mainCtg);
+	List<CtgVO> selectItemMainCtg();
+	
+	List<CtgVO> selectSpecialityMainCtg();
+	
+	List<CtgVO> selectCtgMainCtg();
+	
+	List<CtgVO> selectRecipeMainCtg();
 
 }

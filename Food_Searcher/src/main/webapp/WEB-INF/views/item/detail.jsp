@@ -245,12 +245,11 @@ pageEncoding="UTF-8"%>
 				// data 장바구니로 전달 (cart Insert 실행)
 				success: function(result){
 				if (result == '1') {
-					alert("장바구니 추가 성공")	
-					window.location.href = 'http://localhost:8080/searcher/item/list';
+					alert("장바구니에 넣으셨습니다.");
 				} else if(result == '0') {
-					alert("이미 장바구니에 존재하는 상품입니다.")
+					alert("이미 장바구니에 존재하는 상품입니다.");
 				  } else {
-					alert("장바구니 추가 실패")
+					alert("장바구니 추가 실패");
 				  }
 				}
 			});

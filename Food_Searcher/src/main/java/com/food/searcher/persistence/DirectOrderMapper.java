@@ -16,6 +16,7 @@ public interface DirectOrderMapper {
 	List<DirectOrderVO> selectListByPagination(Pagination pagination);
 	List<DirectOrderVO> memberList(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);
 	List<DirectOrderVO> orderCancelList();
+	List<DirectOrderVO> isEnabled(String memberId); 
 	DirectOrderVO selectOne(String orderId);
 	int selectTotalCount(Pagination pagination);
 	int sellerTotalCount(@Param("memberId") String memberId, @Param("pagination") Pagination pagination);

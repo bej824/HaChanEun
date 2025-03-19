@@ -10,12 +10,12 @@
 	<%@ include file ="../header.jsp" %>
 	<p th:text="${response}"></p>
 	<a href="/" target="_parent"></a>
+   	<div id="area">
 	<div id="container">
-   		<div id="area">
-   		</div>
    		<h1>결제가 완료되었습니다.</h1>
    		
    		<button id="btn_goItem">더 쇼핑하기</button>
+   	</div>
    	</div>
    		
    	<script type="text/javascript">

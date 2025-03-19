@@ -44,18 +44,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectOne" resultMap="reviewResultMap">
-		SELECT i.ITEM_NAME, i.ITEM_CONTENT, i.ITEM_ID
-		FROM ITEM i
-		WHERE i.ITEM_ID = #{itemId}
+		SELECT ITEM_NAME, ITEM_CONTENT, ITEM_ID
+		FROM ITEM
+		WHERE ITEM_ID = #{itemId}
 	</select>
 	
-	<select id="isEnabled" resultMap="reviewResultMap">
-		SELECT ITEM_ID
-		FROM DIRECT_ORDER
-		WHERE DELIVERY_COMPLETED_DATE = #{deliveryCompletedDate}
-		AND MEMBER_ID = #{memberId}
+	<select id="isExist" resultMap="reviewResultMap">
+		SELECT REVIEW_ID
+		FROM REVIEW
+		WHERE MEMBER_ID = #{memberId}
 	</select>
-	
+		
 	<update id="update">
 		UPDATE REVIEW SET
 			REVIEW_CONTENT = #{reviewContent},
