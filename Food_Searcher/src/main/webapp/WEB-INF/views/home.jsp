@@ -37,6 +37,9 @@ li {
         gap: 20px;        /* 아이템 간의 간격 */
         
     }
+.item {
+	border: 1px solid #ddd; /* 테두리 추가 */
+}
 
 .item .image_item {
     display: none;
