@@ -8,6 +8,7 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
+	<div id="area">
 	
 	<h1>비밀번호 변경</h1>
 	
@@ -130,7 +131,7 @@
 		})
 	
 	</script>
-	
+	</div>
 
 </body>
 </html>

@@ -38,6 +38,9 @@ li {
         margin:15px 10px 15px;
         
     }
+.item {
+	border: 1px solid #ddd; /* 테두리 추가 */
+}
 
 .item .image_item {
     display: none;

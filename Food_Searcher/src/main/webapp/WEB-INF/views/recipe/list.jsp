@@ -13,10 +13,25 @@
 .item-container {
         display: flex;
         flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
-        gap: 10px;        /* 아이템 간의 간격 */
-        justify-content: space-between; /* 항목들이 화면에 고르게 분포되도록 함 */
+        gap: 20px;        /* 아이템 간의 간격 */
         
     }
+
+#area{
+	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
+    gap: 20px; /* 아이템 사이 여백 추가 */
+}
+
+.item {
+ 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
+     background-color: #f9f9f9; /* 배경색 설정 */
+     border: 1px solid #ddd; /* 테두리 추가 */
+     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
+     height: 300px; /* 첨부 목록의 고정 높이 설정 */
+     width: 250px;     /* 각 아이템의 너비 */
+     box-sizing: border-box;
+ }
 
 .item .image_item {
     display: none;
@@ -26,11 +41,7 @@
     display: block;
 }
 
-.item {
-  width: 18%; /* 5개씩 배치하려면 100% / 5 = 20% - 여백을 고려하여 18%로 설정 */
-  margin-bottom: 10px; /* 항목 간의 간격 */
-  box-sizing: border-box; /* padding, margin을 포함해서 크기를 계산 */
-}
+
 </style>
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
@@ -45,7 +56,6 @@
 	<h1>요리 레시피 공유</h1>
 	<!-- 글 작성 페이지 이동 버튼 -->
 	    <a href="register" class="button">글 작성</a>
-	<hr>
 	
 	<div class="item-container">
 		<c:forEach var="RecipeVO" items="${recipeList }">
@@ -74,7 +84,6 @@
 		</c:forEach>
 	</div>
 	
-	</div>
 	<p> <select id="type" name="type">
 	        <option value="RECIPE_TITLE">제목</option>
 	        <option value="RECIPE_FOOD">음식</option>
@@ -82,7 +91,7 @@
 	        <option value="RECIPE_CONTENT">내용</option>
 	        <option value="MEMBER_ID">작성자</option>
 	    </select> <input type="text" id="keyword" name="keyword" placeholder="검색어 입력"> <button id="btn_search" class="button">검색</button> <p>
-	
+	</div>
 		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
 		<form id="detailForm" action="detail" method="get">
 			<input type="hidden" name="recipeId" >

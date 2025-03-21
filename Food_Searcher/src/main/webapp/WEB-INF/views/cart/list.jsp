@@ -97,12 +97,12 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	<button onclick="openPostcodePopup()">주소 검색</button>
 
     <div>
-        <label for="postcode">우편번호: </label>
+        <label for="postcode">우편번호 : </label>
         <input type="text" id="postcode" name="postcode" maxlength="15" required readonly>
     </div>
 
     <div>
-        <label for="address">주소: </label>
+        <label for="address">주소 : </label>&ensp;&emsp;
         <input type="text" style="width: 300px;" id="address" name="address" maxlength="35" required readonly>
     </div>
     <div>

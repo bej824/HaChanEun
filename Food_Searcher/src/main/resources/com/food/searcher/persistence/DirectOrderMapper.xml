@@ -45,126 +45,126 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectListByPagination" resultMap="orderResultMap">
-		SELECT * FROM
-		(
-		SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC)
-		AS RN, DIRECT_ORDER.* FROM DIRECT_ORDER
-			<choose>
-				<when test="type == 'DELIVERY_STATUS'.toString()">
-				<choose>
-					<when test="keyword == '상품 준비중'">
-						WHERE DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="keyword == '배송 준비중'">
-						WHERE DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="keyword == '배송 중'">
-						WHERE DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="keyword == '배송 완료'">
-						WHERE DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="keyword == '환불 신청'">
-						WHERE DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="keyword == '환불 승인'">
-						WHERE DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="keyword == '환불 완료'">
-						WHERE DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="keyword == '결제 취소'">
-						WHERE DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="keyword == '주문 취소'">
-						WHERE DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="type == 'DELIVERY_DATE'.toString()">
-                <choose>
-                    <when test="keyword == '1일'">
-                        WHERE DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="keyword == '1주일'">
-                        WHERE DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="keyword == '1달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="keyword == '3달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="keyword == '6달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="keyword == '1년'">
-                        WHERE DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                </choose>
-            	</when>
-			</choose>
-		)
-		WHERE RN BETWEEN #{start} AND #{end}
+	    SELECT * FROM
+	    (
+	        SELECT ROW_NUMBER() OVER (ORDER BY ORDER_ID DESC) AS RN, DIRECT_ORDER.*
+	        FROM DIRECT_ORDER
+	        WHERE 1=1
+	        <if test="keyword != null and keyword != ''">
+    		<foreach collection="keyword" index="i" item="keyword" separator=" ">
+	        <if test="type[i] == 'DELIVERY_STATUS'.toString()">
+	            <if test="keyword == '상품 준비중'">
+	                AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	            </if>
+	            <if test="keyword == '배송 준비중'">
+	                AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	            </if>
+	            <if test="keyword == '배송 중'">
+	                AND DELIVERY_STATUS LIKE '%배송 중%'
+	            </if>
+	            <if test="keyword == '배송 완료'">
+	                AND DELIVERY_STATUS LIKE '%배송 완료%'
+	            </if>
+	            <if test="keyword == '환불 신청'">
+	                AND DELIVERY_STATUS LIKE '%환불 신청%'
+	            </if>
+	            <if test="keyword == '환불 승인'">
+	                AND DELIVERY_STATUS LIKE '%환불 승인%'
+	            </if>
+	            <if test="keyword == '환불 완료'">
+	                AND DELIVERY_STATUS LIKE '%환불 완료%'
+	            </if>
+	            <if test="keyword == '결제 취소'">
+	                AND DELIVERY_STATUS LIKE '%결제 취소%'
+	            </if>
+	            <if test="keyword == '주문 취소'">
+	                AND DELIVERY_STATUS LIKE '%주문 취소%'
+	            </if>
+	        </if>
+	
+	        <if test="type[i] == 'DELIVERY_DATE'.toString()">
+	            <if test="keyword == '1일'">
+	                AND DELIVERY_DATE > SYSDATE - 1
+	            </if>
+	            <if test="keyword == '1주일'">
+	                AND DELIVERY_DATE > SYSDATE - 7
+	            </if>
+	            <if test="keyword == '1달'">
+	                AND DELIVERY_DATE > SYSDATE - 30
+	            </if>
+	            <if test="keyword == '3달'">
+	                AND DELIVERY_DATE > SYSDATE - 90
+	            </if>
+	            <if test="keyword == '6달'">
+	                AND DELIVERY_DATE > SYSDATE - 180
+	            </if>
+	            <if test="keyword == '1년'">
+	                AND DELIVERY_DATE > SYSDATE - 365
+	            </if>
+	        </if>
+	    </foreach>
+		</if>
+	    )
+	    WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="selectTotalCount" resultType="Integer">
-		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER
-			<choose>
-				<when test="type == 'DELIVERY_STATUS'.toString()">
-					<choose>
-					<when test="keyword == '상품 준비중'">
-						WHERE DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="keyword == '배송 준비중'">
-						WHERE DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="keyword == '배송 중'">
-						WHERE DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="keyword == '배송 완료'">
-						WHERE DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="keyword == '환불 신청'">
-						WHERE DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="keyword == '환불 승인'">
-						WHERE DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="keyword == '환불 완료'">
-						WHERE DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="keyword == '결제 취소'">
-						WHERE DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="keyword == '주문 취소'">
-						WHERE DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="type == 'DELIVERY_DATE'.toString()">
-					<choose>
-                    <when test="keyword == '1일'">
-                        WHERE DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="keyword == '1주일'">
-                        WHERE DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="keyword == '1달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="keyword == '3달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="keyword == '6달'">
-                        WHERE DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="keyword == '1년'">
-                        WHERE DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                </choose>
-				</when>			
-			</choose>
+	    SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER
+	    WHERE 1=1
+		<if test="keyword != null and keyword != ''">
+    	<foreach collection="keyword" index="i" item="keyword" separator=" ">
+	    <if test="type[i] == 'DELIVERY_STATUS'.toString()">
+	        <if test="keyword == '상품 준비중'">
+	            AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	        </if>
+	        <if test="keyword == '배송 준비중'">
+	            AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	        </if>
+	        <if test="keyword == '배송 중'">
+	            AND DELIVERY_STATUS LIKE '%배송 중%'
+	        </if>
+	        <if test="keyword == '배송 완료'">
+	            AND DELIVERY_STATUS LIKE '%배송 완료%'
+	        </if>
+	        <if test="keyword == '환불 신청'">
+	            AND DELIVERY_STATUS LIKE '%환불 신청%'
+	        </if>
+	        <if test="keyword == '환불 승인'">
+	            AND DELIVERY_STATUS LIKE '%환불 승인%'
+	        </if>
+	        <if test="keyword == '환불 완료'">
+	            AND DELIVERY_STATUS LIKE '%환불 완료%'
+	        </if>
+	        <if test="keyword == '결제 취소'">
+	            AND DELIVERY_STATUS LIKE '%결제 취소%'
+	        </if>
+	        <if test="keyword == '주문 취소'">
+	            AND DELIVERY_STATUS LIKE '%주문 취소%'
+	        </if>
+	    </if>
+	
+	    <if test="type[i] == 'DELIVERY_DATE'.toString()">
+	        <if test="keyword == '1일'">
+	            AND DELIVERY_DATE > SYSDATE - 1
+	        </if>
+	        <if test="keyword == '1주일'">
+	            AND DELIVERY_DATE > SYSDATE - 7
+	        </if>
+	        <if test="keyword == '1달'">
+	            AND DELIVERY_DATE > SYSDATE - 30
+	        </if>
+	        <if test="keyword == '3달'">
+	            AND DELIVERY_DATE > SYSDATE - 90
+	        </if>
+	        <if test="keyword == '6달'">
+	            AND DELIVERY_DATE > SYSDATE - 180
+	        </if>
+	        <if test="keyword == '1년'">
+	            AND DELIVERY_DATE > SYSDATE - 365
+	        </if>
+	    </if>
+		</foreach>
+		</if>
 	</select>
 	
 	<select id="selectOne" resultMap="orderResultMap">
@@ -186,64 +186,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM DIRECT_ORDER d
 		  JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 		  WHERE d.member_id = #{memberId}
-			<choose>
-				<when test="pagination.type == 'DELIVERY_STATUS'">
-				<choose>
-					<when test="pagination.keyword == '상품 준비중'">
-						AND DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 준비중'">
-						AND DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 중'">
-						AND DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="pagination.keyword == '배송 완료'">
-						AND DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="pagination.keyword == '환불 신청'">
-						AND DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="pagination.keyword == '환불 승인'">
-						AND DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="pagination.keyword == '환불 완료'">
-						AND DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="pagination.keyword == '결제 취소'">
-						AND DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="pagination.keyword == '주문 취소'">
-						AND DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="pagination.type == 'DELIVERY_DATE'">
-                <choose>
-                    <when test="pagination.keyword == '1일'">
-                        AND DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="pagination.keyword == '1주일'">
-                        AND DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="pagination.keyword == '1달'">
-                        AND DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="pagination.keyword == '3달'">
-                        AND DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="pagination.keyword == '6달'">
-                        AND DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="pagination.keyword == '1년'">
-                        AND DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                    <otherwise>
-                        <!-- Optional: Add default condition here if needed -->
-                    </otherwise>
-                </choose>
-            	</when>
-			</choose>
+			AND 1=1
+	        <if test="pagination.keyword != null and pagination.keyword != ''">
+    		<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+	        <if test="pagination.type[i] == 'DELIVERY_STATUS'.toString()">
+	            <if test="keyword == '상품 준비중'">
+	                AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	            </if>
+	            <if test="keyword == '배송 준비중'">
+	                AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	            </if>
+	            <if test="keyword == '배송 중'">
+	                AND DELIVERY_STATUS LIKE '%배송 중%'
+	            </if>
+	            <if test="keyword == '배송 완료'">
+	                AND DELIVERY_STATUS LIKE '%배송 완료%'
+	            </if>
+	            <if test="keyword == '환불 신청'">
+	                AND DELIVERY_STATUS LIKE '%환불 신청%'
+	            </if>
+	            <if test="keyword == '환불 승인'">
+	                AND DELIVERY_STATUS LIKE '%환불 승인%'
+	            </if>
+	            <if test="keyword == '환불 완료'">
+	                AND DELIVERY_STATUS LIKE '%환불 완료%'
+	            </if>
+	            <if test="keyword == '결제 취소'">
+	                AND DELIVERY_STATUS LIKE '%결제 취소%'
+	            </if>
+	            <if test="keyword == '주문 취소'">
+	                AND DELIVERY_STATUS LIKE '%주문 취소%'
+	            </if>
+	        </if>
+	
+	        <if test="pagination.type[i] == 'DELIVERY_DATE'.toString()">
+	            <if test="keyword == '1일'">
+	                AND DELIVERY_DATE > SYSDATE - 1
+	            </if>
+	            <if test="keyword == '1주일'">
+	                AND DELIVERY_DATE > SYSDATE - 7
+	            </if>
+	            <if test="keyword == '1달'">
+	                AND DELIVERY_DATE > SYSDATE - 30
+	            </if>
+	            <if test="keyword == '3달'">
+	                AND DELIVERY_DATE > SYSDATE - 90
+	            </if>
+	            <if test="keyword == '6달'">
+	                AND DELIVERY_DATE > SYSDATE - 180
+	            </if>
+	            <if test="keyword == '1년'">
+	                AND DELIVERY_DATE > SYSDATE - 365
+	            </if>
+	        </if>
+	    </foreach>
+		</if>
 			)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -252,64 +249,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) TOTAL_COUNT FROM DIRECT_ORDER d
 		JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 		WHERE d.MEMBER_ID = #{memberId}
-		<choose>
-				<when test="pagination.type == 'DELIVERY_STATUS'">
-				<choose>
-					<when test="pagination.keyword == '상품 준비중'">
-						AND DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 준비중'">
-						AND DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 중'">
-						AND DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="pagination.keyword == '배송 완료'">
-						AND DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="pagination.keyword == '환불 신청'">
-						AND DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="pagination.keyword == '환불 승인'">
-						AND DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="pagination.keyword == '환불 완료'">
-						AND DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="pagination.keyword == '결제 취소'">
-						AND DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="pagination.keyword == '주문 취소'">
-						AND DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="pagination.type == 'DELIVERY_DATE'">
-                <choose>
-                    <when test="pagination.keyword == '1일'">
-                        AND DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="pagination.keyword == '1주일'">
-                        AND DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="pagination.keyword == '1달'">
-                        AND DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="pagination.keyword == '3달'">
-                        AND DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="pagination.keyword == '6달'">
-                        AND DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="pagination.keyword == '1년'">
-                        AND DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                    <otherwise>
-                        <!-- Optional: Add default condition here if needed -->
-                    </otherwise>
-                </choose>
-            	</when>
-			</choose>
+		AND 1=1
+		<if test="pagination.keyword != null and pagination.keyword != ''">
+    	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+	    <if test="pagination.type[i] == 'DELIVERY_STATUS'.toString()">
+	        <if test="keyword == '상품 준비중'">
+	            AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	        </if>
+	        <if test="keyword == '배송 준비중'">
+	            AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	        </if>
+	        <if test="keyword == '배송 중'">
+	            AND DELIVERY_STATUS LIKE '%배송 중%'
+	        </if>
+	        <if test="keyword == '배송 완료'">
+	            AND DELIVERY_STATUS LIKE '%배송 완료%'
+	        </if>
+	        <if test="keyword == '환불 신청'">
+	            AND DELIVERY_STATUS LIKE '%환불 신청%'
+	        </if>
+	        <if test="keyword == '환불 승인'">
+	            AND DELIVERY_STATUS LIKE '%환불 승인%'
+	        </if>
+	        <if test="keyword == '환불 완료'">
+	            AND DELIVERY_STATUS LIKE '%환불 완료%'
+	        </if>
+	        <if test="keyword == '결제 취소'">
+	            AND DELIVERY_STATUS LIKE '%결제 취소%'
+	        </if>
+	        <if test="keyword == '주문 취소'">
+	            AND DELIVERY_STATUS LIKE '%주문 취소%'
+	        </if>
+	    </if>
+	
+	    <if test="pagination.type[i] == 'DELIVERY_DATE'.toString()">
+	        <if test="keyword == '1일'">
+	            AND DELIVERY_DATE > SYSDATE - 1
+	        </if>
+	        <if test="keyword == '1주일'">
+	            AND DELIVERY_DATE > SYSDATE - 7
+	        </if>
+	        <if test="keyword == '1달'">
+	            AND DELIVERY_DATE > SYSDATE - 30
+	        </if>
+	        <if test="keyword == '3달'">
+	            AND DELIVERY_DATE > SYSDATE - 90
+	        </if>
+	        <if test="keyword == '6달'">
+	            AND DELIVERY_DATE > SYSDATE - 180
+	        </if>
+	        <if test="keyword == '1년'">
+	            AND DELIVERY_DATE > SYSDATE - 365
+	        </if>
+	    </if>
+		</foreach>
+		</if>
 	</select>
 	
 	<select id="sellerList" resultMap="orderResultMap">
@@ -328,64 +322,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM DIRECT_ORDER d
 			JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 			WHERE i.member_id = #{memberId}
-			<choose>
-				<when test="pagination.type == 'DELIVERY_STATUS'">
-				<choose>
-					<when test="pagination.keyword == '상품 준비중'">
-						AND DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 준비중'">
-						AND DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 중'">
-						AND DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="pagination.keyword == '배송 완료'">
-						AND DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="pagination.keyword == '환불 신청'">
-						AND DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="pagination.keyword == '환불 승인'">
-						AND DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="pagination.keyword == '환불 완료'">
-						AND DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="pagination.keyword == '결제 취소'">
-						AND DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="pagination.keyword == '주문 취소'">
-						AND DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="pagination.type == 'DELIVERY_DATE'">
-                <choose>
-                    <when test="pagination.keyword == '1일'">
-                        AND DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="pagination.keyword == '1주일'">
-                        AND DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="pagination.keyword == '1달'">
-                        AND DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="pagination.keyword == '3달'">
-                        AND DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="pagination.keyword == '6달'">
-                        AND DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="pagination.keyword == '1년'">
-                        AND DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                    <otherwise>
-                        <!-- Optional: Add default condition here if needed -->
-                    </otherwise>
-                </choose>
-            	</when>
-			</choose>
+			AND 1=1
+		<if test="pagination.keyword != null and pagination.keyword != ''">
+    	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+	    <if test="pagination.type[i] == 'DELIVERY_STATUS'.toString()">
+	        <if test="keyword == '상품 준비중'">
+	            AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	        </if>
+	        <if test="keyword == '배송 준비중'">
+	            AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	        </if>
+	        <if test="keyword == '배송 중'">
+	            AND DELIVERY_STATUS LIKE '%배송 중%'
+	        </if>
+	        <if test="keyword == '배송 완료'">
+	            AND DELIVERY_STATUS LIKE '%배송 완료%'
+	        </if>
+	        <if test="keyword == '환불 신청'">
+	            AND DELIVERY_STATUS LIKE '%환불 신청%'
+	        </if>
+	        <if test="keyword == '환불 승인'">
+	            AND DELIVERY_STATUS LIKE '%환불 승인%'
+	        </if>
+	        <if test="keyword == '환불 완료'">
+	            AND DELIVERY_STATUS LIKE '%환불 완료%'
+	        </if>
+	        <if test="keyword == '결제 취소'">
+	            AND DELIVERY_STATUS LIKE '%결제 취소%'
+	        </if>
+	        <if test="keyword == '주문 취소'">
+	            AND DELIVERY_STATUS LIKE '%주문 취소%'
+	        </if>
+	    </if>
+	
+	    <if test="pagination.type[i] == 'DELIVERY_DATE'.toString()">
+	        <if test="keyword == '1일'">
+	            AND DELIVERY_DATE > SYSDATE - 1
+	        </if>
+	        <if test="keyword == '1주일'">
+	            AND DELIVERY_DATE > SYSDATE - 7
+	        </if>
+	        <if test="keyword == '1달'">
+	            AND DELIVERY_DATE > SYSDATE - 30
+	        </if>
+	        <if test="keyword == '3달'">
+	            AND DELIVERY_DATE > SYSDATE - 90
+	        </if>
+	        <if test="keyword == '6달'">
+	            AND DELIVERY_DATE > SYSDATE - 180
+	        </if>
+	        <if test="keyword == '1년'">
+	            AND DELIVERY_DATE > SYSDATE - 365
+	        </if>
+	    </if>
+		</foreach>
+		</if>
 			)
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
@@ -395,64 +386,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    FROM DIRECT_ORDER d
 	    JOIN ITEM i ON d.ITEM_ID = i.ITEM_ID
 	    WHERE i.MEMBER_ID = #{memberId}
-	    	<choose>
-				<when test="pagination.type == 'DELIVERY_STATUS'">
-				<choose>
-					<when test="pagination.keyword == '상품 준비중'">
-						AND DELIVERY_STATUS LIKE '%상품 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 준비중'">
-						AND DELIVERY_STATUS LIKE '%배송 준비중%'
-					</when>
-					<when test="pagination.keyword == '배송 중'">
-						AND DELIVERY_STATUS LIKE '%배송 중%'
-					</when>
-					<when test="pagination.keyword == '배송 완료'">
-						AND DELIVERY_STATUS LIKE '%배송 완료%'
-					</when>
-					<when test="pagination.keyword == '환불 신청'">
-						AND DELIVERY_STATUS LIKE '%환불 신청%'
-					</when>
-					<when test="pagination.keyword == '환불 승인'">
-						AND DELIVERY_STATUS LIKE '%환불 승인%'
-					</when>
-					<when test="pagination.keyword == '환불 완료'">
-						AND DELIVERY_STATUS LIKE '%환불 완료%'
-					</when>
-					<when test="pagination.keyword == '결제 취소'">
-						AND DELIVERY_STATUS LIKE '%결제 취소%'
-					</when>
-					<when test="pagination.keyword == '주문 취소'">
-						AND DELIVERY_STATUS LIKE '%주문 취소%'
-					</when>
-				</choose>
-				</when>
-				<when test="pagination.type == 'DELIVERY_DATE'">
-                <choose>
-                    <when test="pagination.keyword == '1일'">
-                        AND DELIVERY_DATE > SYSDATE - 1
-                    </when>
-                    <when test="pagination.keyword == '1주일'">
-                        AND DELIVERY_DATE > SYSDATE - 7
-                    </when>
-                    <when test="pagination.keyword == '1달'">
-                        AND DELIVERY_DATE > SYSDATE - 30
-                    </when>
-                    <when test="pagination.keyword == '3달'">
-                        AND DELIVERY_DATE > SYSDATE - 90
-                    </when>
-                    <when test="pagination.keyword == '6달'">
-                        AND DELIVERY_DATE > SYSDATE - 180
-                    </when>
-                    <when test="pagination.keyword == '1년'">
-                        AND DELIVERY_DATE > SYSDATE - 365
-                    </when>
-                    <otherwise>
-                        <!-- Optional: Add default condition here if needed -->
-                    </otherwise>
-                </choose>
-            	</when>
-			</choose>
+	    	AND 1=1
+		<if test="pagination.keyword != null and pagination.keyword != ''">
+    	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
+	    <if test="pagination.type[i] == 'DELIVERY_STATUS'.toString()">
+	        <if test="keyword == '상품 준비중'">
+	            AND DELIVERY_STATUS LIKE '%상품 준비중%'
+	        </if>
+	        <if test="keyword == '배송 준비중'">
+	            AND DELIVERY_STATUS LIKE '%배송 준비중%'
+	        </if>
+	        <if test="keyword == '배송 중'">
+	            AND DELIVERY_STATUS LIKE '%배송 중%'
+	        </if>
+	        <if test="keyword == '배송 완료'">
+	            AND DELIVERY_STATUS LIKE '%배송 완료%'
+	        </if>
+	        <if test="keyword == '환불 신청'">
+	            AND DELIVERY_STATUS LIKE '%환불 신청%'
+	        </if>
+	        <if test="keyword == '환불 승인'">
+	            AND DELIVERY_STATUS LIKE '%환불 승인%'
+	        </if>
+	        <if test="keyword == '환불 완료'">
+	            AND DELIVERY_STATUS LIKE '%환불 완료%'
+	        </if>
+	        <if test="keyword == '결제 취소'">
+	            AND DELIVERY_STATUS LIKE '%결제 취소%'
+	        </if>
+	        <if test="keyword == '주문 취소'">
+	            AND DELIVERY_STATUS LIKE '%주문 취소%'
+	        </if>
+	    </if>
+	
+	    <if test="pagination.type[i] == 'DELIVERY_DATE'.toString()">
+	        <if test="keyword == '1일'">
+	            AND DELIVERY_DATE > SYSDATE - 1
+	        </if>
+	        <if test="keyword == '1주일'">
+	            AND DELIVERY_DATE > SYSDATE - 7
+	        </if>
+	        <if test="keyword == '1달'">
+	            AND DELIVERY_DATE > SYSDATE - 30
+	        </if>
+	        <if test="keyword == '3달'">
+	            AND DELIVERY_DATE > SYSDATE - 90
+	        </if>
+	        <if test="keyword == '6달'">
+	            AND DELIVERY_DATE > SYSDATE - 180
+	        </if>
+	        <if test="keyword == '1년'">
+	            AND DELIVERY_DATE > SYSDATE - 365
+	        </if>
+	    </if>
+		</foreach>
+		</if>
 	</select>
 	
 	<select id="selectMember" resultMap="orderResultMap">

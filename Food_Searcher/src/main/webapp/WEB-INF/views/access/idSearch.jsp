@@ -47,7 +47,7 @@ li {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	
+	<div id="area">
 	<h1>ID 찾기</h1>
 	<form id="idSearchForm" action="pwSearch" method="POST">
 	회원 이름 : <input type="text" id="memberName" name="memberName" placeholder="이름을 입력해주세요." required>
@@ -58,10 +58,11 @@ li {
 	<!-- CSRF 토큰 -->
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
-	<br> <br>
+	<br>
+	<div style="display: flex;">
 	<button id="btn_search" class="button">ID 찾기</button>
 	<button id="btn_emailUpdate" name="btn_emailUpdate" class="button">이메일 변경</button>
-	
+	</div>
 	<hr>
 	
 	<div id="tableContainer" class="table-container" style="display: none;">
@@ -211,7 +212,7 @@ li {
 		
 		})
 	</script>
-
+	</div>
 
 </body>
 </html>

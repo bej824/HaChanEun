@@ -59,16 +59,14 @@ li {
 
 	<form id="searchForm" method="get" action="list">
 			<input type="hidden" name="pageNum">
-			<select name="type">
-				<option value="ITEM_NAME">상품명</option>
-				<option value="MAIN_CTG">메인 태그</option>
-				<option value="SUB_CTG">서브 태그</option>
-			</select>
-			<input type="text" name="keyword">
+			<input type="hidden" name="type" value="ITEM_NAME">
+			상품명 :<input type="text" id="keyword" name="keyword">
 			<button class="button"> 검색 </button><br>
 	</form>
+	<div id="button-container">
 			<p> 상품 이름 :<input type="text" id="keyword" name="keyword"> <button id="btn_search">검색</button></p>
 			<br>
+			</div>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
@@ -240,6 +238,7 @@ li {
 	        url.searchParams.set("type", type);
 	        url.searchParams.set("keyword", keyword);
 	        window.location.href = url;
+	        
 	    })
 	});
 
