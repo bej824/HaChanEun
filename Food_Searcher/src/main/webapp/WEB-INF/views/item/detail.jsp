@@ -12,8 +12,8 @@ pageEncoding="UTF-8"%>
 <style>
 
 #img {
-	width:200px;
-	height:200px;
+	width:500px;
+	height:500px;
 	background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
@@ -47,6 +47,15 @@ pageEncoding="UTF-8"%>
 		<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<!-- 게시글 -->
 	<div id="area2">
+	
+	<div id="itemDetail">
+	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
+	<div>
+   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
+    <button id="deleteItem" class="button">글 삭제</button>
+    </div>
+    </sec:authorize>
+	
 	<div class="imgDiv">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${attachVO}">
@@ -56,8 +65,8 @@ pageEncoding="UTF-8"%>
 				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
 				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
-					        <img width="150px" height="150px" 
-					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        <img 
+					        src="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}"  
 					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';"/></a>
 				        </div>
 				    </c:if>
@@ -108,6 +117,7 @@ pageEncoding="UTF-8"%>
 		
 	</div>
 	<!-- end imgDiv -->
+	</div>
 	
 	<div class="itemInfo">
 		<span class="price"><fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</span>
@@ -118,13 +128,6 @@ pageEncoding="UTF-8"%>
 	</div>
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-	
-	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
-	<div>
-   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
-    <button id="deleteItem" class="button">글 삭제</button>
-    </div>
-    </sec:authorize>
     
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -152,7 +155,6 @@ pageEncoding="UTF-8"%>
 	<div class="reviewDiv">
 		<%@ include file="../product/review.jsp"%>
 	</div>
-	
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){

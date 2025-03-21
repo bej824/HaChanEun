@@ -10,6 +10,8 @@
 	href="../resources/css/Detail.css">
 	<link rel="stylesheet"
 	href="../resources/css/Base.css">
+	<link rel="stylesheet"
+	href="../resources/css/Register.css">
 <style>
 </style>
 <meta charset="UTF-8">
@@ -22,66 +24,60 @@
 <body>
 
 <%@ include file="/WEB-INF/views/header.jsp"%>
-<div id="area">
+<div id="area2">
 
 <h2>글 작성 페이지</h2>
-	
+	<div class="registerDiv">
 	<form id="registerForm" action="register" method="POST">
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	
 	<div>
-	<p>판매자 : <sec:authentication property="name" /></p>
-	<p>음식 이름 : 
-	<input type="text" id="itemName" name="itemName" placeholder="음식 입력"
-	maxlength="200" required></p>
+	<input type="text" id="itemName" name="itemName" placeholder="음식 이름을 입력해주세요."	maxlength="200" required>
 	</div>
 	
 	<div>
-	<p>가격 :
-	<input type="text" id="itemPrice" name="itemPrice" placeholder="가격 입력"
-	maxlength="100" required></p>
+	<input type="text" id="itemPrice" name="itemPrice" placeholder="가격을 입력해주세요." maxlength="100" required>
 	</div> 
 	
 	<div>
-	<p>수량 :
-	<input type="text" id="itemAmount" name="itemAmount" placeholder="현재 수량 입력"
-	maxlength="1000" required></p>
+	<input type="text" id="itemAmount" name="itemAmount" placeholder="현재 수량을 입력해주세요." maxlength="1000" required>
 	</div>
 	
 	<div>
-	<p>분류 : 
-	<select name="mainCtg" id="mainCtg">
-	</select>
-	<input type="text" name="subCtg" id="subCtg"
-	placeholder="세부 분류를 입력해주세요.">
-	<p>원산지 : 
-	<select name="origin" id="origin">
-		<option>국내산</option>
-		<option>중국산</option>
-		<option>미국산</option>
-		<option>일본산</option>
-		<option>호주산</option>
-		<option>칠레산</option>
-		<option>태국산</option>
-		<option>인도산</option>
-		<option>베트남산</option>
-	</select></p>
+	
+	<div class="foodDiv">
+		<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
+		<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요.">
+	</div>
+			<p>원산지 :
+			<select name="origin" id="origin" >
+				<option>국내산</option>
+				<option>중국산</option>
+				<option>미국산</option>
+				<option>일본산</option>
+				<option>호주산</option>
+				<option>칠레산</option>
+				<option>태국산</option>
+				<option>인도산</option>
+				<option>베트남산</option>
+			</select></p>
 	</div>
 	
-	
 	<div>
-	<p>상품 설명 : </p>
 	<textarea rows="20" cols="120" id="itemContent" name="itemContent" placeholder="내용을 입력하세요." maxlength="1500" required></textarea><br>
 	</div>
 	
 	</form>
 
 	<div class="image-upload">
-		<h2>이미지 파일 업로드</h2>
-		<p>* 최대 용량은 10MB 입니다.</p>
-		<div class="image-drop">이미지를 드래그 하세요.</div>
-		<h2>선택한 이미지 파일 :</h2>
-		<div class="image-list"></div>
+		<div class="image-drop">
+			<span>* 이미지를 이곳에 드래그 하세요.<br><br>
+			* 이미지 파일은 최대 3개까지 가능합니다.<br><br>
+			* 최대 용량은 10MB 입니다.</span>
+		</div>
+		<div class="image-list">
+			<span>이미지 미리보기입니다.</span>
+		</div>
 	</div>
 
 	<div class="attachDTOImg-list">
@@ -91,11 +87,12 @@
 	</div>
 
 	<div class="button-container">
+		<button onclick="goBack()" class="button">뒤로가기</button>
 		<sec:authorize access="isAuthenticated()">
 		<button id="registerBoard" class="button">등록</button>
 		</sec:authorize>
-		<button onclick="goBack()" class="button">뒤로가기</button>
 	</div>
+</div>
 </div>
 	<script src="${pageContext.request.contextPath }/resources/js/images.js"></script>
 

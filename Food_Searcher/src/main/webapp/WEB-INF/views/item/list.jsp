@@ -5,29 +5,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
-.item-container {
-        display: flex;
-        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
-        gap: 20px;        /* 아이템 간의 간격 */
-        
-    }
 
 #area{
 	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
     gap: 20px; /* 아이템 사이 여백 추가 */
 }
-
-.item {
- 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
-     background-color: #f9f9f9; /* 배경색 설정 */
-     border: 1px solid #ddd; /* 테두리 추가 */
-     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-     height: 300px; /* 첨부 목록의 고정 높이 설정 */
-     width: 250px;     /* 각 아이템의 너비 */
-     box-sizing: border-box;
- }
 
 li {
 	display:inline-block;
@@ -38,7 +22,7 @@ li {
 <link rel="stylesheet"
 	href="../resources/css/Base.css">
 <link rel="stylesheet"
-	href="../resources/css/Detail.css">
+	href="${pageContext.request.contextPath }/resources/css/List.css">
 	
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
@@ -50,12 +34,6 @@ li {
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <%@ include file ="../layout/side.jsp" %>
 <div id="area">
-
-<div class="testDiv">
-<sec:authorize access="hasRole('ROLE_MEMBER')">
-</sec:authorize>
-<br>
-</div>
 
 	<form id="searchForm" method="get" action="list">
 			<input type="hidden" name="pageNum">
@@ -76,8 +54,8 @@ li {
 					<c:forEach var="attachVO" items="${attachVO}">
 					<c:if test="${itemVO.itemId eq attachVO.itemId}">
 					<div class="image_item">
-						<img width="200px" height="120px" 
-     					src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+						<img
+     					src="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" 
     					onerror="this.onerror=null; this.src='../resources/image/imageReady.png';">
 					</div>
 					<c:set var="imageFound" value="true"/>
@@ -85,12 +63,14 @@ li {
 			</c:forEach>
 			<c:if test="${!imageFound}">
 	            <div class="image_item">
-	                <img width="150px" height="150px" 
+	                <img 
 	                     src="../resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-					<p class="nameDisplay">${itemVO.itemName }</p>
-					<p class="priceDisplay"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
+	        	<div class="nameDiv">
+					<p class="titleText">${itemVO.itemName }</p>
+				</div>
+					<p class="priceText"><fmt:formatNumber value="${itemVO.itemPrice}" pattern="###,###,###"/>원</p>
 					<input type="hidden" value="${itemVO.itemTag }">
 					<input type="hidden" value="${itemVO.itemId }">
 			</div>
@@ -109,7 +89,7 @@ li {
 		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
 			<li class="pagination_button"><a href="${pageMaker.startNum - 1}"
-				class="button">이전</a></li>
+				class="pg_button">이전</a></li>
 		</c:if>
 
 		<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
@@ -117,13 +97,13 @@ li {
 			var="num">
 			<li class="pagination_button ${param.pageNum == num ? 'selected' : ''}"
                onclick="changeColor(this, ${num}); return isNumber(${num})"></li>
-               <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="button">${num}</a>
+               <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" class="pg_button">${num}</a>
 		</c:forEach>
 
 		<!-- 다음 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isNext() }">
 			<li class="pagination_button"><a href="${pageMaker.endNum + 1}"
-				class="button">다음</a></li>
+				class="pg_button">다음</a></li>
 		</c:if>
 	</ul>
 	

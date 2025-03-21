@@ -1,0 +1,96 @@
+.foodDiv {
+	display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+}
+
+.inputFood, .selectCtg {
+	margin-right:5px;
+}
+
+.inputTitle {
+	max-width:700px;
+}
+
+textarea.ingredient {
+    width: 700px;
+	height: 65px;
+	font-size: 16px;
+}
+
+textarea {
+	max-width:700px;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	background-color: #ffffff;
+	resize: none;
+}
+
+body {
+background-color: #f4f4f4;
+margin: 0;
+padding: 0;
+}
+
+input, select, textarea {
+	width:100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+}
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .image-upload {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .image-drop {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            background: #fafafa;
+            cursor: pointer;
+        }
+        .image-list {
+            margin-top: 10px;
+        }
