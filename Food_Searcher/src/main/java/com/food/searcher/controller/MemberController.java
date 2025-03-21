@@ -269,7 +269,6 @@ public class MemberController {
 			@RequestParam(value="memberId", required=false) String memberId,
 			@RequestParam(value="email")String email,
 			@RequestParam(value="password")String password,
-			@RequestParam(value="oldPassword")String oldPassword,
 			Principal principal,
 			Model model,
 			boolean login) {
