@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeVO;
-import com.food.searcher.service.AttachService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -24,9 +23,6 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping(value = "/recipe")
 @Log4j
 public class RecipeController {
-
-	@Autowired
-	private AttachService attachService;
 
 	@Autowired
 	private RecipeService recipeService;
@@ -43,8 +39,7 @@ public class RecipeController {
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("recipeList", recipeList);
 		
-		List<AttachVO> attachVO = attachService.getSelectAll();
-		model.addAttribute("attachVO", attachVO);
+		model.addAttribute("attachVO", recipeService.attachAll());
 	}
 
 	// list.jsp에서 선택된 게시글 번호를 바탕으로 게시글 상세 조회
@@ -62,8 +57,7 @@ public class RecipeController {
 		
 		if (recipeId.equals(recipeVO.getRecipeId())) {
 			model.addAttribute("recipeVO", recipeVO);
-			List<AttachVO> attachVO = attachService.getBoardById(recipeId);
-			model.addAttribute("idList", attachVO);
+			model.addAttribute("idList", recipeService.attachBoardById(recipeId));
 		}
 	}
 	
@@ -92,7 +86,7 @@ public class RecipeController {
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId, principal.getName());
 		if (recipeId.equals(recipeVO.getRecipeId())) {
 			model.addAttribute("recipeVO", recipeVO);
-			List<AttachVO> attachVO = attachService.getBoardById(recipeId);
+			List<AttachVO> attachVO = recipeService.attachBoardById(recipeId);
 			if (attachVO != null && !attachVO.isEmpty()) {
 				model.addAttribute("idList", attachVO);
 			}

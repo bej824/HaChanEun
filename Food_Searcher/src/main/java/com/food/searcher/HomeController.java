@@ -1,15 +1,9 @@
 package com.food.searcher;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.food.searcher.domain.AttachVO;
-import com.food.searcher.domain.LocalSpecialityVO;
 import com.food.searcher.domain.MemberVO;
-import com.food.searcher.domain.RecipeVO;
-import com.food.searcher.service.AttachService;
-import com.food.searcher.service.LocalService;
-import com.food.searcher.service.MemberService;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -43,17 +31,6 @@ public class HomeController {
 	@Autowired
 	private RecipeService recipeService;
 	
-	@Autowired
-	private LocalService localService;
-	
-	@Autowired
-	private MemberService memberService;
-	
-	@Autowired
-	private AttachService attachService;
-	
-	@Autowired
-	private String uploadPath;
 	
 	MemberVO memberVO = null;
 	
@@ -102,17 +79,8 @@ public class HomeController {
 		pagination.getKeyword().set(0, "양식");
 		model.addAttribute("westernList", recipeService.getPagingBoards(pagination));
 		
-		List<AttachVO> attachVO = attachService.getSelectAll();
-		List<AttachVO> list = new ArrayList<AttachVO>();
-		for(AttachVO vo : attachVO) {
-			Path filePath = Paths.get(uploadPath + '\\' + vo.getAttachPath(), vo.getAttachChgName());
-			if (Files.exists(filePath)) {
-				list.add(vo);
-	        } else {
-	        }
-		}
 		
-		model.addAttribute("attachVO", list);
+		model.addAttribute("attachVO", recipeService.homeAttach());
 	}
 	
 }

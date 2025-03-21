@@ -3,6 +3,7 @@ package com.food.searcher.service;
 import java.security.Principal;
 import java.util.List;
 
+import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.domain.RecipeVO;
@@ -21,4 +22,8 @@ public interface RecipeService {
 	MemberVO memberInfo(Principal principal);
 	
 	RecipeLikesVO memberLike(int recipeId, Principal principal);
+	
+	List<AttachVO> attachAll();
+	List<AttachVO> homeAttach();
+	List<AttachVO> attachBoardById(int recipeId);
 }
