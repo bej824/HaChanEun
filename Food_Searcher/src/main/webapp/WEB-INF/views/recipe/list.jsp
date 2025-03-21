@@ -37,7 +37,22 @@
 	<%@ include file ="../header.jsp" %>
 	<%@ include file ="../layout/side.jsp" %>
 	<div id="area">
-	<h1>요리 레시피 공유</h1>
+	<div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+    <h1>요리 레시피 공유</h1>
+    <div style="display: flex; align-items: center; justify-content: flex-end;">
+    <span id="ctg" style="margin-right: 20px; font-weight: bold;"></span>
+    <select id="type" name="type" style="margin-right: 10px;">
+        <option value="RECIPE_TITLE">제목</option>
+        <option value="RECIPE_FOOD">음식</option>
+        <option value="INGREDIENT">재료</option>
+        <option value="RECIPE_CONTENT">내용</option>
+        <option value="MEMBER_ID">작성자</option>
+    </select>
+    <input type="text" id="keyword" name="keyword" placeholder="검색어 입력" style="margin-right: 10px;">
+    <button id="btn_search" class="button">검색</button>
+</div>
+</div>
+	
 	<!-- 글 작성 페이지 이동 버튼 -->
 	    <a href="register" class="button">글 작성</a>
 	
@@ -69,13 +84,6 @@
 		</c:forEach>
 	</div>
 	
-	<p> <select id="type" name="type">
-	        <option value="RECIPE_TITLE">제목</option>
-	        <option value="RECIPE_FOOD">음식</option>
-	        <option value="INGREDIENT">재료</option>
-	        <option value="RECIPE_CONTENT">내용</option>
-	        <option value="MEMBER_ID">작성자</option>
-	    </select> <input type="text" id="keyword" name="keyword" placeholder="검색어 입력"> <button id="btn_search" class="button">검색</button> <p>
 	</div>
 		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
 		<form id="detailForm" action="detail" method="get">

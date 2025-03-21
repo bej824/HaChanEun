@@ -12,10 +12,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Service
 public class UtilityService {
-	
-	/**
-	 * @return 현재시간(yyyyMMddHHmmss)
-	 */
+
 	public String now() {
 		
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -23,11 +20,8 @@ public class UtilityService {
 	
 	public String loginMember() {
 		
-		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-			return SecurityContextHolder.getContext().getAuthentication().getName();
-		} else {
-			return null;
-		}
+		return "anonymousUser".equals(SecurityContextHolder.getContext().getAuthentication().getName()) 
+				? null : SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 	
 	public String checkRoleSeller() {

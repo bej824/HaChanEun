@@ -5,19 +5,6 @@
 <link rel="stylesheet" href="../resources/css/Base.css">
 <style type="text/css">
 
-.search {
-	width: 100%;
-    margin: 20px auto; /* 검색 상자의 상단 여백 설정 */
-    padding: 20px; /* 내부 여백 설정 */
-    text-align: center; /* 내용 중앙 정렬 */
-    background-color: #f9f9f9; /* 배경 색상 설정 */
-    border-radius: 10px; /* 둥근 테두리 */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    margin-top: 20px; /* 상단 여백 */
-    margin-left: auto; /* 수평 중앙 정렬 */
-    margin-right: auto; /* 수평 중앙 정렬 */
-}
-
 /* hover 효과 */
 .search-select:hover {
     border-color: #007bff; /* 마우스를 올리면 테두리 색상 변경 */
@@ -73,9 +60,10 @@ li {
 	<%@ include file ="../header.jsp" %>
 	<%@ include file ="../layout/side.jsp" %>
 	<div id="area">
-	<h1><a href='map?localLocal=&localDistrict='>지역 특산품 안내</a></h1>
-	<div class="search" id = "search">
-	상세 검색 : &nbsp;&nbsp;
+	<div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+	<h1>지역 특산품 안내</h1>
+	<div style="display: flex; align-items: center; justify-content: flex-end;">
+	<span id="ctg" style="margin-right: 20px; font-weight: bold;"></span>지역 검색 : &nbsp;&nbsp;
 	<select name="localLocal" id="localLocal">
 		<option value="">전체</option>
 		<option value="경기도" <c:if test="${localLocal == '경기도'}">selected</c:if>>경기도</option>
@@ -93,11 +81,11 @@ li {
 	<option value="">전체</option>
 	</select>
 	
-	
 	&nbsp;&nbsp;&nbsp;
 	특산품 명 : <input type="text" name="localTitle" id="localTitle" value="${localTitle }" placeholder="검색어 입력">
 	&nbsp;&nbsp;
 	<button id="searchClear" class="button">초기화</button>
+	</div>
 	</div>
 	
 	<div class="table-container">
@@ -113,10 +101,6 @@ li {
 		</tbody>
 	</table>
 	</div>
-	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<button onclick="insertSpeciality()" class="button">특산품 등록</button>
-	</sec:authorize>
 
 	<script type="text/javascript">
 	
@@ -251,6 +235,9 @@ li {
 			                
 			                }
 			                
+			                if(mainCtg != '') {
+			                	$('#ctg').text(mainCtg + ' > ');
+			                }
 			            });
 			            
 			         	// 선택된 값을 세팅

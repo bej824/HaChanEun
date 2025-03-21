@@ -34,17 +34,22 @@ li {
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <%@ include file ="../layout/side.jsp" %>
 <div id="area">
+			
+<div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+    <h1>상품 리스트</h1>
+    <div style="display: flex; align-items: center; justify-content: flex-end;">
+    <span id="ctg" style="text-align: right; font-weight: bold;"></span>
+	<p style="text-align: right;"> 상품 명 : 
+	<input type="text" id="keyword" name="keyword" placeholder="검색어 입력">
+	<button id="btn_search" class="button">검색</button></p>
+	</div>
+</div>
+<div class="testDiv">
+<sec:authorize access="hasRole('ROLE_MEMBER')">
+</sec:authorize>
+<br>
+</div>
 
-	<form id="searchForm" method="get" action="list">
-			<input type="hidden" name="pageNum">
-			<input type="hidden" name="type" value="ITEM_NAME">
-			상품명 :<input type="text" id="keyword" name="keyword">
-			<button class="button"> 검색 </button><br>
-	</form>
-	<div id="button-container">
-			<p> 상품 이름 :<input type="text" id="keyword" name="keyword"> <button id="btn_search">검색</button></p>
-			<br>
-			</div>
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
