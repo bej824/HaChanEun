@@ -235,17 +235,16 @@ $(document).ready(function(){
 						'Content-Type' : 'application/json' 
 					},
 					data : JSON.stringify(obj),
-					success : function(response) {
-						console.log(response);
-							alert('답변이 등록되었습니다.');
+					success : function(data) {
+						console.log(data);
 							getAllAsk();
+							alert("답변이 등록되었습니다.");
 							 $(".answerModal").attr("style", "display:none;");
-							 console.log("modified");
 							 $("#answerContent").val("");
 							 location.reload(true);
 							}, 
 							error:function(xhr) {
-								alert("답변은 문의당 한 번만 작성 가능합니다.");							
+								alert("문의당 답변은 한 개까지만 등록 가능합니다.");
 						}
 				});
 			});

@@ -51,11 +51,8 @@ li {
 <%@ include file ="../layout/side.jsp" %>
 <div id="area">
 
-<h1>상품 리스트</h1>
-
 <div class="testDiv">
 <sec:authorize access="hasRole('ROLE_MEMBER')">
-<a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
 <br>
 </div>

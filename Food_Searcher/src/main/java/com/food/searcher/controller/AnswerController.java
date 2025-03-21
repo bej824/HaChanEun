@@ -44,13 +44,13 @@ public class AnswerController {
 		 
 		int result = answerService.createAnswer(answerVO);
 		
-		if(result == 0) {
-            return ResponseEntity.badRequest().body("답변은 문의당 한 번만 작성 가능합니다.");
-		} else if(result == 1) {		
-			return ResponseEntity.ok("답변 등록 완료");
+		if(result == 1) {
+            return ResponseEntity.ok("답변 등록 완료");
+		} else if(result == 2) {		
+			return ResponseEntity.badRequest().body("답변은 문의당 한 번만 작성 가능합니다.");
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 등록 중 오류 발생");
-		}
+		}	
 		
 	} // 대댓 등록
 	

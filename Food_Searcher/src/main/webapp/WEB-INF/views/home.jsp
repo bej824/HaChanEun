@@ -34,7 +34,8 @@ li {
 .item-container {
         display: flex;
         flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
-        gap: 20px;        /* 아이템 간의 간격 */
+        gap: 80px;       
+        margin:15px 10px 15px;
         
     }
 
@@ -81,9 +82,9 @@ li {
 	                     src="resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+				<p class="titleDisplay">${RecipeVO.recipeTitle }</p>
+				<p class="memberDisplay">작성자| ${RecipeVO.memberId }</p>
+				<p class="viewsDisplay">조회수 ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>
@@ -110,9 +111,9 @@ li {
 	                     src="resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+				<p class="titleDisplay">${RecipeVO.recipeTitle }</p>
+				<p class="memberDisplay">작성자| ${RecipeVO.memberId }</p>
+				<p class="viewsDisplay">조회수 ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>
@@ -139,9 +140,9 @@ li {
 	                     src="resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+				<p class="titleDisplay">${RecipeVO.recipeTitle }</p>
+				<p class="memberDisplay">작성자| ${RecipeVO.memberId }</p>
+				<p class="viewsDisplay">조회수 ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>
@@ -168,9 +169,9 @@ li {
 	                     src="resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+				<p class="titleDisplay">${RecipeVO.recipeTitle }</p>
+				<p class="memberDisplay">작성자| ${RecipeVO.memberId }</p>
+				<p class="viewsDisplay">조회수 ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>
@@ -197,9 +198,9 @@ li {
 	                     src="resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+				<p class="titleDisplay">${RecipeVO.recipeTitle }</p>
+				<p class="memberDisplay">작성자| ${RecipeVO.memberId }</p>
+				<p class="viewsDisplay">조회수 ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>

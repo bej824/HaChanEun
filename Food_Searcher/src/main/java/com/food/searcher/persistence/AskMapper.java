@@ -10,6 +10,7 @@ import com.food.searcher.domain.AskVO;
 public interface AskMapper {
 	int insert(AskVO askVO);
 	List<AskVO> select(long itemId);
+	int countSelect(long askId);
 	int update(AskVO askVO);
 	int delete(long askId);
 	int countTodayAsk(AskVO askVO);

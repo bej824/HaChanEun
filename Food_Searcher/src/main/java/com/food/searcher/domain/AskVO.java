@@ -19,5 +19,5 @@ public class AskVO {
 	private long itemId;
 	private String askContent;
 	private Date askDate;
-	
+	private int answerCount;
 }
