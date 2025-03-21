@@ -5,17 +5,10 @@
 <html>
 <head>
 <style type="text/css">
-textarea.ingredient {
-    width: 700px;
-	height: 65px;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 4px;
-	background-color: #f8f8f8;
-	font-size: 16px;
-	resize: none;
-}
+
 </style>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/Register.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="_csrf" content="${_csrf.token}"/>
@@ -26,24 +19,18 @@ textarea.ingredient {
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<div id="area">
+	<div id="area2">
 	<h2>글 작성 페이지</h2>
+	
+	<div class="registerDiv">
 	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
 		<div>
-			<p>제목 :</p>
-			<input type="text" id="recipeTitle" name="recipeTitle" placeholder="제목 입력" maxlength="20" required>
+			<input type="text" id="recipeTitle" name="recipeTitle" placeholder="제목을 입력해주세요." maxlength="60" required class="inputTitle">
 		</div>
-		<div>
-			<p>작성자 : <sec:authentication property="name" /></p>
-		</div>
-		<div>
-			<p>음식 :</p>
-			<input type="text" id="recipeFood" name="recipeFood" placeholder="요리 이름 입력" maxlength="10">
-		</div>
-		<div>
-			<p>카테고리 : </p>
-			<select name="category">
+		<div class="foodDiv">
+			<input type="text" id="recipeFood" name="recipeFood" placeholder="음식의 이름을 입력해주세요." maxlength="100" class="inputFood">
+			<select name="category" class="recipeCategory">
 		        <option>한식</option>
 		        <option>중식</option>
 		        <option>일식</option>
@@ -55,23 +42,25 @@ textarea.ingredient {
 		    </select>
 		</div>
 		<div>
-			<p>재료</p>
-			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료 입력" maxlength="50" required></textarea>
 		</div>
 		<div>
-			<p>레시피 :</p>
-			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="내용 입력" maxlength="400" required></textarea>
+			<textarea rows="2" cols="120" id="ingredient" name="ingredient" class="ingredient" placeholder="재료를 입력해주세요." maxlength="50" required></textarea>
+		</div>
+		<div>
+			<textarea rows="20" cols="120" id="recipeContent" name="recipeContent" placeholder="레시피 본문을 입력해주세요." maxlength="400" required></textarea>
 		</div>
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
 	
 	<div class="image-upload">
-		<h2>이미지 파일 업로드</h2>
-		<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
-		<p>* 최대 용량은 10MB 입니다.</p>
-		<div class="image-drop">이미지를 드래그 하세요.</div>
-		<h2>선택한 이미지 파일 :</h2>
-		<div class="image-list"></div>
+		<div class="image-drop">
+			<span>* 이미지를 이곳에 드래그 하세요.<br><br>
+			* 이미지 파일은 최대 3개까지 가능합니다.<br><br>
+			* 최대 용량은 10MB 입니다.</span>
+		</div>
+		<div class="image-list">
+			<span>이미지 미리보기입니다.</span>
+		</div>
 	</div>
 
 	<div class="attachDTOImg-list">
@@ -81,10 +70,11 @@ textarea.ingredient {
 	</div>
 
 	<div class="button-container">
-	<sec:authorize access="isAuthenticated()">
-	<button id="registerBoard" class="button">등록</button>
-	</sec:authorize>
-	<button onclick="window.location.href='list'" class="button">뒤로가기</button>
+		<button onclick="window.location.href='list'" class="button">뒤로가기</button>
+		<sec:authorize access="isAuthenticated()">
+		<button id="registerBoard" class="button">등록</button>
+		</sec:authorize>
+	</div>
 	</div>
 	</div>
 	<script src="${pageContext.request.contextPath }/resources/js/image.js"></script>

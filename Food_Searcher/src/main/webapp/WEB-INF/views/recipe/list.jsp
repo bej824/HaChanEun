@@ -10,28 +10,10 @@
 	margin-left: 750px;
 }
 
-.item-container {
-        display: flex;
-        flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
-        gap: 20px;        /* 아이템 간의 간격 */
-        
-    }
-
 #area{
 	flex-wrap: wrap; /* 넘치면 자동으로 줄 바꿈 */
     gap: 20px; /* 아이템 사이 여백 추가 */
 }
-
-.item {
- 	margin-top: 20px; /* 첨부 목록 위에 여백 추가 */
-     background-color: #f9f9f9; /* 배경색 설정 */
-     border: 1px solid #ddd; /* 테두리 추가 */
-     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-     margin-bottom: 20px; /* 첨부 목록 아래에 여백 추가 */
-     height: 300px; /* 첨부 목록의 고정 높이 설정 */
-     width: 250px;     /* 각 아이템의 너비 */
-     box-sizing: border-box;
- }
 
 .item .image_item {
     display: none;
@@ -43,6 +25,8 @@
 
 
 </style>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/List.css">
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
@@ -53,7 +37,22 @@
 	<%@ include file ="../header.jsp" %>
 	<%@ include file ="../layout/side.jsp" %>
 	<div id="area">
-	<h1>요리 레시피 공유</h1>
+	<div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+    <h1>요리 레시피 공유</h1>
+    <div style="display: flex; align-items: center; justify-content: flex-end;">
+    <span id="ctg" style="margin-right: 20px; font-weight: bold;"></span>
+    <select id="type" name="type" style="margin-right: 10px;">
+        <option value="RECIPE_TITLE">제목</option>
+        <option value="RECIPE_FOOD">음식</option>
+        <option value="INGREDIENT">재료</option>
+        <option value="RECIPE_CONTENT">내용</option>
+        <option value="MEMBER_ID">작성자</option>
+    </select>
+    <input type="text" id="keyword" name="keyword" placeholder="검색어 입력" style="margin-right: 10px;">
+    <button id="btn_search" class="button">검색</button>
+</div>
+</div>
+	
 	<!-- 글 작성 페이지 이동 버튼 -->
 	    <a href="register" class="button">글 작성</a>
 	
@@ -65,7 +64,7 @@
 				<c:if test="${RecipeVO.recipeId eq attachVO.boardId }">
 				<div class="image_item">
 						<img width="180px" height="150px" 
-					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        src="../image/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" 
 					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';"/>
 					</div>
 					<c:set var="imageFound" value="true"/>
@@ -77,20 +76,14 @@
 	                     src="../resources/image/imageReady.png"/>
 	            </div>
 	        </c:if>
-				<p>제목 : ${RecipeVO.recipeTitle }</p>
-				<p>음식명 : ${RecipeVO.recipeFood }</p>
-				<p>조회수 : ${RecipeVO.viewCount }</p>
+	        <div class="titleDiv">
+				<p class="recipeTitleText">${RecipeVO.recipeTitle }</p>
+			</div>
+				<p class="viewsText">조회수 : ${RecipeVO.viewCount }회</p>
 			</div>
 		</c:forEach>
 	</div>
 	
-	<p> <select id="type" name="type">
-	        <option value="RECIPE_TITLE">제목</option>
-	        <option value="RECIPE_FOOD">음식</option>
-	        <option value="INGREDIENT">재료</option>
-	        <option value="RECIPE_CONTENT">내용</option>
-	        <option value="MEMBER_ID">작성자</option>
-	    </select> <input type="text" id="keyword" name="keyword" placeholder="검색어 입력"> <button id="btn_search" class="button">검색</button> <p>
 	</div>
 		<!-- 게시글 번호, 페이지 번호, 페이지 사이즈를 전송하는 form  -->
 		<form id="detailForm" action="detail" method="get">

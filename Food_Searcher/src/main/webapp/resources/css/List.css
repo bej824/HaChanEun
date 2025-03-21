@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.titleDiv, .nameDiv {
+	display:flex;
+	max-width:200px;
+	max-height:75px;
+}
+
+.recipeTitleText{
+    font-size: 22px;
+    font-weight: 500;
+    margin: 5px 5px 10px;
+    left: 5px;
+    padding: 5px;
+    word-break: break-all;
+}
+
+ .titleText {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 5px 5px 10px;
+    left: 5px;
+    padding: 5px;
+    word-break: break-all;
+}
+
+.nameText {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 2px;
+    left: 5px;
+    padding: 5px;
+}
+
+.priceText {
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.viewsText {
+    font-size: 14px;
+    color: #b5b7b6;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.item-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    border-top-style: solid 1px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;"
+}
+
+.itemContainer2 {
+    margin-bottom: 10%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-item {
+    color: #272727;
+    font-size: 20px;
+    padding: 5px 10px;
+    margin: 10px 0;
+    border-radius: 3px;
+    display: inline-block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+}
+
+.pg_button {
+	background-color: #5a5a5a;
+    color:white;
+    width:20px;
+    height:25px;
+    font-size:14px;
+    padding:5px 10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius: 3px;
+}
+
+.item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 200px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 280px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.image_item img {
+    width: 200px;
+    height: 150px;
+    border-radius: 5px;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.category {
+    margin-bottom: 3%;
+}
+
+th, td {
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 1px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin:10px;
+}
+
+li {
+    display: inline-block;
+}
+
+header {
+    background-color: #04AA6D;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.item-container {
+     display: flex;
+     flex-wrap: wrap;  /* 아이템들이 여러 줄로 자동 배치되게 */
+     gap: 20px;        /* 아이템 간의 간격 */   
+}

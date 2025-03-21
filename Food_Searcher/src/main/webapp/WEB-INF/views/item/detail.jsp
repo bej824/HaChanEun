@@ -11,24 +11,9 @@ pageEncoding="UTF-8"%>
 	href="../resources/css/Base.css">
 <style>
 
-.buy {
-	background-color: #f9f9f9; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
-}
-
-.button {
-	margin : 3px;
-}
-
-#itemContent{
-	width:400px;
-	height:100px;
-}
-
 #img {
-	width:200px;
-	height:200px;
+	width:500px;
+	height:500px;
 	background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
@@ -38,12 +23,6 @@ pageEncoding="UTF-8"%>
 	width:80%;
 	height:60%;
 	background-color: #f9f9f9;
-}
-
-.askArea {
-	width:70%;
-	display:flex;
-	flex-wrap: wrap;
 }
 
 .ask, .review {
@@ -67,9 +46,17 @@ pageEncoding="UTF-8"%>
 <body>
 		<%@ include file ="/WEB-INF/views/header.jsp" %>
 	<!-- 게시글 -->
-	<div id="area">
+	<div id="area2">
+	
+	<div id="itemDetail">
+	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
 	<div>
-		<h2>${itemVO.itemName }</h2>
+   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
+    <button id="deleteItem" class="button">글 삭제</button>
+    </div>
+    </sec:authorize>
+	
+	<div class="imgDiv">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${attachVO}">
 				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
@@ -78,92 +65,96 @@ pageEncoding="UTF-8"%>
 				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
 				        	<a href="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
-					        <img width="150px" height="150px" 
-					        src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" 
+					        <img 
+					        src="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}"  
 					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';"/></a>
 				        </div>
 				    </c:if>
 				</c:forEach>
-		<div>
-		<textarea id="itemContent" class="content" readonly>${itemVO.itemContent }</textarea>
+		<div class="itemDetailDiv">
+		<p class="title">${itemVO.itemName }</p>
+			
+			<div class="buy">
+				<sec:authorize access="isAnonymous()">
+					<p>로그인이 필요한 기능입니다</p>
+				</sec:authorize>
+				
+				<sec:authorize access="hasRole('ROLE_MEMBER')">
+					<br>
+					<div>
+					<button class="minusBtn">－</button>
+					<input type="text" name="itemAmount" class="itemAmount" value="1" readonly>
+					<button class="plusBtn">＋</button>
+					</div>
+					
+					<div>
+					<c:choose>
+					<c:when test="${itemVO.itemStatus == 2}">
+					<input type="button" value="판매가 중단된 상품입니다." disabled />
+					</c:when>
+					
+					<c:when test="${itemVO.itemAmount == 0}">
+					<input type="button" value="Sold out" disabled />
+					</c:when>
+					
+					<c:when test="${itemVO.itemAmount > 0}">
+					<button id="btnCart" class="button">장바구니 담기</button>
+			    	<button type="button" onclick="window.location.href='order?itemId=${itemVO.itemId}&count=' + $('.itemAmount').val()" id="btnBuy" class="button">바로 구매</button>
+					</c:when>
+					
+					</c:choose>
+					</div>
+				</sec:authorize>
+			
+		    <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
+		    <input type="hidden" id="itemIdInput" name="itemId" value="${itemVO.itemId}">
+		    <input type="hidden" name="itemPrice" value="${itemVO.itemPrice}">
+		    
+			</div>
+			<!-- end Buy -->
+		
 		</div>
 		
-		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</p>
-		<p>가격 : <fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</p>
-		<p>판매자 : ${itemVO.memberId } </p>
+	</div>
+	<!-- end imgDiv -->
 	</div>
 	
+	<div class="itemInfo">
+		<span class="price"><fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</span>
+		<span class="itemDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</span>
+
+		<p>판매자 : ${itemVO.memberId } </p>
+	<span class="itemContent">${itemVO.itemContent }</span>
+	</div>
 	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
-	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}'" class="button" id="listBoard">글 목록</button>
-	<br>
-	
-	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
-	<div>
-   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
-    <button id="deleteItem" class="button">글 삭제</button>
-    </div>
-    </sec:authorize>
     
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
         <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
         <input type="hidden" name="itemId" value="${itemVO.itemId }">
     </form><br>
+
+	<div class="relationArea">
+		<%@ include file="relation.jsp"%>
+	</div>
 	
-	<div class="buy">
-		<sec:authorize access="isAnonymous()">
-			<p>로그인이 필요한 기능입니다</p>
-		</sec:authorize>
-		
-	<sec:authorize access="hasRole('ROLE_MEMBER')">
-		 선택된 수량 : <button class="minusBtn">-</button>
-		<input type="text" name="itemAmount" class="itemAmount" value="1" readonly>
-		<button class="plusBtn">+</button>
-		<br><br>
-		
-		<c:choose>
-		<c:when test="${itemVO.itemStatus == 2}">
-		<input type="button" value="판매가 중단된 상품입니다." disabled />
-		</c:when>
-		
-		<c:when test="${itemVO.itemAmount == 0}">
-		<input type="button" value="Sold out" disabled />
-		</c:when>
-		
-		<c:when test="${itemVO.itemAmount > 0}">
-		<button id="btnCart" class="button">장바구니 담기</button><br>
-    	<button type="button" onclick="window.location.href='order?itemId=${itemVO.itemId}&count=' + $('.itemAmount').val()" id="btnBuy" class="button">바로 구매</button>
-		</c:when>
-		
-		</c:choose>
-	</sec:authorize>
-	
-    <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
-    <input type="hidden" id="itemIdInput" name="itemId" value="${itemVO.itemId}">
-    <input type="hidden" name="itemPrice" value="${itemVO.itemPrice}">
-    
-	</div>	
-	
-	<%@ include file="relation.jsp"%>
-	
+	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}'" class="button" id="listBoard">글 목록</button>
 	
 	<br><br>
 	
 	<div class="askArea">
 		<div class="ask">상품 문의</div>
-			
 	   	<div class="review">상품평</div>
 	</div>
+	
 	
 	<div class="askDiv">
 		<%@ include file="../product/ask.jsp"%>
 	</div>
-	
 	<div class="reviewDiv">
 		<%@ include file="../product/review.jsp"%>
 	</div>
-	
 	<script type="text/javascript">
 	
 	$(document).ajaxSend(function(e, xhr, opt){
@@ -267,6 +258,6 @@ pageEncoding="UTF-8"%>
 	</script>
 	<!-- 리뷰 -->
 	
-	</div> <!-- area -->
+	 </div><!-- area -->
 </body>
 </html>

@@ -15,7 +15,7 @@ body {
     top: auto !important;
     left: auto !important;
 	margin: 20px;
-	font-family: Arial, sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
 .logo a {

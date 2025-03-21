@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="askContent" column="ASK_CONTENT" />
 		<result property="askDate"
 			column="ASK_DATE" jdbcType="DATE" />
+		<result property="answerCount" column="ANSWER_COUNT" />
 	</resultMap>
 	
 	<insert id="insert">
@@ -41,6 +42,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    WHERE MEMBER_ID = #{memberId}
 	    AND ITEM_ID = #{itemId}
 	    AND TRUNC(ASK_DATE) = TRUNC(SYSDATE)
+	</select>
+	
+	<select id="countSelect">
+		SELECT ANSWER_COUNT
+		FROM ASK
+		WHERE ASK_ID = #{askId}
 	</select>
 	
 	<update id="update">

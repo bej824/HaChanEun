@@ -44,7 +44,13 @@ public class AskServiceImple implements AskService {
  		AskVO askVO = new AskVO();
  		askVO.setAskContent(askContent);
  		askVO.setAskId(askId);
-		return askMapper.update(askVO);
+ 		
+ 		int result = askMapper.countSelect(askId);
+ 		if(result==1) {
+ 			return askMapper.update(askVO);
+ 		} else {
+ 			return 0;
+ 		}
 	}
 
 	@Override

@@ -117,11 +117,11 @@ li {
 			                	low = '<button class="mainCtg" style="color: blue; font-weight: bold;">' 
 			                        + ctg.mainCtg 
 			                        + '</button><br>';
+			                	$('#ctg').text(ctg.mainCtg + ' > ');
 			                }
 			                
 			                if(ctg.mainCtg != '기타') {
 			                checkBox_ctg.append(low);
-			                
 			                }
 			                
 			            });

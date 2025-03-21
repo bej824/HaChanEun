@@ -26,7 +26,6 @@ public class ReviewServiceImple implements ReviewService {
 	@Autowired
 	DirectOrderMapper directOrderMapper;
 	
-	@Transactional(value = "transactionManager")
 	@Override
 	public int createReview(ReviewVO reviewVO) {
 	   return reviewMapper.insert(reviewVO);
@@ -65,7 +64,7 @@ public class ReviewServiceImple implements ReviewService {
 	    }
 
 	    log.info("내역 조회 성공");
-	    List<ReviewVO> existResult = reviewMapper.isExist(memberId);
+	    List<ReviewVO> existResult = reviewMapper.isExist(itemId, memberId);
 	    
 	    if (existResult != null && !existResult.isEmpty()) {
 	        log.info("이미 리뷰가 존재합니다.");
