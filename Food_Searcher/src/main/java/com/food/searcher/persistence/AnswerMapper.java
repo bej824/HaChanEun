@@ -11,5 +11,6 @@ public interface AnswerMapper {
 	int insert(AnswerVO answerVO);
 	List<AnswerVO> select(long askId);
 	int update(AnswerVO answerVO);
+	int updateAnswerCount(long askId);
 	int delete(long answerId);
 }

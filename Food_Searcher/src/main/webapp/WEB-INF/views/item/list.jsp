@@ -60,10 +60,8 @@ li {
 	<button id="btn_search" class="button">검색</button></p>
 	</div>
 </div>
-
 <div class="testDiv">
 <sec:authorize access="hasRole('ROLE_MEMBER')">
-<a id="cartLink" href="../cart/list/<sec:authentication property="name" />">장바구니로 이동</a>
 </sec:authorize>
 <br>
 </div>

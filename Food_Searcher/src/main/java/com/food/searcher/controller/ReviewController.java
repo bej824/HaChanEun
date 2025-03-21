@@ -59,7 +59,7 @@ public class ReviewController {
             log.info(e.getErrorCode());
             log.info(e.getMessage());
             
-            model.addAttribute("msg", e.getMessage());  
+            model.addAttribute("msg", e.getMessage());
             
             if ("REVIEW_001".equals(e.getErrorCode())) {
                 model.addAttribute("url", "../item/purchaseHistory");
@@ -76,21 +76,14 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/reviewRegister")
-	public ResponseEntity<String> reviewPOST(ReviewVO reviewVO, Principal principal) {
+	public String reviewPOST(ReviewVO reviewVO, Principal principal) {
 	    log.info("postreviewPOST() 호출");
-
 	    String memberId = principal.getName();
 	    reviewVO.setMemberId(memberId);
-
-	    int result = reviewService.createReview(reviewVO);
-
-	    if (result == 1) {
-	        return ResponseEntity.ok("리뷰가 성공적으로 등록되었습니다.");
-	    } else {
-	        return ResponseEntity.badRequest().body("리뷰 등록 실패: 구매 내역이 없습니다.");
-	    }
+	    reviewService.createReview(reviewVO);
+	    return "redirect:/item/purchaseHistory";
 	}
-
+	   
 	
 	@ResponseBody
 	@PostMapping("/review-update")
