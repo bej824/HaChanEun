@@ -3,6 +3,7 @@ package com.food.searcher.service;
 import java.util.List;
 
 import com.food.searcher.domain.CtgVO;
+import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -27,4 +28,6 @@ public interface ItemService {
    
    int deleteItem(int itemId);
    
+   List<ItemAttachVO> attachAll();
+   List<ItemAttachVO> attachById(int itemId);
 }

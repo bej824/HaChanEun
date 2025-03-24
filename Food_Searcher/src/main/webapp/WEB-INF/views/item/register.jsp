@@ -72,7 +72,6 @@
 	<div class="image-upload">
 		<div class="image-drop">
 			<span>* 이미지를 이곳에 드래그 하세요.<br><br>
-			* 이미지 파일은 최대 3개까지 가능합니다.<br><br>
 			* 최대 용량은 10MB 입니다.</span>
 		</div>
 		<div class="image-list">

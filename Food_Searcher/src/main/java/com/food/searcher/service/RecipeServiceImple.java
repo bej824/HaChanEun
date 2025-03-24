@@ -1,6 +1,10 @@
 package com.food.searcher.service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +54,9 @@ public class RecipeServiceImple implements RecipeService {
 	
 	@Autowired
 	private RecipeLikesService likesService;
+	
+	@Autowired
+	private AttachService attachService;
 
 	@Transactional(value = "transactionManager")
 	@Override
@@ -212,6 +219,47 @@ public class RecipeServiceImple implements RecipeService {
 			return likesService.getMemberLikes(recipeId, principal.getName());
 		}
 		return null;
+	}
+
+	@Override
+	public List<AttachVO> attachAll() {
+		List<AttachVO> attachVO = attachService.getSelectAll();
+		List<AttachVO> list = new ArrayList<AttachVO>();
+		for(AttachVO vo : attachVO) {
+			Path filePath = Paths.get("C:\\upload\\food" + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		return list;
+		
+	}
+
+	@Override
+	public List<AttachVO> attachBoardById(int recipeId) {
+		return attachService.getBoardById(recipeId);
+	}
+
+	@Override
+	public List<AttachVO> homeAttach() {
+List<AttachVO> attachVO = attachService.getSelectAll();
+		
+		List<AttachVO> distinctBoardIds = attachVO.stream()
+		        .collect(Collectors.toMap(AttachVO::getBoardId, attach -> attach, (existing, replacement) -> existing))
+		        .values()
+		        .stream()
+		        .collect(Collectors.toList());
+		
+		List<AttachVO> list = new ArrayList<AttachVO>();
+		for(AttachVO vo : distinctBoardIds) {
+			Path filePath = Paths.get("C:\\upload\\food" + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		return list;
 	}
 
 }

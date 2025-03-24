@@ -10,6 +10,7 @@
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
 	<c:forEach var="attachVO" items="${attachVO}">
+	<c:set var="imageFound" value="false"/>
 		<c:if test="${attachVO.attachExtension eq 'jpg' or 
 				    attachVO.attachExtension eq 'jpeg' or 
 				    attachVO.attachExtension eq 'png' or 
@@ -19,8 +20,15 @@
 				<img width="150px" height="150px" 
 					 src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
 			</div>
+			<c:set var="imageFound" value="true"/>
 		</c:if>
 	</c:forEach>
+	<c:if test="${!imageFound}">
+	            <div class="image_item">
+	                <img width="150px" height="150px" 
+	                     src="../resources/image/imageReady.png"/>
+	            </div>
+	        </c:if>
 	<div>
 		<p>구매한 상품 : ${itemVO.itemName }</p>
 	</div>

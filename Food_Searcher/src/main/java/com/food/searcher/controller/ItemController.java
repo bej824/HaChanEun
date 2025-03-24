@@ -1,13 +1,7 @@
 package com.food.searcher.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.food.searcher.domain.ApproveResponse;
@@ -26,7 +19,6 @@ import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.service.DirectOrderService;
-import com.food.searcher.service.ItemAttachService;
 import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
 import com.food.searcher.util.PageMaker;
@@ -49,13 +41,7 @@ public class ItemController {
 	private DirectOrderService directOrderService;
 	
 	@Autowired
-	private ItemAttachService attachService;
-	
-	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private String uploadPath;
 	
 	@GetMapping("/list")
 	public String list(Model model, Pagination pagination) {
@@ -66,16 +52,7 @@ public class ItemController {
 		
 		List<ItemVO> itemList = itemService.getPagingStatusItems(pagination);
 		
-		List<ItemAttachVO> attachVO = attachService.getSelectAll();
-		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
-		for(ItemAttachVO vo : attachVO) {
-			Path filePath = Paths.get(uploadPath + '\\' + vo.getAttachPath(), vo.getAttachChgName());
-			if (Files.exists(filePath)) {
-				list.add(vo);
-	        } else {
-	        }
-		}
-		model.addAttribute("attachVO", list);
+		model.addAttribute("attachVO", itemService.attachAll());
 		model.addAttribute("itemList", itemList);
 	    model.addAttribute("pageMaker", pageMaker);
 	    
@@ -121,11 +98,9 @@ public class ItemController {
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
-			List<ItemAttachVO> attachVO = attachService.getItemById(itemVO.getItemId());
-			model.addAttribute("attachVO", attachVO);
+			model.addAttribute("attachVO", itemService.attachById(itemVO.getItemId()));
 		}
-		List<ItemAttachVO> attachAll = attachService.getSelectAll();
-		model.addAttribute("attachAll", attachAll);
+		model.addAttribute("attachAll", itemService.attachAll());
 	}
 	
 	@GetMapping("/modify")
@@ -136,7 +111,7 @@ public class ItemController {
 		
 		if(itemId.equals(itemVO.getItemId())) {
 			model.addAttribute("itemVO", itemVO);
-			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
+			List<ItemAttachVO> attachVO = itemService.attachById(itemId);
 			if (attachVO != null && !attachVO.isEmpty()) {
 				model.addAttribute("idList", attachVO);
 			}
@@ -173,8 +148,7 @@ public class ItemController {
 		ItemVO itemVO = itemService.getItemById(itemId);
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
-			List<ItemAttachVO> attachVO = attachService.getItemById(itemId);
-			model.addAttribute("attachVO", attachVO);
+			model.addAttribute("attachVO", itemService.attachById(itemId));
 		}
 	}
 	
@@ -217,8 +191,7 @@ public class ItemController {
 		DirectOrderVO directOrderVO = directOrderService.getselectOne(orderId);
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
 		model.addAttribute("itemVO", itemVO);
-		List<ItemAttachVO> attachVO = attachService.getItemById(itemVO.getItemId());
-		model.addAttribute("attachVO", attachVO);
+		model.addAttribute("attachVO", itemService.attachById(itemVO.getItemId()));
 		model.addAttribute("directOrderVO", directOrderVO);
 	}
 	

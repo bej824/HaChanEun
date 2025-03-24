@@ -1,5 +1,9 @@
 package com.food.searcher.service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +16,6 @@ import com.food.searcher.domain.AskVO;
 import com.food.searcher.domain.CtgVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
-import com.food.searcher.persistence.ItemAttachMapper;
 import com.food.searcher.persistence.ItemMapper;
 import com.food.searcher.util.Pagination;
 
@@ -28,13 +31,13 @@ public class ItemServiceImple implements ItemService {
 	ItemMapper itemMapper;
 
 	@Autowired
-	ItemAttachMapper attachMapper;
-
-	@Autowired
 	UtilityService utilityService;
 	
 	@Autowired
 	AskService askService;
+	
+	@Autowired
+	ItemAttachService itemAttachService;
 
 	@Transactional(value = "transactionManager", rollbackFor = Exception.class)
 	@Override
@@ -47,7 +50,7 @@ public class ItemServiceImple implements ItemService {
 		itemMapper.itemCtgInsert(itemVO);
 			for (ItemAttachVO attachVO : attachList) {
 				attachVO.setItemId(selectAllList().get(0).getItemId());
-				attachMapper.insert(attachVO);
+				itemAttachService.createAttach(attachVO);
 			}
 
 		return result;
@@ -102,13 +105,13 @@ public class ItemServiceImple implements ItemService {
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
 
-		int deleteResult = attachMapper.delete(itemVO.getItemId());
+		int deleteResult = itemAttachService.deleteAttach(itemVO.getItemId());
 		log.info(deleteResult + "행 파일 정보 삭제");
 
 		int insertAttachResult = 0;
 		for (ItemAttachVO attachVO : attachList) {
 			attachVO.setItemId(itemVO.getItemId());
-			insertAttachResult += attachMapper.insert(attachVO);
+			insertAttachResult += itemAttachService.createAttach(attachVO);
 		}
 		log.info(insertAttachResult + "행 파일 정보 등록");
 		return updateItem;
@@ -157,8 +160,35 @@ public class ItemServiceImple implements ItemService {
 
 	@Override
 	public List<ItemVO> selectAllList() {
-		// TODO Auto-generated method stub
 		return itemMapper.selectAllList().stream().collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ItemAttachVO> attachAll() {
+		List<ItemAttachVO> attachVO = itemAttachService.getSelectAll();
+		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
+		for(ItemAttachVO vo : attachVO) {
+			Path filePath = Paths.get("C:\\upload\\food" + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		return list;
+	}
+
+	@Override
+	public List<ItemAttachVO> attachById(int itemId) {
+		List<ItemAttachVO> attachVO = itemAttachService.getItemById(itemId);
+		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
+		for(ItemAttachVO vo : attachVO) {
+			Path filePath = Paths.get("C:\\upload\\food" + '\\' + vo.getAttachPath(), vo.getAttachChgName());
+			if (Files.exists(filePath)) {
+				list.add(vo);
+	        } else {
+	        }
+		}
+		return list;
 	}
 
 } // end ItemServiceImple

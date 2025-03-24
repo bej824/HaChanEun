@@ -326,12 +326,21 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Override
 	public ReadyResponse kakaoPayReady(List<DirectOrderVO> orderList, int orderTotalPrice) {
+		String itemName = "";
+		for(int i = 0; i < orderList.size(); i++) {
+			itemName = itemName + orderList.get(i).getItemName();
+			
+			if(i < orderList.size() -1) {
+				itemName = itemName + ", ";
+			}
+		}
+		
 		for(DirectOrderVO order : orderList) {	
 		Map<String, String> parameters = new HashMap<>();
         parameters.put("cid", KAKAO_PAY_API_ID);                                // 가맹점 코드(테스트용)
         parameters.put("partner_order_id", String.valueOf(order.getOrderId()));            // 주문번호
         parameters.put("partner_user_id", utilityService.loginMember());        // 회원 아이디
-        parameters.put("item_name", String.valueOf(order.getItemName()));                                  // 상품명
+        parameters.put("item_name", itemName);                                  // 상품명
         parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
         parameters.put("total_amount", String.valueOf(orderTotalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
