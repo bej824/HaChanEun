@@ -26,6 +26,7 @@
  }
  
 .itemAmount {
+	
 	width: 44px;
 	height:30px;
     border: solid #eff1f5;
@@ -177,7 +178,7 @@ li {
 }
 
 .itemDetailDiv {
-    width: 100%;
+    width: 50%;
     border: 1px solid #ddd;
     box-sizing: border-box;
     padding: 15px;

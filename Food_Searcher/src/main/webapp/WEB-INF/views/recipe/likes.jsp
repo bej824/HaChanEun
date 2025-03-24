@@ -55,7 +55,7 @@
 			let memberLike = 1;
 			console.log(memberLike);			
 			let obj = {
-					'recipeBoardId' : boardId,
+					'recipeId' : boardId,
 					'memberId' : memberId,
 					'memberLike' : memberLike
 			}
@@ -81,7 +81,7 @@
 			} else if("${likesVO.memberLike}" == "0") {
 				let memberLike = 1;
 				let obj = {
-						'recipeBoardId' : boardId,
+						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike
 				}
@@ -105,7 +105,7 @@
 				let memberLike = 1;
 				let previousMemberLike = 2;
 				let obj = {
-						'recipeBoardId' : boardId,
+						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike,
 						'previousMemberLike' : previousMemberLike
@@ -138,7 +138,7 @@
 					let memberLike = 0;
 					let previousMemberLike = 1;
 					let obj = {
-							'recipeBoardId' : boardId,
+							'recipeId' : boardId,
 							'memberId' : memberId,
 							'memberLike' : memberLike,
 							'previousMemberLike' : previousMemberLike
@@ -175,7 +175,7 @@
 				console.log(memberLike);
 				
 				let obj = {
-						'recipeBoardId' : boardId,
+						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike
 				}
@@ -203,7 +203,7 @@
 				console.log(memberLike);
 				
 				let obj = {
-						'recipeBoardId' : boardId,
+						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike
 				}
@@ -227,7 +227,7 @@
 				let memberLike = 2;
 				let previousMemberLike = 1;
 				let obj = {
-						'recipeBoardId' : boardId,
+						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike,
 						'previousMemberLike' : previousMemberLike
@@ -260,7 +260,7 @@
 					let previousMemberLike = 2;
 					
 					let obj = {
-							'recipeBoardId' : boardId,
+							'recipeId' : boardId,
 							'memberId' : memberId,
 							'memberLike' : memberLike,
 							'previousMemberLike' : previousMemberLike

@@ -17,6 +17,11 @@ li {
 	display:inline-block;
 }
 
+.paginationDiv {
+	margin-top:100px;
+	margin-right:40px;
+}
+
 </style>
 
 <link rel="stylesheet"
@@ -90,6 +95,7 @@ li {
 			<input type="hidden" name="keyword">
 	    </form>
 	
+	<div class="paginationDiv">
 	<ul>
 		<!-- 이전 버튼 생성을 위한 조건문 -->
 		<c:if test="${pageMaker.isPrev() }">
@@ -111,6 +117,7 @@ li {
 				class="pg_button">다음</a></li>
 		</c:if>
 	</ul>
+	</div>
 	
 	<input type="hidden" id="newbutton">
 

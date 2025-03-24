@@ -16,6 +16,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+* {
+	font-family: 'Noto Sans KR', Arial, sans-serif !important;
+}
+
 /* 테이블 컨테이너 */
 .table-container {
 	border-top: 2px solid black;
@@ -53,5 +57,9 @@ ul {
 /* 목록 항목 스타일 */
 li {
     display: inline-block;
+}
+
+a {
+text-decoration-line: none;
 }
 </style>

@@ -191,6 +191,8 @@ button:hover {
     cursor: pointer;
     border: none;
     border-radius: 3px;
+    background-color: #5a5a5a;
+    color: white;
 }
 
 
@@ -244,7 +246,6 @@ button:hover {
  
   
 .reviewLove {
-    background: white;
     font-size: 14px;
     border-radius: 3px;
     display: inline-block;
@@ -303,7 +304,7 @@ div.answerModify button { font-size:14px; padding:5px 10px; margin:10px 0; backg
 div.answerModify button.answer_modify_cancle { margin-left:20px; }
 
 div.reviewModal { position:relative; z-index:1; display:none; }
-div.reviewModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:320px; padding:20px; background:#fff; border:2px solid #666; border-radius: 5px;}
+div.reviewModalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:340px; padding:20px; background:#fff; border:2px solid #666; border-radius: 5px;}
 div.reviewModalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:200px; resize:none;}
 div.reviewModalContent button { font-size:14px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
 div.reviewModalContent button.review_modify_cancle { margin-left:20px; }

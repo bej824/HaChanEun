@@ -3,6 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#area2 {
+	margin:50px 100px 0px;
+}
+
+.reviewRegister {
+	
+}
+
+</style>
+
 <link rel="stylesheet" type="text/css"
 href="${pageContext.request.contextPath}/resources/css/Detail.css">
 <link rel="stylesheet" type="text/css"
@@ -12,8 +23,7 @@ href="${pageContext.request.contextPath}/resources/css/Base.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-<div id="area">
-<p>구매내역</p>
+<div id="area2">
 
 	<table border="1">
 		<thead>

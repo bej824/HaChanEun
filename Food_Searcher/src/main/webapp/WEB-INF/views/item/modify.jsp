@@ -7,6 +7,8 @@
 <head>
 <link rel="stylesheet"
 	href="../resources/css/Base.css">
+<link rel="stylesheet"
+	href="../resources/css/Register.css">
 <style>
 .buy {
 	background-color: #f9f9f9; /* 배경색 설정 */
@@ -35,23 +37,75 @@
 <meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
-<title>Insert title here</title>
+<title>수정</title>
 </head>
 <body>
 <%@ include file ="/WEB-INF/views/header.jsp" %>
 	<!-- 게시글 -->
-	<div id="area">
+	<div id="area2">
+	<h2>${itemVO.itemName }</h2>
+	<div class="registerDiv">
 	
 	<form id="modifyForm" action="modify" method="POST">
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	<div>
-		<h2>${itemVO.itemName }</h2>
-		<p>상품명 입력</p>
-		<input type="text" name="itemName" placeholder="상품명 입력"
-				maxlength="30" value="${itemVO.itemName }" required>
-
-		<div>
+		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />
 		
+		<div>
+			<input type="text" id="itemName" name="itemName" value="${itemVO.itemName }" placeholder="음식 이름을 입력해주세요." maxlength="100" required>
+		</div>
+		
+		<div>
+			<span>가격 : </span>
+			<input type="number" id="itemPrice" name="itemPrice" value="${itemVO.itemPrice }" placeholder="가격을 입력해주세요." min="1" maxlength="9" required oninput="numberMaxLength(this); preventNegative(this);" >
+		</div> 
+		<div>
+			<span>수량 : </span>
+			<input type="number" id="itemAmount" name="itemAmount" value="${itemVO.itemAmount }" placeholder="수량을 입력해주세요." min="1" maxlength="9" required oninput="numberMaxLength(this); preventNegative(this);">
+		</div>
+				
+		<div class="foodDiv">
+			<select name="mainCtg" id="mainCtg">
+			<option>${itemVO.mainCtg }</option>
+			<c:forEach var="ctgList" items="${ctgList}">
+			<c:if test="${ctgList.mainCtg != itemVO.mainCtg }">
+			<option>${ctgList.mainCtg }</option>
+			</c:if>
+			</c:forEach>
+			</select>
+			<select name="subCtg" id="subCtg">
+			<option>${itemVO.subCtg }</option>
+			</select>
+		</div>
+		<p>원산지 : 
+		<select name="origin" id="origin">
+			<option>국내산</option>
+			<option>중국산</option>
+			<option>미국산</option>
+			<option>일본산</option>
+			<option>호주산</option>
+			<option>칠레산</option>
+			<option>태국산</option>
+			<option>인도산</option>
+			<option>베트남산</option>
+		</select></p>
+				
+		<select>
+			<option value="100">판매 중</option>
+			<option value="200">판매 중단</option>
+		</select>
+		
+		<input type="hidden" name="itemId" value="${itemVO.itemId }">
+		<input type="hidden" name="itemStatus" value="${itemVO.itemStatus }">
+		
+		
+		<div>
+		<p>상품 설명</p>
+		<textarea rows="20" cols="80" name="itemContent" placeholder="내용 입력"
+				maxlength="1500" required>${itemVO.itemContent }</textarea>	
+		</div>
+		
+				
 		<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
@@ -70,64 +124,18 @@
                     </c:if>
                 </c:forEach>
 		</div>
-		<div class="image-modify" style="display : none;">
-			<h2>이미지 파일 업로드</h2>
-			<p>* 최대 용량은 10MB 입니다.</p>
-			<div class="image-drop">이미지를 드래그 하세요.</div>
-			<h2>선택한 이미지 파일 :</h2>
-			<div class="image-list"></div>
+		<div class="image-upload">
+			<div class="image-drop">
+				<span>* 이미지를 이곳에 드래그 하세요.<br><br>
+				* 이미지 파일은 최대 3개까지 가능합니다.<br><br>
+				* 최대 용량은 10MB 입니다.</span>
+			</div>
+			<div class="image-list">
+				<span>이미지 미리보기입니다.</span>
 		</div>
 	</div>
+	</div>
 		
-		<p>상품 설명</p>
-		<textarea rows="20" cols="80" name="itemContent" placeholder="내용 입력"
-				maxlength="1000" required>${itemVO.itemContent }</textarea>	
-		</div>
-		
-		<p>등록 일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : 
-			<input type="text" name="itemAmount" placeholder="수량 변경"
-			maxlength="100" value="${itemVO.itemAmount }" required></p>
-		
-				
-		<p>가격 : <input type="text" name="itemPrice" placeholder="가격 입력"
-				maxlength="30" value="${itemVO.itemPrice }" required> 원</p>
-		
-		<p>분류 :
-		<select name="mainCtg" id="mainCtg">
-		<option>${itemVO.mainCtg }</option>
-		<c:forEach var="ctgList" items="${ctgList}">
-		<c:if test="${ctgList.mainCtg != itemVO.mainCtg }">
-		<option>${ctgList.mainCtg }</option>
-		</c:if>
-		</c:forEach>
-		</select>
-		<select name="subCtg" id="subCtg">
-		<option>${itemVO.subCtg }</option>
-		</select>
-		<p>원산지 : 
-		<select name="origin" id="origin">
-			<option>국내산</option>
-			<option>중국산</option>
-			<option>미국산</option>
-			<option>일본산</option>
-			<option>호주산</option>
-			<option>칠레산</option>
-			<option>태국산</option>
-			<option>인도산</option>
-			<option>베트남산</option>
-		</select></p>
-				
-		<p>판매자 : ${itemVO.memberId } </p>
-		
-		<span>판매 상태 :
-		<select>
-			<option value="100">판매 중</option>
-			<option value="200">판매 중단</option>
-		</select>
-		</span>
-		
-		<input type="hidden" name="itemId" value="${itemVO.itemId }">
-		<input type="hidden" name="itemStatus" value="${itemVO.itemStatus }">
 	</div>
 		
 		<!-- 기존 첨부 파일 리스트 데이터 구성 -->
@@ -155,6 +163,7 @@
 	<div class="attachDTOImg-list">
 	</div>
 	
+	</div> <!-- registerDiv -->
 	<script type="text/javascript">
         $(document).ajaxSend(function(e, xhr, opt) {
             var token = $("meta[name='_csrf']").attr("content");
@@ -211,6 +220,21 @@
             });
 
         });
+        
+                 function numberMaxLength(e){ // 길이 제한 스크립트
+
+        		        if(e.value.length > e.maxLength){
+        		            e.value = e.value.slice(0, e.maxLength);
+        		        }
+        		 
+        		 }
+        		 
+        		 function preventNegative(element) { // 음수 제한 스크립트
+        			    if (element.value < 0) {
+        			        element.value = "";
+        			    }
+        			}
+        
     </script>
     
 	</div> <!-- area -->

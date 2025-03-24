@@ -10,7 +10,13 @@ pageEncoding="UTF-8"%>
 <style>
 .moveHistory {
 	color:blue;
+	text-decoration: underline;
 }
+
+.moveHistory:hover {
+    color: #96C7ED	;
+}
+
 </style>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -186,10 +192,14 @@ $(document).ready(function() {
   <input type="hidden" id="modalReviewId">  
   <div>
    <textarea id="modal_revCon" name="modal_revCon"></textarea>
-  	 <div id="ifLove">이 상품을 추천하시나요? <br>
-	   <input type="radio" name="reviewLove" class="reviewLove" value="1" /><label>예</label>
-	   <input type="radio" name="reviewLove" class="reviewLove" value="0" /><label>아니오</label>
-	 </div>
+  	 <div>
+	<p>이 상품을 추천하시나요?</p>
+	<input type="radio" name="reviewLove" value="1" /><label>1점</label>
+	<input type="radio" name="reviewLove" value="2" /><label>2점</label>
+	<input type="radio" name="reviewLove" value="3" /><label>3점</label>
+	<input type="radio" name="reviewLove" value="4" /><label>4점</label>
+	<input type="radio" name="reviewLove" value="5" /><label>5점</label>
+	</div>
   </div>
  
   

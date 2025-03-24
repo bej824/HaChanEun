@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+* { 
+	font-family: 'Noto Sans KR', Arial, sans-serif;
+}
+
+body {
+	margin:8px;
+}
+
+/* 전체 레이아웃 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #028858;
+    padding: 12px 30px;
+    border-radius: 8px;
+    color: white;
+    margin:0px 100px 20px;
+}
+
+/* 로고 스타일 */
+.logo a {
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.logo a:hover {
+    color: #FFD700;
+}
+
+/* 네비게이션 메뉴 */
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-menu a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* 회원 정보 영역 */
+#memberForm {
+    text-align: right;
+    font-size: 14px;
+    height:20px;
+    margin-bottom:15px;
+    margin-right:100px;
+}

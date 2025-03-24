@@ -7,6 +7,11 @@
 .button {
 	margin : 5px;
 }
+
+#increasedAmount {
+	width:5em;
+}
+
 </style>
 <link rel="stylesheet" type="text/css"
 href="${pageContext.request.contextPath}/resources/css/Base.css">
@@ -21,7 +26,7 @@ href="${pageContext.request.contextPath}/resources/css/Reply.css">
 <link rel="stylesheet" type="text/css"
 href="${pageContext.request.contextPath}/resources/css/image.css">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>상품 관리</title>
 </head>
 <body>
 <%@ include file ="../header.jsp" %>
@@ -38,6 +43,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				<th style="width: 10%">가격</th>
 				<th style="width: 10%">상태</th>
 				<th style="width: 10%">수량</th>
+				<th style="width: 10%"></th>
 				<th style="width: 10%"></th>
 			</tr>
 		</thead>
@@ -60,12 +66,21 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 					${ItemVO.itemAmount }
 				</td>
 				<td>
-					<input type="text" size=3 id="increasedAmount">
+					<input type="number" id="increasedAmount" min="1" maxlength="6" required oninput="numberMaxLength(this); preventNegative(this);" >
 					<button class="plusBtn">증가</button></td>
+				<td>
+				<span onclick="location.href='../item/modify?itemId=${ItemVO.itemId }'">수정</span><br><br>
+				<span class="deleteItem">삭제</span>
+					<form id="deleteForm" action="../item/delete" method="POST">
+				        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+				        <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
+				        <input type="hidden" class="itemId" value="${ItemVO.itemId }">
+				    </form><br>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
-	</table>
+	</table>	
 	<br>
 	
 	<ul>
@@ -83,18 +98,28 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				<li class="pagination_button"><a href="status?&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
 			</c:if>
 		</ul>
-	
-	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+		
+
+		$('.deleteItem').click(function() {
+			// 게시글 삭제 클릭 시
+			var itemId = document.querySelector(".itemId").value;
+			
+			console.log("itemId : " + itemId);
+			
+			 if (confirm('삭제하시겠습니까?')) {
+				 $('#deleteForm').submit();
+			 }
+		});
 		
 		$('.itemStatus').on('click', function(){
 			let permission = $(this).data("status");
 			let row = $(this).closest("tr");
 			let itemId = row.find(".itemId").val();
 			
-			console.log(permission, itemId);
+			console.log("권한 : " + permission, "id : " + itemId);
 			
 			if(permission == "100"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
@@ -145,6 +170,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			        success: function (result) {
 			            console.log(result);
 			            if (result == 1) {
+			            	location.reload(true);
 			            } else {
 			                alert("변경 실패");
 			            }
@@ -186,6 +212,21 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			
 		});
 	});
+	
+	 function numberMaxLength(e){ // 길이 제한 스크립트
+
+	        if(e.value.length > e.maxLength){
+	            e.value = e.value.slice(0, e.maxLength);
+	        }
+	 
+	 }
+	 
+	 function preventNegative(element) { // 음수 제한 스크립트
+		    if (element.value < 0) {
+		        element.value = "";
+		    }
+		}
+	
 	</script>
 
 </div>

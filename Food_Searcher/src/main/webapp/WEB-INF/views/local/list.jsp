@@ -2,8 +2,12 @@
 	language="java"%>
 <html>
 <head>
-<link rel="stylesheet" href="../resources/css/Base.css">
+<link rel="stylesheet" 
+	href="${pageContext.request.contextPath }/resources/css/Base.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/List.css">
 <style type="text/css">
+
 
 /* hover 효과 */
 .search-select:hover {
@@ -23,6 +27,7 @@ table {
     border-width: 1px;
     text-align: center;
     width: 100%; /* 테이블 너비 100%로 설정하여 컨테이너에 맞게 확장 */
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* 테이블 헤더 고정 */
@@ -31,6 +36,7 @@ thead {
     top: 0;
     background-color: #f1f1f1; /* 헤더 배경색 */
     z-index: 1; /* 헤더가 내용 위에 표시되게 */
+    font-family: 'Noto Sans KR', sans-serif;
     
 }
 
@@ -46,11 +52,13 @@ th, td {
 ul {
     list-style-type: none;
     text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* 목록 항목 스타일 */
 li {
     display: inline-block;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 </style>

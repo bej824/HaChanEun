@@ -10,22 +10,106 @@ pageEncoding="UTF-8"%>
 <link rel="stylesheet"
 	href="../resources/css/Base.css">
 <style>
-
-#img {
-	width:500px;
-	height:500px;
-	background-color: #f9f9f9; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+body {
+	font-family: 'Noto Sans KR', Arial, sans-serif !important;
 }
 
-*:disabled {
-	width:80%;
-	height:60%;
-	background-color: #f9f9f9;
-}
+ #itemDetail {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 1000px;
+    border-radius: 12px;
+    flex-direction: row;
+        
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    }
 
-.ask, .review {
+    /* 이미지 영역 */
+    .imgDiv {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .image_item img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 제목 */
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    /* 가격과 수량 */
+    .itemInfo {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 18px;
+    }
+
+    .price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+
+    /* 버튼 영역 */
+    .button-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .button:hover {
+        opacity: 0.8;
+    }
+
+    .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .modify-btn {
+        background-color: #3498db;
+        color: white;
+    }
+
+    #btnCart {
+        background-color: #3CA03C	;
+        color: white;
+    }
+
+    #btnBuy {
+        background-color: #3CA03C	;
+        color: white;
+    }
+
+  .ask, .review {
     flex: 1;
     border-width: 3px 1px 1px 1px;
     background-color: #f9f9f9;
@@ -35,6 +119,9 @@ pageEncoding="UTF-8"%>
     text-align: center;
 }
 
+    .ask:hover, .review:hover {
+        background-color: #ddd;
+    }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -71,9 +158,11 @@ pageEncoding="UTF-8"%>
 				        </div>
 				    </c:if>
 				</c:forEach>
+		</div> <!-- imgDiv -->
+		
 		<div class="itemDetailDiv">
 		<p class="title">${itemVO.itemName }</p>
-			
+		
 			<div class="buy">
 				<sec:authorize access="isAnonymous()">
 					<p>로그인이 필요한 기능입니다</p>
@@ -104,7 +193,16 @@ pageEncoding="UTF-8"%>
 					
 					</c:choose>
 					</div>
-				</sec:authorize>
+				</sec:authorize><br>
+				<br>
+		<div class="itemInfo">
+		<span class="price"><fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</span>
+		<span class="itemDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</span>
+
+		<p>판매자 : ${itemVO.memberId } </p>
+		<span class="itemContent">${itemVO.itemContent }</span>
+		</div>
+		<input type="hidden" id="itemId" value="${itemVO.itemId }">		
 			
 		    <input type="hidden" id="memberId" value=<sec:authentication property="name" />>
 		    <input type="hidden" id="itemIdInput" name="itemId" value="${itemVO.itemId}">
@@ -114,20 +212,10 @@ pageEncoding="UTF-8"%>
 			<!-- end Buy -->
 		
 		</div>
-		
-	</div>
 	<!-- end imgDiv -->
-	</div>
 	
-	<div class="itemInfo">
-		<span class="price"><fmt:formatNumber value="${itemVO.itemPrice }" pattern="###,###,###" />원</span>
-		<span class="itemDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${itemVO.itemDate }" />  |  현재 수량 : ${itemVO.itemAmount }</span>
-
-		<p>판매자 : ${itemVO.memberId } </p>
-	<span class="itemContent">${itemVO.itemContent }</span>
-	</div>
-	<input type="hidden" id="itemId" value="${itemVO.itemId }">
 	
+	</div>
     
     <form id="deleteForm" action="delete" method="POST">
         <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -138,8 +226,6 @@ pageEncoding="UTF-8"%>
 	<div class="relationArea">
 		<%@ include file="relation.jsp"%>
 	</div>
-	
-	<button onclick="location.href='list?keyword=${param.keyword}&type=${param.type}'" class="button" id="listBoard">글 목록</button>
 	
 	<br><br>
 	

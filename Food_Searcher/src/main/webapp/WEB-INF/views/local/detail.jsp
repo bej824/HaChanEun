@@ -28,7 +28,6 @@
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area">
-	<h2>글 보기</h2>
 	<form id="updateForm" action="update" method="post">
 	<div>
 		<input type="hidden" id="Id" name="Id"

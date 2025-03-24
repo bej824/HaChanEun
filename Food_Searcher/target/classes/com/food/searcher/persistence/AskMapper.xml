@@ -44,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    AND TRUNC(ASK_DATE) = TRUNC(SYSDATE)
 	</select>
 	
-	<select id="countSelect">
-		SELECT ANSWER_COUNT
+	<select id="countSelect" resultType="int">
+		SELECT COALESCE(ANSWER_COUNT, 0)
 		FROM ASK
 		WHERE ASK_ID = #{askId}
 	</select>

@@ -25,13 +25,6 @@
     </c:if>
     
     <!-- 카테고리 버튼 -->
-    <div style="text-align: center;" class="category">
-        <a href="recipe/list?type=CATEGORY&keyword=한식" class="button">한식</a>
-        <a href="recipe/list?type=CATEGORY&keyword=중식" class="button">중식</a>
-        <a href="recipe/list?type=CATEGORY&keyword=일식" class="button">일식</a>
-        <a href="recipe/list?type=CATEGORY&keyword=동남아식" class="button">동남아식</a>
-        <a href="recipe/list?type=CATEGORY&keyword=양식" class="button">양식</a>
-    </div>
 
     <!-- 레시피 목록 -->
 <div class="itemContainer2">

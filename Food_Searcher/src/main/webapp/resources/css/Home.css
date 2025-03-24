@@ -13,12 +13,14 @@ body {
 }
 
 .titleText {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
     margin:5px 5px 5px;
     left: 5px;
     padding: 5px;
     font-family: 'Noto Sans KR', sans-serif;
+    overflow: auto;
+    text-overflow: ellipsis;
 }
 
 .infoDiv {

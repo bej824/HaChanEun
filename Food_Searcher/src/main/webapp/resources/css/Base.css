@@ -4,14 +4,12 @@
 	margin-right: 5%;
 	margin-left: 20%;
 	align-items:flex-start;
-	font-family: 'Noto Sans KR', sans-serif;
 }
 
 #area2 {
 	display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Noto Sans KR', sans-serif;
 }
 
 body {

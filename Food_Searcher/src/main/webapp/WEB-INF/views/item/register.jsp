@@ -18,7 +18,7 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<title>Insert title here</title>
+<title>등록</title>
 
 </head>
 <body>
@@ -32,15 +32,15 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	
 	<div>
-	<input type="text" id="itemName" name="itemName" placeholder="음식 이름을 입력해주세요."	maxlength="200" required>
+	<textarea id="itemName" name="itemName" placeholder="음식 이름을 입력해주세요." maxlength="100" required></textarea>
 	</div>
 	
 	<div>
-	<input type="text" id="itemPrice" name="itemPrice" placeholder="가격을 입력해주세요." maxlength="100" required>
+	<input type="number" id="itemPrice" name="itemPrice" placeholder="가격을 입력해주세요." min="1" maxlength="9" required oninput="numberMaxLength(this); preventNegative(this);" >
 	</div> 
 	
 	<div>
-	<input type="text" id="itemAmount" name="itemAmount" placeholder="현재 수량을 입력해주세요." maxlength="1000" required>
+	<input type="number" id="itemAmount" name="itemAmount" placeholder="현재 수량을 입력해주세요." min="1" maxlength="9" required oninput="numberMaxLength(this);">
 	</div>
 	
 	<div>
@@ -243,6 +243,22 @@
 			    alert("이전 페이지가 없습니다.");
 			  }
 			}
+		
+		 function numberMaxLength(e){ // 길이 제한 스크립트
+
+		        if(e.value.length > e.maxLength){
+		            e.value = e.value.slice(0, e.maxLength);
+		        }
+		 
+		 }
+		 
+		 function preventNegative(element) { // 음수 제한 스크립트
+			    if (element.value < 0) {
+			        element.value = "";
+			    }
+			}
+		 
+		 
 	</script>
 <!-- area -->
 </body>

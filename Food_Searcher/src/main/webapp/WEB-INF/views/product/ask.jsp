@@ -150,7 +150,7 @@ $(document).ready(function(){
 							 console.log("modified");
 							 location.reload(true);
 						} else {
-							alert('문의 수정 실패');
+							alert('답변이 달린 문의는 수정이 불가능합니다.');
 						}
 					}
 					});
@@ -189,11 +189,11 @@ $(document).ready(function(){
 				success : function(result) {
 					console.log(result);
 					if(result == 1) {
-						alert('댓글 삭제 성공!');
+						alert('문의 삭제 성공');
 						getAllAsk();
 						location.reload(true);
 					} else {
-						alert('댓글 삭제 실패')
+						alert('문의 삭제 실패')
 						}
 					}
 				});

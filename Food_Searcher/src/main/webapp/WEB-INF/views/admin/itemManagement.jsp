@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+table {
+	border:solid 1px;
+}
+</style>
 <meta charset="UTF-8">
 <%@ include file ="../header.jsp" %>
 </head>

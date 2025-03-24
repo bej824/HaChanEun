@@ -20,13 +20,11 @@
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area2">
-	<h2>글 작성 페이지</h2>
-	
 	<div class="registerDiv">
 	<form id="registerForm" action="register" method="POST" enctype="multipart/form-data">
 		<!-- input 태그의 name은 vo의 멤버 변수 이름과 동일하게 작성 -->
 		<div>
-			<input type="text" id="recipeTitle" name="recipeTitle" placeholder="제목을 입력해주세요." maxlength="60" required class="inputTitle">
+			<textarea id="recipeTitle" name="recipeTitle" placeholder="제목을 입력해주세요." maxlength="60" required class="inputTitle"></textarea>
 		</div>
 		<div class="foodDiv">
 			<input type="text" id="recipeFood" name="recipeFood" placeholder="음식의 이름을 입력해주세요." maxlength="100" class="inputFood">

@@ -11,73 +11,155 @@
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 </script>
-<style type="text/css">
-	.content {
-		width: 700px;
-		height: 80px;
-		box-sizing: border-box;
-		border: 2px solid #ccc;
-		border-radius: 4px;
-		background-color: #f8f8f8;
-		font-size: 16px;
-		resize: none;
-    	
-    }
-
-textarea {
-	width: 700px;
-	height: 280px;
-	padding: 12px 20px;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 4px;
-	background-color: #f8f8f8;
-	font-size: 16px;
-	resize: none;
+<style>
+#area2 {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* 제목 스타일 */
+h1 {
+    text-align: center;
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 작성자 정보 */
+.memberId, .recipeDate {
+    font-size: 14px;
+    color: #777;
+}
+
+/* 레시피 카테고리 스타일 */
+.recipeFood {
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+}
+
+.recipeCtg {
+	font-size : 16px;
+}
+
+/* 입력 영역 스타일 */
+.content, textarea {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    font-size: 16px;
+    resize: none;
+    margin-bottom: 10px;
+    height: 280px;
+}
+
+/* 버튼 공통 스타일 */
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: white;
+    background: #04AA6D;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover {
+    background: #038a58;
+}
+
+/* 삭제 버튼 스타일 */
+#deleteBoard {
+    background: #d9534f;
+}
+
+#deleteBoard:hover {
+    background: #c9302c;
+}
+
+/* 이미지 리스트 스타일 */
+.image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image_item img {
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 재료 클릭 스타일 */
+.clickable-word {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 2px;
+    background: #eee;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.word-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.word-button:hover {
+    background: #217dbb;
+}
+
+.memberId {
+	font-size : 22px;
+}
+
 </style>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- css 파일 불러오기 -->
-<link rel="stylesheet"
-	href="../resources/css/Detail.css">
-<link rel="stylesheet"
-	href="../resources/css/Base.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/image.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<div id="area">
-	<div class="fixed-element">
-	<h2>글 보기</h2>
-	<div>
-		<p>글 번호 : ${recipeVO.recipeId }</p>
-	</div>
-	<div>
-		<p>제목 : ${recipeVO.recipeTitle }</p>
-	</div>
-	<div>
-		<p>작성자 : ${recipeVO.memberId }</p>
-		<!-- boardDateCreated 데이터 포멧 변경 -->
-		<fmt:formatDate value="${recipeVO.recipeDateCreated }"
-					pattern="yyyy-MM-dd" var="recipeDateCreated"/>
-		<p>작성일 : ${recipeDateCreated }</p>
-		<p>음식 : <span>${recipeVO.recipeFood }</span></p>
-	</div>
-	<div>
-		<p>카테고리 : ${recipeVO.category }</p>
-	</div>
-	<div>
-	<p>재료 : </p>
-	<div class="content">
-		<span class="clickable-word">${recipeVO.ingredient } </span>
-	</div>
-	<p>레시피 : </p>
-	<textarea rows="20" cols="120" readonly>${recipeVO.recipeContent } </textarea>
-	  </div>
+	<div id="area2">
+	<h1>${recipeVO.recipeTitle }</h1>
+	    <div>
+	        <span class="memberId">${recipeVO.memberId }</span>
+	        
+	        <span class="recipeDate">
+	        <fmt:formatDate value="${recipeVO.recipeDateCreated }" pattern="yyyy-MM-dd" var="recipeDateCreated"/> 
+	        작성일 : ${recipeDateCreated }</span>
+	        
+	        <div>
+		        <sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
+		            <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
+		            <button id="deleteBoard" class="button">글 삭제</button>
+		        </sec:authorize>
+	        </div>
+	        
+	        <p class="recipeFood">${recipeVO.recipeFood } <span class="recipeCtg">(${recipeVO.category })</span></p>
+	    </div>
+	
+	<br><br><br>
+    <p>＜재료＞</p>
+    <span class="clickable-word">${recipeVO.ingredient }</span>
+
+    <p>＜레시피＞</p>
+    <textarea class="recipeContent" readonly>${recipeVO.recipeContent }</textarea>
 
 	<form id="listForm" action="list" method="GET">
 		<input type="hidden" name="pageNum" >
@@ -105,7 +187,6 @@ textarea {
 	<!-- 이미지 파일 영역 -->
 	<div class="image-upload">
 		<div class="image-view">
-			<h3>이미지 파일 리스트</h3>
 			<div class="image-list">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${idList}">
@@ -128,10 +209,6 @@ textarea {
     <c:set var="sessionMemberId" value="${sessionScope.memberId}" />
     <c:set var="recipeMemberId" value="${recipeVO.memberId}" />
 
-    <sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
-        <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
-        <button id="deleteBoard" class="button">글 삭제</button>
-    </sec:authorize>
 	<form id="deleteForm" action="delete" method="POST" enctype="multipart/form-data">
 	    <!-- 레시피 ID hidden 필드 -->
 	    <input type="hidden" name="recipeId" value="${recipeVO.recipeId}">
@@ -206,8 +283,7 @@ textarea {
 	</script>
 
 	<%@ include file="likes.jsp"%>
-
-	</div>
+	<br><br>
 	<%@ include file="reply.jsp"%>
 	<input type="hidden" id="recipeId" value="${recipeVO.recipeId }">
 	<div style="text-align: center;">

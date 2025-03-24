@@ -23,6 +23,9 @@
     display: block;
 }
 
+.paginationDiv {
+	margin-top:100px;
+	}
 
 </style>
 <link rel="stylesheet"
@@ -79,7 +82,7 @@
 	        <div class="titleDiv">
 				<p class="recipeTitleText">${RecipeVO.recipeTitle }</p>
 			</div>
-				<p class="viewsText">조회수 : ${RecipeVO.viewCount }회</p>
+				<p class="viewsText">조회수 : ${RecipeVO.viewCount }회 <span class="replyText">| 댓글 (${RecipeVO.replyCount })개</span></p>
 			</div>
 		</c:forEach>
 	</div>
@@ -101,33 +104,36 @@
 	    	<input type="hidden" name="type">
 			<input type="hidden" name="keyword">
 	    </form>
-	<ul>
-		<!-- 이전 버튼 생성을 위한 조건문 -->
-		<c:if test="${pageMaker.isPrev() }">
-		    <li class="pagination_button">
-		        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
-		    </li>
-		</c:if>
-		
-		<c:set var="pageNum" value="${param.pageNum != null && param.pageNum > 0 ? param.pageNum : 1}" />
-		<!-- 페이지 번호 생성 (시작 번호부터 끝 번호까지) -->
-		<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
-		    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
-		        <li class="pagination_button">
-		            <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" 
-		               class="button ${param.pageNum == num ? 'selected' : ''}"
-		               onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a>
-		        </li>
-		    </c:forEach>
-		</c:if>
-		
-		<!-- 다음 버튼 생성을 위한 조건문 -->
-		<c:if test="${pageMaker.isNext() }">
-		    <li class="pagination_button">
-		        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
-		    </li>
-		</c:if>
-	</ul>
+	    
+	<div class="paginationDiv">
+		<ul>
+			<!-- 이전 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isPrev() }">
+			    <li class="pagination_button">
+			        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.startNum - 1}" class="button">이전</a>
+			    </li>
+			</c:if>
+			
+			<c:set var="pageNum" value="${param.pageNum != null && param.pageNum > 0 ? param.pageNum : 1}" />
+			<!-- 페이지 번호 생성 (시작 번호부터 끝 번호까지) -->
+			<c:if test="${not empty pageMaker.startNum and pageMaker.startNum > 0}">
+			    <c:forEach begin="${pageMaker.startNum }" end="${pageMaker.endNum }" var="num">
+			        <li class="pagination_button">
+			            <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${num}" 
+			               class="button ${param.pageNum == num ? 'selected' : ''}"
+			               onclick="changeColor(this, ${num}); return isNumber(${num})">${num}</a>
+			        </li>
+			    </c:forEach>
+			</c:if>
+			
+			<!-- 다음 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isNext() }">
+			    <li class="pagination_button">
+			        <a href="list?keyword=${param.keyword}&type=${param.type}&pageNum=${pageMaker.endNum + 1}" class="button">다음</a>
+			    </li>
+			</c:if>
+		</ul>
+	</div>
 
 	<script>
 	function changeColor(button, pageNum) {
