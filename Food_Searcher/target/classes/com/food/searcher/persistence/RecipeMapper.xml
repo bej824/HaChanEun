@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    		WHERE b.FOOD = #{food}
         ORDER BY DBMS_RANDOM.VALUE
     )
-    WHERE ROWNUM = 1;
+    WHERE ROWNUM = 1
 	</select>
 
 	<update id="update">
