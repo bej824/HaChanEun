@@ -58,7 +58,7 @@ li {
 <hr>
 		<div class="item-container">
 			<c:forEach var="itemVO" items="${itemList}">
-			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
+			<div class="item" onclick="window.location.href='detail?itemId=${itemVO.itemId}&keyword=${param.keyword}&type=${param.type}'">
 					<input type="hidden" value="${itemVO.itemStatus }" >
 					<c:set var="imageFound" value="false"/>
 					<c:forEach var="attachVO" items="${attachVO}">

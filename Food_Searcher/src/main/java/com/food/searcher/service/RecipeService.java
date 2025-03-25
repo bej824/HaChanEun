@@ -7,6 +7,7 @@ import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.domain.RecipeLikesVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.domain.RecommendVO;
 import com.food.searcher.util.Pagination;
 
 public interface RecipeService {
@@ -22,6 +23,8 @@ public interface RecipeService {
 	MemberVO memberInfo(Principal principal);
 	
 	RecipeLikesVO memberLike(int recipeId, Principal principal);
+	List<RecommendVO> recommend(String memberId);
+	RecipeVO selectRandom();
 	
 	List<AttachVO> attachAll();
 	List<AttachVO> homeAttach();

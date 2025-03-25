@@ -22,6 +22,7 @@ import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RecipeViewListVO;
 import com.food.searcher.domain.RecipeViewsVO;
+import com.food.searcher.domain.RecommendVO;
 import com.food.searcher.persistence.AttachMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.RecipeMapper;
@@ -260,6 +261,16 @@ List<AttachVO> attachVO = attachService.getSelectAll();
 	        }
 		}
 		return list;
+	}
+
+	@Override
+	public List<RecommendVO> recommend(String memberId) {
+		return recipeMapper.recommend(memberId);
+	}
+
+	@Override
+	public RecipeVO selectRandom() {
+		return recipeMapper.selectRandom();
 	}
 
 }

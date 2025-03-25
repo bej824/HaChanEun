@@ -26,6 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="ingredient" column="INGREDIENT" />
 		<result property="category" column="CATEGORY" />
 	</resultMap>
+	
+	<resultMap type="com.food.searcher.domain.RecommendVO" id="recommendMap">
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="food" column="FOOD" />
+	</resultMap>
 
 	<!-- <select>, <insert>, <update>, <delete> : SQL 쿼리 정의 태그 - 속성 : id : Mapper 
 		인터페이스 메서드 매핑 역할. resultMap : 쿼리 결과를 resultMap에 매핑. <resultMa>태그에 id를 적용 resultType 
@@ -52,6 +57,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectOne" resultMap="recipeResultMap">
 		<!-- 상세 게시글 조회 -->
 		SELECT * FROM RECIPE WHERE RECIPE_ID = #{recipeId}
+	</select>
+	
+	<select id="selectRandom" resultMap="recipeResultMap">
+	    <!-- RECIPE_ID 기준으로 랜덤하게 하나의 레코드를 조회 -->
+	    SELECT * FROM (
+	        SELECT * FROM RECIPE
+	        ORDER BY DBMS_RANDOM.VALUE
+	    )
+	    WHERE ROWNUM = 1
+	</select>
+	
+	<select id="selectRandomByRecipeId" resultMap="recipeResultMap">
+		SELECT * FROM (
+        SELECT RECIPE_ID
+    	FROM RECIPE a
+    	INNER JOIN RECOMMEND b
+   		ON a.RECIPE_FOOD = b.FOOD
+   		WHERE b.FOOD = #{food}
+        ORDER BY DBMS_RANDOM.VALUE
+    )
+    WHERE ROWNUM = 1;
 	</select>
 
 	<update id="update">
@@ -158,4 +184,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE RECIPE_ID = #{recipeId}
 	</update>
 
+	<select id="recommend" resultMap="recommendMap">
+		SELECT * FROM (
+	        SELECT * 
+            FROM RECOMMEND
+            WHERE MEMBER_ID = #{memberId}
+	        ORDER BY DBMS_RANDOM.VALUE
+	    )
+	    WHERE ROWNUM = 1
+	</select>
 </mapper>

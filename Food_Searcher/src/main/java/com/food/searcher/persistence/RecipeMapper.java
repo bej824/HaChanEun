@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.domain.RecommendVO;
 import com.food.searcher.util.Pagination;
 
 @Mapper
@@ -21,4 +22,7 @@ public interface RecipeMapper {
 	// @Param : 자바 객체의 속성을 mapper에 매핑
 	int updateLikesCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 좋아요 수 변경
 	int updateDislikesCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 싫어요 수 변경
+	List<RecommendVO> recommend(String memberId);
+	RecipeVO selectRandom();
+	RecipeVO selectRandomByRecipeId(String food);
 }

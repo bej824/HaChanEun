@@ -118,5 +118,13 @@ public class RecipeController {
 		// 삭제 후 레시피 목록 페이지로 리다이렉트
 		return "redirect:/recipe/list";
 	}
+	
+	@GetMapping("/recommend")
+	public void recommendGET(Model model, Principal principal) {
+		log.info("recommendGET()");
+		model.addAttribute("recommend", recipeService.recommend(principal.getName()));
+		model.addAttribute("memberId", principal.getName());
+		model.addAttribute("random", recipeService.selectRandom());
+	}
 
 }

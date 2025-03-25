@@ -1,5 +1,6 @@
 package com.food.searcher.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,6 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Bean
+    public CustomLoginSuccessHandler customLoginSuccessHandler() {
+        return new CustomLoginSuccessHandler();
+    }
 
 	// HttpSecurity 객체를 통해 HTTP 보안 기능을 구성
 	@Override
@@ -74,7 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.formLogin().loginPage("/auth/login") // 커스텀 로그인 url 설정
 			.loginProcessingUrl("/auth/login")
-			.defaultSuccessUrl("/home"); // 접근 제한 설정이 되어 있지 않은 url에서 로그인 성공 시 이동할 url 설정
+			.defaultSuccessUrl("/home", true) // 접근 제한 설정이 되어 있지 않은 url에서 로그인 성공 시 이동할 url 설정
+			.successHandler(customLoginSuccessHandler());
 
 		httpSecurity.logout().logoutUrl("/auth/logout") // logout url 설정
 			.logoutSuccessUrl("/home") // 로그아웃 성공 시 이동할 url 설정
