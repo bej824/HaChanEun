@@ -15,8 +15,8 @@ public class EmailAuthUtil {
 	
 	public int insertAuth(String email, int checkNum) {
 		int result = 0;
-		if(emailAuth.get(email) != null) {
-			emailAuth.clear();
+		if(emailAuth.containsKey(email)) {
+			emailAuth.remove(email);
 		}
 		try {
 			emailAuth.put(email, checkNum);

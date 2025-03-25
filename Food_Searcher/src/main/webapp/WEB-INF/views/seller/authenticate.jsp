@@ -18,11 +18,12 @@
 	
 	<p>사업자등록번호 : </p>
 	<input type="text" name="businessRegistrationNumber" id="businessRegistrationNumber"
-		maxlength="10" placeholder="대표자명 입력" required>
+		maxlength="10" placeholder="사업자등록번호 입력" required>
 	<div id="BRNMsg" class="message" style="color: red;">대표자분 성함을 입력해주세요!</div>
 	
 	<p>개업일자 : </p>
-	<input type="text" name="openingDate" id="openingDate" placeholder="개업일자 8자리를 입력해주세요." required>
+	<input type="text" name="openingDate" id="openingDate" placeholder="개업일자 8자리를 입력해주세요."
+		maxlength="8" required>
 	<div id="dateMsg" class="message" style="color: red;">개업일자를 입력해주세요!</div>
 	
 	<button id="btn_register" class="button">판매자 등록</button>
@@ -66,14 +67,36 @@
 		
 		$('#openingDate').change(function(){
 			let openingDate = $(this).val();
+			let nowDate = "${nowDate}";
 			BRNCheck = false;
+			let msg = $('#dateMsg').html('개업일자를 확인 후 다시 입력해주세요.').css('color', 'red');
 			
 			if(!/^\d+$/.test(openingDate) || openingDate.length != 8) {
-				$('#dateMsg').html('개업일자를 다시 한번 확인 후 입력해주세요.').css('color', 'red');
+				$(this).val('');
   				return;
 			} else {
-				dateCheck = true;
-				$('#dateMsg').html('');
+				
+				const year = parseInt(openingDate.slice(0, 4), 10);
+  			   	const month = parseInt(openingDate.slice(4, 6), 10);
+  			    const day = parseInt(openingDate.slice(6, 8), 10);
+  			   		
+  			    if(nowDate - openingDate < 0){
+  			    	msg;
+  				} else if(month < 1 || month > 12){
+  					msg;
+  				} else if(day < 1 || day > 31){
+  					msg;
+  				} else if(month30.has(month) && day == 31){
+  					msg;
+  				} else if(year % 4 != 0 && month == 2 && day > 28){
+  					msg;
+  				} else if(year % 4 == 0 && month == 2 && day > 29){
+  					msg;
+  				} else {
+  					BRNCheck = true;
+					$('#dateMsg').html('');
+  				}
+				
 			}
 			
 		})

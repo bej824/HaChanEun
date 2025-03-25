@@ -27,7 +27,7 @@
 		<div id="pw2Msg" class="message" style="color: red;">비밀번호 다시 입력해주세요.</div>
 
 		<p>이름</p>
-		<input type=text name="memberName" id="memberName" placeholder="이름을 입력해주세요." required>
+		<input type=text name="memberName" id="memberName" maxlength="20" placeholder="이름을 입력해주세요." required>
 		<br>
 
 		<p>성별</p>

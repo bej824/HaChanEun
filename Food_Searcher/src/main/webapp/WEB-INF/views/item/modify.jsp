@@ -156,7 +156,7 @@
 	</sec:authorize>	
 	<div class="button-container">
 	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
-	<button id="modifyBoard" class="button">등록</button>
+	<button id="modifyBoard" class="button">수정</button>
 	</sec:authorize>
 	</div>
 	

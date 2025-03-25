@@ -1,6 +1,8 @@
 package com.food.searcher.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +40,10 @@ public class SellerController {
 	ItemService itemService;
 		
 	@GetMapping("authenticate")
-	public void authenticateGET() {
+	public void authenticateGET(Model model) {
 		log.info("authenticateGET()");
 		
+		model.addAttribute("nowDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 	}
 	
 	@GetMapping("/status")
@@ -105,8 +108,28 @@ public class SellerController {
 	}
 	
 	@GetMapping("management")
-	public void managementGET() {
-		log.info("managementGET()");
+	public String managementGET(Model model, 
+			Principal principal, 
+			Pagination pagination) {
+		String memberId = principal.getName();
+		log.info("사용자 : " + memberId);
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPagination(pagination);
+		pageMaker.setTotalCount(sellerService.getTotalCount(pagination));
+
+		List<ItemVO> itemList = sellerService.select(memberId, pagination);
+
+		if(!itemList.isEmpty()) {
+			model.addAttribute("itemList", itemList);
+		} else {
+			return "returnPage";
+		}
+
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "seller/management";
 	}
 	
 	@ResponseBody

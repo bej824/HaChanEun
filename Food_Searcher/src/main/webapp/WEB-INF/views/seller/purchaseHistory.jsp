@@ -8,7 +8,14 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
-<div id="area2">
+	
+	<div id="area">
+	<h1>거래 내역 관리</h1>
+	<a href="management" class="button" style="text-align: left;">상품 관리</a>
+	</div>
+	
+	<div id="area2">
+	
 	<table border="1">
 		<thead>
 			<tr>

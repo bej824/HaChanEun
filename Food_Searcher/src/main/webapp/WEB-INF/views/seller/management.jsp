@@ -4,6 +4,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
+.button {
+	margin : 5px;
+}
+
+#increasedAmount {
+	width:5em;
+}
+
+</style>
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Base.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Cart.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/attach.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Detail.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/Reply.css">
+<link rel="stylesheet" type="text/css"
+href="${pageContext.request.contextPath}/resources/css/image.css">
 <title>판매 관리</title>
 </head>
 <body>
@@ -15,16 +37,77 @@
 	
 	<div style="display: flex;">
 	<a href="/searcher/item/register" class="button">상품 등록</a>
-	<a href="/searcher/seller/status" class="button">상품 관리</a><br>
 	<a href="purchaseHistory" class="button">상품 거래 내역</a>
-	<sec:authorize access="hasRole('ROLE_MEMBER')">
-	<a href="../item/purchaseHistory" class="button">구매 내역</a>
-	</sec:authorize>
 	</div>
 	
-	</div>
+	<table>
+		<thead>
+			<tr>
+				<th style="width: 10%">상품 명</th>
+				<th style="width: 10%">분류</th>
+				<th style="width: 10%">가격</th>
+				<th style="width: 10%">상태</th>
+				<th style="width: 10%">수량</th>
+				<th style="width: 10%"></th>
+				<th style="width: 10%"></th>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach var="ItemVO" items="${itemList}">
+			<tr>
+				<td>${ItemVO.itemName }</td>
+				<td>${ItemVO.mainCtg}</td>
+				<td><fmt:formatNumber value="${ItemVO.itemPrice}" pattern="###,###,###" />원</td>
+				<td class="itemStatus" data-status="${ItemVO.itemStatus}">
+				    <c:choose>
+				        <c:when test="${ItemVO.itemStatus == 0}">전체 보기</c:when>
+				        <c:when test="${ItemVO.itemStatus == 100}">판매 중</c:when>
+				        <c:when test="${ItemVO.itemStatus == 200}">판매 중지</c:when>
+				        <c:when test="${ItemVO.itemStatus == 300}">판매 허가 요청</c:when>
+	  				</c:choose>
+				<input type="hidden" value="${ItemVO.itemId }" class="itemId">
+				</td>
+				<td class="itemAmount" data-amount="${ItemVO.itemAmount }">
+					${ItemVO.itemAmount }
+				</td>
+				<td>
+					<input type="number" id="increasedAmount" min="1" maxlength="6" required oninput="numberMaxLength(this); preventNegative(this);" >
+					<button class="plusBtn">증가</button></td>
+				<td>
+				<span onclick="location.href='../item/modify?itemId=${ItemVO.itemId }'">수정</span><br><br>
+				<span class="deleteItem">삭제</span>
+					<form id="deleteForm" action="../item/delete" method="POST">
+				        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+				        <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
+				        <input type="hidden" class="itemId" value="${ItemVO.itemId }">
+				    </form><br>
+				</td>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>	
+	<br>
 	
+	<ul>
+			<!-- 이전 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isPrev() }">
+				<li class="pagination_button"><a href="status?&pageNum=${pageMaker.startNum - 1}" class="button">이전</a></li>
+			</c:if>
+			<!-- 반복문으로 시작 번호부터 끝 번호까지 생성 -->
+			<c:forEach begin="${pageMaker.startNum }"
+				end="${pageMaker.endNum }" var="num">
+				<li class="pagination_button"><a href="status?&pageNum=${num }" class="button">${num }</a></li>
+			</c:forEach>
+			<!-- 다음 버튼 생성을 위한 조건문 -->
+			<c:if test="${pageMaker.isNext() }">
+				<li class="pagination_button"><a href="status?&pageNum=${pageMaker.endNum + 1}" class="button">다음</a></li>
+			</c:if>
+		</ul>
+		
+	</div>
 	<script type="text/javascript">
+	
+	$(document).ready(function(){
 		$('#btn_memberCoupon').click(function(){
 			window.location.href = "../access/memberCoupon";
 		})
@@ -32,6 +115,131 @@
 		$('#btn_couponList').click(function(){
 			window.open("../coupon/list", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
 		})
+
+		$('.deleteItem').click(function() {
+			// 게시글 삭제 클릭 시
+			var itemId = document.querySelector(".itemId").value;
+			
+			console.log("itemId : " + itemId);
+			
+			 if (confirm('삭제하시겠습니까?')) {
+				 $('#deleteForm').submit();
+			 }
+		});
+		
+		$('.itemStatus').on('click', function(){
+			let permission = $(this).data("status");
+			let row = $(this).closest("tr");
+			let itemId = row.find(".itemId").val();
+			
+			console.log("권한 : " + permission, "id : " + itemId);
+			
+			if(permission == "100"){
+				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
+				console.log("100>200");
+				
+				if(result) {
+					$(this).data("status", 200);
+					itemStatus = 200;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 중지");
+					alert("변경 완료 : 판매 중지");
+				}
+				
+			} else if(permission == "300") {
+				let result = confirm("해당 물품의 판매를 중단하시겠습니까?");
+				console.log("300>200")
+				
+				if(result) {
+					$(this).data("status", 200);
+					itemStatus = 200;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 중지");
+					alert("변경 완료 : 판매 중지");
+				}
+				
+			} else if(permission == "200") {
+				let result = confirm("해당 물품의 판매 중지를 취소하시겠습니까?");
+				console.log("200>300");
+				
+				if(result) {
+					$(this).data("status", 300);
+					itemStatus = 300;
+					updateItemStatus();
+					row.find(".itemStatus").html("판매 허가 요청");
+					alert("변경 완료 : 판매 허가 요청");
+				} 
+			}
+			
+			function updateItemStatus(){
+				
+				$.ajax({
+			        type: "PUT",
+			        url: "../seller/status/" + itemId,
+			        headers: {
+			            "Content-Type": "application/json",
+			        },
+			        data: JSON.stringify(itemStatus),
+			        success: function (result) {
+			            console.log(result);
+			            if (result == 1) {
+			            	location.reload(true);
+			            } else {
+			                alert("변경 실패");
+			            }
+			        },
+			    });
+			};
+			
+		});
+	
+		$('.plusBtn').on('click', function(){
+			let row = $(this).closest("tr");
+			let itemAmount = parseInt(row.find(".itemAmount").data("amount"), 10);
+			let increasedAmount = parseInt(row.find("#increasedAmount").val(), 10);
+			let itemId = row.find(".itemId").val();
+			
+			console.log("수량 : " + itemAmount, " | 증가될 수량 : " + increasedAmount, "상품 번호 : " + itemId);
+			
+			itemAmount = itemAmount + increasedAmount;
+			
+			console.log("증가된 수량 : " + itemAmount);
+			
+			$.ajax({
+		        type: "PATCH",
+		        url: "../seller/status/" + itemId + "/" + itemAmount,
+		        headers: {
+		            "Content-Type": "application/json",
+		        },
+		        data: JSON.stringify(itemId, itemAmount),
+		        success: function (result) {
+		            console.log(result);
+		            if (result == 1) {
+		            	 location.reload(true);
+		            } else {
+		                alert("변경 실패");
+		            }
+		        },
+		    });
+			
+			
+		});
+	});
+	
+	 function numberMaxLength(e){ // 길이 제한 스크립트
+
+	        if(e.value.length > e.maxLength){
+	            e.value = e.value.slice(0, e.maxLength);
+	        }
+	 
+	 }
+	 
+	 function preventNegative(element) { // 음수 제한 스크립트
+		    if (element.value < 0) {
+		        element.value = "";
+		    }
+		}
+	
 	</script>
 </body>
 </html>

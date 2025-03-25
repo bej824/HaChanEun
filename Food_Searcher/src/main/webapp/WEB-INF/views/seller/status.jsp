@@ -35,6 +35,11 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 
 <h1>상품 관리</h1>
 
+	<div style="display: flex;">
+	<a href="/searcher/item/register" class="button">상품 등록</a>
+	<a href="purchaseHistory" class="button">상품 거래 내역</a>
+	</div>
+	
 	<table>
 		<thead>
 			<tr>
@@ -101,7 +106,13 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+		$('#btn_memberCoupon').click(function(){
+			window.location.href = "../access/memberCoupon";
+		})
 		
+		$('#btn_couponList').click(function(){
+			window.open("../coupon/list", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
+		})
 
 		$('.deleteItem').click(function() {
 			// 게시글 삭제 클릭 시

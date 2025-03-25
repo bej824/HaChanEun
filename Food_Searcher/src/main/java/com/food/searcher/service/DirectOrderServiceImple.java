@@ -29,6 +29,7 @@ import com.food.searcher.persistence.CartMapper;
 import com.food.searcher.persistence.DirectOrderMapper;
 import com.food.searcher.persistence.ItemMapper;
 import com.food.searcher.persistence.MemberMapper;
+import com.food.searcher.util.OrderUtil;
 import com.food.searcher.util.Pagination;
 import com.food.searcher.util.SessionUtils;
 
@@ -54,10 +55,10 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	private CartService cartService;
 	
 	@Autowired
-	private MemberMapper memberMapper;
+    private RestTemplate restTemplate;
 	
 	@Autowired
-    private RestTemplate restTemplate;
+	private OrderUtil orderUtil;
 	
 	private static final String KAKAO_PAY_API_ID = 
     		"TC0ONETIME";
@@ -282,7 +283,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	@Transactional
 	public int priceInfo(List<DirectOrderVO> orderList) {
 		
-		
+		int result = 0;
 		int orderTotalPrice = 0;
 		
 		for(int i = 0; i < orderList.size(); i++) {
@@ -292,6 +293,9 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		orderTotalPrice = Math.max(orderTotalPrice, 0);
 		
 		ReadyResponse readyResponse = kakaoPayReady(orderList, orderTotalPrice);
+		
+		log.info(readyResponse);
+		
 		SessionUtils.addAttribute("tid", readyResponse.getTid());
 		SessionUtils.addAttribute("next_redirect_pc_url", readyResponse.getNext_redirect_pc_url());
 		
@@ -304,20 +308,17 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		}
 		SessionUtils.addAttribute("item_name", itemName);
 		
-		return kakao(orderList, orderTotalPrice);
+		if(SessionUtils.getAttribute("tid") != null) {
+			orderUtil.setOrderList(orderList);
+			result = 1;
+		}
+		
+		return result;
 	}
-	
-	@Transactional
-	public int kakao(List<DirectOrderVO> orderList, int orderTotalPrice) {
-		log.info("kakao");
-		return acountFinal(orderList);
-	}
-	
 	
 	@Transactional
 	public int acountFinal(List<DirectOrderVO> orderList) {
 		
-
 		directOrderMapper.insert(orderList);
 		cartService.deleteOrderCart();
 		
@@ -395,7 +396,11 @@ public class DirectOrderServiceImple implements DirectOrderService {
         		,requestEntity
         		,ApproveResponse.class);
         log.info("결제승인 응답객체: " + approveResponse);
-
+        
+        List<DirectOrderVO> orderList = orderUtil.getOrderList();
+        
+        acountFinal(orderList);
+        
         return approveResponse;
 	}
 	
