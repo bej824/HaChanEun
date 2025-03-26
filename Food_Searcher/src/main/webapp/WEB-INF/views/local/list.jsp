@@ -243,9 +243,9 @@ li {
 			                
 			                }
 			                
-			                if(mainCtg != '') {
-			                	$('#ctg').text(mainCtg + ' > ');
-			                }
+			                if (mainCtg != null && mainCtg !== '') {
+	                             $('#ctg').text(mainCtg + ' > ');
+	                         }
 			            });
 			            
 			         	// 선택된 값을 세팅

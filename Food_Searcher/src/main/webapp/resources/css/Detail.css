@@ -10,6 +10,12 @@
    top: auto !important;
    left: auto !important;
    border-radius: 3px;
+   
+}
+
+.buttonRecipeModify{
+	margin-left:10px;
+	
 }
 
  .minusBtn, .plusBtn {

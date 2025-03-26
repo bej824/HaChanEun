@@ -135,7 +135,7 @@
   	    	  	let itemPrice = ${itemVO.itemPrice};
   	    	  	console.log("아이템 가격 : " + itemPrice);
     			console.log("총 금액 : " + totalPrice);
-    			let deliveryAddress = $("#deleveryAddress").val();
+    			let deliveryAddress = $("#deliveryAddress").val();
     			console.log("주소 : " + deleveryAddress);
     			let couponSelect = $('#couponSelect').val();
     			let couponActiveId = couponActive[couponSelect].couponActiveId;

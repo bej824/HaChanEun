@@ -12,6 +12,7 @@
 	<%@ include file ="../header.jsp" %>
 	<div id="area">
 	<h1>이메일 확인</h1>
+	<p>회원가입에 사용될 이메일을 입력해주세요. 이메일은 ID, 패스워드 찾기에 사용됩니다.</p>
 	<%@ include file ="emailAuthHeader.jsp" %>
 	</div>
 </body>
