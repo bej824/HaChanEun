@@ -234,7 +234,8 @@ li {
 			            	}
 			                
 			                // 지역 중복 체크 및 옵션 추가
-			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict){
+			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict
+			                		&& localDistrict != LocalSpecialityVO.localDistrict){
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
 			                    let districtOption =
 			                        '<option value="' + localDistrict_optionVal + '">' + 
@@ -243,8 +244,8 @@ li {
 			                
 			                }
 			                
-			                if(mainCtg != '') {
-			                	$('#ctg').text(mainCtg + ' > ');
+			                if (mainCtg !== undefined && mainCtg !== null && mainCtg !== '') {
+			                    $('#ctg').text(mainCtg + ' > ');
 			                }
 			            });
 			            

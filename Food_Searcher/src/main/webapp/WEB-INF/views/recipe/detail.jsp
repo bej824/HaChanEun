@@ -237,7 +237,7 @@ h1 {
 	        // .clickable-word 클래스를 가진 요소를 선택합니다.
 	        let $spanElement = $('.clickable-word');
 	        let textContent = $spanElement.text();  // ingredient 내용 가져오기
-	
+	        
 	        let localList = `${localList}`;
 	        let localsplit = localList.split(' ');
 	

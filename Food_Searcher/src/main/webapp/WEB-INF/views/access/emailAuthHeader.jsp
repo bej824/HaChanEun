@@ -64,15 +64,15 @@ body {
 		
 		// email 변수
 		const email = document.getElementById('email');
+		let regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		
 		// 메세지 변수
 		const emailMsg = $('#emailMsg');
 		const confirmMsg = $('#confirmMsg');
 	
 		function confirm() {
-			console.log(btn_confirm.innerHTML);
 			
-			if(email.value == ""){
+			if(!regex.test(email.value)){
 				emailMsg.html('이메일을 확인하여주세요.');
 			} else {
 				countDown();

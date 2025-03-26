@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    WHERE ROWNUM = 1
 	</select>
 	
-	<select id="selectRandomByRecipeId" resultMap="recipeResultMap">
+	<select id="selectRandomByRecipeName" resultMap="recipeResultMap">
 		SELECT * FROM (
         SELECT RECIPE_ID
     	FROM RECIPE a
