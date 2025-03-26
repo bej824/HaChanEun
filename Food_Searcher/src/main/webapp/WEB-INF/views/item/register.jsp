@@ -32,7 +32,7 @@
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	
 	<div>
-	<textarea id="itemName" name="itemName" placeholder="음식 이름을 입력해주세요." maxlength="100" required></textarea>
+	<input type="text" id="itemName" name="itemName" placeholder="음식 이름을 입력해주세요." maxlength="100" required>
 	</div>
 	
 	<div>

@@ -136,12 +136,6 @@ body {
 	<div id="area2">
 	
 	<div id="itemDetail">
-	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
-	<div>
-   	<button onclick="location.href='modify?itemId=${itemVO.itemId }'" class="button">글수정</button>
-    <button id="deleteItem" class="button">글 삭제</button>
-    </div>
-    </sec:authorize>
 	
 	<div class="imgDiv">
 				<!-- 이미지 파일 처리 코드 -->

@@ -75,12 +75,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 					<button class="plusBtn">증가</button></td>
 				<td>
 				<span onclick="location.href='../item/modify?itemId=${ItemVO.itemId }'">수정</span><br><br>
-				<span class="deleteItem">삭제</span>
-					<form id="deleteForm" action="../item/delete" method="POST">
-				        <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-				        <input type="hidden" autocomplete="off" class="form-control" id="userName" name="name" value="${session.memberId }">
-				        <input type="hidden" class="itemId" value="${ItemVO.itemId }">
-				    </form><br>
+				<span class="deleteItem" id="${ItemVO.itemId }">삭제</span>
 				</td>
 			</tr>
 		</c:forEach>
@@ -118,12 +113,24 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 
 		$('.deleteItem').click(function() {
 			// 게시글 삭제 클릭 시
-			var itemId = document.querySelector(".itemId").value;
+			let itemId = $(this).attr('id');
 			
-			console.log("itemId : " + itemId);
-			
-			 if (confirm('삭제하시겠습니까?')) {
-				 $('#deleteForm').submit();
+			 if (confirm(itemId + '을 삭제하시겠습니까?')) {
+				 
+				 $.ajax({
+				        type: "POST",
+				        url: "../item/delete",
+				        data: {itemId:itemId},
+				        success: function (result) {
+				            console.log(result);
+				            if (result == 1) {
+				            	alert("삭제가 완료되었습니다.");
+				            	location.reload(true);
+				            } else {
+				                alert("삭제에 실패하였습니다.");
+				            }
+				        },
+				    });
 			 }
 		});
 		
