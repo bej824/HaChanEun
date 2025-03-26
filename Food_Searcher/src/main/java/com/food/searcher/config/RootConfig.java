@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.food.searcher.task.MemberCouponTask;
+import com.food.searcher.util.OrderUtil;
 import com.food.searcher.util.RandomUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -106,6 +107,11 @@ public class RootConfig {
 	    @Bean
 	    public RestTemplate restTemplate() {
 	        return new RestTemplate();
+	    }
+	    
+	    @Bean
+	    public OrderUtil orderUtil() {
+	    	return new OrderUtil();
 	    }
 	
 } // end RootConfig

@@ -23,10 +23,12 @@ public interface RecipeService {
 	MemberVO memberInfo(Principal principal);
 	
 	RecipeLikesVO memberLike(int recipeId, Principal principal);
-	List<RecommendVO> recommend(String memberId);
+	RecommendVO recommend(String memberId);
+	RecipeVO selectRandomByRecipeId(String food);
 	RecipeVO selectRandom();
 	
 	List<AttachVO> attachAll();
 	List<AttachVO> homeAttach();
 	List<AttachVO> attachBoardById(int recipeId);
+	AttachVO selectBoardId(int recipeId);
 }

@@ -225,8 +225,15 @@ public class RecipeServiceImple implements RecipeService {
 	@Override
 	public List<AttachVO> attachAll() {
 		List<AttachVO> attachVO = attachService.getSelectAll();
+		
+		List<AttachVO> distinctBoardIds = attachVO.stream()
+		        .collect(Collectors.toMap(AttachVO::getBoardId, attach -> attach, (existing, replacement) -> existing))
+		        .values()
+		        .stream()
+		        .collect(Collectors.toList());
+		
 		List<AttachVO> list = new ArrayList<AttachVO>();
-		for(AttachVO vo : attachVO) {
+		for(AttachVO vo : distinctBoardIds) {
 			Path filePath = Paths.get("C:\\upload\\food" + '\\' + vo.getAttachPath(), vo.getAttachChgName());
 			if (Files.exists(filePath)) {
 				list.add(vo);
@@ -264,13 +271,23 @@ List<AttachVO> attachVO = attachService.getSelectAll();
 	}
 
 	@Override
-	public List<RecommendVO> recommend(String memberId) {
+	public RecommendVO recommend(String memberId) {
 		return recipeMapper.recommend(memberId);
 	}
 
 	@Override
 	public RecipeVO selectRandom() {
 		return recipeMapper.selectRandom();
+	}
+
+	@Override
+	public RecipeVO selectRandomByRecipeId(String food) {
+		return recipeMapper.selectRandomByRecipeId(food);
+	}
+
+	@Override
+	public AttachVO selectBoardId(int recipeId) {
+		return attachMapper.selectBoardId(recipeId);
 	}
 
 }

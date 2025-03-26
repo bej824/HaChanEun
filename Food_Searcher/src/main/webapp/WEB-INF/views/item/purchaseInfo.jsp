@@ -104,6 +104,7 @@
     			    }, 
     			    success : function(result) {
     			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
+    			        	alert("구매 취소가 완료되었습니다.");
     			            location.reload();
     			    }
 

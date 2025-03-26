@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.food.searcher.domain.AttachVO;
 import com.food.searcher.domain.RecipeVO;
+import com.food.searcher.domain.RecommendVO;
 import com.food.searcher.service.RecipeService;
 import com.food.searcher.util.PageMaker;
 import com.food.searcher.util.Pagination;
@@ -122,9 +123,21 @@ public class RecipeController {
 	@GetMapping("/recommend")
 	public void recommendGET(Model model, Principal principal) {
 		log.info("recommendGET()");
-		model.addAttribute("recommend", recipeService.recommend(principal.getName()));
-		model.addAttribute("memberId", principal.getName());
-		model.addAttribute("random", recipeService.selectRandom());
+		RecommendVO recommend = recipeService.recommend(principal.getName());
+		if(recommend != null) {
+			log.info(recommend);
+			model.addAttribute("recommend", recommend);
+			model.addAttribute("memberId", principal.getName());
+			String food = recommend.getFood();
+			RecipeVO recipeVO = recipeService.selectRandomByRecipeId(food);
+			model.addAttribute("recipeVO", recipeVO);
+			model.addAttribute("image", recipeService.attachAll());
+		} else {
+			RecipeVO recipeVO = recipeService.selectRandom();
+			model.addAttribute("memberId", principal.getName());
+			model.addAttribute("random", recipeVO);
+			model.addAttribute("image", recipeService.attachAll());
+		}
 	}
 
 }

@@ -34,6 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE BOARD_ID = #{boardId}
 	</select>
 	
+	<select id="selectBoardId" resultMap="attachResultMap">
+		SELECT * FROM RECIPE_ATTACH 
+		WHERE BOARD_ID = #{boardId}
+	</select>
+	
 	<select id="selectByAttachId" resultMap="attachResultMap"> 
 		SELECT * FROM RECIPE_ATTACH 
 		WHERE ATTACH_ID = #{attachId} 
