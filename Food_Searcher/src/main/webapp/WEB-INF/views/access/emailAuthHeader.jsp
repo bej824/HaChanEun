@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>이메일 인증</title>
+<link rel="stylesheet"
+	href="../resources/css/Detail.css">
+	<link rel="stylesheet"
+	href="../resources/css/Base.css">
+	<link rel="stylesheet"
+	href="../resources/css/Register.css">
 <style>
 
 body {
@@ -24,23 +30,21 @@ body {
 </style>
 </head>
 <body>
-
+	<div class="registerDiv">
+	
 	<!-- 사용 시 '"헤더를 적용시킬 url" + ?select="form을 전달할 url"로 작성할 것.' -->
 	<form  id="emailForm" action="${select }" method="POST">
 	<input type="text" id="email" name="email" placeholder="이메일을 입력해주세요.">
-	<a id="countdown"></a>
 	<div id="confirmMsg" class="message" style="color:green;"></div>
 	<div id="emailMsg" class="message" style="color: red;"></div>
 	<!-- CSRF 토큰 -->
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>
-	<br>
 	<input type="text" id="emailCheck" name="emailCheck" placeholder="인증번호를 입력해주세요." style="display: none;">
-	<br>
 	<button id="btn_confirm" class="button" onclick="confirm()" style="" >인증번호 발송</button>
-	
 	<button id="btn_auth" class="button" onclick="emailAuth()" style="display: none;">인증</button>
-
+	
+	</div>
 	<script type="text/javascript">
 	
 		$(document).ajaxSend(function(e, xhr, opt){

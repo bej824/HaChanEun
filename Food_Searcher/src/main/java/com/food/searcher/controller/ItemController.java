@@ -128,14 +128,11 @@ public class ItemController {
 		return "redirect:/item/list";
 	}
 	
+	@ResponseBody
 	@PostMapping("/delete")
-	public String delete(Integer itemId) {
-		log.info("delete()");
-		int result = itemService.deleteItem(itemId);
-		log.info(result + "행 삭제");
-		log.info("itemId : " + itemId);
+	public int delete(@RequestParam("itemId") int itemId) {
 		
-		return "redirect:/item/list";
+		return itemService.deleteItem(itemId);
 	}
 
 	@GetMapping("/order")

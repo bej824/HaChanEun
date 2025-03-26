@@ -6,10 +6,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<link rel="stylesheet"
+	href="../resources/css/Detail.css">
+	<link rel="stylesheet"
+	href="../resources/css/Base.css">
+	<link rel="stylesheet"
+	href="../resources/css/Register.css">
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<div id="area">
+	
+	<div id="area2">
+	<div class="registerDiv">
 		<p>아이디</p>
 		<input type="text" name="memberId" id="memberId" maxlength="20" placeholder="아이디 입력"
 			required>
@@ -32,8 +40,8 @@
 
 		<p>성별</p>
 		<div style="display: flex;">
-		<input type="radio" name="memberGender" value="male">남 
-		<input type="radio" name="memberGender" value="female">여
+		남 <input type="radio" name="memberGender" value="male" style="width:20%;">
+		여 <input type="radio" name="memberGender" value="female" style="width:20%;">
 		</div>
 
 		<p>생일</p>
@@ -66,12 +74,16 @@
 
 		<p>이메일 광고 수신 동의</p>
 		<div style="display: flex;">
-		<input type="radio" name="emailAgree" value="yes" checked="checked">예
-		<input type="radio" name="emailAgree" value="no">아니오
-		<input type=hidden name=email value="${email}" readonly="readonly">
+		동의 <input type="radio" name="emailAgree" value="yes" checked="checked" style="width:20%;">
+		거부 <input type="radio" name="emailAgree" value="no" style="width:20%;">
 		</div>
+		
+		<input type=hidden name=email value="${email}" readonly="readonly">
 
 	<button class="button" name="insert" id="insert">회원가입</button>
+	
+	</div>
+	</div>
 
 	<script type="text/javascript">
     
@@ -241,7 +253,6 @@
   		
     })
 		
-		</script>
-</div>
+	</script>
 </body>
 </html>

@@ -25,12 +25,18 @@
 	height:100px;
 }
 
+#image-list{
+	width:400px;
+	height:220px;
+}
+
 #img {
 	width:200px;
 	height:200px;
 	background-color: #f9f9f9; /* 배경색 설정 */
     border: 1px solid #ddd; /* 테두리 추가 */
     padding: 10px; /* 첨부 목록 내부에 여백 추가 */
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/images.js"></script>
@@ -73,9 +79,7 @@
 			</c:if>
 			</c:forEach>
 			</select>
-			<select name="subCtg" id="subCtg">
-			<option>${itemVO.subCtg }</option>
-			</select>
+			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요.">
 		</div>
 		<p>원산지 : 
 		<select name="origin" id="origin">
@@ -97,7 +101,7 @@
 		
 		<input type="hidden" name="itemId" value="${itemVO.itemId }">
 		<input type="hidden" name="itemStatus" value="${itemVO.itemStatus }">
-		
+		</div>
 		
 		<div>
 		<p>상품 설명</p>
@@ -105,38 +109,6 @@
 				maxlength="1500" required>${itemVO.itemContent }</textarea>	
 		</div>
 		
-				
-		<!-- 이미지 파일 영역 -->
-	<div class="image-upload">
-		<div class="image-view">
-				<!-- 이미지 파일 처리 코드 -->
-                <c:forEach var="attachVO" items="${idList}">
-                    <c:if test="${attachVO.attachExtension eq 'jpg' or 
-                                  attachVO.attachExtension eq 'jpeg' or 
-                                  attachVO.attachExtension eq 'png' or 
-                                  attachVO.attachExtension eq 'gif'}">
-                        <div class="image_item">
-                            <a href="../images/get?attachId=${attachVO.attachId }" target="_blank">
-                                <img width="150px" height="150px" 
-                                     src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
-                            </a>
-                        </div>
-                    </c:if>
-                </c:forEach>
-		</div>
-		<div class="image-upload">
-			<div class="image-drop">
-				<span>* 이미지를 이곳에 드래그 하세요.<br><br>
-				* 이미지 파일은 최대 3개까지 가능합니다.<br><br>
-				* 최대 용량은 10MB 입니다.</span>
-			</div>
-			<div class="image-list">
-				<span>이미지 미리보기입니다.</span>
-		</div>
-	</div>
-	</div>
-		
-	</div>
 		
 		<!-- 기존 첨부 파일 리스트 데이터 구성 -->
 	<c:forEach var="attachVO" items="${itemVO.attachList}" varStatus="status">
@@ -145,15 +117,44 @@
 		<input type="hidden" class="input-attach-list" name="attachList[${status.index }].attachChgName" value="${attachVO.attachChgName }">
 		<input type="hidden" class="input-attach-list" name="attachList[${status.index }].attachExtension" value="${attachVO.attachExtension }">
 	</c:forEach>
-	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-		
 		</form>
-		
-	
 		
 	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
 		<button id="change-upload" class="button">파일 변경</button>
-	</sec:authorize>	
+	</sec:authorize>
+	
+	<!-- 이미지 파일 영역 -->
+	<div class="image-upload">
+		<div class="image-view">
+			<h2>이미지 파일 리스트</h2>
+			<div class="image-list">
+				<!-- 이미지 파일 처리 코드 -->
+                <c:forEach var="attachVO" items="${idList}">
+                    <c:if test="${attachVO.attachExtension eq 'jpg' or 
+                                  attachVO.attachExtension eq 'jpeg' or 
+                                  attachVO.attachExtension eq 'png' or 
+                                  attachVO.attachExtension eq 'gif'}">
+                        <div class="image_item">
+                            <a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+                                <img width="100px" height="100px" 
+                                     src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
+                            </a>
+                        </div>
+                    </c:if>
+                </c:forEach>
+			</div>
+		</div>
+		<div class="image-modify" style="display : none;">
+			<h2>이미지 파일 업로드</h2>
+			<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
+			<p>* 최대 용량은 10MB 입니다.</p>
+			<div class="image-drop">이미지를 드래그 하세요.</div>
+			<h2>선택한 이미지 파일 :</h2>
+			<div class="image-list"></div>
+		</div>
+	</div>
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+		
 	<div class="button-container">
 	<sec:authorize access="isAuthenticated() and principal.username == '${itemVO.memberId }'">
 	<button id="modifyBoard" class="button">수정</button>
@@ -174,7 +175,7 @@
         let isUploadChanged = false; // 버튼이 클릭되었는지 여부를 추적하는 변수
 
         $(document).ready(function() {
-            // 이미지 변경 버튼 클릭 시
+        	// 이미지 변경 버튼 클릭 시
             $('#change-upload').click(function() {
                 if (!confirm('기존에 업로드 파일들은 삭제됩니다. 계속 하시겠습니까?')) {
                     return;

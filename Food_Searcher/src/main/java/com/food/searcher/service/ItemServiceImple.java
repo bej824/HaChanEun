@@ -139,11 +139,8 @@ public class ItemServiceImple implements ItemService {
 	public int deleteItem(int itemId) {
 		log.info("deleteItem()");
 		List<AskVO> askList = askService.getAsk(itemId);
-		log.info("작성된 문의 : " + askList);
 		for (AskVO askVO : askList) {
-			log.info(askVO);
-			int result = askService.deleteAsk(askVO.getAskId());
-			log.info(result + "행 문의 삭제");
+			askService.deleteAsk(askVO.getAskId());
 		}
 		return itemMapper.delete(itemId);
 	}
