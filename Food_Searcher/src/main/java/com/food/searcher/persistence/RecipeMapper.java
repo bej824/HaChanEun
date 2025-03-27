@@ -24,5 +24,5 @@ public interface RecipeMapper {
 	int updateDislikesCount(@Param("recipeId") int recipeId, @Param("amount") int amount); // 싫어요 수 변경
 	RecommendVO recommend(String memberId);
 	RecipeVO selectRandom();
-	RecipeVO selectRandomByRecipeId(String food);
+	RecipeVO selectRandomByRecipeName(String food);
 }

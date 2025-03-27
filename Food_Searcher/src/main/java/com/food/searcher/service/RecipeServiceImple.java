@@ -282,7 +282,8 @@ List<AttachVO> attachVO = attachService.getSelectAll();
 
 	@Override
 	public RecipeVO selectRandomByRecipeId(String food) {
-		return recipeMapper.selectRandomByRecipeId(food);
+		
+		return recipeMapper.selectRandomByRecipeName(food);
 	}
 
 	@Override

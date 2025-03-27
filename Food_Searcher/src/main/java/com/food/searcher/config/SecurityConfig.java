@@ -80,8 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.formLogin().loginPage("/auth/login") // 커스텀 로그인 url 설정
 			.loginProcessingUrl("/auth/login")
-			.defaultSuccessUrl("/home", true) // 접근 제한 설정이 되어 있지 않은 url에서 로그인 성공 시 이동할 url 설정
-			.successHandler(customLoginSuccessHandler());
+			.defaultSuccessUrl("/home", true); // 접근 제한 설정이 되어 있지 않은 url에서 로그인 성공 시 이동할 url 설정
 
 		httpSecurity.logout().logoutUrl("/auth/logout") // logout url 설정
 			.logoutSuccessUrl("/home") // 로그아웃 성공 시 이동할 url 설정

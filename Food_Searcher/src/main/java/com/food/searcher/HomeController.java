@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +56,18 @@ public class HomeController {
 	}
 	
 	@GetMapping("/home")
-	public void main(Model model, Pagination pagination, Principal principal) {
+	public void main(Model model, Pagination pagination, Principal principal, HttpServletRequest request) {
 		log.info("home()");
 		
 		PageMaker pageMaker = new PageMaker();
 		pagination.setPageSize(5);
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(recipeService.getTotalCount(pagination));
+		
+		String referer = request.getHeader("Referer");
+		if (referer != null && referer.contains("/searcher/auth/login")) {
+			model.addAttribute("referer", referer);
+		}
 		
 
 		pagination.getType().add(0, "CATEGORY");

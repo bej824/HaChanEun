@@ -130,12 +130,13 @@ public class RecipeController {
 			model.addAttribute("memberId", principal.getName());
 			String food = recommend.getFood();
 			RecipeVO recipeVO = recipeService.selectRandomByRecipeId(food);
-			model.addAttribute("recipeVO", recipeVO);
+			
+			model.addAttribute("recipe", recipeVO);
 			model.addAttribute("image", recipeService.attachAll());
 		} else {
 			RecipeVO recipeVO = recipeService.selectRandom();
 			model.addAttribute("memberId", principal.getName());
-			model.addAttribute("random", recipeVO);
+			model.addAttribute("recipe", recipeVO);
 			model.addAttribute("image", recipeService.attachAll());
 		}
 	}

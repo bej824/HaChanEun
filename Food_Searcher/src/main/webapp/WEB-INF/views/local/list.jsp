@@ -234,7 +234,8 @@ li {
 			            	}
 			                
 			                // 지역 중복 체크 및 옵션 추가
-			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict){
+			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict
+			                		&& localDistrict != LocalSpecialityVO.localDistrict){
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
 			                    let districtOption =
 			                        '<option value="' + localDistrict_optionVal + '">' + 
@@ -243,9 +244,15 @@ li {
 			                
 			                }
 			                
+<<<<<<< HEAD
 			                if (mainCtg != null && mainCtg !== '') {
 	                             $('#ctg').text(mainCtg + ' > ');
 	                         }
+=======
+			                if (mainCtg !== undefined && mainCtg !== null && mainCtg !== '') {
+			                    $('#ctg').text(mainCtg + ' > ');
+			                }
+>>>>>>> c84b0007bb9cdc5e27ce4557b8148e4e43f0e9d8
 			            });
 			            
 			         	// 선택된 값을 세팅

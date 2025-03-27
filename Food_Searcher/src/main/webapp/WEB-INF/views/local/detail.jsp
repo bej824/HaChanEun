@@ -15,6 +15,14 @@
 </script>
 <style type="text/css">
 
+ #area2 {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
 .disabled {
 	opacity: 0.6;
@@ -27,8 +35,8 @@
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
-	<div id="area">
-	<form id="updateForm" action="update" method="post">
+	<div id="area2">
+	<h1>${localSpecialityVO.localTitle }</h1>
 	<div>
 		<input type="hidden" id="Id" name="Id"
 			value="${localSpecialityVO.localId }">
@@ -39,23 +47,8 @@
 		<p>지역 : ${localSpecialityVO.localLocal } / ${localSpecialityVO.localDistrict }</p>
 	</div>
 	<div>
-		<p>특산품 : ${localSpecialityVO.localTitle }</p>
-	</div>
-	<div>
         <textarea rows="20" cols="120" readonly>${localSpecialityVO.localContent }</textarea>
 	</div>
-	<!-- CSRF 토큰 -->
-	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-	</form>
-	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<div>
-	<button id="btn_update" class="button">글 수정</button>
-	<button id="deleteBoard" class="button" disabled>글 삭제</button> <br>	
-	</div>
-	</sec:authorize>
-	<br>
-	
 	</div>
 	
 	<script type="text/javascript">

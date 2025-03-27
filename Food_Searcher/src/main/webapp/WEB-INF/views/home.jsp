@@ -195,5 +195,23 @@
 
 </div> <!-- container -->
 
+	<sec:authorize access="isAuthenticated()">
+	<script type="text/javascript">
+		let referer = "${referer}";
+		
+		if(referer != null && referer != '') {
+		let newWindow = window.open('/searcher/recipe/recommend', 'newWindow', 'width=400,height=300,resizable=yes,scrollbars=yes,left=750');			
+		}
+
+		function receiveSignal(signal) {
+		    setTimeout(function() {
+		        window.location.href = 'recipe/detail?recipeId=' + signal;
+		    }, 100);
+		    
+		}
+	    
+	</script>
+	</sec:authorize>
+
 </body>
 </html>

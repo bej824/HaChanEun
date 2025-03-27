@@ -127,7 +127,7 @@
     	                    success: function(result) {
     	                        console.log(result);
     	                        alert('결제 성공');
-    	                        window.location.href = 'http://localhost:8080/searcher/item/list';
+    	                        window.location.href = 'http://192.168.0.148:8080/searcher/item/list';
     	                    }
     	                });
     	    	console.log(i);
