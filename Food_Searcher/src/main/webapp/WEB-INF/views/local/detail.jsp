@@ -49,6 +49,7 @@
 	<div>
         <textarea rows="20" cols="120" readonly>${localSpecialityVO.localContent }</textarea>
 	</div>
+	<a class="button" href="../item/list?&type=ITEM_CONTENT,ITEM_NAME&keyword=${localSpecialityVO.localDistrict },${localSpecialityVO.subCtg }">특산품 구매</a>
 	</div>
 	
 	<script type="text/javascript">

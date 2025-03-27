@@ -75,7 +75,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 					<button class="plusBtn">증가</button></td>
 				<td>
 				<span onclick="location.href='../item/modify?itemId=${ItemVO.itemId }'">수정</span><br><br>
-				<span class="deleteItem" id="${ItemVO.itemId }">삭제</span>
+				<span class="deleteItem" id="${ItemVO.itemId }" name="${ItemVO.itemName }">삭제</span>
 				</td>
 			</tr>
 		</c:forEach>
@@ -114,8 +114,9 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 		$('.deleteItem').click(function() {
 			// 게시글 삭제 클릭 시
 			let itemId = $(this).attr('id');
+			let itemName = $(this).attr('name');
 			
-			 if (confirm(itemId + '을 삭제하시겠습니까?')) {
+			 if (confirm(itemName + '을 삭제하시겠습니까?')) {
 				 
 				 $.ajax({
 				        type: "POST",
