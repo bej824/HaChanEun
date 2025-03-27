@@ -79,7 +79,9 @@
 				const year = parseInt(openingDate.slice(0, 4), 10);
   			   	const month = parseInt(openingDate.slice(4, 6), 10);
   			    const day = parseInt(openingDate.slice(6, 8), 10);
-  			   		
+  			  	const month31 = new Set([1, 3, 5, 7, 8, 10, 12]);
+              	const month30 = new Set([4, 6, 9, 11]);
+  			    
   			    if(nowDate - openingDate < 0){
   			    	msg;
   				} else if(month < 1 || month > 12){
