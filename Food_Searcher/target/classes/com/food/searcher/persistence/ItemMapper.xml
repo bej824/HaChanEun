@@ -97,20 +97,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 상품 리스트에 사용 -->
 		SELECT * FROM
 		(
-		SELECT ROW_NUMBER() OVER(ORDER BY ITEM_ID DESC) AS RN, ITEM_CTG.*
-		FROM
-		ITEM_CTG
+		SELECT ROW_NUMBER() OVER(ORDER BY a.ITEM_ID DESC) AS RN, b.*
+		FROM ITEM a
+		LEFT
+		JOIN ITEM_CTG b
+		ON a.ITEM_ID = b.ITEM_ID
 		WHERE 1=1 AND ITEM_STATUS = 100
 		<if test="pagination.keyword != null and pagination.keyword != ''">
     	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
             <if test="pagination.type[i] == 'ITEM_NAME'">
-                AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+                AND b.ITEM_NAME LIKE '%'||#{keyword}||'%'
             </if>
             <if test="pagination.type[i] == 'MAIN_CTG'">
-                AND MAIN_CTG LIKE '%'||#{keyword}||'%'
+                AND b.MAIN_CTG LIKE '%'||#{keyword}||'%'
             </if>
             <if test="pagination.type[i] == 'SUB_CTG'">
-                AND SUB_CTG LIKE '%'||#{keyword}||'%'
+                AND b.SUB_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'ITEM_CONTENT'">
+                AND a.ITEM_CONTENT LIKE '%'||#{keyword}||'%'
             </if>
     	</foreach>
 		</if>
@@ -120,18 +125,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectTotalCount" resultType="Integer">
 		SELECT COUNT(*) TOTAL_COUNT
-		FROM ITEM_CTG
+		FROM ITEM a
+		LEFT
+		JOIN ITEM_CTG b
+		ON a.ITEM_ID = b.ITEM_ID
 		WHERE 1=1 AND ITEM_STATUS = 100
 		<if test="pagination.keyword != null and pagination.keyword != ''">
     	<foreach collection="pagination.keyword" index="i" item="keyword" separator=" ">
             <if test="pagination.type[i] == 'ITEM_NAME'">
-                AND ITEM_NAME LIKE '%'||#{keyword}||'%'
+                AND b.ITEM_NAME LIKE '%'||#{keyword}||'%'
             </if>
             <if test="pagination.type[i] == 'MAIN_CTG'">
-                AND MAIN_CTG LIKE '%'||#{keyword}||'%'
+                AND b.MAIN_CTG LIKE '%'||#{keyword}||'%'
             </if>
             <if test="pagination.type[i] == 'SUB_CTG'">
-                AND SUB_CTG LIKE '%'||#{keyword}||'%'
+                AND b.SUB_CTG LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="pagination.type[i] == 'ITEM_CONTENT'">
+                AND a.ITEM_CONTENT LIKE '%'||#{keyword}||'%'
             </if>
     	</foreach>
 		</if>

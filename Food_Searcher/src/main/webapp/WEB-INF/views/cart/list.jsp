@@ -239,7 +239,7 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     				alert("사용 조건이 충족되지 않은 쿠폰입니다.");
     				$(this).val(couponSelectOption).change();
     				return;
-    			};
+    			}
     			
     			if(couponSelect == 0) {
     				discountPrice = '0';
@@ -274,6 +274,15 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 	    	      // 체크박스 상태 변경 (cartChecked 값에 따라)
 	    	      $(this).find(".checkBox").prop("checked", isChecked);
 	    	    });
+	    	    
+	    	    if(	
+    	    			couponSelectOption != 0
+    	    		&&	couponSelect != 0
+    	    		&&	couponActive[couponSelectOption].couponUseCondition > totalCost
+    	    		) {
+    				$('#couponSelect').val(0).change();
+    				discountPrice = 0;
+    	    	}
 	    	    
 	    	    // 총 가격을 화면에 표시
 	    	   	totalPrice = totalCost - discountPrice; // 총 가격 계산

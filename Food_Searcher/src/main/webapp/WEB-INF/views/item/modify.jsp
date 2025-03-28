@@ -71,14 +71,7 @@
 		</div>
 				
 		<div class="foodDiv">
-			<select name="mainCtg" id="mainCtg">
-			<option>${itemVO.mainCtg }</option>
-			<c:forEach var="ctgList" items="${ctgList}">
-			<c:if test="${ctgList.mainCtg != itemVO.mainCtg }">
-			<option>${ctgList.mainCtg }</option>
-			</c:if>
-			</c:forEach>
-			</select>
+			<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
 			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요.">
 		</div>
 		<p>원산지 : 
@@ -175,6 +168,9 @@
         let isUploadChanged = false; // 버튼이 클릭되었는지 여부를 추적하는 변수
 
         $(document).ready(function() {
+        	
+        	mainCtg();
+        	
         	// 이미지 변경 버튼 클릭 시
             $('#change-upload').click(function() {
                 if (!confirm('기존에 업로드 파일들은 삭제됩니다. 계속 하시겠습니까?')) {
@@ -219,6 +215,29 @@
                     }
                 });
             });
+            
+            function mainCtg() {
+                let mainCtg = $('#mainCtg');
+                
+                mainCtg.empty();
+                
+    		    $.ajax({
+    				type: 'GET',
+    		        url: '../ctg/ctgGet',
+    		        data: {},
+    		        success: function(result) {
+    		        	result.forEach(function(ctg) {
+    		        		
+    		        		let low = '<option>' + ctg.mainCtg + '</option>'
+    		        		
+    		        		if(ctg.mainCtg != '기타') {
+    			        	mainCtg.append(low);
+    		        		}
+    		            });
+    		        	
+    		        }
+    			})
+            }
 
         });
         
