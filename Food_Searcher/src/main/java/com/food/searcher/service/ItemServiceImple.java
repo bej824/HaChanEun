@@ -104,6 +104,7 @@ public class ItemServiceImple implements ItemService {
 		itemMapper.ctgUpdate(itemVO);
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
+		log.info(attachList);
 
 		int deleteResult = itemAttachService.deleteAttach(itemVO.getItemId());
 		log.info(deleteResult + "행 파일 정보 삭제");

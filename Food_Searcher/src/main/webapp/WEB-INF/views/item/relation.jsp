@@ -44,13 +44,16 @@
 </head>
 <body>
 	<hr>
+	<c:if test="${not empty itemList}">
 	<p>${itemVO.itemName } 연관 상품</p>
+	</c:if>
 	<div class="item-container">
 	<c:if test="${pageMaker.isPrev() }">
 			<li class="pagination_button"><a href="detail?itemId=${itemVO.itemId}&pageNum=${pageMaker.pagination.pageNum - 1}"
 				class="button">이전</a></li>
 		</c:if>
 		<c:forEach var="itemList" items="${itemList}">
+		<c:set var="imageFound" value="false"/>
 			<div class="item" onclick="window.location.href='detail?itemId=${itemList.itemId}&keyword=${param.keyword}&type=${param.type}&pageNum=${param.pageNum == num ? '1' : param.pageNum}'">
 				<input type="hidden" value="${itemList.itemStatus }" >
 				<c:forEach var="attachAll" items="${attachAll}">
@@ -60,8 +63,15 @@
 						        src="../images/get?attachId=${attachAll.attachId }&attachExtension=${attachAll.attachExtension}"
 						        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';" />
 						</div>
+						<c:set var="imageFound" value="true"/>
 					</c:if>
 				</c:forEach>
+				<c:if test="${!imageFound}">
+		            <div class="image_item">
+		                <img 
+		                     src="../resources/image/imageReady.png"/>
+		            </div>
+		        </c:if>
 					<p>상품명 : ${itemList.itemName }</p>
 					<p>가격 : <fmt:formatNumber value="${itemList.itemPrice}" pattern="###,###,###"/>원</p>
 					

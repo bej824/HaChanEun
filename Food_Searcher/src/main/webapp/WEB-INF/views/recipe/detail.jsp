@@ -190,6 +190,7 @@ h1 {
 			<div class="image-list">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${idList}">
+				<c:set var="imageFound" value="false"/>
 				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
 				    			  attachVO.attachExtension eq 'jpeg' or 
 				    			  attachVO.attachExtension eq 'png' or 
@@ -199,8 +200,15 @@ h1 {
 					        <img width="100px" height="100px" 
 					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
 				        </div>
+				        <c:set var="imageFound" value="true"/>
 				    </c:if>
 				</c:forEach>
+				<c:if test="${!imageFound}">
+		            <div class="image_item">
+		                <img width="100px" height="100px" 
+		                     src="../resources/image/imageReady.png"/>
+		            </div>
+		        </c:if>
 			</div>
 		</div>
 	</div>

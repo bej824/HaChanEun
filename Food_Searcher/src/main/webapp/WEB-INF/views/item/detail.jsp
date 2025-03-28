@@ -140,6 +140,7 @@ body {
 	<div class="imgDiv">
 				<!-- 이미지 파일 처리 코드 -->
 				<c:forEach var="attachVO" items="${attachVO}">
+				<c:set var="imageFound" value="false"/>
 				    <c:if test="${attachVO.attachExtension eq 'jpg' or 
 				    			  attachVO.attachExtension eq 'jpeg' or 
 				    			  attachVO.attachExtension eq 'png' or 
@@ -150,8 +151,15 @@ body {
 					        src="../images/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}"  
 					        onerror="this.onerror=null; this.src='../resources/image/imageReady.png';"/></a>
 				        </div>
+				        <c:set var="imageFound" value="true"/>
 				    </c:if>
 				</c:forEach>
+				<c:if test="${!imageFound}">
+		            <div class="image_item">
+		                <img 
+		                     src="../resources/image/imageReady.png"/>
+		            </div>
+		        </c:if>
 		</div> <!-- imgDiv -->
 		
 		<div class="itemDetailDiv">

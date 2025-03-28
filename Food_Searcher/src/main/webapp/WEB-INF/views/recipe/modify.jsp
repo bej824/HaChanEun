@@ -81,7 +81,7 @@ maxlength="400" required>${recipeVO.recipeContent }</textarea>
 		</div>
 
 	<!-- 기존 첨부 파일 리스트 데이터 구성 -->
-	<c:forEach var="attachVO" items="${recipeVO.attachList}" varStatus="status">
+	<c:forEach var="attachVO" items="${idList}" varStatus="status">
 		<input type="hidden" class="input-attach-list" name="attachList[${status.index }].attachPath" value="${attachVO.attachPath }">
 		<input type="hidden" class="input-attach-list" name="attachList[${status.index }].attachRealName" value="${attachVO.attachRealName }">
 		<input type="hidden" class="input-attach-list" name="attachList[${status.index }].attachChgName" value="${attachVO.attachChgName }">
@@ -196,17 +196,15 @@ maxlength="400" required>${recipeVO.recipeContent }</textarea>
                 });
             });
         });
-    </script>
-		
-	<script>
-		function goBack() {
-		  const referrer = document.referrer;
-		  if (referrer) {
-		    window.location.href = referrer;  // 이전 페이지로 이동
-		  } else {
-		    alert("이전 페이지가 없습니다.");
-		  }
-		}
-	</script>	
+        
+        function goBack() {
+  		  const referrer = document.referrer;
+  		  if (referrer) {
+  		    window.location.href = referrer;  // 이전 페이지로 이동
+  		  } else {
+  		    alert("이전 페이지가 없습니다.");
+  		  }
+  		}
+    </script>	
 </body>
 </html>
