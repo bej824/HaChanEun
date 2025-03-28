@@ -22,6 +22,8 @@ public interface SellerService {
 	
 	int totalCount(String memberId, Pagination pagination);
 	
+	int sellerTotalCount();
+	
 	int updateItemStatus(int itemId, int itemStatus);
 	
 	DirectOrderVO purchaseInfo(String orderId);
@@ -36,7 +38,7 @@ public interface SellerService {
 
 //	List<ItemVO> selectStatusByPagination(int itemStatus, Pagination pagination);
 
-	List<ItemVO> selectSellerItem(String memberId);
+	List<ItemVO> selectSellerItem(String memberId, Pagination pagination);
 	
 	List<ItemVO> select(String memberId, Pagination pagination);
 	

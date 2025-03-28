@@ -47,7 +47,7 @@
 	
 	<div class="foodDiv">
 		<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
-		<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요.">
+		<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." required>
 	</div>
 			<p>원산지 :
 			<select name="origin" id="origin" >
@@ -222,9 +222,9 @@
 		        		
 		        		let low = '<option>' + ctg.mainCtg + '</option>'
 		        		
-		        		if(ctg.mainCtg != '기타') {
+		        		
 			        	mainCtg.append(low);
-		        		}
+		        		
 		            });
 		        	
 		        }

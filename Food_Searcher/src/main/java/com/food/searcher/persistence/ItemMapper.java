@@ -33,15 +33,15 @@ public interface ItemMapper {
 		 	@Param("pagination") Pagination pagination); // 전체 게시글 페이징 처리
 	
 	List<ItemVO> selectSellerItem (
-			@Param("memberId") String memberId
+			 @Param("pagination") Pagination pagination
+			,@Param("memberId") String memberId
 			
 			);
 	
 	List<ItemVO> select(@Param("pagination") Pagination pagination,
 						@Param("memberId") String memberId);
 	
-	int sellerTotalCount(@Param("memberId") String memberId,
-						 @Param("pagination") Pagination pagination
+	int sellerTotalCount(@Param("memberId") String memberId
 						);
 
 	List<CtgVO> mainCtgList();

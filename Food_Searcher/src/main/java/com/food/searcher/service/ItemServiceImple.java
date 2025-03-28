@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -77,9 +78,16 @@ public class ItemServiceImple implements ItemService {
 		return list.stream().collect(Collectors.toList());
 	}
 	
-	public List<ItemVO> selectSellerItem(String memberId) {
-		List<ItemVO> list = itemMapper.selectSellerItem(memberId);
+	@Override
+	public List<ItemVO> selectSellerItem(String memberId, Pagination pagination) {
+		List<ItemVO> list = itemMapper.selectSellerItem(pagination, memberId);
 		return list;
+	}
+	
+	@Override
+	public int getSellerTotalCount(String memberId) {
+		
+		return itemMapper.sellerTotalCount(memberId);
 	}
 	
 	
@@ -104,6 +112,7 @@ public class ItemServiceImple implements ItemService {
 		itemMapper.ctgUpdate(itemVO);
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
+		log.info(attachList);
 
 		int deleteResult = itemAttachService.deleteAttach(itemVO.getItemId());
 		log.info(deleteResult + "행 파일 정보 삭제");
