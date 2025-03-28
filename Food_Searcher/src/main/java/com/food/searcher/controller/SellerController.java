@@ -80,7 +80,7 @@ public class SellerController {
 		log.info("listStatusGET()");
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(sellerService.sellerTotalCount(memberId, pagination));
+		pageMaker.setTotalCount(sellerService.sellerTotalCount());
 		
 		List<ItemVO> itemList = sellerService.select(memberId, pagination);
 		model.addAttribute("itemList", itemList);
@@ -116,9 +116,9 @@ public class SellerController {
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
-		pageMaker.setTotalCount(sellerService.getTotalCount(pagination));
+		pageMaker.setTotalCount(sellerService.sellerTotalCount());
 
-		List<ItemVO> itemList = sellerService.select(memberId, pagination);
+		List<ItemVO> itemList = sellerService.selectSellerItem(memberId, pagination);
 
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);

@@ -30,6 +30,9 @@ public class SellerServiceImple implements SellerService {
 	private ItemService itemService;
 	
 	@Autowired
+	private UtilityService utilityService;
+	
+	@Autowired
 	ItemMapper itemMapper;
 	
 	@Override
@@ -50,11 +53,6 @@ public class SellerServiceImple implements SellerService {
 	@Override
 	public List<ItemVO> select(String memberId, Pagination pagination) {
 		return itemMapper.select(pagination, memberId);
-	}
-	
-	@Override
-	public int sellerTotalCount(String memberId, Pagination pagination) {
-		return itemMapper.sellerTotalCount(memberId, pagination);
 	}
 	
 	@Override
@@ -86,9 +84,22 @@ public class SellerServiceImple implements SellerService {
 //	}
 	
 	@Override
-	public List<ItemVO> selectSellerItem(String memberId) {
+	public int sellerTotalCount(String memberId, Pagination pagination) {
+		
+		return 0;
+	}
+	
+	@Override
+	public int sellerTotalCount() {
+		String memberId = utilityService.loginMember();
+		
+		return itemService.getSellerTotalCount(memberId);
+	}
+	
+	@Override
+	public List<ItemVO> selectSellerItem(String memberId, Pagination pagination) {
 		log.info("selectSellerItem()");
-		return itemService.selectSellerItem(memberId);
+		return itemService.selectSellerItem(memberId, pagination);
 	}
 
 	@Override

@@ -122,6 +122,8 @@ li {
 			let localTitle = $('#localTitle').val();
 			let mainCtg;
 			
+			let localDistrictList = [];
+			
 			
 			if(indexLocalLocal == ''){
 			listUpdate(localLocal, localDistrict, localTitle, indexmainCtg);
@@ -142,6 +144,7 @@ li {
 				let localLocal = $('#localLocal').val();
 			    let localDistrict = $(this).val();
 			    let localTitle = $('#localTitle').val().replace(/\s+/g, '');
+			    
 			    listUpdate(localLocal, localDistrict, localTitle, mainCtg);
 			});
 			
@@ -204,9 +207,13 @@ li {
 			            let tbody = $('table tbody');
 			            tbody.empty(); // 기존 테이블 내용 비우기
 			            
+			            if(localLocal != '') {
+			            localDistrictList = [];	            	
+			            }
+			            
 			            // 중복되는 localDistrict 선별을 위한 변수
-			            let localDistrict_optionVal = "";
 			            let localDistrict_selectOption = $("#localDistrict");
+			            let localDistrict_optionVal = "";
 			            
 			            if(localDistrict == ''){
 			            
@@ -234,8 +241,9 @@ li {
 			            	}
 			                
 			                // 지역 중복 체크 및 옵션 추가
-			                if(localLocal != '' && localDistrict_optionVal != LocalSpecialityVO.localDistrict
+			                if(localLocal != '' && !localDistrictList.includes(LocalSpecialityVO.localDistrict)
 			                		&& localDistrict != LocalSpecialityVO.localDistrict){
+			                	localDistrictList.push(LocalSpecialityVO.localDistrict);
 			                	localDistrict_optionVal = LocalSpecialityVO.localDistrict;
 			                    let districtOption =
 			                        '<option value="' + localDistrict_optionVal + '">' + 

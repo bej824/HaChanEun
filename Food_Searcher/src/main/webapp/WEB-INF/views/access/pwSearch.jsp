@@ -25,7 +25,13 @@
 			placeholder="비밀번호 입력" required> <br>
 	<div id="pw2Msg" class="message" style="color: red;">비밀번호 다시 입력해주세요.</div>
 	
-	<button id=btn_update class="button" name="update">비밀번호 수정</button>
+	<button id="btn_update" class="button" name="update">비밀번호 수정</button>
+	<button id="btn_idSearch" class="button">Id 찾기</button>
+	
+	<form  id="idSearch" action="idSearch" method="POST">
+	<input type="hidden" id="email" name="email" placeholder="이메일을 입력해주세요.">
+	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+	</form>
 	
 	<script type="text/javascript">
 	
@@ -88,6 +94,14 @@
 			
 			});
 			
+			$('#btn_idSearch').click(function(){
+				let result = confirm("ID 찾기로 이동하시겠습니까?");
+				
+				if(result) {
+				idSearch();					
+				}
+			})
+			
 		function pwUpdate(memberId, password, email, login) {
 			
     		$.ajax({
@@ -108,6 +122,13 @@
     		});
 	
 		} // end update()
+		
+		function idSearch() {
+			
+	    	let idSearchForm = document.getElementById("idSearch");
+	    	idSearchForm.email.value='${email}';
+	    	idSearchForm.submit();
+		}
 		
 		})
 	

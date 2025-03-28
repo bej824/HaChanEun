@@ -12,12 +12,13 @@ public interface ItemService {
    
    List<ItemVO> getPagingAllItems(Pagination pagination);
    List<ItemVO> getPagingStatusItems(Pagination pagination);
-   List<ItemVO> selectSellerItem(String memberId);
+   List<ItemVO> selectSellerItem(String memberId, Pagination pagination);
    List<ItemVO> getSelectCategoryList(String mainCtg, int itemId, Pagination pagination);
    List<ItemVO> selectAllList();
    
    int getTotalCount(Pagination pagination);
    int getStatusTotalCount(Pagination pagination);
+   int getSellerTotalCount(String memberId); 
    
    ItemVO getItemById(int itemId);
    List<CtgVO> mainCtgList();
