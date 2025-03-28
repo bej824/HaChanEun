@@ -72,7 +72,7 @@
 				
 		<div class="foodDiv">
 			<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
-			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요.">
+			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." value="${itemVO.subCtg }">
 		</div>
 		<p>원산지 : 
 		<select name="origin" id="origin">
@@ -128,9 +128,9 @@
                                   attachVO.attachExtension eq 'png' or 
                                   attachVO.attachExtension eq 'gif'}">
                         <div class="image_item">
-                            <a href="../image/get?attachId=${attachVO.attachId }" target="_blank">
+                            <a href="../images/get?attachId=${attachVO.attachId }" target="_blank">
                                 <img width="100px" height="100px" 
-                                     src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
+                                     src="../images/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}"/>
                             </a>
                         </div>
                     </c:if>

@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND LOCAL_DISTRICT = #{localDistrict}
 		</if>
 		<if test="localTitle != null and localTitle != ''">
-        	AND LOCAL_TITLE LIKE #{localTitle}
+        	AND LOCAL_TITLE LIKE '%'||#{localTitle}||'%'
     	</if>
     	<if test="mainCtg != null and mainCtg != ''">
     		AND MAIN_CTG = #{mainCtg}
