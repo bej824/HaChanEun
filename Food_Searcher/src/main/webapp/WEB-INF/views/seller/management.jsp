@@ -74,8 +74,8 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 					<input type="number" id="increasedAmount" min="1" maxlength="6" required oninput="numberMaxLength(this); preventNegative(this);" >
 					<button class="plusBtn">증가</button></td>
 				<td>
-				<span onclick="location.href='../item/modify?itemId=${ItemVO.itemId }'">수정</span><br><br>
-				<span class="deleteItem" id="${ItemVO.itemId }" name="${ItemVO.itemName }">삭제</span>
+				<span class="updateItem" id="${ItemVO.itemId }" data-status="${ItemVO.itemStatus }">수정</span><br><br>
+				<span class="deleteItem" id="${ItemVO.itemId }" data-id="${ItemVO.itemName }" data-status="${ItemVO.itemStatus }">삭제</span>
 				</td>
 			</tr>
 		</c:forEach>
@@ -114,8 +114,9 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 		$('.deleteItem').click(function() {
 			// 게시글 삭제 클릭 시
 			let itemId = $(this).attr('id');
-			let itemName = $(this).attr('name');
-			
+			let itemName = $(this).attr('data-id');
+			let permission = $(this).attr('data-status');
+			if(permission != "100" ) {
 			 if (confirm(itemName + '을 삭제하시겠습니까?')) {
 				 
 				 $.ajax({
@@ -133,6 +134,20 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				        },
 				    });
 			 }
+			} else {
+				alert("판매중인 상품은 삭제하실수 없습니다.");
+			}
+		});
+		
+		$('.updateItem').click(function() {
+			let permission = $(this).attr('data-status');
+			console.log(permission);
+			let itemId = $(this).attr('id');
+			if(permission != "100" ) {
+				location.href = '/searcher/item/modify?itemId=' + itemId;
+			} else {
+				alert("판매중인 상품은 수정하실수 없습니다.");
+			}
 		});
 		
 		$('.itemStatus').on('click', function(){

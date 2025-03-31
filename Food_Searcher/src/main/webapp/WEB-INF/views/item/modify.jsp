@@ -72,7 +72,7 @@
 				
 		<div class="foodDiv">
 			<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
-			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." value="${itemVO.subCtg }">
+			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." value="${itemVO.subCtg }" required>
 		</div>
 		<p>원산지 : <input name="origin" id="origin" value="${itemVO.origin }"></p>
 				
@@ -128,7 +128,6 @@
 		</div>
 		<div class="image-modify" style="display : none;">
 			<h2>이미지 파일 업로드</h2>
-			<p>* 이미지 파일은 최대 3개까지 가능합니다.</p>
 			<p>* 최대 용량은 10MB 입니다.</p>
 			<div class="image-drop">이미지를 드래그 하세요.</div>
 			<h2>선택한 이미지 파일 :</h2>
@@ -177,15 +176,18 @@
                 let formData = new FormData(modifyForm[0]);
 
                 // 업로드가 변경되었을 때, 단일 이미지를 처리
-                if (isUploadChanged) {
+                if (isUploadChanged == true) {
                     // 이미지 입력 필드에서 값을 가져옴
                     let attachVO = JSON.parse($('.attachDTOImg-list input[name="attachVO"]').val());
 
+                    console.log(attachVO);
                     // 이미지 세부 정보를 formData에 추가
                     formData.append('attachList[0].attachPath', attachVO.attachPath);
                     formData.append('attachList[0].attachRealName', attachVO.attachRealName);
                     formData.append('attachList[0].attachChgName', attachVO.attachChgName);
                     formData.append('attachList[0].attachExtension', attachVO.attachExtension);
+                } else {
+                	
                 }
 
                 // 비동기적으로 폼 데이터를 전송
@@ -219,9 +221,7 @@
     		        		
     		        		let low = '<option>' + ctg.mainCtg + '</option>'
     		        		
-    		        		if(ctg.mainCtg != '기타') {
     			        	mainCtg.append(low);
-    		        		}
     		            });
     		        	
     		        }
