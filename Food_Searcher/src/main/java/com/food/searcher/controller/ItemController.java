@@ -155,11 +155,11 @@ public class ItemController {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
-		int result = directOrderService.oneOrder(directOrderVO);
+		directOrderService.oneOrder(directOrderVO);
 		
 		String next_redirect_pc_url = SessionUtils.getStringAttributeValue("next_redirect_pc_url");
 		model.addAttribute("next_redirect_pc_url", next_redirect_pc_url);
-		log.info(result);
+		
 		return next_redirect_pc_url;
 	}
 	

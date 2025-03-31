@@ -4,20 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지</title>
+<title>관리자 권한 부여</title>
 </head>
+<body>
 <body>
 <%@ include file ="../header.jsp" %>
 <div id="area">
-<h1>사이트 관리</h1>
-<div style="display: flex;">
-<button class="button" id="roleUp">운영자 권한 부여</button>
-<button class="button" id="itemManagement">판매 상품 관리 목록</button>
+<h1>등급 : ${roleVO.roleName }</h1>
 
-<button class="button" onclick="couponList()">쿠폰 목록</button>
-</div>
+<input type="text" id="memberId" placeholder="운영자 등업 id" required>
+<div id="idMsg" class="message" style="color: red;">아이디를 입력해주세요!</div> <br>
 <div style="display: flex;">
-<a href="purchaseHistory" class="button">회원 전체 거래 내역</a>
+<button class="button" id="roleUp">등급 업</button>
 </div>
 </div>
 
@@ -46,15 +44,11 @@
 		})
 		
 		$('#roleUp').click(function(){
-			window.location.href = "adminRole";
-		})
-		
-		$('#itemManagement').click(function(){
-			window.location.href = "itemManagement";
-		})
-		
-		$('#financialManagement').click(function(){
-			window.location.href = "financialManagement";
+			let memberId = $('#memberId').val();
+			
+			if(idCheck) {
+				roleUpdate(memberId);
+			}
 		})
 		
 		function roleUpdate(memberId) {
@@ -75,12 +69,9 @@
 			}
 		}
 	})
-	
-		
-		function couponList() {
-			window.open("../coupon/list", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
-		}
 		
 	</script>
+</body>
+
 </body>
 </html>
