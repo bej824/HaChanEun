@@ -92,7 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         				,"/access/emailConfirm"
         				,"/access/idSearch"
         				,"/access/pwSearch"
-        				,"/home").permitAll();
+        				,"/home"
+        				,"/item/detailItem").permitAll();
 		// 해당 URL에 대한 POST 요청을 허용
         
         //.anyRequest().authenticated(); // 나머지 URL은 인증 없이 접근 불가
