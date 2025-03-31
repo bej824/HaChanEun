@@ -16,9 +16,9 @@
 
 <button class="button" onclick="couponList()">쿠폰 목록</button>
 </div>
+<div style="display: flex;">
 <a href="purchaseHistory" class="button">회원 전체 거래 내역</a>
-
-<button class="button" id="financialManagement">재무 관리</button>
+</div>
 </div>
 
 	<script type="text/javascript">
