@@ -24,12 +24,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 		response.setContentType("text/html");
         response.getWriter().println("<html><body>");
         response.getWriter().println("<script>");
-        response.getWriter().println("let newWindow = window.open('/searcher/recipe/recommend', 'newWindow', 'width=400,height=300,resizable=yes,scrollbars=yes,left=750');");  // Open a new window with custom properties
+        response.getWriter().println("let newWindow = window.open('/searcher/recipe/recommend', 'newWindow', 'width=400,height=300,resizable=yes,scrollbars=yes,left=750');"); 
         response.getWriter().println("newWindow.onunload = function() {");
-        response.getWriter().println("    window.location.href = '/searcher/home';");  // Redirect back to the main page when the new window is closed
+        response.getWriter().println("    window.location.href = '/searcher/home';");
         response.getWriter().println("};");
-//        response.getWriter().println("alert('로그인 성공!');");
-//        response.getWriter().println("setTimeout(function(){ window.location.href = '/searcher/home'; }, 500);");
         response.getWriter().println("</script>");
         response.getWriter().println("</body></html>");
 		

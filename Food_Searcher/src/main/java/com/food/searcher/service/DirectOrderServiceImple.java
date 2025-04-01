@@ -462,7 +462,9 @@ public class DirectOrderServiceImple implements DirectOrderService {
                 requestEntity,
                 PaymentCancellationVO.class
             );
-            List<DirectOrderVO> orderList = orderUtil.getOrderList();
+            
+            List<DirectOrderVO> orderList = new ArrayList<DirectOrderVO>();
+            orderList.add(directOrderVO);
             itemService.returnItemAmount(orderList);
             log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();

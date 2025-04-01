@@ -221,4 +221,20 @@ public class ItemController {
 		
 	}
 	
+	@GetMapping("/detailItem")
+	public void detailItem(
+			Model model,
+			Integer itemId) {
+		
+		itemId = 387;
+		ItemVO itemVO = itemService.getItemById(itemId);
+		log.info(itemVO);
+		
+		model.addAttribute("itemVO", itemVO);
+		if(itemId.equals(itemVO.getItemId())) {
+			model.addAttribute("attachVO", itemService.attachById(itemVO.getItemId()));
+		}
+		model.addAttribute("attachAll", itemService.attachAll());
+	}
+	
 } // end ItemController
