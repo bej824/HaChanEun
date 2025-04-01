@@ -3,6 +3,7 @@ package com.food.searcher.service;
 import java.util.List;
 
 import com.food.searcher.domain.CtgVO;
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
@@ -26,6 +27,7 @@ public interface ItemService {
    int updateItem(ItemVO itemVO);
    int updateItemStatus(int itemId, int itemStatus);
    int updateItemAmount(int itemId, int itemAmount);
+   int returnItemAmount(List<DirectOrderVO> orderList);
    
    int deleteItem(int itemId);
    

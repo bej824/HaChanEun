@@ -234,6 +234,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 		ITEM_ID = #{itemId}
 	</update>
+	
+	<update id="returnItemAmount">
+		<foreach collection="orderList" item="order" separator=" ">
+		UPDATE ITEM_CTG
+		SET ITEM_AMOUNT = ITEM_AMOUNT + #{order.itemAmount}
+		WHERE
+		ITEM_ID = #{order.itemId}
+		</foreach>
+	</update>
 
 	<update id="updateStatus">
 		UPDATE ITEM_CTG

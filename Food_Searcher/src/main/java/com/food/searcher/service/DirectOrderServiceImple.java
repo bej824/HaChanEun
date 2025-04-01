@@ -367,6 +367,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("카카오페이 결제 준비 실패: " + e.getMessage());
             throw new RuntimeException("카카오페이 결제 준비 실패");
+            
         }}
 		return null;
 	}
@@ -427,6 +428,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
                 requestEntity,
                 PaymentCancellationVO.class
             );
+            List<DirectOrderVO> orderList = orderUtil.getOrderList();
+            itemService.returnItemAmount(orderList);
             log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         
@@ -459,6 +462,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
                 requestEntity,
                 PaymentCancellationVO.class
             );
+            List<DirectOrderVO> orderList = orderUtil.getOrderList();
+            itemService.returnItemAmount(orderList);
             log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         

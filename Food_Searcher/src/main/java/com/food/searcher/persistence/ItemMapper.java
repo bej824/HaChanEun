@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.food.searcher.domain.CtgVO;
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.util.Pagination;
 
@@ -52,6 +53,10 @@ public interface ItemMapper {
 	int updateItemAmount(
 			@Param("itemId") int itemId,
 			@Param("itemAmount") int itemAmount);
+	
+	int returnItemAmount(
+			List<DirectOrderVO> orderList);
+	
 	
 	int updateStatus(
 			@Param("itemId") int itemId,

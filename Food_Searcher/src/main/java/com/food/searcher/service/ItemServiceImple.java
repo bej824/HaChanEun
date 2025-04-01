@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.AskVO;
 import com.food.searcher.domain.CtgVO;
+import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.ItemAttachVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.ItemMapper;
@@ -142,6 +143,11 @@ public class ItemServiceImple implements ItemService {
 	         return itemMapper.updateItemAmount(itemId, itemAmount);
 	      }
 	   }
+	
+	@Override
+	public int returnItemAmount(List<DirectOrderVO> orderList) {
+		return itemMapper.returnItemAmount(orderList);
+	}
 
 	@Transactional
 	@Override
