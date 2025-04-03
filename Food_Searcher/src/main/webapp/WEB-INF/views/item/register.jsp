@@ -49,7 +49,17 @@
 		<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
 		<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." required>
 	</div>
-		<p>원산지 : <input name="origin" id="origin"></p>
+		<p>원산지 : <select name="origin" id="origin">
+ 			<option>국내산</option>
+ 			<option>중국산</option>
+ 			<option>미국산</option>
+ 			<option>일본산</option>
+ 			<option>호주산</option>
+ 			<option>칠레산</option>
+ 			<option>태국산</option>
+ 			<option>인도산</option>
+ 			<option>베트남산</option>
+ 		</select></p>
 	</div>
 	
 	<div>

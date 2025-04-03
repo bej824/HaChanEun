@@ -74,12 +74,18 @@
 			<select name="mainCtg" id="mainCtg" class="selectCtg"></select>
 			<input type="text" name="subCtg" id="subCtg" placeholder="세부 분류를 입력해주세요." value="${itemVO.subCtg }" required>
 		</div>
-		<p>원산지 : <input name="origin" id="origin" value="${itemVO.origin }"></p>
+		<p>원산지 : <select name="origin" id="origin">
+ 			<option <c:if test="${itemVO.origin == '국내산'}">selected</c:if>>국내산</option>
+ 			<option <c:if test="${itemVO.origin == '중국산'}">selected</c:if>>중국산</option>
+ 			<option <c:if test="${itemVO.origin == '미국산'}">selected</c:if>>미국산</option>
+ 			<option <c:if test="${itemVO.origin == '일본산'}">selected</c:if>>일본산</option>
+ 			<option <c:if test="${itemVO.origin == '호주산'}">selected</c:if>>호주산</option>
+ 			<option <c:if test="${itemVO.origin == '칠레산'}">selected</c:if>>칠레산</option>
+ 			<option <c:if test="${itemVO.origin == '태국산'}">selected</c:if>>태국산</option>
+ 			<option <c:if test="${itemVO.origin == '인도산'}">selected</c:if>>인도산</option>
+ 			<option <c:if test="${itemVO.origin == '베트남산'}">selected</c:if>>베트남산</option>
+ 		</select></p>
 				
-		<select>
-			<option value="100">판매 중</option>
-			<option value="200">판매 중단</option>
-		</select>
 		
 		<input type="hidden" name="itemId" value="${itemVO.itemId }">
 		<input type="hidden" name="itemStatus" value="${itemVO.itemStatus }">
