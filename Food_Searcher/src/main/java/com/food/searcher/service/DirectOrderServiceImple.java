@@ -265,18 +265,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
 			orderList.get(0).setTotalPrice(
 					orderList.get(0).getTotalPrice() - discountPrice);			
 		}
-		
-		if(discountPrice != 0) {
-			int couponUseInfo = couponActiveService.applyCoupon (
-					 orderList.get(0)
-					,LocalDateTime.now()
-					,discountPrice);
-			
-			if(couponUseInfo != 1) {
-				return 403;
-			}
-			
-		}
 		return priceInfo(orderList);
 	}
 	
@@ -295,6 +283,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		ReadyResponse readyResponse = kakaoPayReady(orderList, orderTotalPrice);
 		
 		log.info(readyResponse);
+		String tid = readyResponse.getTid();
 		
 		SessionUtils.addAttribute("tid", readyResponse.getTid());
 		SessionUtils.addAttribute("next_redirect_pc_url", readyResponse.getNext_redirect_pc_url());
@@ -308,8 +297,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		}
 		SessionUtils.addAttribute("item_name", itemName);
 		
-		if(SessionUtils.getAttribute("tid") != null) {
-			orderUtil.setOrderList(orderList);
+		if(tid != null) {
+			orderUtil.setOrderList(orderList, tid);
 			result = 1;
 		}
 		
@@ -321,6 +310,17 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		
 		directOrderMapper.insert(orderList);
 		cartService.deleteOrderCart();
+		
+		if(orderList.get(0).getCouponActiveId() != null) {
+			int couponUseInfo = couponActiveService.applyCoupon (
+					 orderList.get(0)
+					,LocalDateTime.now());
+			
+			if(couponUseInfo != 1) {
+				return 403;
+			}
+			
+		}
 		
 		return 1;
 	}
@@ -345,9 +345,9 @@ public class DirectOrderServiceImple implements DirectOrderService {
         parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
         parameters.put("total_amount", String.valueOf(orderTotalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-        parameters.put("approval_url", "http://192.168.0.148:8080/searcher/item/completed"); 		// 결제 성공 시 URL
-        parameters.put("cancel_url", "http://192.168.0.148:8080/searcher/item/cancel");      		// 결제 취소 시 URL
-        parameters.put("fail_url", "http://192.168.0.148:8080/searcher/item/fail");          		// 결제 실패 시 URL
+        parameters.put("approval_url", "http://localhost:13417/searcher/item/completed"); 		// 결제 성공 시 URL
+        parameters.put("cancel_url", "http://localhost:13417/searcher/item/cancel");      		// 결제 취소 시 URL
+        parameters.put("fail_url", "http://localhost:13417/searcher/item/fail");          		// 결제 실패 시 URL
         
         // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -398,7 +398,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
         		,ApproveResponse.class);
         log.info("결제승인 응답객체: " + approveResponse);
         
-        List<DirectOrderVO> orderList = orderUtil.getOrderList();
+        List<DirectOrderVO> orderList = orderUtil.getOrderList(tid);
         
         acountFinal(orderList);
         
@@ -428,7 +428,8 @@ public class DirectOrderServiceImple implements DirectOrderService {
                 requestEntity,
                 PaymentCancellationVO.class
             );
-            List<DirectOrderVO> orderList = orderUtil.getOrderList();
+            String tid = SessionUtils.getStringAttributeValue("tid");
+            List<DirectOrderVO> orderList = orderUtil.getOrderList(tid);
             itemService.returnItemAmount(orderList);
             log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();

@@ -133,7 +133,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	
 	@Transactional
 	@Override
-	public int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice) {
+	public int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now) {
 		
 		CouponActiveVO couponActiveVO = new CouponActiveVO();
 		couponActiveVO.setCouponActiveId(directOrderVO.getCouponActiveId());

@@ -59,6 +59,6 @@ public interface CouponActiveService {
 	 */
 	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
 	
-	int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice);
+	int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now);
 
 }
