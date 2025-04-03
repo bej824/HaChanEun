@@ -9,7 +9,7 @@
 <body>
 <%@ include file="/WEB-INF/views/header.jsp"%>
 <div id="area">
-<p>회원 전체 거래 내역</p>
+<h1>회원 전체 거래 내역</h1>
 	<table border="1">
 		<thead>
 			<tr>
@@ -35,14 +35,14 @@
 	</table>
 	
 	<form id="searchForm" method="GET" action="purchaseHistory" class="search">
-	    <select name="keyword" id="keyword" style="display:none;">
-        <!-- 추가적인 옵션들이 동적으로 들어갈 부분 -->
-    	</select>
 	    <select name="type" id="type" onchange="updateFilters()">
 	    	<option>전체</option>
 	        <option value="DELIVERY_STATUS">배송 상태</option>
 	        <option value="DELIVERY_DATE">결제일</option>
 	    </select>
+	    <select name="keyword" id="keyword" style="display:none;">
+        <!-- 추가적인 옵션들이 동적으로 들어갈 부분 -->
+    	</select>
 	    <button type="submit" class="button">검색</button>
 	</form>
 		

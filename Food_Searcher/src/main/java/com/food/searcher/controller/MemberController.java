@@ -134,7 +134,6 @@ public class MemberController {
 			Model model,
 			MemberVO memberVO,
 			Principal principal) {
-		log.info("memberPageGET()");
 		String memberId = principal.getName();
 		memberVO = memberService.getMemberById(memberId);
 		

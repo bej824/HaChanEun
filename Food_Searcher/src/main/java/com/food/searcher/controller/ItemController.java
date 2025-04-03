@@ -155,11 +155,11 @@ public class ItemController {
 		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
-		int result = directOrderService.oneOrder(directOrderVO);
+		directOrderService.oneOrder(directOrderVO);
 		
 		String next_redirect_pc_url = SessionUtils.getStringAttributeValue("next_redirect_pc_url");
 		model.addAttribute("next_redirect_pc_url", next_redirect_pc_url);
-		log.info(result);
+		
 		return next_redirect_pc_url;
 	}
 	
@@ -219,6 +219,22 @@ public class ItemController {
 	@GetMapping("fail")
 	public void kakaoFail() {
 		
+	}
+	
+	@GetMapping("/detailItem")
+	public void detailItem(
+			Model model,
+			Integer itemId) {
+		
+		itemId = 387;
+		ItemVO itemVO = itemService.getItemById(itemId);
+		log.info(itemVO);
+		
+		model.addAttribute("itemVO", itemVO);
+		if(itemId.equals(itemVO.getItemId())) {
+			model.addAttribute("attachVO", itemService.attachById(itemVO.getItemId()));
+		}
+		model.addAttribute("attachAll", itemService.attachAll());
 	}
 	
 } // end ItemController

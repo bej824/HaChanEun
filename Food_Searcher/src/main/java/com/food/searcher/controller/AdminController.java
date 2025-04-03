@@ -37,6 +37,11 @@ public class AdminController {
 
 	}
 	
+	@GetMapping("/adminRole")
+	public void adminRole() {
+		
+	}
+	
 	@GetMapping("/itemManagement")
 	public void itemManagementGET(Pagination pagination,
 			Model model) {

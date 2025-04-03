@@ -84,7 +84,7 @@ table {
 					itemStatus = 300;
 					updateItemStatus();
 					row.find(".itemStatus").html("판매 허가 요청");
-					alert("변경 완료 : 판매 허가 요청");
+					alert("판매 허가를 취소하셨습니다.");
 				}
 			
 			} else if(permission == "300") {
@@ -95,7 +95,7 @@ table {
 					itemStatus = 100;
 					updateItemStatus();
 					row.find(".itemStatus").html("판매 중");
-					alert("변경 완료 : 판매 중");
+					alert("판매 허가하셨습니다.");
 				}
 			} else if(permission == "200") {
 				alert("변경할 수 없는 상태입니다.");
