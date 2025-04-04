@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
-import com.food.searcher.domain.DiscountCouponVO;
 
 public interface CouponActiveService {
 	
@@ -59,6 +58,6 @@ public interface CouponActiveService {
 	 */
 	CouponActiveVO setCouponInfo(CouponActiveVO couponActiveVO);
 	
-	int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now, Integer discountPrice);
+	int applyCoupon(DirectOrderVO directOrderVO, LocalDateTime now);
 
 }

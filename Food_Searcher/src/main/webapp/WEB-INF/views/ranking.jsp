@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%@ include file ="header.jsp" %>
-	
+	<div id="area">
 	<form id="searchForm" method="GET" action="ranking" class="search">
 	    <select name="type"  id="type" onchange="updateFilters()">
 	    	<option value="">전체</option>
@@ -56,7 +56,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	
+	</div>
 	<script>
     function updateFilters() {
         let type = document.getElementById("type").value;
