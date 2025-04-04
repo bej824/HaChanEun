@@ -2,7 +2,6 @@ package com.food.searcher.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.persistence.CouponActiveMapper;
-import com.food.searcher.task.MemberCouponTask;
 
 import lombok.extern.log4j.Log4j;
 

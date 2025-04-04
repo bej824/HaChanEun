@@ -1,7 +1,6 @@
 package com.food.searcher.service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,17 +17,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.food.searcher.domain.ApproveResponse;
-import com.food.searcher.domain.CartVO;
-import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
-import com.food.searcher.domain.ItemListVO;
 import com.food.searcher.domain.ItemVO;
 import com.food.searcher.domain.PaymentCancellationVO;
 import com.food.searcher.domain.ReadyResponse;
-import com.food.searcher.persistence.CartMapper;
 import com.food.searcher.persistence.DirectOrderMapper;
-import com.food.searcher.persistence.ItemMapper;
-import com.food.searcher.persistence.MemberMapper;
 import com.food.searcher.util.OrderUtil;
 import com.food.searcher.util.Pagination;
 import com.food.searcher.util.SessionUtils;
@@ -217,7 +210,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Override
 	public int orderCancel() {
-		List<DirectOrderVO> directOrderVO = directOrderMapper.orderCancelList();
 		
 		return directOrderMapper.orderCancel();
 	}

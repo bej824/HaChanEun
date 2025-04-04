@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
-import com.food.searcher.domain.DiscountCouponVO;
 
 public interface CouponActiveService {
 	
