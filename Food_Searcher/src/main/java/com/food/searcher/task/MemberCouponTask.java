@@ -2,25 +2,19 @@ package com.food.searcher.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DiscountCouponVO;
-import com.food.searcher.domain.ItemVO;
 import com.food.searcher.domain.MemberVO;
-import com.food.searcher.persistence.CouponHistoryMapper;
 import com.food.searcher.service.CouponActiveService;
 import com.food.searcher.service.CouponHistoryService;
 import com.food.searcher.service.DiscountCouponService;
-import com.food.searcher.service.ItemService;
 import com.food.searcher.service.MemberService;
 import com.food.searcher.service.UtilityService;
 import com.food.searcher.util.RandomUtil;
