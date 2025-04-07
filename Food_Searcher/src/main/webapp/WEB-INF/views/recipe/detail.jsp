@@ -73,6 +73,7 @@ h1 {
     transition: background 0.3s ease-in-out;
     text-align: center;
     text-decoration: none;
+    
 }
 
 .button:hover {
@@ -99,6 +100,13 @@ h1 {
 .image_item img {
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width:250px;
+	max-height:260px;
+}
+
+.image_item {	
+	flex-direction: row; /* 가로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
 /* 재료 클릭 스타일 */
@@ -131,13 +139,22 @@ h1 {
 	font-size : 22px;
 }
 
+.recipeFood, #buttonRecipeModify {
+	margin-left:10px;
+}
+
+.recipeDiv {
+	flex-direction: column;
+	align-items: center; /* 수직 중앙 정렬 */
+}
+
 </style>
 </head>
 <body>
 	<%@ include file ="../header.jsp" %>
 	<div id="area2">
 	<h1>${recipeVO.recipeTitle }</h1>
-	    <div>
+	    <div class="recipeDiv">
 	        <span class="memberId">${recipeVO.memberId }</span>
 	        
 	        <span class="recipeDate">
@@ -146,13 +163,14 @@ h1 {
 	        
 	        <div>
 		        <sec:authorize access="isAuthenticated() and principal.username == '${recipeVO.memberId }'">
-		            <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button">글 수정</button>
+		            <button onclick="location.href='modify?recipeId=${recipeVO.recipeId}'" class="button" id="buttonRecipeModify">글 수정</button>
 		            <button id="deleteBoard" class="button">글 삭제</button>
 		        </sec:authorize>
 	        </div>
 	        
 	        <p class="recipeFood">${recipeVO.recipeFood } <span class="recipeCtg">(${recipeVO.category })</span></p>
 	    </div>
+	    
 	
 	<br><br><br>
     <p>＜재료＞</p>
@@ -197,8 +215,8 @@ h1 {
 				    			  attachVO.attachExtension eq 'gif'}">
 				        <div class="image_item">
 				        	<a href="../image/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" target="_blank">
-					        <img width="100px" height="100px" 
-					        src="../image/get?attachId=${attachVO.attachId }&attachExtension=${attachVO.attachExtension}" /></a>
+					        <img class="recipeImgDiv"
+					        src="../image/get?attachId=${attachVO.attachId }&attachChgName=${attachVO.attachChgName}" /></a>
 				        </div>
 				        <c:set var="imageFound" value="true"/>
 				    </c:if>

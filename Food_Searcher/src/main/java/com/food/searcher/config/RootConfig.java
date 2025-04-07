@@ -19,9 +19,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.food.searcher.task.MemberCouponTask;
 import com.food.searcher.util.OrderUtil;
 import com.food.searcher.util.RandomUtil;
 import com.zaxxer.hikari.HikariConfig;

@@ -1,5 +1,6 @@
 package com.food.searcher.exception;
 
+@SuppressWarnings("serial")
 public class CustomException extends RuntimeException {
 	private String errorCode;
 	

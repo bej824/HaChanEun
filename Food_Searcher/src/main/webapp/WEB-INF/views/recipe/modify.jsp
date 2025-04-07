@@ -29,6 +29,8 @@
 	href="${pageContext.request.contextPath }/resources/css/image.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/attach.css">
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/Register.css">
 <title>${recipeVO.recipeTitle }</title>
 </head>
 <body>
@@ -41,13 +43,11 @@
 		<input type="hidden" name="type" value="${pagination.type}">
 		<input type="hidden" name="keyword" value="${pagination.keyword}">
 		<div>
-			<p>번호 : ${recipeVO.recipeId }</p>
 			<input type="hidden" name="recipeId" value="${recipeVO.recipeId }" readonly>
 		</div>
 		<div>
 			<p>제목 : </p>
-			<input type="text" name="recipeTitle" placeholder="제목 입력" 
-maxlength="20" value="${recipeVO.recipeTitle }" required>
+			<input type="text" name="recipeTitle" placeholder="제목 입력" maxlength="100" value="${recipeVO.recipeTitle }" required>
 		</div>
 		<div>
 			<p>작성자 : ${recipeVO.memberId}</p>

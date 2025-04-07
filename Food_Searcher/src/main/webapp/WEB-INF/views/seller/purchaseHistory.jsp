@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#area2 {
+	margin-left:5%;
+}
+</style>
 <meta charset="UTF-8">
 <title>판매자 거래 내역</title>
 </head>

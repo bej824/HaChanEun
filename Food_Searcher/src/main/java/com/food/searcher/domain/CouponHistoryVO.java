@@ -3,8 +3,6 @@ package com.food.searcher.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.food.searcher.util.Pagination;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
