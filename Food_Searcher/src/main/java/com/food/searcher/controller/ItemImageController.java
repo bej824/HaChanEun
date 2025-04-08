@@ -39,8 +39,6 @@ public class ItemImageController {
 
 	@PostMapping
 	public ResponseEntity<ArrayList<ItemAttachVO>> createImage(MultipartFile[] files) {
-		log.info("createImage()");
-		log.info(files);
 		ArrayList<ItemAttachVO> list = new ArrayList<>();
 
 		for (MultipartFile file : files) {
@@ -65,7 +63,6 @@ public class ItemImageController {
 			// 파일 확장자 설정
 			attachVO.setAttachExtension(extension);
 			
-			log.info(attachVO);
 			list.add(attachVO);
 		}
 		
@@ -77,7 +74,6 @@ public class ItemImageController {
 	// 이미지 파일을 호출
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> display(String attachPath, String attachChgName, String attachExtension) {
-		log.info("display()");
 		ResponseEntity<byte[]> entity = null;
 		try {
 			// 파일을 읽어와서 byte 배열로 변환
@@ -110,7 +106,6 @@ public class ItemImageController {
 	
 	@GetMapping("/get")
 	public ResponseEntity<byte[]> getImage(int attachId, String attachExtension) {
-		log.info("getImage()");
 		
 		ItemAttachVO attachVO = attachService.getAttachById(attachId);
 		ResponseEntity<byte[]> entity = null;
@@ -148,8 +143,6 @@ public class ItemImageController {
     // 섬네일 및 원본 이미지 삭제 기능
     @PostMapping("/delete")
     public ResponseEntity<Integer> deleteImage(String attachPath, String attachChgName, String attachExtension) {
-    	log.info("deleteAttach()");
-    	log.info(attachChgName);
     	FileUploadUtil.deleteFile(uploadPath, attachPath, attachChgName);
     	
     	String thumbnailName = "t_" + attachChgName + "." + attachExtension;

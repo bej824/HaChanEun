@@ -32,7 +32,6 @@ public class RankingController {
 	
 	@GetMapping("/ranking")
 	public void main(Model model, Pagination pagination) {
-		log.info(pagination);
 		List<RecipeLikesVO> likeList = recipeLikesService.getPagingBoards(pagination);
 		List<RecipeVO> recipeList = new ArrayList<RecipeVO>();
 		for(RecipeLikesVO like : likeList) {

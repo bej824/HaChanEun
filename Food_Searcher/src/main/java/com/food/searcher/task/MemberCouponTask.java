@@ -59,7 +59,6 @@ public class MemberCouponTask {
 		createCouponActiveBatch(todayBirthCouponList, todayBirthMemberList);
 		
 		if(randomUtil.getTodayMBTI() != null) {
-			log.info("오늘의 MBTI는 " + randomUtil.getTodayMBTI() + "입니다.");
 			List<DiscountCouponVO> todayMBTICoupon = 
 					discountCouponService.selectCoupon("COUPON_EVENT", "memberMBTI");
 			List<MemberVO> todayMBTIMembersList = 

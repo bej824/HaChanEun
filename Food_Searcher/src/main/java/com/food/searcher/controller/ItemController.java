@@ -69,8 +69,7 @@ public class ItemController {
 			Principal principal) {
 		
 		itemVO.setMemberId(principal.getName());
-		int result = itemService.createItem(itemVO);
-		log.info(result);
+		itemService.createItem(itemVO);
 		
 		return "redirect:/item/list";		
 	}
@@ -83,7 +82,6 @@ public class ItemController {
 		
 		
 		ItemVO itemVO = itemService.getItemById(itemId);
-		log.info(itemVO);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(itemService.getSelectCategoryList(itemVO.getSubCtg(), itemVO.getItemId(), pagination).size());
@@ -91,10 +89,8 @@ public class ItemController {
 		
 		pagination.setPageSize(5);
 		List<ItemVO> itemList = itemService.getSelectCategoryList(itemVO.getSubCtg(), itemVO.getItemId(), pagination);
-		log.info("itemList : " + itemList);
 		model.addAttribute("itemList", itemList);
 		model.addAttribute(pageMaker);
-		log.info("pageMaker : " + pageMaker);
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {
@@ -120,10 +116,7 @@ public class ItemController {
 	
 	@PostMapping("/modify")
 	public String modifyPOST(ItemVO itemVO) {
-		log.info("modifyPOST()");
-		int result = itemService.updateItem(itemVO);
-		log.info(itemVO);
-		log.info(result + "행 수정");
+		itemService.updateItem(itemVO);
 		
 		return "redirect:/item/list";
 	}
@@ -139,7 +132,6 @@ public class ItemController {
 	public void orderGet (
 			Model model,
 			Integer itemId, Principal principal) {
-		log.info("orderGET()");
 		MemberVO member = memberService.getMemberById(principal.getName());
 		model.addAttribute("member", member);
 		ItemVO itemVO = itemService.getItemById(itemId);
@@ -152,7 +144,6 @@ public class ItemController {
 	@ResponseBody
 	@PostMapping("/order")
 	public String order (@RequestBody DirectOrderVO directOrderVO, Principal principal, Model model) {
-		log.info(directOrderVO);
 		
 		directOrderVO.setMemberId(principal.getName());
 		directOrderService.oneOrder(directOrderVO);
@@ -168,14 +159,11 @@ public class ItemController {
 			Model model,
 			Principal principal,
 			Pagination pagination) {
-		log.info("purchaseHistory()");
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(directOrderService.getMemberTotalCount(principal.getName(), pagination));
-		log.info(pageMaker);
 		List<DirectOrderVO> directOrderVO = directOrderService.getPagingmemberList(principal.getName(), pagination);
-		log.info("directOrderVO" + directOrderVO);
 		
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("directOrderVO", directOrderVO);
@@ -228,7 +216,6 @@ public class ItemController {
 		
 		itemId = 387;
 		ItemVO itemVO = itemService.getItemById(itemId);
-		log.info(itemVO);
 		
 		model.addAttribute("itemVO", itemVO);
 		if(itemId.equals(itemVO.getItemId())) {

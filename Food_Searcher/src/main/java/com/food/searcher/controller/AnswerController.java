@@ -35,7 +35,6 @@ public class AnswerController {
 	
 	@PostMapping("/answer-post/{askId}")
 	public ResponseEntity<String> answerPOST(@PathVariable("askId") long askId, @RequestBody AnswerVO answerVO, Principal principal) {
-		log.info("answerPOST()");
 		
 		 String memberId = principal.getName();
 		 answerVO.setMemberId(memberId); 
@@ -61,11 +60,8 @@ public class AnswerController {
 	
 	@DeleteMapping("/answer-delete/{answerId}")
 	public ResponseEntity<Integer> deleteAnswer(@PathVariable("answerId") long answerId) {
-		log.info("deleteAnswer()");
-		log.info("AnswerId = " + answerId);
 
 		int result = answerService.deleteAnswer(answerId);
-		log.info("삭제 : " + result);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	} // 대댓글 삭제
 	

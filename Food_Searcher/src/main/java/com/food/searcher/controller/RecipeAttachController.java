@@ -38,11 +38,7 @@ public class RecipeAttachController {
     // 첨부 파일 생성 
 	@PostMapping
 	public ResponseEntity<ArrayList<AttachVO>> createAttach(RecipeVO recipeVO, MultipartFile[] files) {
-		log.info("createAttach");
-		log.info(files);
-
 		ArrayList<AttachVO> list = new ArrayList<>();
-		log.info(list);
 
 		for (MultipartFile file : files) {
 
@@ -55,20 +51,14 @@ public class RecipeAttachController {
 			String extension = FileUploadUtil.subStrExtension(file.getOriginalFilename());
 
 			AttachVO attachVO = new AttachVO();
-			log.info(attachVO);
 			// 파일 경로 설정
 			attachVO.setAttachPath(path);
-			log.info(attachVO);
 			// 파일 실제 이름 설정
 			attachVO.setAttachRealName(FileUploadUtil.subStrName(file.getOriginalFilename()));
-			log.info(attachVO);
 			// 파일 변경 이름(UUID) 설정
 			attachVO.setAttachChgName(chgName);
-			log.info(attachVO);
 			// 파일 확장자 설정
 			attachVO.setAttachExtension(extension);
-			
-			log.info(attachVO);
 			list.add(attachVO);
 		}
 
@@ -78,7 +68,6 @@ public class RecipeAttachController {
     // 첨부 파일 다운로드(GET)
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> download(int attachId) throws IOException {
-        log.info("download()");
         
         // attachId로 상세 정보 조회
         AttachVO attachVO =  attachService.getAttachById(attachId);
@@ -86,18 +75,14 @@ public class RecipeAttachController {
         String attachChgName = attachVO.getAttachChgName();
         String attachExtension = attachVO.getAttachExtension();
         String attachRealName = attachVO.getAttachRealName();
-        log.info(attachVO);
         
         // 서버에 저장된 파일 정보 생성
         String resourcePath = uploadPath + File.separator + attachPath + File.separator + attachChgName;
-        log.info(resourcePath);
         // 파일 리소스 생성
         Resource resource = new FileSystemResource(resourcePath);
-        log.info(resource);
         // 다운로드할 파일 이름을 헤더에 설정
         HttpHeaders headers = new HttpHeaders();
         String attachName = new String(attachRealName.getBytes("UTF-8"), "ISO-8859-1");
-        log.info(attachName);
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + attachName + "." + attachExtension);
 
         // 파일을 클라이언트로 전송
@@ -107,7 +92,6 @@ public class RecipeAttachController {
 	// 첨부 파일 삭제
     @PostMapping("/delete")
     public ResponseEntity<Integer> deleteAttach(String attachPath, String attachChgName) {
-    	log.info("deleteAttach()");
     	FileUploadUtil.deleteFile(uploadPath, attachPath, attachChgName);
     	
     	return new ResponseEntity<Integer>(1, HttpStatus.OK);

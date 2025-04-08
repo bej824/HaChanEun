@@ -41,7 +41,6 @@ public class KakaoPayController {
     @ResponseBody
     @PostMapping("/ready")
     public ReadyResponse preparePayment(@RequestBody ApproveResponse approve, Model model) {
-    	log.info("ready()");
         // 결제 준비 API 호출
     	
     	String orderId = approve.getPartner_order_id();

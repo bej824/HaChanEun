@@ -32,17 +32,14 @@ public class ReviewController {
 	
 	@GetMapping("/review/list/{itemId}")
 	public ResponseEntity<List<ReviewVO>> reviewGET(@PathVariable("itemId") long itemId, Model model) {
-		log.info("reviewGET()");
 		List<ReviewVO> reviewVO = reviewService.getAll(itemId);
 		model.addAttribute("reviewVO", reviewVO);
-		log.info("리뷰 VO : " + reviewVO);
 		
 		return new ResponseEntity<List<ReviewVO>>(reviewVO, HttpStatus.OK);
 	}
 	
 	@GetMapping("/reviewRegister")
     public String registerGET(long itemId, Principal principal, Model model) {
-        log.info("registerGET()");
         
         String memberId = principal.getName();
         try {
@@ -51,13 +48,11 @@ public class ReviewController {
             model.addAttribute("reviewVO", reviewVO);
             model.addAttribute("itemId", itemId);
             
-            log.info("VO : " + reviewVO);
-            
             return "product/reviewRegister";
 
         } catch (CustomException e) {
-            log.info(e.getErrorCode());
-            log.info(e.getMessage());
+            log.error(e.getErrorCode());
+            log.error(e.getMessage());
             
             model.addAttribute("msg", e.getMessage());
             
@@ -77,7 +72,6 @@ public class ReviewController {
 	
 	@PostMapping("/reviewRegister")
 	public String reviewPOST(ReviewVO reviewVO, Principal principal) {
-	    log.info("postreviewPOST() 호출");
 	    String memberId = principal.getName();
 	    reviewVO.setMemberId(memberId);
 	    reviewService.createReview(reviewVO);

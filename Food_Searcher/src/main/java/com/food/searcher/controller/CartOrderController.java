@@ -31,9 +31,7 @@ public class CartOrderController {
 	
 	@GetMapping("/list/{memberId}/order")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
-		log.info("orderList()");
 		List<CartVO> cartVO = cartMapper.cartOrder(memberId);
-		log.info(cartVO);
 		int cartVOSize = cartVO.size();
 		String itemId = "";
 		String amount = "";
@@ -54,8 +52,7 @@ public class CartOrderController {
 	
 	@PostMapping("/list/{memberId}/order")
 	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
-		int result = directOrderService.cartOrder(directOrderVO);
-		log.info(result);
+		directOrderService.cartOrder(directOrderVO);
 		return "redirect:../../../item/purchaseHistory";
 	}
 }

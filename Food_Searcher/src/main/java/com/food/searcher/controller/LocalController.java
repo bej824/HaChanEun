@@ -30,7 +30,6 @@ public class LocalController {
 			@RequestParam(value = "localDistrict", required = false) String localDistrict,
 			@RequestParam(value = "localTitle", required = false) String localTitle,
 			@RequestParam(value = "mainCtg", required = false) String mianCtg) {
-		log.info("listGET()");
 		
 		model.addAttribute("localLocal", localLocal);
 		model.addAttribute("localDistrict", localDistrict);
@@ -40,14 +39,11 @@ public class LocalController {
 	
 	@GetMapping("register")
 	public void registerSpecialityGET(){
-		log.info("registerSpecialityGET()");
 	}
 	
 	@ResponseBody
 	@PostMapping("register")
 	public int registerSpecialityPOST(LocalSpecialityVO localSpecialityVO) {
-		log.info("registerSpecialityPOST()");
-		log.info("등록할 특산품 : " + localSpecialityVO);
 		int result = localService.createSpeciality(localSpecialityVO);
 		
 		return result;
@@ -56,7 +52,6 @@ public class LocalController {
 	@ResponseBody
 	@GetMapping("localUpdate")
 	public List<LocalSpecialityVO> localUpdateGET(LocalSpecialityVO localSpecialityVO) {
-		log.info("localUpdateGET()");
 		
 		List<LocalSpecialityVO> SpecialityList = 
 				localService.getAllSpeciality(localSpecialityVO);
@@ -66,9 +61,7 @@ public class LocalController {
 	@ResponseBody
 	@GetMapping("listDistrict")
 	public List<String> localDistrictGET(@RequestParam("localLocal") String localLocal) {
-		log.info("localDistrictGET()");
 		List<String> districtList = localService.getDistrictByLocal(localLocal);
-		log.info(districtList);
 		
 		return districtList;
 	}
@@ -76,7 +69,6 @@ public class LocalController {
 	@ResponseBody
 	@PostMapping("update")
 	public int localUpdatePOST(LocalSpecialityVO localSpecialityVO) {
-		log.info("localUpdatePOST()");
 
 		return localService.updateSpeciality(localSpecialityVO);
 	}
@@ -89,7 +81,6 @@ public class LocalController {
 			@RequestParam(value = "localTitle", required = false) String localTitle,
 			@RequestParam(value = "mainCtg", required = false) String mainCtg,
 			Model model, LocalSpecialityVO localSpecialityVO) {
-		log.info("localDetailGET()");
 		
 		localSpecialityVO = localService.getSpecialityByLocalId(localId);
 
@@ -102,7 +93,6 @@ public class LocalController {
 	@GetMapping("modify")
 	public void modifyGET(@RequestParam("localId") int localId,
 			Map<String, Object> result, LocalSpecialityVO localSpecialityVO, Model model) {
-		log.info("modifyGET()");
 		
 		localSpecialityVO = localService.getSpecialityByLocalId(localId);
 		

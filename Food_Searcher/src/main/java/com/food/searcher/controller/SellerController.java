@@ -41,7 +41,6 @@ public class SellerController {
 		
 	@GetMapping("authenticate")
 	public void authenticateGET(Model model) {
-		log.info("authenticateGET()");
 		
 		model.addAttribute("nowDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 	}
@@ -51,7 +50,6 @@ public class SellerController {
 							Principal principal, 
 							Pagination pagination) {
 		String memberId = principal.getName();
-		log.info("사용자 : " + memberId);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
@@ -77,7 +75,6 @@ public class SellerController {
 			  						  Model model,
 									  Pagination pagination
 									  ) {
-		log.info("listStatusGET()");
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(sellerService.sellerTotalCount());
@@ -93,8 +90,6 @@ public class SellerController {
 	@PutMapping("/status/{itemId}")
 	public ResponseEntity<Integer> updateStatus(@PathVariable("itemId") int itemId, 
 												@RequestBody int itemStatus) { 
-		log.info("itemId : " + itemId);
-		log.info("itemStatus : " + itemStatus);
 		return new ResponseEntity<Integer> (sellerService.updateItemStatus(itemId, itemStatus), HttpStatus.OK);
 	}
 	
@@ -102,8 +97,6 @@ public class SellerController {
 	@PatchMapping("/status/{itemId}/{itemAmount}")
 	public ResponseEntity<Integer> updateAmount (@PathVariable("itemAmount") int itemAmount, 
 												 @PathVariable("itemId") int itemId) { 
-		log.info("itemId : " + itemId);
-		log.info("itemAmount : " + itemAmount);
 		return new ResponseEntity<Integer> (itemService.updateItemAmount(itemId, itemAmount), HttpStatus.OK);
 	}
 	
@@ -112,7 +105,6 @@ public class SellerController {
 			Principal principal, 
 			Pagination pagination) {
 		String memberId = principal.getName();
-		log.info("사용자 : " + memberId);
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
@@ -135,7 +127,6 @@ public class SellerController {
 	@ResponseBody
 	@PostMapping("roleUpdate")
 	public int roleUpdatePOST(Principal principal) {
-		log.info("roleUpdatePOST()");
 		String memberId = principal.getName();
 		
 		return sellerService.SellerCreate(memberId);
@@ -144,14 +135,12 @@ public class SellerController {
 	@ResponseBody
 	@GetMapping("sellerCoupon")
 	public List<DiscountCouponVO> sellerCouponGET() {
-		log.info("sellerCouponGET()");
 		
 		return sellerService.selectSellerCoupon();
 	}
 	
 	@GetMapping("/purchaseHistory")
 	public void purchaseHistoryGET(Model model, Principal principal, Pagination pagination) {
-		log.info("purchaseHistoryGET()");
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
 		pageMaker.setTotalCount(sellerService.totalCount(principal.getName(), pagination));
