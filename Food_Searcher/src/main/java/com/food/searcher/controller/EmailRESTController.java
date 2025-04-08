@@ -34,27 +34,23 @@ public class EmailRESTController {
 	@PostMapping("/emailConfirm")
 	public ResponseEntity<Integer> emailConfirmPOST(String email, HttpServletRequest request) 
 			throws ServletException, IOException {
-		log.info("emailConfirmPOST()");
 		int result = 0;
 		Random random = new Random();
 		int checkNum = random.nextInt(900000) + 100000;
-		log.info("랜덤난수 : " + checkNum);
 		
 		String subject = "이메일 인증번호";
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("이메일 인증번호");
 	    sb.append("인증번호는 다음과 같습니다 : ");
 	    sb.append(checkNum);
-	    log.info(email + "님의 인증번호 : " + checkNum);
 
 	    // 이메일 전송
 	    try {
 	        sendEmail(email, subject, sb.toString());
-	        log.info("인증번호 이메일 전송 성공");
 	        result = emailAuth.insertAuth(email, checkNum);
 	        
 	    } catch (Exception e) {
-	    	log.info("인증번호 이메일 전송 실패");
+	    	log.error("인증번호 이메일 전송 실패");
 	    }
 	    
 	    return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -64,9 +60,7 @@ public class EmailRESTController {
 	public ResponseEntity<Integer> emailCheckPOST(@RequestParam("email") String email ,
 			@RequestParam("emailCheck") int emailCheck)
 			throws ServletException, IOException {
-		log.info("emailCheckPOST()");
 		int result = 0;
-		log.info("입력된 인증번호 : " + emailCheck);
 		
 		result = emailAuth.checkAuth(email, emailCheck);
 		

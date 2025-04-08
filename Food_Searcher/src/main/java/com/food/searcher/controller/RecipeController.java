@@ -30,7 +30,6 @@ public class RecipeController {
 
 	@GetMapping("/list")
 	public void list(Model model, Pagination pagination) {
-		log.info("list()");
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPagination(pagination);
@@ -48,7 +47,6 @@ public class RecipeController {
 	@GetMapping("/detail")
 	public void detail(Model model, Integer recipeId, Principal principal,
 			@ModelAttribute("pagination") Pagination pagination) {
-		log.info("detail()");
 		String username = (principal != null && principal.getName() != null) ? principal.getName() : "nouser";
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId, username);
 
@@ -64,17 +62,13 @@ public class RecipeController {
 	
 	@GetMapping("/register")
 	public void registerGET() {
-		log.info("registerGET()");
 	}
 
 	// register.jsp에서 전송받은 게시글 데이터를 저장
 	@PostMapping("/register")
 	public String registerPOST(RecipeVO recipeVO, Principal principal) {
-		log.info("registerPOST()");
 		recipeVO.setMemberId(principal.getName());
-
-		int result = recipeService.createBoard(recipeVO);
-		log.info(result + "행 등록");
+		recipeService.createBoard(recipeVO);
 
 		return "redirect:/recipe/list";
 	}
@@ -83,7 +77,6 @@ public class RecipeController {
 	// 조회된 게시글 데이터를 modify.jsp로 전송
 	@GetMapping("/modify")
 	public void modifyGET(Model model, Integer recipeId, Principal principal) {
-		log.info("modifyGET()");
 		RecipeVO recipeVO = recipeService.getBoardById(recipeId, principal.getName());
 		if (recipeId.equals(recipeVO.getRecipeId())) {
 			model.addAttribute("recipeVO", recipeVO);
@@ -97,24 +90,19 @@ public class RecipeController {
 	// modify.jsp에서 데이터를 전송받아 게시글 수정
 	@PostMapping("/modify")
 	public String modifyPOST(RecipeVO recipeVO, Principal principal) {
-		log.info("modifyPOST()");
 		recipeVO.setMemberId(principal.getName());
 
 		// 1. 게시글 수정 처리
-		int result = recipeService.updateBoard(recipeVO);
-		log.info(result + "행 수정");
-
+		recipeService.updateBoard(recipeVO);
 		return "redirect:/recipe/detail?recipeId=" + recipeVO.getRecipeId();
 	}
 
 	// detail.jsp에서 boardId를 전송받아 게시글 데이터 삭제
 	@PostMapping("/delete")
 	public String delete(RecipeVO recipeVO, Integer recipeId) {
-		log.info("delete()");
 
 		// 레시피 삭제
-		int result = recipeService.deleteBoard(recipeId);
-		log.info(result + "행 삭제");
+		recipeService.deleteBoard(recipeId);
 
 		// 삭제 후 레시피 목록 페이지로 리다이렉트
 		return "redirect:/recipe/list";
@@ -122,10 +110,8 @@ public class RecipeController {
 	
 	@GetMapping("/recommend")
 	public void recommendGET(Model model, Principal principal) {
-		log.info("recommendGET()");
 		RecommendVO recommend = recipeService.recommend(principal.getName());
 		if(recommend != null) {
-			log.info(recommend);
 			model.addAttribute("recommend", recommend);
 			model.addAttribute("memberId", principal.getName());
 			String food = recommend.getFood();

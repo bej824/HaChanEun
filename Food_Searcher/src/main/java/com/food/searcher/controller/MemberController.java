@@ -37,7 +37,6 @@ public class MemberController {
 	
 	@GetMapping("memberCoupon")
 	public void memberCouponGET() {
-		log.info("memberCouponGET()");
 	}
 	
 	// 이메일 인증 호출
@@ -45,7 +44,6 @@ public class MemberController {
 	public void rigisterEmailGET(
 			@RequestParam(value="select") String select,
 			Model model) {
-		log.info("registerEmailGET()");
 		model.addAttribute("select", select);
 	}
 
@@ -54,7 +52,6 @@ public class MemberController {
 	public void registerPOST(
 			@RequestParam("email") String email,
 			Model model) {
-		log.info("registerPOST()");
 		LocalDate now = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		String nowDate = now.format(formatter);
@@ -69,7 +66,6 @@ public class MemberController {
 	public int idCheckGET(
 			@RequestParam("memberId") String memberId,
 			MemberVO memberVO) {
-		log.info("idCheckGET");
 		
 		int result = memberService.memberIdCheck(memberId);
 
@@ -81,7 +77,6 @@ public class MemberController {
 	public boolean pwCheckPOST(
 			@RequestParam("password") String password,
 			Principal principal) {
-		log.info("pwCheckPOST()");
 		
 		String memberId = principal.getName();
 		String encodedPassword = memberService.searchPw(memberId);
@@ -94,14 +89,12 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/registerClear")
 	public int registerPOST(@RequestBody MemberVO memberVO) {
-		log.info("registerPOST()");
 		
 		int result = 0;
 		String encPw = passwordEncoder.encode(memberVO.getPassword());
 		String memberId = memberVO.getMemberId();
 		String roleName = "ROLE_MEMBER";
 		memberVO.setPassword(encPw);
-		log.info("회원가입 정보 등록 : " + memberVO);
 		
 		memberService.createRole(memberId, roleName);
 		
@@ -112,7 +105,6 @@ public class MemberController {
 
 	@RequestMapping("/login") // 로그인 후 지정 위치로 ...
 	public String login(HttpServletRequest request, HttpServletResponse response) {
-		log.info("loginRequest()");
 		String redirectUrl = request.getParameter("redirect");
 
 		if (redirectUrl != null && !redirectUrl.contains("WEB-INF")) {
@@ -149,10 +141,8 @@ public class MemberController {
 			@RequestParam(value = "emailAgree", required = false) String emailAgree,
 			MemberVO memberVO,
 			Model model) {
-		log.info("updatePOST()");
 
 		int result = memberService.updateMember(memberId, memberMBTI, emailAgree);
-		log.info(result + "행 수정");
 
 		return result;
 	}
@@ -164,13 +154,9 @@ public class MemberController {
 	public int emailUpdatePOST(
 			@RequestParam("email") String email,
 			Principal principal) {
-		log.info("emailUpdatePOST()");
 		
 		String memberId = principal.getName();
 		int result = memberService.updateEmail(memberId, email);
-		
-		log.info(result + "행 수정");
-		
 		return result;
 	}
 	
@@ -181,13 +167,8 @@ public class MemberController {
 	public int statusUpdatePOST(
 			@RequestParam("memberId") String memberId, 
 			@RequestParam("memberStatus") String memberStatus) {
-		log.info("statusUpdatePOST()");
-		log.info(memberId + " : " + memberStatus);
 		
 		int result = memberService.updateStatus(memberId, memberStatus);
-		
-		log.info(result + "행 수정");
-		
 		return result;
 		
 	}
@@ -195,7 +176,6 @@ public class MemberController {
 	// ID 찾을 때 GET 루트 방지
 	@GetMapping("/idSearch")
 	public String idSearchGET() {
-		log.info("idSearchGET()");
 		return "redirect:registerEmail?select=idSearch";
 	}
 	
@@ -204,8 +184,6 @@ public class MemberController {
 	public void idSearchPOST(
 			@Param("email") String email,
 			Model model) {
-		log.info("idSearchPOST()");
-		
 		model.addAttribute("email", email);
 	}
 	
@@ -219,8 +197,6 @@ public class MemberController {
 			@RequestParam(value = "memberDateOfBirth", required=false, defaultValue = "0") int memberDateOfBirth,
 			@RequestParam(value = "memberMBTI", required=false) String memberMBTI,
 			MemberVO memberVO) {
-		log.info("idSearchAjaxPOST()");
-		
 		List<MemberVO> result = memberService.searchId
 				(memberId, memberName, email, memberDateOfBirth, memberMBTI);
 
@@ -230,7 +206,6 @@ public class MemberController {
 	// 비밀번호 찾기 GET 루트 방지
 	@GetMapping("/pwSearch")
 	public String pwSearchGET() {
-		log.info("pwSearchGET()");
 		return "redirect:registerEmail?select=pwSearch";
 	}
 	
@@ -240,8 +215,6 @@ public class MemberController {
 			@RequestParam(value="memberId", required=false) String memberId,
 			@RequestParam("email") String email,
 			Model model) {
-		log.info("pwSearchPOST()");
-		
 		if(memberId == null) {
 			memberId = "";
 		}
@@ -252,8 +225,6 @@ public class MemberController {
 	// 로그인 상태에서의 비밀번호 찾기
 	@GetMapping("/pwUpdate")
 	public void pwUpdateGET() {
-		log.info("pwUpdateGET()");
-		
 	}
 	
 	// 비밀번호 변경
@@ -266,7 +237,6 @@ public class MemberController {
 			Principal principal,
 			Model model,
 			boolean login) {
-		log.info("pwUpdatePOST()");
 		int result = 0;
 		
 		if(memberId == null) {

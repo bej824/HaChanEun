@@ -45,7 +45,6 @@ public class AskController {
 	
 	@PostMapping
 	public ResponseEntity<String> askPOST(@RequestBody AskVO askVO, Principal principal) {
-		log.info("askPOST()");
 		HttpHeaders resHeaders = new HttpHeaders();
         resHeaders.add("Content-Type", "application/json;charset=UTF-8");
 	    askVO.setMemberId(principal.getName());
@@ -53,12 +52,10 @@ public class AskController {
 	        boolean canWrite = askService.canWriteAsk(askVO.getMemberId(), askVO.getItemId());
 	        
 	        if (!canWrite) {
-	        	log.info("400 return");
 	            return ResponseEntity.badRequest().body("문의는 하루에 한 번만 작성 가능합니다.");
 	        }
 	        // 문의 등록
 	        askService.createAsk(askVO);
-	        log.info("200 return");
 	        return ResponseEntity.ok("문의가 등록되었습니다.");
 	        
 	    }
@@ -73,8 +70,6 @@ public class AskController {
 	@DeleteMapping("/delete/{askId}") 
 	   public ResponseEntity<Integer> deleteReply(
 			   @PathVariable("askId") long askId) {
-	      log.info("deleteReply()");
-	      log.info("askId : " + askId);
 	      
 	      int result = askService.deleteAsk(askId);
 	      

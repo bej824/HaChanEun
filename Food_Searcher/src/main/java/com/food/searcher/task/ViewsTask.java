@@ -21,7 +21,6 @@ public class ViewsTask {
 	
 	@Scheduled(cron = "0 0 0 * * *") // 자정에 실행
 	public void viewsCount() {
-		log.info("조회수 확인");
 		
 		recipeViewService.RecipeViewCount();
 		

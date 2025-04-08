@@ -50,9 +50,7 @@ public class CartController {
 	
 	@GetMapping("/list/{memberId}")
 	public String cartList (Model model, @PathVariable("memberId") String memberId) {
-		log.info("cartList()");
 		List<CartVO> cartVO = cartService.getCartById(memberId);
-		log.info(cartVO);
 		model.addAttribute("cartVO", cartVO);
 		MemberVO member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
@@ -60,7 +58,6 @@ public class CartController {
 		List<ItemAttachVO> list = new ArrayList<ItemAttachVO>();
 		for(CartVO vo : cartVO) {
 			List<ItemAttachVO> attachVO = attachService.getItemById(vo.getItemId());
-			log.info(attachVO);
 			list.addAll(attachVO);
 		}
 		model.addAttribute("attachVO", list);
@@ -70,9 +67,7 @@ public class CartController {
 	@ResponseBody
 	@PostMapping("/list/{memberId}")
 	public String cartOrder(@RequestBody List<DirectOrderVO> directOrderVO) {
-		log.info(directOrderVO);
-		int result = directOrderService.cartOrder(directOrderVO);
-		log.info(result);
+		directOrderService.cartOrder(directOrderVO);
 		String next_redirect_pc_url = SessionUtils.getStringAttributeValue("next_redirect_pc_url");
 		return next_redirect_pc_url;
 	}
@@ -86,7 +81,6 @@ public class CartController {
 	
 	@DeleteMapping("/delete/{cartId}")
 	public ResponseEntity<Integer> deleteCart(CartVO cartVO, @PathVariable("cartId") int cartId) {
-		      log.info("deleteCart()");
 		      
 		      return new ResponseEntity<Integer>(cartService.deleteCart(cartId), HttpStatus.OK);
 	}
@@ -94,8 +88,6 @@ public class CartController {
 	@PutMapping("/update/{cartId}")
 	public ResponseEntity<Integer> updateAmount(@PathVariable("cartId") int cartId,
 											 	@RequestBody int cartAmount) {
-		log.info("cartId : " + cartId);
-		log.info("cartAmount : " + cartAmount);
 		int result = cartService.updateAmount(cartId, cartAmount);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
@@ -103,7 +95,6 @@ public class CartController {
 	@PutMapping("list/{memberId}/checked")
 	public ResponseEntity<Integer> updateChecked(@PathVariable("memberId") String memberId, 
 	                                              @RequestBody CartVO cartVO) {
-	    log.info("checked");
 	    
 	    return new ResponseEntity<>(cartService.updateChecked(cartVO.getCartChecked(), cartVO.getCartId()), HttpStatus.OK);
 	}

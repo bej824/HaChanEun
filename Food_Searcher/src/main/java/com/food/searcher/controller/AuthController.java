@@ -17,8 +17,6 @@ public class AuthController {
 	@GetMapping("/accessDenied")
 	public void accessDenied(Authentication auth, Model model) {
 	    // Authentication : 현재 사용자의 인증 정보를 갖고 있음
-	    log.info("accessDenied()");
-	    log.info(auth);
 
 	    model.addAttribute("msg", "권한이 없습니다.");
 	}
@@ -28,8 +26,6 @@ public class AuthController {
 	public void loginGET(String error, Model model) {
 	    // error : 에러 발생시 정보 저장
 		// logout : 로그아웃 정보 저장
-	    log.info("loginGET()");
-	    log.info("error : " + error);
 	    
 	    // 에러가 발생한 경우, 에러 메시지를 모델에 추가하여 전달
 	    if(error != null) {
