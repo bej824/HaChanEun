@@ -106,7 +106,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Override
 	public List<DirectOrderVO> sellerList(String memberId, Pagination pagination) {
-		log.info("sellerList()");
 
 		return directOrderMapper.sellerList(memberId, pagination);
 	}
@@ -119,9 +118,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public int cancel(String orderId) {
-		log.info("cancel()");
 		int result = directOrderMapper.cancel(orderId);
-		log.info(result + "행 업데이트 완료");
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 		
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
@@ -133,20 +130,17 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Override
 	public int refundReady(String orderId) {
-		log.info("환불 하기");
 		return directOrderMapper.refundReady(orderId);
 	}
 
 	@Override
 	public int refund(String refundReason, String refundContent, String orderId) {
-		log.info("환불 신청");
 		return directOrderMapper.refund(refundReason, refundContent, orderId);
 	}
 
 	@Transactional
 	@Override
 	public int refundOK(String orderId) {
-		log.info("환불 승인");
 
 		int result = directOrderMapper.refundOK(orderId);
 
@@ -159,19 +153,16 @@ public class DirectOrderServiceImple implements DirectOrderService {
 
 	@Override
 	public int deliveryReady(String deliveryCompany, String invoiceNumber, String orderId) {
-		log.info("배송 준비중");
 		return directOrderMapper.deliveryReady(deliveryCompany, invoiceNumber, orderId);
 	}
 
 	@Override
 	public int delivering(String orderId) {
-		log.info("배송 중");
 		return directOrderMapper.delivering(orderId);
 	}
 
 	@Override
 	public int deliveryCompleted(String orderId) {
-		log.info("배송 완료");
 		return directOrderMapper.deliveryCompleted(orderId);
 	}
 
@@ -274,7 +265,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		
 		ReadyResponse readyResponse = kakaoPayReady(orderList, orderTotalPrice);
 		
-		log.info(readyResponse);
 		String tid = readyResponse.getTid();
 		
 		SessionUtils.addAttribute("tid", readyResponse.getTid());
@@ -354,7 +344,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
                 requestEntity,
                 ReadyResponse.class
             );
-            log.info("결제준비 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("카카오페이 결제 준비 실패: " + e.getMessage());
@@ -388,7 +377,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
         		 KAKAO_PAY_API_URL_APPROVE
         		,requestEntity
         		,ApproveResponse.class);
-        log.info("결제승인 응답객체: " + approveResponse);
         
         List<DirectOrderVO> orderList = orderUtil.getOrderList(tid);
         
@@ -399,8 +387,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	
 	public PaymentCancellationVO payCancel(String orderId) {
 		
-		int result = directOrderMapper.cancel(orderId);
-		log.info(result + "행 업데이트 완료");
+		directOrderMapper.cancel(orderId);
 		DirectOrderVO directOrderVO = directOrderMapper.selectOne(orderId);
 		
 		ItemVO itemVO = itemService.getItemById(directOrderVO.getItemId());
@@ -423,7 +410,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
             String tid = SessionUtils.getStringAttributeValue("tid");
             List<DirectOrderVO> orderList = orderUtil.getOrderList(tid);
             itemService.returnItemAmount(orderList);
-            log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         
 	}
@@ -459,7 +445,6 @@ public class DirectOrderServiceImple implements DirectOrderService {
             List<DirectOrderVO> orderList = new ArrayList<DirectOrderVO>();
             orderList.add(directOrderVO);
             itemService.returnItemAmount(orderList);
-            log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         
 	}

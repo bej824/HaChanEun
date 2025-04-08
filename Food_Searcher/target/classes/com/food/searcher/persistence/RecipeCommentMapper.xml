@@ -14,8 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </resultMap>
    
    <insert id="insert">
-      INSERT INTO RECIPE_COMMENT (RECIPE_COMMENT_ID, RECIPE_REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
-      VALUES (RECIPE_COMMENT_SEQ.NEXTVAL, #{recipeReplyId}, #{memberId}, #{commentContent})
+      INSERT INTO RECIPE_COMMENT (RECIPE_REPLY_ID, MEMBER_ID, COMMENT_CONTENT)
+      VALUES (#{recipeReplyId}, #{memberId}, #{commentContent})
    </insert>
    
    <select id="selectListByBoardId" resultMap="replyResultMap">

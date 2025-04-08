@@ -134,9 +134,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertRole">
 		INSERT INTO MEMBER_ROLE
-		(ROLE_ID, MEMBER_ID,
+		(MEMBER_ID,
 		ROLE_NAME)
-		VALUES (ROLE_SEQ.NEXTVAL, #{memberId}, #{roleName})
+		VALUES 
+		(#{memberId}
+		,#{roleName})
 	</insert>
 
 	<select id="selectRoleByMemberId" resultMap="roleResultMap">

@@ -19,15 +19,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insert">
 		INSERT INTO Item_ATTACH 
-			(ATTACH_ID
-			,ITEM_ID
+			(ITEM_ID
 			,ATTACH_PATH
 			,ATTACH_REAL_NAME
 			,ATTACH_CHG_NAME
 			,ATTACH_EXTENSION
 			) VALUES 
-			(ITEM_ATTACH_SEQ.NEXTVAL
-			,#{itemId}
+			(#{itemId}
 			,#{attachPath}
 			,#{attachRealName}
 			,#{attachChgName}

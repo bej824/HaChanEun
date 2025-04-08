@@ -17,11 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertCtg">
 	
 	INSERT INTO CTG
-	(CTG_ID
-	,MAIN_CTG
+	(MAIN_CTG
 	) VALUES 
-	(CTG_SEQ.NEXTVAL
-	#{mainCtg}
+	(#{mainCtg}
 	)
 	
 	</insert>

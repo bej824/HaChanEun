@@ -37,18 +37,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,ITEM_NAME
 		,ORDER_ID
 		) VALUES
-		(#{couponActiveId} || LPAD(COUPON_ACTIVE_SEQ.NEXTVAL, 4, '0')
-		,#{memberId}
-		,#{couponId}
-		,#{couponName}
-		,#{couponIssuedDate}
-		,#{couponExpireDate}
+		<foreach collection="list" item="list" separator=" ">
+		(#{list.couponActiveId}
+		,#{list.memberId}
+		,#{list.couponId}
+		,#{list.couponName}
+		,#{list.couponIssuedDate}
+		,#{list.couponExpireDate}
 		,null
-		,#{itemId }
-		,#{itemName }
+		,#{list.itemId }
+		,#{list.itemName }
 		,null
 		)
-		
+		</foreach>
 	</insert>
 	
 	<select id="selectCouponActive" resultMap="couponActiveMap">

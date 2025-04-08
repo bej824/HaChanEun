@@ -20,43 +20,36 @@ public class ItemAttachServiceImple implements ItemAttachService {
 
     @Override
     public int createAttach(ItemAttachVO attachVO) {
-    	log.info("createAttach");
         return attachMapper.insert(attachVO);
     }
 
     @Override
     public ItemAttachVO getAttachById(int attachId) {
-    	log.info("getAttachById()");
         return attachMapper.selectByAttachId(attachId);
     }
     
     @Override
     public List<ItemAttachVO> getAllId() {
-    	log.info("getAllId()");
     	return attachMapper.selectIdList();
     }
 
     @Override
     public int updateAttach(ItemAttachVO attachVO) {
-    	log.info("updateAttach()");
         return attachMapper.update(attachVO);
     }
 
     @Override
     public int deleteAttach(int attachId) {
-    	log.info("deleteAttach()");
         return attachMapper.delete(attachId);
     }
 
 	@Override
 	public List<ItemAttachVO> getSelectAll() {
-		log.info("getSelectAll()");
 		return attachMapper.selectAll();
 	}
 
 	@Override
 	public List<ItemAttachVO> getItemById(int itemId) {
-		log.info("getAttachById()");
         return attachMapper.selectByItemId(itemId);
 	}
 }

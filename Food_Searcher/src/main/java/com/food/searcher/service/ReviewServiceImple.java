@@ -34,7 +34,6 @@ public class ReviewServiceImple implements ReviewService {
 
 	@Override
 	public List<ReviewVO> getAll(long itemId) {
-		log.info("getReviewAll()");
 		List<ReviewVO> vo = reviewMapper.selectAll(itemId);
 		return vo;
 	}
@@ -42,7 +41,6 @@ public class ReviewServiceImple implements ReviewService {
 	@Transactional(value="transactionManager")
 	@Override
 	public ReviewVO getReview(long itemId, String memberId) {
-		log.info("getReviewOne");
 				
 		List<DirectOrderVO> isEnabled = directOrderMapper.isEnabled(memberId);
 		
@@ -52,26 +50,20 @@ public class ReviewServiceImple implements ReviewService {
 		for (DirectOrderVO orderVO : isEnabled) {
 			if (orderVO.getItemId() == intItemId && orderVO.getDeliveryCompletedDate() != null) {
 			    result = true;
-			    log.info("result : " + result);
-			    log.info("intItemId : " + intItemId);
 			    break;
 			}
 		}
 		
 		if (!result) {
-	        log.info("내역 조회 실패");
 	        throw new CustomException("배송이 완료된 상품만 리뷰를 작성할 수 있습니다.", "REVIEW_001");
 	    }
 
-	    log.info("내역 조회 성공");
 	    List<ReviewVO> existResult = reviewMapper.isExist(itemId, memberId);
 	    
 	    if (existResult != null && !existResult.isEmpty()) {
-	        log.info("이미 리뷰가 존재합니다.");
 	        throw new CustomException("이미 리뷰가 존재합니다.", "REVIEW_002");
 	    }
 
-	    log.info("작성 페이지로 이동");
 	    return reviewMapper.selectOne(itemId, memberId);
 	}
 	

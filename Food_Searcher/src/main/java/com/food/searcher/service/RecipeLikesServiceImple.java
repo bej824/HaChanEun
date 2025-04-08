@@ -27,73 +27,52 @@ public class RecipeLikesServiceImple implements RecipeLikesService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public int createLike(RecipeLikesVO recipeLikesVO) {
-		log.info("createLike()");
-		log.info("recipeLikesVO : " + recipeLikesVO);
 		int result = likesMapper.insert(recipeLikesVO);
-		log.info(result + "행 추가");
 		if (recipeLikesVO.getMemberLike() == 1) {
-			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
-			log.info(updateResult + "행 좋아요 카운트 증가");
+			recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
 		} else if (recipeLikesVO.getMemberLike() == 2) {
-			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
-			log.info(updateResult + "행 싫어요 카운트 증가");
+			recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
 		}
 		return result;
 	}
 
 	@Override
 	public RecipeLikesVO getMemberLikes(int recipeId, String memberId) {
-		log.info("getMemberLikes()");
 		return likesMapper.selectMemberLikes(recipeId, memberId);
 	}
 
 	@Override
 	public int updateLike(RecipeLikesVO recipeLikesVO) {
-		log.info("updateLike()");
-		log.info("impleLikes : " + recipeLikesVO);
 
 		int previousLikeStatus = recipeLikesVO.getPreviousMemberLike();
-		log.info("previousLikeStatus : " + previousLikeStatus);
 		int result = likesMapper.update(recipeLikesVO);
-		log.info(result + "행 업데이트 완료");
 		if (recipeLikesVO.getMemberLike() == 0) {
-			log.info("0 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 1) {
-				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
-				log.info(updateResult + "행 좋아요 카운트 감소");
+				recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
 			} else if (previousLikeStatus == 2) {
-				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
-				log.info(updateResult + "행 싫어요 카운트 감소");
+				recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
 			}
 		} else if (recipeLikesVO.getMemberLike() == 1) {
-			log.info("1 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 2) {
-				int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
-				log.info(updateResult + "행 싫어요 카운트 감소");
+				recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), -1);
 			}
-			int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
-			log.info(updateResult + "행 좋아요 카운트 증가");
+			recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), 1);
 		} else if (recipeLikesVO.getMemberLike() == 2) {
-			log.info("2 : " + recipeLikesVO.getMemberLike());
 			if (previousLikeStatus == 1) {
-				int updateResult = recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
-				log.info(updateResult + "행 좋아요 카운트 감소");
+				recipeMapper.updateLikesCount(recipeLikesVO.getRecipeId(), -1);
 			}
-			int updateResult = recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
-			log.info(updateResult + "행 싫어요 카운트 증가");
+			recipeMapper.updateDislikesCount(recipeLikesVO.getRecipeId(), 1);
 		}
 		return result;
 	}
 
 	@Override
 	public List<RecipeLikesVO> getSelectAll() {
-		log.info("getSelectAll()");
 		return likesMapper.selectAll();
 	}
 
 	@Override
 	public List<RecipeLikesVO> getPagingBoards(Pagination pagination) {
-		log.info("getPagingBoards()");
 		return likesMapper.selectListByPagination(pagination).stream().collect(Collectors.toList());
 	}
 

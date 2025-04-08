@@ -26,16 +26,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id ="insertSepeciality">
 		INSERT INTO LOCAL_SPECIALITY(
-		  LOCAL_ID
-		 ,LOCAL_LOCAL
+		  LOCAL_LOCAL
 		 ,LOCAL_DISTRICT
 		 ,LOCAL_TITLE
 		 ,LOCAL_CONTENT
 		 ,MAIN_CTG
 		 ,SUB_CTG
 		 ) VALUES (
-		  LOCALSPECIALITY_SEQ.NEXTVAL
-		 ,#{localLocal}
+		  #{localLocal}
 		 ,#{localDistrict}
 		 ,#{localTitle}
 		 ,#{localContent}
@@ -79,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND LOCAL_DISTRICT = #{localDistrict}
 		</if>
 		<if test="localTitle != null and localTitle != ''">
-        	AND LOCAL_TITLE LIKE '%'||#{localTitle}||'%'
+        	AND LOCAL_TITLE LIKE CONCAT('%', #{localTitle}, '%')
     	</if>
     	<if test="mainCtg != null and mainCtg != ''">
     		AND MAIN_CTG = #{mainCtg}

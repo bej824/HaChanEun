@@ -37,7 +37,6 @@ public class SellerServiceImple implements SellerService {
 	
 	@Override
 	public int SellerCreate(String memberId) {
-		log.info("SellerCreate()");
 		String RoleName = "ROLE_SELLER";
 		
 		return adminService.createRole(memberId, RoleName);
@@ -45,7 +44,6 @@ public class SellerServiceImple implements SellerService {
 	
 	@Override
 	public List<DiscountCouponVO> selectSellerCoupon() {
-		log.info("selectSellerCoupon()");
 		
 		return discountCouponService.selectCoupon("COUPON_ISSUER", "ROLE_SELLER");
 	}
@@ -98,7 +96,6 @@ public class SellerServiceImple implements SellerService {
 	
 	@Override
 	public List<ItemVO> selectSellerItem(String memberId, Pagination pagination) {
-		log.info("selectSellerItem()");
 		return itemService.selectSellerItem(memberId, pagination);
 	}
 
@@ -109,8 +106,6 @@ public class SellerServiceImple implements SellerService {
 
 	@Override
 	public int updateItemStatus(int itemId, int itemStatus) {
-		log.info("itemId : " + itemId);
-		log.info("itemStatus : " + itemStatus);
 		return itemService.updateItemStatus(itemId, itemStatus);
 	}
 

@@ -34,8 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO RECIPE_LIKES (RECIPE_LIKES_ID, RECIPE_ID, MEMBER_ID, MEMBER_LIKE)
-		VALUES (RECIPE_LIKES_SEQ.NEXTVAL, #{recipeId}, #{memberId}, #{memberLike})
+		INSERT INTO RECIPE_LIKES (RECIPE_ID, MEMBER_ID, MEMBER_LIKE)
+		VALUES (#{recipeId}, #{memberId}, #{memberLike})
 	</insert>
 	
 	<update id="update">

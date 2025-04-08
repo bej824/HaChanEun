@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
+import com.food.searcher.domain.DiscountCouponVO;
+import com.food.searcher.domain.MemberVO;
 
 public interface CouponActiveService {
 	
 	int createCouponActive(CouponActiveVO couponActiveVO);
+	
+	int createCouponListActive(List<DiscountCouponVO> couponList, List<MemberVO> memberList);
 	
 	/**
 	 * 발급 쿠폰 확인(couponActive)

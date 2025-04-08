@@ -2,6 +2,7 @@ package com.food.searcher.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DirectOrderVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.ItemVO;
+import com.food.searcher.domain.MemberVO;
 import com.food.searcher.persistence.CouponActiveMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -39,12 +41,33 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	@Override
 	public int createCouponActive(CouponActiveVO couponActiveVO) {
 		
-		if(couponActiveVO.getItemName() == null) {
-			couponActiveVO.setItemName("");
+		List<CouponActiveVO> list = new ArrayList<CouponActiveVO>();
+		couponActiveVO.setCouponActiveId(utilityService.now() + String.format("%04d", 0));
+		couponActiveVO = setCouponInfo(couponActiveVO);
+		list.add(couponActiveVO);
+		
+		return insertCouponActive(list);
+	}
+	
+	@Transactional
+	@Override
+	public int createCouponListActive(List<DiscountCouponVO> couponList, List<MemberVO> memberList) {
+		
+		List<CouponActiveVO> list = new ArrayList<CouponActiveVO>();
+		
+		for(int i = 0; i < couponList.size(); i++) {
+			CouponActiveVO couponActiveVO = new CouponActiveVO();
+			couponActiveVO.setCouponId(couponList.get(i).getCouponId());
+			couponActiveVO.setCouponActiveId(utilityService.now() + String.format("%04d", i));
+			couponActiveVO = setCouponInfo(couponActiveVO);
+			
+			for(int j = 0; j < memberList.size(); j++) {
+				couponActiveVO.setMemberId(memberList.get(j).getMemberId());
+				list.add(couponActiveVO);
+			}
 		}
 		
-		couponActiveVO.setCouponActiveId(utilityService.now());
-		return couponActiveMapper.insertCouponActive(couponActiveVO);
+		return insertCouponActive(list);
 	}
 	
 	@Transactional
@@ -57,7 +80,6 @@ public class CouponActiveServiceImple implements CouponActiveService {
 	@Transactional
 	@Override
 	public Integer selectCouponActiveByCouponPrice(String couponActiveId) {
-		log.info("selectCouponActiveByCouponPrice()");
 		Integer discountPrice = 0;
 		String memberId = utilityService.loginMember();
 			discountPrice = couponActiveMapper.selectCouponPriceByCouponActiveId(
@@ -76,7 +98,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		try {
 			result = couponActiveMapper.updateCouponActiveByCouponActiveId(couponActiveVO);
 		} catch (Exception e) {
-			log.info(couponActiveVO.getOrderId() + " 구매 쿠폰 처리 중 에러\n" + e);
+			log.error(couponActiveVO.getOrderId() + " 구매 쿠폰 처리 중 에러\n" + e);
 		}
 		
 		return result;
@@ -91,7 +113,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 			couponActiveMapper.updateCouponActiveByOrderId(orderId);
 			result = 1;
 		} catch (Exception e) {
-			log.info(orderId + " 환불 쿠폰 처리 중 에러\n" + e);
+			log.error(orderId + " 환불 쿠폰 처리 중 에러\n" + e);
 			throw e;
 		}
 		
@@ -106,7 +128,7 @@ public class CouponActiveServiceImple implements CouponActiveService {
 			couponHistoryService.createCouponHistory();
 			couponActiveMapper.deleteCouponActiveByOrderId();
 		} catch (Exception e) {
-			log.info("발급된 쿠폰 삭제 처리 중 에러" + e);
+			log.error("발급된 쿠폰 삭제 처리 중 에러" + e);
 			throw e;
 		}
 	}
@@ -141,6 +163,12 @@ public class CouponActiveServiceImple implements CouponActiveService {
 		couponActiveVO.setCouponUseDate(now);
 		return updateCouponActiveByCouponActiveId(couponActiveVO);
 		
+	}
+	
+	@Transactional
+	public int insertCouponActive(List<CouponActiveVO> list) {
+		
+		return couponActiveMapper.insertCouponActive(list);
 	}
 
 }

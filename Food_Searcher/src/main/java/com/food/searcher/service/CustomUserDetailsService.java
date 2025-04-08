@@ -26,7 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     // 전송된 username으로 사용자 정보를 조회하고, UserDetails에 저장하여 리턴하는 메서드 
     @Override
     public UserDetails loadUserByUsername(String username) {
-    	log.info("loadUserByUsername()");
     	String memberId = username;
         // 사용자 ID를 이용하여 회원 정보와 권한 정보를 조회
         MemberVO member = memberMapper.selectMemberByMemberId(memberId);

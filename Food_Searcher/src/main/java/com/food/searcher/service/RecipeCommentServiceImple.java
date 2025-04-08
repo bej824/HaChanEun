@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.food.searcher.domain.RecipeCommentVO;
-import com.food.searcher.domain.RecipeReplyVO;
 import com.food.searcher.persistence.RecipeCommentMapper;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.persistence.RecipeReplyMapper;
@@ -25,27 +25,24 @@ public class RecipeCommentServiceImple implements RecipeCommentService {
 
 	@Autowired
 	private RecipeReplyMapper replyMapper;
-
+	
+	@Transactional
 	@Override
 	public int createComment(RecipeCommentVO recipeCommentVO) {
-		log.info("createReply()");
-		int insertResult = recipeCommentMapper.insert(recipeCommentVO);
-		log.info(insertResult + "행 대댓글 추가");
-		RecipeReplyVO replyVO = replyMapper.selectOne(recipeCommentVO.getRecipeReplyId());
-		int updateResult = recipeMapper.updateReplyCount(replyVO.getBoardId(), 1);
-		log.info(updateResult + "행 댓글 카운트 증가");
-		return insertResult;
+		int replyId = recipeCommentVO.getRecipeReplyId();
+		int boardId = replyMapper.selectOne(replyId).getBoardId();
+		recipeMapper.updateReplyCount(boardId, 1);
+		return recipeCommentMapper.insert(recipeCommentVO);
 	}
-
+	
+	@Transactional
 	@Override
 	public List<RecipeCommentVO> getAllComment(int replyId) {
-		log.info("getAllReply()");
 		return recipeCommentMapper.selectListByBoardId(replyId);
 	}
 
 	@Override
 	public int updateComment(int recipeCommentId, String commentContent) {
-		log.info("updateReply");
 		RecipeCommentVO recipeCommentVO = new RecipeCommentVO();
 		recipeCommentVO.setRecipeCommentId(recipeCommentId);
 		recipeCommentVO.setCommentContent(commentContent);
@@ -54,7 +51,6 @@ public class RecipeCommentServiceImple implements RecipeCommentService {
 
 	@Override
 	public int deleteComment(int recipeCommentId, int replyId) {
-		log.info("deleteReply()");
 		return recipeCommentMapper.delete(recipeCommentId);
 	}
 

@@ -26,8 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-		INSERT INTO RECIPE_VIEW_LIST (VIEWS_NO, RECIPE_ID, MEMBER_ID, CATEGORY)
-		VALUES (RECIPE_VIEW_SEQ.NEXTVAL, #{recipeId}, #{memberId}, #{category} )
+		INSERT INTO RECIPE_VIEW_LIST (RECIPE_ID, MEMBER_ID, CATEGORY)
+		VALUES (#{recipeId}, #{memberId}, #{category} )
 	</insert>
 	
 	<insert id="insertViews">

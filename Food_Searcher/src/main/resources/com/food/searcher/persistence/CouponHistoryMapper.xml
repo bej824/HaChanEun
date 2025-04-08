@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON h.ITEM_ID = c.ITEM_ID
 		<choose>
 			<when test="pagination.type == 'MEMBER_ID'">
-				WHERE ITEM_NAME LIKE '%'||#{pagination.keyword}||'%'
+				WHERE ITEM_NAME LIKE LIKE CONCAT('%',#{pagination.keyword},'%')
 			</when>
 		</choose>
 		)

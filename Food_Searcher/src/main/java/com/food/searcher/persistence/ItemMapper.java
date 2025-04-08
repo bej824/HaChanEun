@@ -12,7 +12,7 @@ import com.food.searcher.util.Pagination;
 
 @Mapper
 public interface ItemMapper {
-	int itemInsert(ItemVO itemVO);
+	ItemVO itemInsert(ItemVO itemVO);
 	int itemCtgInsert(ItemVO itemVO);
 	
 	List<ItemVO> selectAllByPagination(

@@ -30,7 +30,6 @@ public class CouponActiveController {
 			CouponActiveVO couponActiveVO,
 			Model model,
 			Principal principal) {
-		log.info("activeRegisterGet()");
 		
 		model.addAttribute("couponActiveVO", couponActiveService.setCouponInfo(couponActiveVO));
 		
@@ -39,17 +38,14 @@ public class CouponActiveController {
 	@ResponseBody
 	@PostMapping("activeCreate")
 	public int activePOST(CouponActiveVO couponActiveVO) {
-		log.info("couponActivePOST()");
 		
 		return couponActiveService.createCouponActive(couponActiveVO);
-		
 	}
 	
 	@ResponseBody
 	@PostMapping("memberCouponList")
 	public List<CouponActiveVO> memberCouponListPOST(
 			@RequestParam("memberId") String memberId){
-		log.info("couponListPOST()");
 		
 		return couponActiveService.selectCouponActive(memberId);
 	}

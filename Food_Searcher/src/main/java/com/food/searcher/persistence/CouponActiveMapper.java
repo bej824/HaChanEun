@@ -10,7 +10,7 @@ import com.food.searcher.domain.CouponActiveVO;
 @Mapper
 public interface CouponActiveMapper {
 	
-	int insertCouponActive(CouponActiveVO couponActiveVO);
+	int insertCouponActive(List<CouponActiveVO> list);
 	
 	List<CouponActiveVO> selectCouponActive(
 			 @Param("memberId") String memberId

@@ -32,15 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="subCtg" column="SUB_CTG" />
 	</resultMap>
 
-	<insert id="itemInsert">
+	<insert id="itemInsert" useGeneratedKeys="true" keyProperty="itemId">
 		INSERT INTO ITEM
-		(ITEM_ID
-		,ITEM_NAME
+		(ITEM_NAME
 		,ITEM_CONTENT
 		,MEMBER_ID
 		)VALUES
-		(ITEM_SEQ.NEXTVAL
-		,#{itemName}
+		(#{itemName}
 		,#{itemContent}
 		,#{memberId}
 		)
