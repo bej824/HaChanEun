@@ -53,17 +53,12 @@ $(document).ajaxSend(function(e, xhr, opt){
 
 $(document).ready(function() {
 	getAllReview();
-	console.log("ID : " + $('#itemId').val());
-	
 		// 수정 모달
 	$(document).on("click", ".btn_reviewUpdate", function(){
 		$(".reviewModal").attr("style", "display:block;");
 		let reviewId = $(this).closest('.review_item').find('#reviewId').val();
 		let reviewContent = $(this).closest('.review_item').find(".reviewContent").text();
-		
-		console.log("reviewId : " + reviewId, ", reviewContent : " + reviewContent);
 
-		
 		 $("#modal_revCon").val(reviewContent);
 		 $("#modalReviewId").val(reviewId);
 		 
@@ -71,13 +66,9 @@ $(document).ready(function() {
 		
 		// 수정 버튼을 클릭하면 선택된 댓글 수정
 	$(".review_modify_btn").on("click", function(){
-		console.log(this);
-			
 		let reviewId = $("#modalReviewId").val();
 		let reviewContent = $("#modal_revCon").val();
 		let reviewLove = $('input[name="reviewLove"]:checked').val();
-						
-		console.log("추천 여부 : " + reviewLove, "수정된 댓글 번호 : " + reviewId + ", 수정된 댓글 내용 : " + reviewContent);
 			
 		let obj = {
 				'reviewId' : reviewId,
@@ -92,12 +83,9 @@ $(document).ready(function() {
 
 				data : obj,
 				success : function(result) {
-					console.log(result);
 					if(result == 1) {
 						alert('리뷰가 수정되었습니다.');
 						 $(".replyModal").attr("style", "display:none;");
-						 console.log("modified");
-						 location.reload(true);
 					} else {
 						alert('리뷰 수정 실패');
 					}
@@ -110,7 +98,6 @@ $(document).ready(function() {
 	});
 		
 	$('#reviews').on('click', '.btn_reviewDelete', function(){
-		console.log(this);
 		let reviewId = $(this).closest('.review_item').find('#reviewId').val();
 		let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
 		
@@ -123,7 +110,6 @@ $(document).ready(function() {
 				'Content-Type' : 'application/json'
 			},
 			success : function(result) {
-				console.log(result);
 				if(result == 1) {
 					alert('리뷰 삭제 성공!');
 					getAllReview();
@@ -143,16 +129,12 @@ $(document).ready(function() {
 		let memberId = $('#memberId').val();
 		
 		 $.getJSON(url, function(data) {
-		        console.log(data);
-		        
 		        var list = '';
 		        
 		        if (data.length == 0) {
 		            list += '<div class="noReview">작성된 리뷰가 없습니다.</div>'
 		        } else {
 		            $(data).each(function() {
-		                console.log(this);
-		                
 		                let reviewDate = new Date(this.reviewDate).toLocaleString();
 		                let disabled = '';
 		                if (memberId != this.memberId) {

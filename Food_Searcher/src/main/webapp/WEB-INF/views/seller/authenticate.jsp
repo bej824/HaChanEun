@@ -125,11 +125,6 @@
 		
 		
 		function authenticate () {
-			
-			console.log("대표자 성함 : ", CEOName);
-			console.log("사업자등록번호 : ", businessRegistrationNumber);
-			console.log("개업일자 : ", openingDate);
-			
 			roleUpdate();
 		}
 		

@@ -64,7 +64,6 @@
 				} else {
 					priceCheck = true;
 					priceMsg.html('');
-					console.log(couponPrice);
 				}
 					
 			})
@@ -103,17 +102,11 @@
 					couponContent = '${discountCouponVO.couponEvent }';
 				}
 				
-				console.log("가격 : " + couponPrice);
-				console.log("상세 : " + couponContent);
-				console.log("조건 : " + couponUseCondition);
-				console.log("주기 : " + couponEvent);
-				
 				if(priceCheck == true && conditionCheck == true) {
 					
 					if(couponUseCondition == 0) {
 						let result = confirm("가격제한을 0원으로 설정하시겠습니까?");
 						if(result) {
-							console.log(result);
 						} else {
 							return;
 						}

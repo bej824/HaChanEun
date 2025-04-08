@@ -232,7 +232,6 @@
 						'email' : email,
 						'emailAgree' : emailAgree
 				}
-				console.log(obj);
 			$.ajax({
 				type : 'POST', // 메서드 타입
 				url : 'registerClear', // url
@@ -241,7 +240,6 @@
 				}, 
 				data : JSON.stringify(obj), // JSON으로 변환
 				success : function(result) { // 전송 성공 시 서버에서 result 값 전송
-					console.log(result);
 					if(result == 1) {
 						alert('회원가입에 성공하셨습니다.');
 						window.location.href = "/searcher/auth/login";

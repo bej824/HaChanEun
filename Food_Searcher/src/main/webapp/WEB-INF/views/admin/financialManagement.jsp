@@ -81,22 +81,12 @@
 		    	list.push(parts);
 		    })
 		    
-		    console.log(list[1]);
-		    console.log(list[1][6]);
-		    console.log(list[1][7]);
-		    console.log(list[1][9]);
-		    
 		    for(let i=1; i < list.length; i++){
 		    	
 		    settled.push(list[i][6].split("=")[1]);
 		    sellerId.push(list[i][7].split("=")[1]);
 		    couponPrice.push(list[i][9].split("=")[1]);
 		    }
-		    
-		    console.log("settled : " + settled);
-		    console.log("couponPrice : " + couponPrice);
-		    console.log("sellerId : " + sellerId);
-		    
 		    
 		}
 		

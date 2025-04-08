@@ -43,11 +43,8 @@
 			// 댓글 작성 기능
 			$('#btnAdd').click(function(){
 				let boardId = $('#recipeId').val(); // 게시판 번호 데이터
-				console.log("게시판 번호 : " + boardId);
 				let memberId = $('#memberId').val(); // 작성자 데이터
-				console.log("작성자 : " + memberId);
 				let replyContent = $('#recipeReplyContent').val(); // 댓글 내용
-				console.log("댓글 내용 : " + replyContent);
 				
 		        // 빈 댓글 내용일 경우
 		        if (!replyContent.trim()) {
@@ -60,7 +57,6 @@
 						'memberId' : memberId,
 						'replyContent' : replyContent
 				}
-				console.log(obj);
 				
 				// $.ajax로 송수신
 				$.ajax({
@@ -71,7 +67,6 @@
 					}, 
 					data : JSON.stringify(obj), // JSON으로 변환
 					success : function(result) { // 전송 성공 시 서버에서 result 값 전송
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 입력 성공');
 							document.getElementById('recipeReplyContent').value = '';
@@ -84,29 +79,22 @@
 			
 			// 게시판 댓글 전체 가져오기
 			function getAllReply() {
-				console.log(this);
 				let boardId = $('#recipeId').val();
-				console.log("boardID : " + boardId);
 				let memberId = $('#memberId').val();
-				console.log("작성자 : " + memberId);
 				
 				let url = '../recipe/all/' + boardId;
-				console.log("address : " + url);
 				$.getJSON(
 					url, 		
 					function(data) {
 						// data : 서버에서 전송받은 list 데이터가 저장되어 있음.
 						// getJSON()에서 json 데이터는 
 						// javascript object로 자동 parsing됨.
-						console.log("댓글 목록 : ", data);
 						
 						let list = ''; // 댓글 데이터를 HTML에 표현할 문자열 변수
 						
 						// $(컬렉션).each() : 컬렉션 데이터를 반복문으로 꺼내는 함수
 						$(data).each(function(){
 							// this : 컬렉션의 각 인덱스 데이터를 의미
-							console.log("댓글 데이터: ", this);
-							console.log("댓글 Id : ", this.replyId);
 							
 							// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 							let replyDateCreated = new Date(this.replyDateCreated);
@@ -120,7 +108,6 @@
 							
 							let replyDated = new Date(this.replyDateCreated).toLocaleString();
 							
-							console.log("날짜 : ", replyDateCreated);
 							let disabled = '';
 							let readonly = '';
 							
@@ -166,8 +153,6 @@
 					replyContent = replyContent.replace(text, "");
 				}
 				
-				console.log("replyId : " + replyId, "replyContent : " + replyContent);
-				
 				 $("#modal_repCon").val(replyContent); // 모달에 원본 댓글 내용 넣기
 				 $("#recipeReplyId").val(replyId);     // 모달에 댓글 Id 넣기
 				 
@@ -176,12 +161,8 @@
 				
 			// 수정 버튼을 클릭하면 선택된 댓글 수정
 			$(".modal_modify_btn").on("click", function(){
-				console.log(this);
-			
 				let replyId = $("#recipeReplyId").val();
 				let replyContent = $("#modal_repCon").val();
-				
-				console.log("선택된 댓글 번호 : " + replyId + ", 수정된 댓글 내용 : " + replyContent);
 			
 				// ajax 요청
 				$.ajax({
@@ -192,7 +173,6 @@
 					},
 					data : replyContent + ' (수정됨)', 
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 수정 성공!');
 							getAllReply();
@@ -205,9 +185,7 @@
 			
 			// 삭제 버튼을 클릭하면 선택된 댓글 삭제
 			$('#replies').on('click', '.reply_item .btn_delete', function(){
-				console.log(this);
 				let boardId = $('#recipeId').val(); // 게시판 번호 데이터
-				console.log(boardId);
 				let replyId = $(this).prevAll('#replyId').val();
 				
 				// ajax 요청
@@ -218,7 +196,6 @@
 						'Content-Type' : 'application/json'
 					},
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('댓글 삭제 성공!');
 							getAllReply();
@@ -240,8 +217,6 @@
 						commentContent = commentContent.replace(text, "");
 					}
 				
-				console.log("commentId : " + commentId, "commentContent : " + commentContent);
-				
 				 $("#modal_comCon").val(commentContent);
 				 $("#recipeReplyId").val(commentId);
 				 
@@ -249,13 +224,10 @@
 			
 			// 대댓글 수정 버튼 클릭 시
 			$(".comment_modify_btn").click(function(){
-			console.log(this);
-				
 				// 선택된 댓글의 replyId, replyContent 값을 저장
 				// prevAll() : 선택된 노드 이전에 있는 모든 형제 노드를 접근
 				let recipeCommentId = $('#recipeReplyId').val();
 				let commentContent = $('#modal_comCon').val();
-				console.log("수정된 댓글 번호 : " + recipeCommentId + ", 수정된 댓글 내용 : " + commentContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -266,7 +238,6 @@
 					},
 					data : commentContent + ' (수정됨)',
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('대댓글 수정 성공!');
 							getAllReply();
@@ -279,10 +250,8 @@
 			
 			// 삭제 버튼을 클릭하면 선택된 대댓글 삭제
 			$('#replies').on('click', '.reply_item .btn_commentdelete', function(){
-				console.log("삭제 : " + this);
 				let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();
 				let recipeCommentId = $(this).prevAll('#recipeCommentId').val();
-				console.log("recipeReplyId : " + recipeReplyId + ", recipeCommentId : " + recipeCommentId);
 				
 				// ajax 요청
 				$.ajax({
@@ -293,7 +262,6 @@
 					},
 					data : recipeCommentId,
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('대댓글 삭제 성공!');
 							getAllReply();
@@ -308,14 +276,10 @@
 				
 				let replyId = $(this).prevAll('#replyId').val();
 				let recipeCommentId = $(this).closest('.reply_item').find('#recipeCommentId').val();
-				console.log("CommentId : " + recipeCommentId);
 				let commentDiv = $(this).closest('.reply_item').find('.comment');
 				let memberId = "<sec:authentication property="name" />";
 				
 				let url = 'all/' + replyId;
-				
-				console.log("replyId : " + replyId);
-				console.log("address : " + url);
 				
 				if(commentDiv.html() == ''){
 				// ajax 요청
@@ -327,17 +291,10 @@
 					},
 					data : replyId,
 					success : function(result) {
-						console.log(result);
 						let comment = '';
 						if(result) {
 							comment += '<br> <br>'
 							$(result).each(function(){
-								console.log("대댓글 데이터: ", this);
-								console.log(this.recipeCommentId);
-								console.log(this.commentContent);
-								console.log("replyId : ", this.recipeReplyId);
-								console.log("길이 : ", result.length);
-								
 								// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
 								let commentDateCreated = new Date(this.commentDateCreated);
 								let year = commentDateCreated.getFullYear();
@@ -352,8 +309,6 @@
 								
 								let disabled = '';
 								let readonly = '';
-								
-								console.log(this.memberId);
 								
 								if(memberId != this.memberId){
 									disabled = 'disabled';
@@ -390,14 +345,9 @@
 			
 			$('#replies').on('click', '.btn_commentAdd', function() {
 		        // 해당 버튼이 속한 댓글 아이템에서 replyId와 commentContent를 가져오기
-		        console.log(this);
 		        let memberId = "<sec:authentication property="name" />"
 		        let recipeReplyId = $(this).closest('.reply_item').find('#replyId').val();  // 댓글 ID
 		        let commentContent = $(this).prevAll('#commentContentAdd').val();
-
-		        console.log("recipeReplyId: " + recipeReplyId);
-		        console.log("memberId: " + memberId);
-		        console.log("commentContent: " + commentContent);
 
 		        // 빈 댓글 내용일 경우
 		        if (!commentContent.trim()) {
@@ -409,7 +359,6 @@
 								'memberId' : memberId,
 								'commentContent' : commentContent
 						}
-						console.log(obj);
 						
 						// $.ajax로 송수신
 						$.ajax({
@@ -420,7 +369,6 @@
 							}, 
 							data : JSON.stringify(obj), // JSON으로 변환
 							success : function(result) { // 전송 성공 시 서버에서 result 값 전송
-								console.log(result);
 								if(result == 1) {
 									alert('대댓글 입력 성공');
 									getAllReply();
@@ -437,7 +385,6 @@
 	    function getText(clickedElement) {
 	      // 클릭한 span의 텍스트를 가져옵니다.
 	      let memberId = clickedElement.textContent;
-	      console.log(memberId);
 	      
 	      $('#commentContentAdd').val(memberId +" → ");
 	    }

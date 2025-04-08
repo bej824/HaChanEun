@@ -185,8 +185,6 @@
                 if (isUploadChanged == true) {
                     // 이미지 입력 필드에서 값을 가져옴
                     let attachVO = JSON.parse($('.attachDTOImg-list input[name="attachVO"]').val());
-
-                    console.log(attachVO);
                     // 이미지 세부 정보를 formData에 추가
                     formData.append('attachList[0].attachPath', attachVO.attachPath);
                     formData.append('attachList[0].attachRealName', attachVO.attachRealName);

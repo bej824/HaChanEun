@@ -159,7 +159,6 @@ li {
 		e.preventDefault(); // a 태그 이벤트 방지
 		
 		let keywordVal = searchForm.find("input[name='keyword']").val();  // 사용자가 입력한 키워드 저장
-		console.log(keywordVal);
 		if(keywordVal == '') {
 			alert('검색 내용을 입력하세요.');
 			return;
@@ -185,8 +184,6 @@ li {
 	        const urlParams = new URLSearchParams(window.location.search);
 	        const keyword = urlParams.get('keyword');
 	        const type = urlParams.get('type');
-	        console.log(decodeURIComponent(keyword));
-	        console.log(decodeURIComponent(type));
 	        
 	        if(type == 'ITEM_NAME') {
 	        // 새로운 버튼을 동적으로 생성

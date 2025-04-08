@@ -195,7 +195,6 @@
 		};
 		
 		function insertSpeciality(){
-			console.log("insertSpeciality()");
 			window.location.href = 'register';
 		}
 		

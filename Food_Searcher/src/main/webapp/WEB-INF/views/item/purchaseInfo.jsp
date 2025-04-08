@@ -89,12 +89,9 @@
 	</c:if>
 
 	<script type="text/javascript">
-		console.log('<sec:authentication property="name" />');
-		console.log('${directOrderVO.memberId }');
 		if('<sec:authentication property="name" />' == '${directOrderVO.memberId }') {
 		$(document).ready(function() {
 			$('#cancel').click(function(){
-				console.log("결제 취소");
 				let orderId = '${directOrderVO.orderId }';
 				$.ajax({
 					url : 'cancel/' + orderId,
@@ -103,9 +100,8 @@
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
     			    success : function(result) {
-    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
-    			        	alert("구매 취소가 완료되었습니다.");
-    			            location.reload();
+    			        alert("구매 취소가 완료되었습니다.");
+    			        location.reload();
     			    }
 
 				});
@@ -114,7 +110,6 @@
 		
 		$(document).ready(function() {
 			$('#refundReady').click(function(){
-				console.log("환불 하기");
 				let orderId = '${directOrderVO.orderId }';
 				$.ajax({
 					url : 'refundReady/' + orderId,
@@ -123,7 +118,6 @@
     			        'Content-Type' : 'application/json' // json content-type 설정
     			    }, 
     			    success : function(result) {
-    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
     			            alert('상태 변경');
     			            location.reload();
@@ -138,7 +132,6 @@
 		
 		$(document).ready(function() {
 			$('#refund').click(function(){
-				console.log("환불 신청");
 				let orderId = '${directOrderVO.orderId }';
 				let refundReason = $("select[name='refundReason']").val();
 				let refundContent = $("#refundContent").val();
@@ -152,7 +145,6 @@
     			    	refundReason : refundReason,
     			    	refundContent : refundContent}),
     			    success : function(result) {
-    			        console.log("서버 응답:", result); // 서버로부터 받은 응답을 확인
     			        if(result == 1) {
     			            alert('상태 변경');
     			            location.reload();

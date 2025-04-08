@@ -75,7 +75,6 @@
 		//팝업 창에서 부모 창으로 신호를 보내는 함수
 		function sendSignalToParent(signal) {
 			if (window.opener) {
-				console.log(recipeId)
 				window.opener.receiveSignal(recipeId); // 부모 창의 함수 호출
 				window.close();
 			}

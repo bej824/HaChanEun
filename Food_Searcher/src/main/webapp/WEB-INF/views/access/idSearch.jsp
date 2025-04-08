@@ -117,9 +117,6 @@ li {
 			
 			let email = '${email }';
 			
-			console.log(memberId);
-			console.log(memberStatus);
-			
 			if(activeFlg == true) {
 	    		
 		    	let pwSearch = confirm(memberId + "계정을 선택하셨습니다. \n 패스워드찾기로 이동하시겠습니까?");
@@ -155,7 +152,6 @@ li {
 			    	memberMBTI: ''
 			    	},
 			    success: function(result) {
-			    		console.log("검색된 계정 : ", result.length);
 			    		if(result.length == 0){
 					    	tableContainer.style.display = 'none';
 					    	let register = confirm("회원님의 계정이 존재하지 않습니다. 회원가입창으로 이동하시겠습니까?");
@@ -184,15 +180,12 @@ li {
 		function active(memberId){
 			let memberStatus = 'active';
 			
-			console.log(status);
-			
 			$.ajax({
 			    type: 'POST',
 			    url: 'statusUpdate',
 			    data: { memberId: memberId,
 			    	memberStatus: memberStatus},
 			    success: function(result) {
-			    	console.log(result);
 			      if (result == 1) {
 			    	alert("활성화되었습니다.");
 			    	let pwSearch = confirm("패스워드찾기로 이동하시겠습니까?");

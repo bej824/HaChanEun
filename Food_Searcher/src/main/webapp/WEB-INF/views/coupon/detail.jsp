@@ -52,8 +52,6 @@
 			let couponIuuser = '${discountCouponVO.couponIssuer }';
 			let couponExpirationDate = '${discountCouponVO.couponExpirationDate }';
 			let couponEvent = '${discountCouponVO.couponEvent }';
-				
-			console.log("쿠폰 아이디 : " + couponId);
 			
 			if(couponEvent == 'oneTime') {
 			let result = confirm(couponName + "를 발급하시겠습니까?");
