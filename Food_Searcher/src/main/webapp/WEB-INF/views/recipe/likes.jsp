@@ -45,23 +45,17 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#up').click(function(){
-			
 			let boardId = $('#recipeId').val();
-			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
-			console.log("memberId : " + memberId);
 			
 			if("${likesVO.memberLike}" == ""){			
 			let memberLike = 1;
-			console.log(memberLike);			
 			let obj = {
 					'recipeId' : boardId,
 					'memberId' : memberId,
 					'memberLike' : memberLike
 			}
-			console.log(obj);
 			if("<sec:authentication property="name" />" != "${likesVO.memberId}") {
-			console.log()
 			$.ajax({
 				type : 'POST',
 				url : '../likes',
@@ -70,7 +64,6 @@
 				}, 
 				data : JSON.stringify(obj),
 				success : function(result) {
-					console.log(result);
 					if(result == 1) {
 						alert('좋아요!');
 						location.reload();
@@ -94,7 +87,6 @@
 					}, 
 					data : JSON.stringify(obj),
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('좋아요!');
 							location.reload();
@@ -118,7 +110,6 @@
 					}, 
 					data : JSON.stringify(obj),
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('좋아요! 변경');
 							location.reload();
@@ -130,9 +121,7 @@
 		
 		$('#upfill').click(function(){
 			let boardId = $('#recipeId').val();
-			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
-			console.log("memberId : " + memberId);
 			
 			 if("${likesVO.memberLike}" == "1") {
 					let memberLike = 0;
@@ -152,7 +141,6 @@
 						}, 
 						data : JSON.stringify(obj),
 						success : function(result) {
-							console.log(result);
 							if(result == 1) {
 								alert('좋아요 취소');
 								location.reload();
@@ -165,23 +153,17 @@
 		
 		$('#down').click(function(){
 			let boardId = $('#recipeId').val();
-			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
-			console.log("memberId : " + memberId);
 			
 			if("${likesVO.memberLike}" == ""){
-				
 				let memberLike = 2;
-				console.log(memberLike);
 				
 				let obj = {
 						'recipeId' : boardId,
 						'memberId' : memberId,
 						'memberLike' : memberLike
 				}
-				console.log(obj);
 				if("<sec:authentication property="name" />" != "${likesVO.memberId}") {
-				console.log()
 				$.ajax({
 					type : 'POST',
 					url : '../likes',
@@ -190,7 +172,6 @@
 					}, 
 					data : JSON.stringify(obj),
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('싫어요!');
 							location.reload();
@@ -200,7 +181,6 @@
 				}
 			} else if("${likesVO.memberLike}" == "0") {
 				let memberLike = 2;
-				console.log(memberLike);
 				
 				let obj = {
 						'recipeId' : boardId,
@@ -216,7 +196,6 @@
 					}, 
 					data : JSON.stringify(obj),
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('싫어요!');
 							location.reload();
@@ -240,7 +219,6 @@
 					}, 
 					data : JSON.stringify(obj),
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('싫어요! 변경');
 							location.reload();
@@ -252,9 +230,7 @@
 		
 		$('#downfill').click(function(){
 			let boardId = $('#recipeId').val();
-			console.log("recipeId : " + boardId);
 			let memberId = $('#memberId').val();
-			console.log("memberId : " + memberId);
 			 if("${likesVO.memberLike}" == "2") {
 					let memberLike = 0;
 					let previousMemberLike = 2;
@@ -274,7 +250,6 @@
 						}, 
 						data : JSON.stringify(obj),
 						success : function(result) {
-							console.log(result);
 							if(result == 1) {
 								alert('싫어요 취소');
 								location.reload();

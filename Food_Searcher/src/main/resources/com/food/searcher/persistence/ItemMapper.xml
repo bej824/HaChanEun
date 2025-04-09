@@ -117,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
     	</foreach>
 		</if>
-		)
+		) AS KEYWORD
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
 

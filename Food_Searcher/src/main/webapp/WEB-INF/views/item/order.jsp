@@ -131,16 +131,11 @@
     		})
     		
     		$('#order').click(function(){
-  	    	  	console.log("수량 : " + count);
   	    	  	let itemPrice = ${itemVO.itemPrice};
-  	    	  	console.log("아이템 가격 : " + itemPrice);
-    			console.log("총 금액 : " + totalPrice);
     			let deliveryAddress = $("#deleveryAddress").val();
-    			console.log("주소 : " + deleveryAddress);
     			let couponSelect = $('#couponSelect').val();
     			let couponActiveId = couponActive[couponSelect].couponActiveId;
     			let memberAmount = ${member.amountHeld};
-    			console.log("보유 금액 : " + memberAmount);
     			
     			if (!deliveryAddress) {
                     alert('배송 주소를 입력해주세요.');

@@ -152,7 +152,6 @@
                 contentType: false,                // Content-Type을 자동으로 설정하지 않음
                 success: function(response) {
                     // 요청이 성공하면 처리할 코드 (예: 성공 메시지 표시)
-                    console.log('폼 제출 성공');
                     alert("등록이 완료되었습니다.");
                     window.location.href = "../item/list";
                 },

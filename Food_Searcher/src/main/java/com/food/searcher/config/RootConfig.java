@@ -38,9 +38,9 @@ public class RootConfig {
 	public DataSource dataSource() { // DataSource 객체 리턴 메소드
 		// HikariConfig : DBCP 라이브러리
 		HikariConfig config = new HikariConfig(); // 설정 객체
-		config.setDriverClassName("oracle.jdbc.OracleDriver");
-		config.setJdbcUrl("jdbc:oracle:thin:@192.168.0.155:1521:xe");
-		config.setUsername("STUDY"); // DB 사용자 아이디
+		config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		config.setJdbcUrl("jdbc:mysql://192.168.0.155:3306/hachaneun?serverTimezone=UTC");
+		config.setUsername("hachaneun"); // DB 사용자 아이디
 		config.setPassword("1234"); // DB 사용자 비밀번호
 		
 		config.setMaximumPoolSize(10); // 최대 풀(pool) 크기 설정

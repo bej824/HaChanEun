@@ -12,6 +12,7 @@ public class EmailAuthUtil {
 	
 	public int insertAuth(String email, int checkNum) {
 		int result = 0;
+		log.info(checkNum);
 		if(emailAuth.containsKey(email)) {
 			emailAuth.remove(email);
 		}

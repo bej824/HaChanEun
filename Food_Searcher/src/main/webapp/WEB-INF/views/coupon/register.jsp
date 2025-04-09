@@ -66,7 +66,6 @@
 				} else {
 					nameCheck = true;
 					nameMsg.html('');
-					console.log(couponName);
 				}
 					
 			})
@@ -86,15 +85,12 @@
 				} else {
 					priceCheck = true;
 					priceMsg.html('');
-					console.log(couponPrice);
 				}
 					
 			})
 			
 			$('#couponEvent').change(function(){
 				let couponEvent = $(this).val();
-				console.log(couponEvent);
-				
 			})
 			
 			$('#couponUseCondition').change(function(){
@@ -143,7 +139,6 @@
 					if(couponUseCondition == 0) {
 						let result = confirm("가격제한을 0원으로 설정하시겠습니까?");
 						if(result) {
-							console.log(result);
 						} else {
 							return;
 						}

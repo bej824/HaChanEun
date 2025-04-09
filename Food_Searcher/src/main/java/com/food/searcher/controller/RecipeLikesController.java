@@ -25,13 +25,11 @@ public class RecipeLikesController {
 	
 	@PostMapping
 	public ResponseEntity<Integer> createLikes(@RequestBody RecipeLikesVO recipeLikesVO){
-		log.info("createLikes()");
 		return new ResponseEntity<Integer>(likesService.createLike(recipeLikesVO), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{boardId}")
 	public ResponseEntity<Integer> updateLikes(@PathVariable("boardId") int boardId, @RequestBody RecipeLikesVO recipeLikesVO){
-		log.info("updateLikes()");
 		return new ResponseEntity<Integer>(likesService.updateLike(recipeLikesVO), HttpStatus.OK);
 	}
 }

@@ -55,20 +55,17 @@ public class FileUploadUtil {
         Calendar calendar = Calendar.getInstance();
         
         String yearPath = String.valueOf(calendar.get(Calendar.YEAR));
-        log.info("yearPath: " + yearPath);
         
         String monthPath = yearPath
                 + File.separator
                 + new DecimalFormat("00")
                     .format(calendar.get(Calendar.MONTH) + 1);
-        log.info("monthPath: " + monthPath);
         
         
         String datePath = monthPath
                 + File.separator
                 + new DecimalFormat("00")
                     .format(calendar.get(Calendar.DATE));
-        log.info("datePath: " + datePath);
         
         return datePath;
     }
@@ -85,15 +82,12 @@ public class FileUploadUtil {
         File realUploadPath = new File(uploadPath, makeDatePath());
         if (!realUploadPath.exists()) {
             realUploadPath.mkdirs();
-            log.info(realUploadPath.getPath() + " successfully created.");
         } else {
-            log.info(realUploadPath.getPath() + " already exists.");
         }
         
         File saveFile = new File(realUploadPath, uuid);
         try {
             file.transferTo(saveFile);
-            log.info("file upload scuccess");
         } catch (IllegalStateException e) {
             log.error(e.getMessage());
         } catch (IOException e) {

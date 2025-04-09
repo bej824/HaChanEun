@@ -117,8 +117,6 @@ $(document).ready(function(){
 			let askId = $(this).closest('.ask_item').find('#askId').val();   // 댓글 Id 가져오기
 			let askContent = $(this).closest('.ask_item').find(".askContent").text(); // 원본 댓글 내용 가져오기
 			
-			console.log("askId : " + askId, ", askContent : " + askContent);
-			
 			 $("#modal_repCon").val(askContent);
 			 $("#modalReplyId").val(askId);
 			 
@@ -126,12 +124,8 @@ $(document).ready(function(){
 			
 			// 수정 버튼을 클릭하면 선택된 댓글 수정
 		$(".modal_modify_btn").on("click", function(){
-			console.log(this);
-				
 			let askId = $("#modalReplyId").val();
 			let askContent = $("#modal_repCon").val();
-							
-			console.log("수정된 댓글 번호 : " + askId + ", 수정된 댓글 내용 : " + askContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -142,12 +136,10 @@ $(document).ready(function(){
 					},
 					data : askContent,
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('문의가 수정되었습니다.');
 							getAllAsk();
 							 $(".replyModal").attr("style", "display:none;");
-							 console.log("modified");
 							 location.reload(true);
 						} else {
 							alert('답변이 달린 문의는 수정이 불가능합니다.');
@@ -174,7 +166,6 @@ $(document).ready(function(){
 		});
 			
 		$('#asks').on('click', '.btn_delete', function(){
-			console.log(this);
 			let askId = $(this).closest('.ask_item').find('#askId').val();
 			let deleteConfirm = confirm('정말로 삭제하시겠습니까?');
 			
@@ -187,7 +178,6 @@ $(document).ready(function(){
 					'Content-Type' : 'application/json'
 				},
 				success : function(result) {
-					console.log(result);
 					if(result == 1) {
 						alert('문의 삭제 성공');
 						getAllAsk();
@@ -204,28 +194,20 @@ $(document).ready(function(){
 		$(document).on("click", '.addAnswer', function(){ // 답변 작성 모달
 			$(".answerModal").attr("style", "display:block;");
 			let askId = $(this).closest('.ask_item').find('#askId').val();
-			
-			console.log("askId : " + askId);
-			
 			 $("#modalAnswerId").val(askId);
-			 
 			});
 		
 		// 답변 입력
 		$(".answer_add_btn").on("click", function(){
-			console.log(this);
 			let askId = parseInt($("#modalAnswerId").val());
 			let answerContent = $('#answerContent').val();
 			let memberId = $('#memberId').val();
-							
-			console.log("문의 번호 : " + askId + ", 답변 내용 : " + answerContent, "아이디 : " + memberId);
 				
 			let obj = {
 				'askId' : askId,	
 				'answerContent' : answerContent,
 				'memberId' : memberId
 			};
-			console.log(obj);
 				
 				// ajax 요청
 				$.ajax({
@@ -236,7 +218,6 @@ $(document).ready(function(){
 					},
 					data : JSON.stringify(obj),
 					success : function(data) {
-						console.log(data);
 							getAllAsk();
 							alert("답변이 등록되었습니다.");
 							 $(".answerModal").attr("style", "display:none;");
@@ -255,8 +236,6 @@ $(document).ready(function(){
 			let answerId = $(this).closest('.ask_item').find('#answerId').val();   // 댓글 Id 가져오기
 			let answerContent = $(this).closest('.ask_item').find(".answerContent").text(); // 원본 댓글 내용 가져오기
 			
-			console.log("answerId : " + answerId, ", answerContent : " + answerContent);
-			
 			 $("#answerModifyContent").val(answerContent);
 			 $("#modifyAnswerId").val(answerId);
 			 
@@ -264,12 +243,8 @@ $(document).ready(function(){
 			
 			// 수정 버튼을 클릭하면 선택된 댓글 수정
 		$(".answer_modify_btn").on("click", function(){
-			console.log(this);
-				
 			let answerId = $("#modifyAnswerId").val();
 			let answerContent = $("#answerModifyContent").val();
-							
-			console.log("수정된 댓글 번호 : " + answerId + ", 수정된 댓글 내용 : " + answerContent);
 				
 				// ajax 요청
 				$.ajax({
@@ -280,12 +255,10 @@ $(document).ready(function(){
 					},
 					data : answerContent,
 					success : function(result) {
-						console.log(result);
 						if(result == 1) {
 							alert('문의가 수정되었습니다.');
 							getAllAsk();
 							 $(".answerModifyModal").attr("style", "display:none;");
-							 console.log("modified");
 							 location.reload(true);
 						} else {
 							alert('문의 수정 실패');
@@ -307,7 +280,6 @@ $(document).ready(function(){
 					'Content-Type' : 'application/json'
 				},
 				success : function(result) {
-					console.log(result);
 					if(result == 1) {
 						alert('댓글 삭제 성공!');
 						getAllAsk();
@@ -332,8 +304,6 @@ $(document).ready(function(){
 		    let role = $('#role').val();
 		    
 		    $.getJSON(url, function(data) {
-		        console.log(data);
-		        
 		        var list = '';
 		        
 		        if (data.length == 0) {

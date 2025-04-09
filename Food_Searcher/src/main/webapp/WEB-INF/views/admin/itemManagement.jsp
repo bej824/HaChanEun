@@ -74,8 +74,6 @@ table {
 			let row = $(this).closest("tr");
 			let itemId = row.find(".itemId").val();
 			
-			console.log(permission, itemId);
-			
 			if(permission == "100"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
 				
@@ -123,7 +121,6 @@ table {
 				        },
 				        data: JSON.stringify(itemStatus),
 				        success: function (result) {
-				            console.log(result);
 				            if (result == 1) {
 				            	 location.reload(true);
 				            } else {

@@ -129,12 +129,10 @@
 				alert("수정이 취소되었습니다.");
 			}
 			
-			
 		});
 		
 		function districtList(localLocal) {
 			let indexLocalDistrict = "${localSpecialityVO.localDistrict }";
-			console.log(indexLocalDistrict);
 			let localDistrict_selectOption = $("#localDistrict");
 			
 			$.ajax({
@@ -148,12 +146,10 @@
 					localDistrict_selectOption.append('<option value="">' + 
 						    	'전체</option>');
 					result.forEach(function(districtList){
-					console.log(districtList);
 					let districtOption =
 						'<option value="' + districtList + '">' + 
 					    districtList + '</option>';
 					localDistrict_selectOption.append(districtOption);
-					console.log(districtOption);
 					});
 					
 					if(localLocal != ""){
@@ -168,13 +164,8 @@
 				
 				}
 			})
-			
-			
 		}
-		
-		
 	})
 	</script>
-
 </body>
 </html>

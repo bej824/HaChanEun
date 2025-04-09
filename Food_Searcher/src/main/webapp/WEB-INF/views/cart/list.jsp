@@ -170,7 +170,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 							'Content-Type' : 'application/json'
 						}, 
 					 success : function(result){
-						 console.log(result);
 						 if(result == 1) {
 							 alert('삭제 완료');
 							 location.reload(true);
@@ -205,7 +204,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
 			        },
 			        data: cartAmount,
 			        success: function (result) {
-			            console.log(result);
 			            if (result == 1) {
 			                let textContent = "총 " + itemTotalPrice.toLocaleString() + "원";
 			                row.find(".itemTotalPrice").text(textContent);
@@ -417,7 +415,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     	      let memberId = $(checkbox).closest('tr').find('.memberId').val();
     	      let cartId = $(checkbox).closest('tr').find('.cartId').val();
     	      let cartChecked = 0;  // 체크된 상태는 1
-    	      console.log(cartChecked);
     	      
     	      // AJAX PUT 요청
     	      $.ajax({
@@ -432,7 +429,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     	        }),
     	        success: function(result) {
     	          // 성공적으로 요청이 처리되었을 때 처리할 내용
-    	          console.log(result);
     	          location.reload();
     	        }
     	      });
@@ -440,7 +436,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     	      let memberId = $(checkbox).closest('tr').find('.memberId').val();
     	      let cartId = $(checkbox).closest('tr').find('.cartId').val();
     	      let cartChecked = 1;  // 체크 해제된 상태는 0
-    	      console.log(cartChecked);
     	      
     	      // AJAX PUT 요청
     	      $.ajax({
@@ -455,7 +450,6 @@ href="${pageContext.request.contextPath}/resources/css/Cart.css">
     	        }),
     	        success: function(result) {
     	          // 성공적으로 요청이 처리되었을 때 처리할 내용
-    	          console.log(result);
     	          location.reload();
     	        }
     	      });

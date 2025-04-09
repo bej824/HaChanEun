@@ -37,14 +37,11 @@ public class AttachController {
    // 첨부 파일 업로드 페이지 이동(GET)
    @GetMapping("/register")
    public void registerGET() {
-      log.info("registerGET()");
    } // end registerGET()
 
    // 첨부 파일 업로드 처리(POST)
    @PostMapping("/attach ")
    public String attachPOST(AttachVO attachVO) {
-      log.info("attachPost()");
-      log.info("attachDTO = " + attachVO);
       MultipartFile file = attachVO.getFile();
 
       // UUID 생성
@@ -71,14 +68,11 @@ public class AttachController {
     public void list(Model model) {
         // 첨부 파일 attachId 리스트를 Model에 추가하여 전달
         model.addAttribute("idList", attachService.getAllId());
-        log.info("list()");
     }
 
     // 첨부 파일 상세 정보 조회(GET)
     @GetMapping("/detail")
     public void detail(int attachId, Model model) {
-        log.info("detail()");
-        log.info("attachId : " + attachId);
         // attachId로 상세 정보 조회
         AttachVO attachVO = (AttachVO) attachService.getAttachById(attachId);
         // 조회된 상세 정보를 Model에 추가하여 전달
@@ -91,7 +85,6 @@ public class AttachController {
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public ResponseEntity<Resource> download(int attachId) throws IOException {
-        log.info("download()");
         
         // attachId로 상세 정보 조회
         AttachVO attachVO = (AttachVO) attachService.getAttachById(attachId);

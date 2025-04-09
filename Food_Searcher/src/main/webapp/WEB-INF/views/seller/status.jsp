@@ -118,8 +118,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			// 게시글 삭제 클릭 시
 			var itemId = document.querySelector(".itemId").value;
 			
-			console.log("itemId : " + itemId);
-			
 			 if (confirm('삭제하시겠습니까?')) {
 				 $('#deleteForm').submit();
 			 }
@@ -130,11 +128,8 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			let row = $(this).closest("tr");
 			let itemId = row.find(".itemId").val();
 			
-			console.log("권한 : " + permission, "id : " + itemId);
-			
 			if(permission == "100"){
 				let result = confirm("해당 물품의 판매를 중단 하시겠습니까?");
-				console.log("100>200");
 				
 				if(result) {
 					$(this).data("status", 200);
@@ -146,7 +141,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				
 			} else if(permission == "300") {
 				let result = confirm("해당 물품의 판매를 중단하시겠습니까?");
-				console.log("300>200")
 				
 				if(result) {
 					$(this).data("status", 200);
@@ -158,7 +152,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 				
 			} else if(permission == "200") {
 				let result = confirm("해당 물품의 판매 중지를 취소하시겠습니까?");
-				console.log("200>300");
 				
 				if(result) {
 					$(this).data("status", 300);
@@ -179,7 +172,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			        },
 			        data: JSON.stringify(itemStatus),
 			        success: function (result) {
-			            console.log(result);
 			            if (result == 1) {
 			            	location.reload(true);
 			            } else {
@@ -196,12 +188,7 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 			let itemAmount = parseInt(row.find(".itemAmount").data("amount"), 10);
 			let increasedAmount = parseInt(row.find("#increasedAmount").val(), 10);
 			let itemId = row.find(".itemId").val();
-			
-			console.log("수량 : " + itemAmount, " | 증가될 수량 : " + increasedAmount, "상품 번호 : " + itemId);
-			
 			itemAmount = itemAmount + increasedAmount;
-			
-			console.log("증가된 수량 : " + itemAmount);
 			
 			$.ajax({
 		        type: "PATCH",
@@ -211,7 +198,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 		        },
 		        data: JSON.stringify(itemId, itemAmount),
 		        success: function (result) {
-		            console.log(result);
 		            if (result == 1) {
 		            	 location.reload(true);
 		            } else {
@@ -225,11 +211,9 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 	});
 	
 	 function numberMaxLength(e){ // 길이 제한 스크립트
-
 	        if(e.value.length > e.maxLength){
 	            e.value = e.value.slice(0, e.maxLength);
 	        }
-	 
 	 }
 	 
 	 function preventNegative(element) { // 음수 제한 스크립트
@@ -237,7 +221,6 @@ href="${pageContext.request.contextPath}/resources/css/image.css">
 		        element.value = "";
 		    }
 		}
-	
 	</script>
 
 </div>

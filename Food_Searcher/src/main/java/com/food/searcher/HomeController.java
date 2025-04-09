@@ -6,9 +6,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,14 +33,11 @@ public class HomeController {
 	
 	MemberVO memberVO = null;
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -57,7 +51,6 @@ public class HomeController {
 	
 	@GetMapping("/home")
 	public void main(Model model, Pagination pagination, Principal principal, HttpServletRequest request) {
-		log.info("home()");
 		
 		PageMaker pageMaker = new PageMaker();
 		pagination.setPageSize(5);

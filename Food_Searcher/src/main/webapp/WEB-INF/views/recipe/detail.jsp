@@ -289,10 +289,9 @@ h1 {
 	
 	                // 버튼 클릭 이벤트 (버튼을 눌렀을 때 동작)
 	                $button.on('click', function () {
-	                    console.log('클릭된 단어:', word);
-	                    	localStorage.setItem('buttonCreated', 'true');
-	                        let url = '/searcher/item/list?pageNum=1&type=ITEM_NAME&keyword=' + encodeURIComponent(word);
-	                        window.open(url, '_self');
+	                    localStorage.setItem('buttonCreated', 'true');
+	                    let url = '/searcher/item/list?pageNum=1&type=ITEM_NAME&keyword=' + encodeURIComponent(word);
+	                    window.open(url, '_self');
 	                });
 	
 	                // 새로 생성된 단어 span 추가
