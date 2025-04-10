@@ -86,7 +86,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	@Transactional
 	public int oneOrder(DirectOrderVO directOrderVO) {
 		
-		directOrderVO.setOrderId(utilityService.now() + String.format("%04d", 0));
+		directOrderVO.setOrderId(String.format("%04d", 0));
 		
 		List<DirectOrderVO> orderList = new ArrayList<DirectOrderVO>();
 		orderList.add(directOrderVO);
@@ -97,7 +97,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
 	public int cartOrder(List<DirectOrderVO> orderList) {
 		
 		for(int i = 0; i < orderList.size(); i++) {
-			orderList.get(i).setOrderId(utilityService.now() + String.format("%04d", i));
+			orderList.get(i).setOrderId(String.format("%04d", i));
 		}
 		
 		return itemSearch(orderList);
@@ -267,15 +267,15 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		
 		String tid = readyResponse.getTid();
 		
-		SessionUtils.addAttribute("tid", readyResponse.getTid());
+		SessionUtils.addAttribute("tid", tid);
 		SessionUtils.addAttribute("next_redirect_pc_url", readyResponse.getNext_redirect_pc_url());
 		
 		SessionUtils.addAttribute("partner_order_id", orderList.get(0).getOrderId());
-		String itemName = "";
-		for(DirectOrderVO order : orderList) {			
-			itemName += order.getItemName() + " ";
-			SessionUtils.addAttribute("total_amount", order.getTotalPrice());
-			order.setTid(readyResponse.getTid());
+		String itemName = "";		
+		for(int i = 0; i < orderList.size(); i++) {
+			itemName += orderList.get(i).getItemName() + " ";
+				orderList.get(i).setOrderId(tid + String.format("%02d", i));
+				orderList.get(i).setTid(readyResponse.getTid());
 		}
 		SessionUtils.addAttribute("item_name", itemName);
 		
