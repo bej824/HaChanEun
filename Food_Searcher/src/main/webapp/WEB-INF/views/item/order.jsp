@@ -135,7 +135,6 @@
     			let deliveryAddress = $("#deleveryAddress").val();
     			let couponSelect = $('#couponSelect').val();
     			let couponActiveId = couponActive[couponSelect].couponActiveId;
-    			let memberAmount = ${member.amountHeld};
     			
     			if (!deliveryAddress) {
                     alert('배송 주소를 입력해주세요.');

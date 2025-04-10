@@ -19,7 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberMBTI" column="MEMBER_MBTI" />
 		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
 		<result property="memberStatus" column="MEMBER_STATUS" />
-		<result property="amountHeld" column="AMOUNT_HELD" />
 	</resultMap>
 	
 	<resultMap type="com.food.searcher.domain.RoleVO"

@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN DISCOUNT_COUPON d
 		ON a.COUPON_ID = d.COUPON_ID
 		WHERE a.COUPON_USE_DATE IS NULL
-		AND a.COUPON_EXPIRE_DATE &gt;= SYSDATE
+		AND a.COUPON_EXPIRE_DATE &gt;= NOW()
 		<if test="memberId != '' and memberId != null">
 			AND a.MEMBER_ID = #{memberId}
 		</if>
@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE a.COUPON_ACTIVE_ID = #{couponActiveId}
 		AND a.MEMBER_ID = #{memberId}
 		AND a.COUPON_USE_DATE IS NULL
-		AND a.COUPON_EXPIRE_DATE &gt;= SYSDATE
+		AND a.COUPON_EXPIRE_DATE &gt;= NOW()
 	</select>
 	
 	<update id="updateCouponActiveByCouponActiveId">
@@ -103,14 +103,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,ORDER_ID = NULL
 		WHERE ORDER_ID = #{orderId}
 		AND COUPON_USE_DATE IS NOT NULL
-		AND COUPON_EXPIRE_DATE >= SYSDATE
+		AND COUPON_EXPIRE_DATE >= NOW()
 	</update>
 	
 	<delete id="deleteCouponActiveByOrderId">
 		DELETE
 		FROM COUPON_ACTIVE
-		WHERE COUPON_EXPIRE_DATE &lt; SYSDATE
-		OR (COUPON_USE_DATE IS NOT NULL AND COUPON_USE_DATE &lt; SYSDATE - 7)
+		WHERE COUPON_EXPIRE_DATE &lt; NOW()
+		OR (COUPON_USE_DATE IS NOT NULL AND COUPON_USE_DATE &lt; NOW() - 7)
 	</delete>
 	
 </mapper>

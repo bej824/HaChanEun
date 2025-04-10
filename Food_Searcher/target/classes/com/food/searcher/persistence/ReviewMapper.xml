@@ -21,21 +21,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insert">
-    INSERT INTO REVIEW(
-        REVIEW_ID,
-        MEMBER_ID,
-        ITEM_ID,
-        REVIEW_CONTENT,
-        REVIEW_LOVE,
-        LIKES_COUNT
-  		) VALUES (
-        #{reviewId} || TO_CHAR (SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(review_seq.NEXTVAL), 4, '0'),
-        #{memberId},
-        #{itemId},
-        #{reviewContent},
-        #{reviewLove},
-        #{likesCount}
-   		)
+	    INSERT INTO REVIEW(
+	        MEMBER_ID,
+	        ITEM_ID,
+	        REVIEW_CONTENT,
+	        REVIEW_LOVE,
+	        LIKES_COUNT
+	    ) 
+	    VALUES (
+	        #{memberId},
+	        #{itemId},
+	        #{reviewContent},
+	        #{reviewLove},
+	        #{likesCount}
+	    )
 	</insert>
 
 	

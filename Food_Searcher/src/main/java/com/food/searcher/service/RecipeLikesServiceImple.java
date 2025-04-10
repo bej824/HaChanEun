@@ -41,6 +41,7 @@ public class RecipeLikesServiceImple implements RecipeLikesService {
 		return likesMapper.selectMemberLikes(recipeId, memberId);
 	}
 
+	@Transactional(value = "transactionManager")
 	@Override
 	public int updateLike(RecipeLikesVO recipeLikesVO) {
 

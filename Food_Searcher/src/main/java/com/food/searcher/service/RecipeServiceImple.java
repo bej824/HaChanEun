@@ -23,7 +23,6 @@ import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RecipeViewListVO;
 import com.food.searcher.domain.RecipeViewsVO;
 import com.food.searcher.domain.RecommendVO;
-import com.food.searcher.persistence.AttachMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.persistence.RecipeViewMapper;
@@ -40,9 +39,6 @@ public class RecipeServiceImple implements RecipeService {
 
 	@Autowired
 	private RecipeReplyService recipeReplyService;
-
-	@Autowired
-	private AttachMapper attachMapper;
 
 	@Autowired
 	private LocalMapper localMapper;
@@ -68,7 +64,7 @@ public class RecipeServiceImple implements RecipeService {
 
 		for (AttachVO attachVO : attachList) {
 			attachVO.setBoardId(getAllBoards().get(0).getRecipeId());
-			attachMapper.insert(attachVO);
+			attachService.createAttach(attachVO);
 		}
 		return result;
 	}
@@ -82,7 +78,7 @@ public class RecipeServiceImple implements RecipeService {
 	@Override
 	public RecipeVO getBoardById(int recipeId, String memberId) {
 		RecipeVO recipeVO = recipeMapper.selectOne(recipeId);
-		List<AttachVO> list = attachMapper.selectByBoardId(recipeId);
+		List<AttachVO> list = attachService.getBoardById(recipeId);
 
 		List<AttachVO> attachList = list.stream().collect(Collectors.toList());
 		recipeVO.setAttachList(attachList);
@@ -130,11 +126,11 @@ public class RecipeServiceImple implements RecipeService {
 		int updateBoardResult = recipeMapper.update(recipeVO);
 		List<AttachVO> attachList = recipeVO.getAttachList();
 
-		attachMapper.delete(recipeVO.getRecipeId());
+		attachService.deleteAttach(recipeVO.getRecipeId());
 
 		for (AttachVO attachVO : attachList) {
 			attachVO.setBoardId(recipeVO.getRecipeId()); // 게시글 번호 적용
-			attachMapper.insert(attachVO);
+			attachService.createAttach(attachVO);
 		}
 		return updateBoardResult;
 	}
@@ -143,7 +139,7 @@ public class RecipeServiceImple implements RecipeService {
 	@Override
 	public int deleteBoard(int recipeId) {
 		List<RecipeReplyVO> replyList = recipeReplyService.getAllReply(recipeId);
-		attachMapper.delete(recipeId);
+		attachService.deleteAttach(recipeId);
 		for (RecipeReplyVO reVO : replyList) {
 			recipeReplyService.deleteReply(reVO.getReplyId(), reVO.getBoardId());
 		}
@@ -275,7 +271,7 @@ public class RecipeServiceImple implements RecipeService {
 
 	@Override
 	public AttachVO selectBoardId(int recipeId) {
-		return attachMapper.selectBoardId(recipeId);
+		return attachService.getSelectBoardId(recipeId);
 	}
 
 }
