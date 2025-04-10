@@ -241,7 +241,10 @@ public class DirectOrderServiceImple implements DirectOrderService {
 		
 		if(orderList.get(0).getCouponActiveId() != null) {
 			discountPrice = couponActiveService.selectCouponActiveByCouponPrice(
-					orderList.get(0).getCouponActiveId());			
+					orderList.get(0).getCouponActiveId());
+			if(discountPrice == 0) {
+				return 403;
+			}
 		}
 		
 		if(discountPrice > 0) {

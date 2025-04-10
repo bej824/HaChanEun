@@ -19,7 +19,7 @@
 	<p>사업자등록번호 : </p>
 	<input type="text" name="businessRegistrationNumber" id="businessRegistrationNumber"
 		maxlength="10" placeholder="사업자등록번호 입력" required>
-	<div id="BRNMsg" class="message" style="color: red;">대표자분 성함을 입력해주세요!</div>
+	<div id="BRNMsg" class="message" style="color: red;">사업자 등록번호를 입력해주세요!</div>
 	
 	<p>개업일자 : </p>
 	<input type="text" name="openingDate" id="openingDate" placeholder="개업일자 8자리를 입력해주세요."
@@ -68,7 +68,7 @@
 		$('#openingDate').change(function(){
 			let openingDate = $(this).val();
 			let nowDate = "${nowDate}";
-			BRNCheck = false;
+			dateCheck = false;
 			let msg = $('#dateMsg').html('개업일자를 확인 후 다시 입력해주세요.').css('color', 'red');
 			
 			if(!/^\d+$/.test(openingDate) || openingDate.length != 8) {
@@ -95,7 +95,7 @@
   				} else if(year % 4 == 0 && month == 2 && day > 29){
   					msg;
   				} else {
-  					BRNCheck = true;
+  					dateCheck = true;
 					$('#dateMsg').html('');
   				}
 				
@@ -129,12 +129,12 @@
 		}
 		
 		function roleUpdate() {
-			let memberId = '<sec:authentication property="name" />';
 			let result = confirm("판매자 등록하시겠습니까?");
 			if (result) {
 				$.ajax({
-	  		    	type: 'POST',
+	  		    	type: 'PUT',
 	  		    	url: 'roleUpdate',
+	  		    	contentType: 'application/json',
 	  		    	data: { },
 	  		    	success: function(result) {
 	  		      		alert("등록완료되었습니다.");

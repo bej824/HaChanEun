@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								,"/item/purchaseInfo"
 								,"/item/order"
 								,"/seller/authenticate"
+								,"/seller/roleUpdate"
 								,"/cart/list/**").access("hasRole('ROLE_MEMBER')")
 		
 				.antMatchers(	 "/seller/**"
