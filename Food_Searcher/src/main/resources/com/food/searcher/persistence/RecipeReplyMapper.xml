@@ -15,8 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insert">
-		INSERT INTO RECIPE_REPLY (RECIPE_REPLY_ID, RECIPE_ID, MEMBER_ID, REPLY_CONTENT)
-		VALUES (RECIPE_REPLY_SEQ.NEXTVAL, #{boardId}, #{memberId}, #{replyContent})
+		INSERT INTO RECIPE_REPLY (RECIPE_ID, MEMBER_ID, REPLY_CONTENT)
+		VALUES (#{boardId}, #{memberId}, #{replyContent})
 	</insert>
 
 	<select id="selectListByBoardId" resultMap="replyResultMap">

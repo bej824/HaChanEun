@@ -23,19 +23,16 @@ public class AnswerServiceImple implements AnswerService {
 	@Transactional(value = "transactionManager")	
 	@Override
 	public int createAnswer(AnswerVO answerVO) {
-		log.info("createAnswer()");
 		long askId = answerVO.getAskId();
 		List<AnswerVO> list = answerMapper.select(askId);
 		if(list.isEmpty()) {
-			log.info("답변 등록 성공");
 			answerMapper.insert(answerVO);
 			answerMapper.updateAnswerCount(askId);
 			return 1;
 		} else if (list.size() > 0) {
-			log.info("답변은 문의당 한 번만 작성 가능합니다.");
 			return 2;
 		} else {
-			log.info("error");
+			log.error("error");
 			return 0;
 		}
 		
@@ -49,7 +46,6 @@ public class AnswerServiceImple implements AnswerService {
 
 	@Override
 	public int updateAnswer(long answerId, String answerContent) {
-		log.info("updateAnswer()");
 		AnswerVO answerVO = new AnswerVO();
 		answerVO.setAnswerContent(answerContent);
 		answerVO.setAnswerId(answerId);
@@ -59,7 +55,6 @@ public class AnswerServiceImple implements AnswerService {
 
 	@Override
 	public int deleteAnswer(long answerId) {
-		log.info("deleteAnswer()");
 		return answerMapper.delete(answerId);
 	}
 	

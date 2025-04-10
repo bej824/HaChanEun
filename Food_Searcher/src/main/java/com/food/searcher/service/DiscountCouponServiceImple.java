@@ -21,7 +21,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Transactional
 	@Override
 	public int createCoupon(DiscountCouponVO discountCouponVO) {
-		log.info("createCoupon()");
 
 			return discountCouponMapper.insertCoupon(discountCouponVO);
 	}
@@ -29,7 +28,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Transactional
 	@Override
 	public List<DiscountCouponVO> selectCoupon(String searchBy, String searchText) {
-		log.info("selectAllCoupon()");
 
 		return discountCouponMapper.selectCoupon(searchBy, searchText);
 	}
@@ -37,7 +35,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Transactional
 	@Override
 	public DiscountCouponVO selectOneCoupon(int couponId) {
-		log.info("selectOneCoupon()");
 
 		return discountCouponMapper.selectOneCoupon(couponId);
 	}
@@ -45,7 +42,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Transactional
 	@Override
 	public int updateCoupon(DiscountCouponVO discountCouponVO) {
-		log.info("updateCoupon()");
 
 		return discountCouponMapper.updateCoupon(discountCouponVO);
 	}
@@ -53,7 +49,6 @@ public class DiscountCouponServiceImple implements DiscountCouponService {
 	@Transactional
 	@Override
 	public int deleteCoupon(int couponId) {
-		log.info("deleteCoupon()");
 
 		return discountCouponMapper.deleteCoupon(couponId);
 	}

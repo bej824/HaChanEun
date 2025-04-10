@@ -69,7 +69,6 @@ public class KakaoPayService {
                 requestEntity,
                 ReadyResponse.class
             );
-            log.info("결제준비 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("카카오페이 결제 준비 실패: " + e.getMessage());
@@ -94,7 +93,6 @@ public class KakaoPayService {
         		 KAKAO_PAY_API_URL_APPROVE
         		,requestEntity
         		,ApproveResponse.class);
-        log.info("결제승인 응답객체: " + approveResponse);
 
         return approveResponse;
     }
@@ -114,10 +112,8 @@ public class KakaoPayService {
                 requestEntity,
                 PaymentCancellationVO.class
             );
-            log.info("결제취소 응답객체: " + responseEntity.getBody());
             return responseEntity.getBody();
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            log.error("카카오페이 결제 취소 실패: " + e.getMessage());
             throw new RuntimeException("카카오페이 결제 취소 실패");
         }
     }

@@ -114,8 +114,6 @@ public class SellerController {
 
 		if(!itemList.isEmpty()) {
 			model.addAttribute("itemList", itemList);
-		} else {
-			return "returnPage";
 		}
 
 		model.addAttribute("itemList", itemList);

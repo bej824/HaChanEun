@@ -44,17 +44,15 @@ public class ItemServiceImple implements ItemService {
 	@Override
 	public int createItem(ItemVO itemVO) {
 
-		int result = itemMapper.itemInsert(itemVO);
-		log.info(itemVO);
+		itemMapper.itemInsert(itemVO);
+		
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
-
-		itemMapper.itemCtgInsert(itemVO);
 			for (ItemAttachVO attachVO : attachList) {
-				attachVO.setItemId(selectAllList().get(0).getItemId());
+				attachVO.setItemId(itemVO.getItemId());
 				itemAttachService.createAttach(attachVO);
 			}
 
-		return result;
+		return itemMapper.itemCtgInsert(itemVO);
 	}
 	
 	@Transactional
@@ -112,17 +110,13 @@ public class ItemServiceImple implements ItemService {
 		itemMapper.ctgUpdate(itemVO);
 
 		List<ItemAttachVO> attachList = itemVO.getAttachList();
-		log.info(attachList);
 
-		int deleteResult = itemAttachService.deleteAttach(itemVO.getItemId());
-		log.info(deleteResult + "행 파일 정보 삭제");
+		itemAttachService.deleteAttach(itemVO.getItemId());
 
-		int insertAttachResult = 0;
 		for (ItemAttachVO attachVO : attachList) {
 			attachVO.setItemId(itemVO.getItemId());
-			insertAttachResult += itemAttachService.createAttach(attachVO);
+			itemAttachService.createAttach(attachVO);
 		}
-		log.info(insertAttachResult + "행 파일 정보 등록");
 		return updateItem;
 	}
 	
@@ -151,7 +145,6 @@ public class ItemServiceImple implements ItemService {
 	@Transactional
 	@Override
 	public int deleteItem(int itemId) {
-		log.info("deleteItem()");
 		List<AskVO> askList = askService.getAsk(itemId);
 		for (AskVO askVO : askList) {
 			askService.deleteAsk(askVO.getAskId());

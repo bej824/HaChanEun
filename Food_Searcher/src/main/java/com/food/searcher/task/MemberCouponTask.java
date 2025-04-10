@@ -7,9 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.food.searcher.domain.CouponActiveVO;
 import com.food.searcher.domain.DiscountCouponVO;
 import com.food.searcher.domain.MemberVO;
 import com.food.searcher.service.CouponActiveService;
@@ -56,35 +53,18 @@ public class MemberCouponTask {
 		List<MemberVO> todayBirthMemberList = 
 				memberService.searchId(null, null, null, today, null);
 		
-		createCouponActiveBatch(todayBirthCouponList, todayBirthMemberList);
+		couponActiveService.createCouponListActive(todayBirthCouponList, todayBirthMemberList);
 		
 		if(randomUtil.getTodayMBTI() != null) {
 			List<DiscountCouponVO> todayMBTICoupon = 
 					discountCouponService.selectCoupon("COUPON_EVENT", "memberMBTI");
 			List<MemberVO> todayMBTIMembersList = 
 					memberService.searchId(null, null, null, 0, randomUtil.getTodayMBTI());
-			createCouponActiveBatch(todayMBTICoupon, todayMBTIMembersList);
+			couponActiveService.createCouponListActive(todayMBTICoupon, todayMBTIMembersList);
 		}
 		
 		couponActiveService.deleteCouponActiveByOrderId();
 		
 	} // end couponEvent()
-	
-	@Transactional
-	public void createCouponActiveBatch(List<DiscountCouponVO> couponList, List<MemberVO> memberList) {
-		
-		for(int i = 0; i < couponList.size(); i++) {
-			CouponActiveVO couponActiveVO = new CouponActiveVO();
-			couponActiveVO.setCouponId(couponList.get(i).getCouponId());
-			couponActiveVO.setCouponActiveId(utilityService.now());
-			couponActiveVO = couponActiveService.setCouponInfo(couponActiveVO);
-			
-			for(int j = 0; j < memberList.size(); j++) {
-				couponActiveVO.setMemberId(memberList.get(j).getMemberId());
-				couponActiveService.createCouponActive(couponActiveVO);
-			}
-		}
-		
-	} // end createCouponActiveBatch()
 
 }

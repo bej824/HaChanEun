@@ -21,16 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertCoupon">
 		INSERT INTO DISCOUNT_COUPON(
-		 COUPON_ID
-		,COUPON_NAME
+		 COUPON_NAME
 		,COUPON_CONTENT
 		,COUPON_PRICE
 		,COUPON_USE_CONDITION
 		,COUPON_EVENT
 		,COUPON_EXPIRATION_DATE
 		) VALUES (
-		 DISCOUNT_COUPON_SEQ.NEXTVAL
-		,#{couponName}
+		 #{couponName}
 		,#{couponContent}
 		,#{couponPrice}
 		,#{couponUseCondition}

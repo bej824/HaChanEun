@@ -37,11 +37,7 @@ public class CartServiceImple implements CartService {
 
 	@Override
 	public List<CartVO> getCartById(String memberId) {
-		log.info("getCartById()");
-		log.info("memberId : " + memberId);
 		List<CartVO> cartVO = cartMapper.selectOne(memberId);
-		
-		log.info(cartVO);
 		return cartVO;
 	}
 
@@ -60,7 +56,6 @@ public class CartServiceImple implements CartService {
 
 	@Override
 	public int updateAmount(int cartId, int cartAmount) {
-		log.info("updateAmount()");
 		CartVO cartVO = new CartVO();
 		cartVO.setCartId(cartId);
 		cartVO.setCartAmount(cartAmount);

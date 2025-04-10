@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="itemName" column="ITEM_NAME"
 			jdbcType="VARCHAR" />
 		<result property="itemStatus" column="ITEM_STATUS" />
-		<result property="itemLikes" column="ITME_LIKES" />
+		<result property="itemLikes" column="ITEM_LIKES" />
 	</resultMap>
 	<resultMap type="com.food.searcher.domain.CtgVO" id="ctgResultMap">
 		<id property="ctgId" column="CTG_ID" />
@@ -32,15 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="subCtg" column="SUB_CTG" />
 	</resultMap>
 
-	<insert id="itemInsert">
+	<insert id="itemInsert" useGeneratedKeys="true" keyProperty="itemId">
 		INSERT INTO ITEM
-		(ITEM_ID
-		,ITEM_NAME
+		(ITEM_NAME
 		,ITEM_CONTENT
 		,MEMBER_ID
 		)VALUES
-		(ITEM_SEQ.NEXTVAL
-		,#{itemName}
+		(#{itemName}
 		,#{itemContent}
 		,#{memberId}
 		)
@@ -54,15 +52,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,ORIGIN
 		,ITEM_NAME
 		,ITEM_PRICE
-		,ITME_LIKES
+		,ITEM_LIKES
 		)VALUES
-		(ITEM_SEQ.CURRVAL
+		(#{itemId}
 		,#{mainCtg}
 		,#{subCtg}
 		,#{origin}
 		,#{itemName}
 		,#{itemPrice}
-		,#{itemLikes}
+		,0
 		)
 	</insert>
 
@@ -119,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
     	</foreach>
 		</if>
-		)
+		) AS KEYWORD
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
 
@@ -206,7 +204,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		ITEM_CTG
 		WHERE 1=1 AND SUB_CTG = #{subCtg} AND ITEM_STATUS = 100 AND NOT ITEM_ID = #{itemId}
-		)
+		) AS temp
 		WHERE RN BETWEEN #{pagination.start} AND #{pagination.end}
 	</select>
   	

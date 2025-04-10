@@ -23,7 +23,6 @@ import com.food.searcher.domain.RecipeVO;
 import com.food.searcher.domain.RecipeViewListVO;
 import com.food.searcher.domain.RecipeViewsVO;
 import com.food.searcher.domain.RecommendVO;
-import com.food.searcher.persistence.AttachMapper;
 import com.food.searcher.persistence.LocalMapper;
 import com.food.searcher.persistence.RecipeMapper;
 import com.food.searcher.persistence.RecipeViewMapper;
@@ -40,9 +39,6 @@ public class RecipeServiceImple implements RecipeService {
 
 	@Autowired
 	private RecipeReplyService recipeReplyService;
-
-	@Autowired
-	private AttachMapper attachMapper;
 
 	@Autowired
 	private LocalMapper localMapper;
@@ -62,36 +58,27 @@ public class RecipeServiceImple implements RecipeService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public int createBoard(RecipeVO recipeVO) {
-		log.info("createBoard()");
-		log.info(recipeVO);
 		int result = recipeMapper.insert(recipeVO);
-		log.info(result + "행 게시글 등록");
 
 		List<AttachVO> attachList = recipeVO.getAttachList();
-		log.info(attachList);
 
-		int insertAttachResult = 0;
 		for (AttachVO attachVO : attachList) {
 			attachVO.setBoardId(getAllBoards().get(0).getRecipeId());
-			insertAttachResult += attachMapper.insert(attachVO);
+			attachService.createAttach(attachVO);
 		}
-		log.info(insertAttachResult + "행 파일 정보 등록");
 		return result;
 	}
 
 	@Override
 	public List<RecipeVO> getAllBoards() {
-		log.info("getAllBoards()");
 		return recipeMapper.selectList().stream().collect(Collectors.toList());
 	}
 
 	@Transactional(value = "transactionManager")
 	@Override
 	public RecipeVO getBoardById(int recipeId, String memberId) {
-		log.info("getBoardById()");
-		log.info("recipeId : " + recipeId);
 		RecipeVO recipeVO = recipeMapper.selectOne(recipeId);
-		List<AttachVO> list = attachMapper.selectByBoardId(recipeId);
+		List<AttachVO> list = attachService.getBoardById(recipeId);
 
 		List<AttachVO> attachList = list.stream().collect(Collectors.toList());
 		recipeVO.setAttachList(attachList);
@@ -106,13 +93,11 @@ public class RecipeServiceImple implements RecipeService {
 			params.put("recipeId", recipeId);
 			params.put("memberId", memberId);
 			params.put("category", recipeVO.getCategory());
-			log.info(params);
 
 			// 데이터가 없으면 바로 insert를 진행
 			if (viewList == null || viewList.isEmpty()) {
 				// 데이터가 없으면 바로 insert
-				int recipeView = recipeViewMapper.insert(params);
-				log.info(recipeView + "행 추가");
+				recipeViewMapper.insert(params);
 			} else {
 				// 데이터가 있으면 memberId와 recipeId를 비교하여 삽입 여부 결정
 				boolean shouldInsert = true; // 기본적으로 insert 해야한다고 가정
@@ -127,8 +112,7 @@ public class RecipeServiceImple implements RecipeService {
 
 				// 일치하는 데이터가 없으면 insert 실행
 				if (shouldInsert) {
-					int recipeView = recipeViewMapper.insert(params);
-					log.info(recipeView + "행 추가");
+					recipeViewMapper.insert(params);
 				}
 			}
 		}
@@ -139,52 +123,36 @@ public class RecipeServiceImple implements RecipeService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public int updateBoard(RecipeVO recipeVO) {
-		log.info("updateBoard()");
-		log.info(recipeVO);
-		log.info(attachMapper.selectByBoardId(recipeVO.getRecipeId()));
 		int updateBoardResult = recipeMapper.update(recipeVO);
-		log.info(updateBoardResult + "행 게시글 정보 수정");
 		List<AttachVO> attachList = recipeVO.getAttachList();
-		log.info("attachList" + attachList);
 
-		int deleteAttachResult = attachMapper.delete(recipeVO.getRecipeId());
-		log.info(deleteAttachResult + "행 파일 정보 삭제");
+		attachService.deleteAttach(recipeVO.getRecipeId());
 
-		int insertAttachResult = 0;
 		for (AttachVO attachVO : attachList) {
 			attachVO.setBoardId(recipeVO.getRecipeId()); // 게시글 번호 적용
-			insertAttachResult += attachMapper.insert(attachVO);
-			log.info("attachVO" + attachVO);
+			attachService.createAttach(attachVO);
 		}
-		log.info(insertAttachResult + "행 파일 정보 등록");
 		return updateBoardResult;
 	}
 
 	@Transactional(value = "transactionManager")
 	@Override
 	public int deleteBoard(int recipeId) {
-		log.info("deleteBoard()");
 		List<RecipeReplyVO> replyList = recipeReplyService.getAllReply(recipeId);
-		int deleteAttachResult = attachMapper.delete(recipeId);
-		log.info(deleteAttachResult + "행 파일 정보 삭제");
-		log.info("댓글 목록 : " + replyList);
+		attachService.deleteAttach(recipeId);
 		for (RecipeReplyVO reVO : replyList) {
-			log.info(reVO);
-			int result = recipeReplyService.deleteReply(reVO.getReplyId(), reVO.getBoardId());
-			log.info(result + "행 댓글 삭제");
+			recipeReplyService.deleteReply(reVO.getReplyId(), reVO.getBoardId());
 		}
 		return recipeMapper.delete(recipeId);
 	}
 
 	@Override
 	public int getTotalCount(Pagination pagination) {
-		log.info("getTotalCount()");
 		return recipeMapper.selectTotalCount(pagination);
 	}
 
 	@Override
 	public List<RecipeVO> getPagingBoards(Pagination pagination) {
-		log.info("getPagingBoards()");
 		List<RecipeVO> list = recipeMapper.selectListByPagination(pagination);
 		for (RecipeVO vo : list) {
 			RecipeViewsVO viewsVO = recipeViewMapper.selectOne(vo.getRecipeId());
@@ -303,7 +271,7 @@ public class RecipeServiceImple implements RecipeService {
 
 	@Override
 	public AttachVO selectBoardId(int recipeId) {
-		return attachMapper.selectBoardId(recipeId);
+		return attachService.getSelectBoardId(recipeId);
 	}
 
 }

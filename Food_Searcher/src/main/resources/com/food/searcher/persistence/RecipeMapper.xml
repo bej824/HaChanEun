@@ -37,14 +37,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		: 쿼리 결과를 클래스에 매핑. -->
 	<insert id="insert">
 		INSERT INTO RECIPE (
-		RECIPE_ID, 
 		RECIPE_TITLE,
 		RECIPE_FOOD, 
 		RECIPE_CONTENT, 
 		MEMBER_ID, 
 		INGREDIENT, 
 		CATEGORY)
-		VALUES (RECIPE_SEQ.NEXTVAL,
+		VALUES (
 		#{recipeTitle}, #{recipeFood}, #{recipeContent}, #{memberId}, #{ingredient}, #{category})
 	</insert>
 	<!-- #{변수명} : Mapper 인터페이스 메소드 매개변수와 매핑되어 전송된 데이터를 적용 -->
@@ -56,28 +55,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectOne" resultMap="recipeResultMap">
 		<!-- 상세 게시글 조회 -->
-		SELECT * FROM RECIPE WHERE RECIPE_ID = #{recipeId}
+		SELECT * 
+	    FROM RECIPE 
+	    WHERE RECIPE_ID = #{recipeId}
+	    LIMIT 1
 	</select>
 	
 	<select id="selectRandom" resultMap="recipeResultMap">
 	    <!-- RECIPE_ID 기준으로 랜덤하게 하나의 레코드를 조회 -->
 	    SELECT * FROM (
 	        SELECT * FROM RECIPE
-	        ORDER BY DBMS_RANDOM.VALUE
-	    )
-	    WHERE ROWNUM = 1
+	        ORDER BY RAND()
+	    ) AS temp_table
+	    LIMIT 1
 	</select>
 	
 	<select id="selectRandomByRecipeName" resultMap="recipeResultMap">
-		SELECT * FROM (
-        SELECT RECIPE_ID
-    	FROM RECIPE a
-    	INNER JOIN RECOMMEND b
-   		ON a.RECIPE_FOOD = b.FOOD
-   		WHERE b.FOOD = #{food}
-        ORDER BY DBMS_RANDOM.VALUE
-    )
-    WHERE ROWNUM = 1
+		SELECT * FROM RECIPE a
+		INNER JOIN RECOMMEND b
+		ON a.RECIPE_FOOD = b.FOOD
+		WHERE b.FOOD = #{food}
+		ORDER BY RAND()
+		LIMIT 1
 	</select>
 
 	<update id="update">
@@ -93,36 +92,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 
 	<select id="selectListByPagination" resultMap="recipeResultMap">
-		SELECT * FROM
-		(
-		SELECT ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC)
-		AS RN, RECIPE.* FROM RECIPE
-		WHERE 1=1
-		<if test="keyword != null and keyword != ''">
-    	<foreach collection="keyword" index="i" item="keyword" separator=" ">
-				<if test="type[i] == 'RECIPE_TITLE'.toString()">
-					AND RECIPE_TITLE LIKE '%'||#{keyword}||'%'
-				</if>
-				<if test="type[i] == 'RECIPE_FOOD'.toString()">
-					AND RECIPE_FOOD LIKE '%'||#{keyword}||'%'
-				</if>
-				<if test="type[i] == 'CATEGORY'.toString()">
-					AND CATEGORY LIKE '%'||#{keyword}||'%'
-				</if>
-				<if test="type[i] == 'RECIPE_CONTENT'.toString()">
-					AND RECIPE_CONTENT LIKE '%'||#{keyword}||'%'
-				</if>
-				<if test="type[i] == 'MEMBER_ID'.toString()">
-					AND MEMBER_ID LIKE '%'||#{keyword}||'%'
-				</if>
-				<if test="type[i] == 'INGREDIENT'.toString()">
-					AND INGREDIENT LIKE '%'||#{keyword}||'%'
-				</if>
-		</foreach>
-		</if>
-		)
+		SELECT * FROM (
+			SELECT 
+				ROW_NUMBER() OVER (ORDER BY RECIPE_ID DESC) AS RN,
+				RECIPE.*
+			FROM RECIPE
+			WHERE 1=1
+			<if test="keyword != null and keyword != ''">
+				<foreach collection="keyword" index="i" item="keyword" separator=" ">
+					<if test="type[i] == 'RECIPE_TITLE'.toString()">
+						AND RECIPE_TITLE LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+					<if test="type[i] == 'RECIPE_FOOD'.toString()">
+						AND RECIPE_FOOD LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+					<if test="type[i] == 'CATEGORY'.toString()">
+						AND CATEGORY LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+					<if test="type[i] == 'RECIPE_CONTENT'.toString()">
+						AND RECIPE_CONTENT LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+					<if test="type[i] == 'MEMBER_ID'.toString()">
+						AND MEMBER_ID LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+					<if test="type[i] == 'INGREDIENT'.toString()">
+						AND INGREDIENT LIKE CONCAT('%', #{keyword}, '%')
+					</if>
+				</foreach>
+			</if>
+		) AS KEYWORD
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+
 
 	<!-- #{start} : pagination 객체의 getStart() #{end} : pagination 객체의 getEnd() -->
 
@@ -189,8 +190,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        SELECT * 
             FROM RECOMMEND
             WHERE MEMBER_ID = #{memberId}
-	        ORDER BY DBMS_RANDOM.VALUE
-	    )
-	    WHERE ROWNUM = 1
+	        ORDER BY RAND()
+	    ) AS temp_table
+	    LIMIT 1
 	</select>
 </mapper>

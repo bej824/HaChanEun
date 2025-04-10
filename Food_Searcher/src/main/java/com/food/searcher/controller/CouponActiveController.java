@@ -40,7 +40,6 @@ public class CouponActiveController {
 	public int activePOST(CouponActiveVO couponActiveVO) {
 		
 		return couponActiveService.createCouponActive(couponActiveVO);
-		
 	}
 	
 	@ResponseBody

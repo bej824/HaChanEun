@@ -19,9 +19,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insert">
 		INSERT INTO RECIPE_ATTACH 
-		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, 
+		(BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, 
 		ATTACH_CHG_NAME, ATTACH_EXTENSION)
-		VALUES (ATTACH_SEQ.NEXTVAL, #{boardId}, #{attachPath}, #{attachRealName}, 
+		VALUES (#{boardId}, #{attachPath}, #{attachRealName}, 
 		#{attachChgName}, #{attachExtension})
 	</insert>
 

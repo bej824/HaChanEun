@@ -8,6 +8,7 @@ public interface AttachService {
 	
     int createAttach(AttachVO attachVO);
     List<AttachVO> getBoardById(int boardId);
+    AttachVO getSelectBoardId(int boardId);
     AttachVO getAttachById(int attachId);
     List<AttachVO> getSelectAll();
     List<Integer> getAllId();

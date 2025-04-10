@@ -18,7 +18,7 @@ public class ControllerExceptionHandler {
     // HTTP 응답 상태 코드 지정
     
     public String handlerException(Exception ex) { // Exception : 예외 정보 저장
-       log.info("error message : " + ex.getMessage());
+       log.error("error message : " + ex.getMessage());
        return "error-page"; // 에러 페이지 호출
        
     } // end handlerException()

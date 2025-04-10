@@ -40,7 +40,6 @@ public class AskServiceImple implements AskService {
 
 	@Override
 	public int updateAsk(long askId, String askContent) {
- 		log.info("updateAsk");
  		AskVO askVO = new AskVO();
  		askVO.setAskContent(askContent);
  		askVO.setAskId(askId);
@@ -56,11 +55,9 @@ public class AskServiceImple implements AskService {
 	@Override
 	public int deleteAsk(long askId) {
 		List<AnswerVO> list = answerService.getAnswer(askId);
-		log.info("Answer : " + list);
 		
 		for(AnswerVO vo : list) {
-			int result = answerService.deleteAnswer(vo.getAskId());
-			log.info(result + "행 Answer 삭제");
+			answerService.deleteAnswer(vo.getAskId());
 		}
 		return askMapper.delete(askId);
 	}

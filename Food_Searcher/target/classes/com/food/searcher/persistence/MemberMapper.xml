@@ -19,7 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="memberMBTI" column="MEMBER_MBTI" />
 		<result property="memberConstellation" column="MEMBER_CONSTELLATION" />
 		<result property="memberStatus" column="MEMBER_STATUS" />
-		<result property="amountHeld" column="AMOUNT_HELD" />
 	</resultMap>
 	
 	<resultMap type="com.food.searcher.domain.RoleVO"
@@ -55,20 +54,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectMemberByMemberId" resultMap="memberResultMap">
 		SELECT
-			 m.MEMBER_ID
-			,m.PASSWORD 
-			,m.MEMBER_NAME
-			,m.EMAIL
-			,m.EMAIL_AGREE
-			,m.MEMBER_DATE_OF_BIRTH
-			,m.MEMBER_GENDER
-			,m.MEMBER_MBTI
-			,m.MEMBER_STATUS
-			,a.AMOUNT_HELD
-		FROM MEMBER m
-		LEFT JOIN MEMBER_AMOUNT a
-		ON m.MEMBER_ID = a.MEMBER_ID
-		WHERE m.MEMBER_ID = #{memberId}
+			 MEMBER_ID
+			,PASSWORD 
+			,MEMBER_NAME
+			,EMAIL
+			,EMAIL_AGREE
+			,MEMBER_DATE_OF_BIRTH
+			,MEMBER_GENDER
+			,MEMBER_MBTI
+			,MEMBER_STATUS
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
 	<select id ="countMemberById" resultType="Integer">
@@ -134,9 +130,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insertRole">
 		INSERT INTO MEMBER_ROLE
-		(ROLE_ID, MEMBER_ID,
+		(MEMBER_ID,
 		ROLE_NAME)
-		VALUES (ROLE_SEQ.NEXTVAL, #{memberId}, #{roleName})
+		VALUES 
+		(#{memberId}
+		,#{roleName})
 	</insert>
 
 	<select id="selectRoleByMemberId" resultMap="roleResultMap">
