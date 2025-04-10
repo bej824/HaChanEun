@@ -85,6 +85,7 @@ $(document).ready(function() {
 				success : function(result) {
 					if(result == 1) {
 						alert('리뷰가 수정되었습니다.');
+						location.reload();
 						 $(".replyModal").attr("style", "display:none;");
 					} else {
 						alert('리뷰 수정 실패');

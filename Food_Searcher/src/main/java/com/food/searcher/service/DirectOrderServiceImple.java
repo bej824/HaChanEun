@@ -327,7 +327,7 @@ public class DirectOrderServiceImple implements DirectOrderService {
         parameters.put("quantity", "1");                                        // 단건 결제(대량 구매여도 결제는 1번만 되므로)
         parameters.put("total_amount", String.valueOf(orderTotalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-        parameters.put("approval_url", "http://localhost:13417/searcher/item/completed"); 		// 결제 성공 시 URL
+        parameters.put("approval_url", "http://localhost:8080/searcher/item/completed"); 		// 결제 성공 시 URL
         parameters.put("cancel_url", "http://localhost:13417/searcher/item/cancel");      		// 결제 취소 시 URL
         parameters.put("fail_url", "http://localhost:13417/searcher/item/fail");          		// 결제 실패 시 URL
         

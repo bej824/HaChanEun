@@ -58,14 +58,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<update id="updateCoupon">
-		UPDATE DISCOUNT_COUPON
-		SET
-		COUPON_CONTENT = #{couponContent},
-		COUPON_PRICE = #{couponPrice},
-		COUPON_USE_CONDITION = #{couponUseCondition},
-		COUPON_EVENT = #{couponEvent}
-		WHERE COUPON_ID = #{couponId}
+	    UPDATE DISCOUNT_COUPON
+	    SET
+	        COUPON_CONTENT = #{couponContent},
+	        COUPON_PRICE = #{couponPrice},
+	        COUPON_USE_CONDITION = #{couponUseCondition},
+	        COUPON_EVENT = #{couponEvent}
+	    WHERE COUPON_ID = #{couponId}
+	    AND NOT EXISTS (
+	        SELECT 1 FROM COUPON_ACTIVE AS active WHERE active.COUPON_ID = #{couponId}
+	    )
 	</update>
+
 	
 	<delete id="deleteCoupon">
 		DELETE

@@ -27,6 +27,7 @@
     <!-- 카테고리 버튼 -->
 
     <!-- 레시피 목록 -->
+<c:if test="${not empty koreanList}">
 <div class="itemContainer2">
     <div class="item-container">
         <c:forEach var="RecipeVO" items="${koreanList}">
@@ -58,7 +59,9 @@
     </div>
     <a href="recipe/list?type=CATEGORY&keyword=한식" class="button-item">한식으로 이동》</a>
 </div>
+</c:if>
 
+<c:if test="${not empty chinaList}">
 <div class="itemContainer2">
     <div class="item-container">
         <c:forEach var="RecipeVO" items="${chinaList }">
@@ -92,7 +95,9 @@
     </div>
     <a href="recipe/list?type=CATEGORY&keyword=중식" class="button-item">중식으로 이동》</a>
 </div>
+</c:if>
 
+<c:if test="${not empty japanList}">
 <div class="itemContainer2">
     <div class="item-container">
         <c:forEach var="RecipeVO" items="${japanList }">
@@ -126,7 +131,9 @@
     </div>
     <a href="recipe/list?type=CATEGORY&keyword=일식" class="button-item">일식으로 이동》</a>
 </div>
+</c:if>
 
+<c:if test="${not empty SoutheastList}">
 <div class="itemContainer2">
     <div class="item-container">
         <c:forEach var="RecipeVO" items="${SoutheastList }">
@@ -159,7 +166,9 @@
     </div>
     <a href="recipe/list?type=CATEGORY&keyword=동남아식" class="button-item">동남아로 이동》</a>
 </div>
+</c:if>
 
+<c:if test="${not empty westernList}">
 <div class="itemContainer2">
     <div class="item-container">
         <c:forEach var="RecipeVO" items="${westernList }">
@@ -192,6 +201,7 @@
     </div>
     <a href="recipe/list?type=CATEGORY&keyword=양식" class="button-item">양식으로 이동》</a>
 </div>
+</c:if>
 
 </div> <!-- container -->
 
